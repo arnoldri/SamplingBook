@@ -1,0 +1,13 @@
+fig:unnamed-chunk-7
+fig:unnamed-chunk-8
+introductory-remarks
+lecture-plan
+week-4-non-response-and-complex-designs
+recommended-reading
+r-packages
+sampling
+random-numbers
+the-survey-process
+populations
+frames
+computing-the-required-sample-size

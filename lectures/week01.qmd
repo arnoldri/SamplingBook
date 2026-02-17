@@ -1,0 +1,15 @@
+---
+title: "STAT395 - Week 9"
+author: "Introduction to Sampling and Sample Surveys"
+format: revealjs
+editor: visual
+---
+
+## Sampling and Sample Surveys
+
+* The survey process, sources of survey error
+* Populations and Frames
+* Sampling in finite and infinite populations;
+  Basics of SRSWOR inference; sample weights;
+* **Tutorial:** Population and Frames
+

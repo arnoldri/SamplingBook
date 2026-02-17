@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>STAT395: Sampling</title>
+  <meta name="description" content="Sampling notes." />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="STAT395: Sampling" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Sampling notes." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="STAT395: Sampling" />
+  
+  <meta name="twitter:description" content="Sampling notes." />
+  
+
+<meta name="author" content="Richard Arnold et al." />
+
+
+<meta name="date" content="2026-02-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="sampling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">STAT395: Sampling</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introductory Remarks</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lecture-plan"><i class="fa fa-check"></i><b>1.1</b> Lecture Plan</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-1-the-survey-process"><i class="fa fa-check"></i>Week 1 – The Survey Process</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-2-sampling"><i class="fa fa-check"></i>Week 2 – Sampling</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-3---inference-with-the-r-survey-package"><i class="fa fa-check"></i>Week 3 - Inference with the R survey package</a></li>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#week-4-non-response-and-complex-designs"><i class="fa fa-check"></i><b>1.1.1</b> Week 4 – Non-response and complex designs</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11"><i class="fa fa-check"></i>Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11]</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#test-2-30-assessment-period-1.5-hours-closed-book"><i class="fa fa-check"></i>Test 2 (30%) [assessment period] [1.5 hours, closed book]</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#recommended-reading"><i class="fa fa-check"></i><b>1.2</b> Recommended reading</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>2</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sampling.html"><a href="sampling.html#random-numbers"><i class="fa fa-check"></i><b>2.1</b> Random numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="the-survey-process.html"><a href="the-survey-process.html"><i class="fa fa-check"></i><b>3</b> The Survey Process</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-survey-process.html"><a href="the-survey-process.html#populations"><i class="fa fa-check"></i><b>3.1</b> Populations</a></li>
+<li class="chapter" data-level="3.2" data-path="the-survey-process.html"><a href="the-survey-process.html#frames"><i class="fa fa-check"></i><b>3.2</b> Frames</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="appendix"><span><b> </b></span></li>
+<li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
+<li class="divider"></li>
+<li>Lecture notes</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT395: Sampling</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">STAT395: Sampling</h1>
+<p class="author"><em>Richard Arnold et al.</em></p>
+<p class="date"><em>2026-02-17</em></p>
+</div>
+<div id="introductory-remarks" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Introductory Remarks<a href="index.html#introductory-remarks" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>These are notes for the Sampling section of STAT395/455. The course
+overlaps to some extent with STAT392/439, but there is a greater
+emphasis on R coding, computation, summary and display.</p>
+<div id="lecture-plan" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Lecture Plan<a href="index.html#lecture-plan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Course Learning Objectives</p>
+<ul>
+<li>Describe the steps in the survey process, including the sources of survey error;</li>
+<li>Draw samples from a sample frame under a variety of sample designs, and compute survey weights;</li>
+<li>Carry out, interpret and present statistical inference procedures on survey data, including adjustments for non-response.</li>
+</ul>
+<p>Lecture plan (3 lectures + 1 tutorial per week)</p>
+<div id="week-1-the-survey-process" class="section level3 unnumbered hasAnchor">
+<h3>Week 1 – The Survey Process<a href="index.html#week-1-the-survey-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>The survey process, sources of survey error</li>
+<li>Populations and Frames</li>
+<li>Sampling in finite and infinite populations;
+Basics of SRSWOR inference; sample weights;</li>
+<li><strong>Tutorial:</strong> Population and Frames</li>
+</ul>
+</div>
+<div id="week-2-sampling" class="section level3 unnumbered hasAnchor">
+<h3>Week 2 – Sampling<a href="index.html#week-2-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Use of <code>sample()</code> and other simulation methods in R for a variety of designs
+[<code>sampler</code> package (does power calculations, allocation, SRS and STSRS, but not cluster)]
+[<code>sampling</code> package – can do cluster samples]</p>
+<ul>
+<li>Simple random sampling, with and without replacement</li>
+<li>Stratified sampling</li>
+<li>Cluster sampling</li>
+<li>Sampling in complex designs</li>
+<li>Sample size calculation and allocation</li>
+<li>Survey weights – create estimates from weights without standard errors</li>
+<li><strong>Tutorial:</strong> using R to draw samples and compute survey weights</li>
+</ul>
+</div>
+<div id="week-3---inference-with-the-r-survey-package" class="section level3 unnumbered hasAnchor">
+<h3>Week 3 - Inference with the R survey package<a href="index.html#week-3---inference-with-the-r-survey-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Inference in simple and complex designs, including regression</li>
+<li>Variance estimation</li>
+<li>Definition and interpretation of the design effect</li>
+<li><strong>Tutorial:</strong> using R to specify designs and draw inferences</li>
+</ul>
+</div>
+<div id="week-4-non-response-and-complex-designs" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Week 4 – Non-response and complex designs<a href="index.html#week-4-non-response-and-complex-designs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Post-stratification for non-response adjustment</li>
+<li>Imputation (<code>simputation</code> package)</li>
+<li>Jackknife and bootstrap inference</li>
+<li><strong>Tutorial:</strong> raking adjustments to weights; imputation; jackknife inference</li>
+</ul>
+</div>
+<div id="assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11" class="section level3 unnumbered hasAnchor">
+<h3>Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11]<a href="index.html#assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Survey process, populations and frames</li>
+<li>Describe a real survey, comment on design</li>
+<li>Propose a sample design, frame, comment on scope and coverage</li>
+<li>Draw and analyse a sample under various designs</li>
+<li>Compute sample sizes and allocate samples in stratified sampling</li>
+<li>Compute and interpret the design effect</li>
+<li>Analyse data and present results from a survey</li>
+</ul>
+</div>
+<div id="test-2-30-assessment-period-1.5-hours-closed-book" class="section level3 unnumbered hasAnchor">
+<h3>Test 2 (30%) [assessment period] [1.5 hours, closed book]<a href="index.html#test-2-30-assessment-period-1.5-hours-closed-book" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>Survey process, populations and frames</li>
+<li>Describe sample designs</li>
+<li>Compute and interpret sample weights</li>
+<li>Use sample weights for point estimates</li>
+<li>Interpret output from survey inference in R</li>
+<li>Compare results, interpret design effect</li>
+<li>Describe methods for non-response adjustment (imputation and post-stratification); comment on bias reduction and assumptions being made</li>
+<li>Describe the jackknife method of variance estimation</li>
+</ul>
+</div>
+</div>
+<div id="recommended-reading" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Recommended reading<a href="index.html#recommended-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are lots of books on sample surveys.</p>
+<ul>
+<li>Thomas Lumley’s book ‘Complex Surveys’ (<span class="citation">T. S. Lumley (<a href="#ref-Lumley2010">2010</a>)</span>) is a good introduction to sample survey analysis with R,
+and accompanies the <code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>).</li>
+<li>Groves et al. ‘Survey Methodology’ (groves.etal) is a good general summary of the important issues in survey design.</li>
+<li>Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (<span class="citation">Särndal, Swensson, and Wretmann (<a href="#ref-ssw">1992</a>)</span>)</li>
+<li>Likewise the books by <span class="citation">Cochran (<a href="#ref-cochran">1977</a>)</span> and <span class="citation">Kish (<a href="#ref-kish">1965</a>)</span></li>
+<li>Little and Rubin have a great book on missing data (<span class="citation">Little and Rubin (<a href="#ref-littlerubin">2002</a>)</span>)</li>
+<li>More recent are the books by <span class="citation">Lohr (<a href="#ref-lohr">1999</a>)</span> and <span class="citation">Scheaffer, III, and Ott (<a href="#ref-scheaffer.mendenhall.ott">2006</a>)</span></li>
+<li>And in 1994 StatsNZ published ‘A Guide to Good Survey Design’ (<span class="citation">Zealand (<a href="#ref-statsnz">1995</a>)</span>)</li>
+</ul>
+<p>And also</p>
+<ul>
+<li>CRAN site on R resources for Official Statistics <a href="https://cran.r-project.org/web/views/OfficialStatistics.html" class="uri">https://cran.r-project.org/web/views/OfficialStatistics.html</a></li>
+</ul>
+<p>Some simple lectures on Sample Surveys</p>
+<ul>
+<li><a href="https://r-project.ro/conference2017/presentations/Camelia_Goga_sondages.pdf" class="uri">https://r-project.ro/conference2017/presentations/Camelia_Goga_sondages.pdf</a></li>
+<li>Notes for epidemiologists: <a href="https://www.epirhandbook.com/en/new_pages/survey_analysis.html" class="uri">https://www.epirhandbook.com/en/new_pages/survey_analysis.html</a></li>
+<li>Notes on imputation: <a href="https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/" class="uri">https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/</a></li>
+</ul>
+<p>Data</p>
+<ul>
+<li>UC Irvine Machine Learning data repository: <a href="http://archive.ics.uci.edu/" class="uri">http://archive.ics.uci.edu/</a></li>
+<li>Some free microdata sets: <a href="https://asdfree.com/" class="uri">https://asdfree.com/</a></li>
+<li>Kaggle data repository: <a href="https://www.kaggle.com/" class="uri">https://www.kaggle.com/</a></li>
+</ul>
+</div>
+<div id="r-packages" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> R Packages<a href="index.html#r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>) with this handy summary of command uses <a href="https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/" class="uri">https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/</a></li>
+<li><code>srvyr</code> a dplyr wrapper for the <code>survey</code> package</li>
+<li><code>gtsummary</code> creates outputs ready for publication (difficult to build/load)</li>
+<li><code>sampling</code> package for drawing samples according to various designs</li>
+<li><code>mice</code> package for imputatoin</li>
+<li><code>simputation</code> package for imputation (difficult to build/load)</li>
+<li><code>haven</code> package to import <code>SAS</code>, <code>Stata</code> and <code>SPSS</code> data files</li>
+</ul>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span></p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-cochran" class="csl-entry">
+Cochran, W. G. 1977. <em>Sampling Techniques</em>. Third. New York: Wiley.
+</div>
+<div id="ref-kish" class="csl-entry">
+Kish, L. 1965. <em>Survey Sampling</em>. New York: Wiley.
+</div>
+<div id="ref-littlerubin" class="csl-entry">
+Little, R. J. A., and D. B. Rubin. 2002. <em>Statistical Analysis with Missing Data</em>. Second. Hoboken: Wiley.
+</div>
+<div id="ref-lohr" class="csl-entry">
+Lohr, Sharon L. 1999. <em>Sampling: Design and Analysis</em>. Pacific Grove, CA, USA: Duxbury Press.
+</div>
+<div id="ref-survey2004" class="csl-entry">
+Lumley, Thomas. 2004. <span>“Analysis of Complex Survey Samples.”</span> <em>Journal of Statistical Software</em> 9 (1): 1–19.
+</div>
+<div id="ref-Lumley2010" class="csl-entry">
+Lumley, Thomas S. 2010. <em>Complex Surveys: A Guide to Analysis Using r (Wiley Series in Survey Methodology)</em>. Wiley.
+</div>
+<div id="ref-ssw" class="csl-entry">
+Särndal, C-E., B. Swensson, and J. Wretmann. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.
+</div>
+<div id="ref-scheaffer.mendenhall.ott" class="csl-entry">
+Scheaffer, R. L., W. Mendenhall III, and R. L. Ott. 2006. <em>Elementary Survey Sampling</em>. Sixth. Belmont: Duxbury.
+</div>
+<div id="ref-statsnz" class="csl-entry">
+Zealand, Statistics New. 1995. <em>A Guide to Good Survey Design</em>. Second. Wellington: Statistics New Zealand.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="sampling.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

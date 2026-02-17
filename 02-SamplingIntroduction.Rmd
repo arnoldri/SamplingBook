@@ -1,0 +1,82 @@
+# Sampling
+
+```{r echo=FALSE}
+set.seed(123)
+```
+
+The generation of data often includes the selection of a subset of
+members of a **population**.  This subset is called a **sample**.  
+Our focus in statistics is often the **estimation** of population characteristics
+(**population parameters**) on the bases of sample characteristics
+(**sample statistics**),  
+
+When generating **simulated** datasets we also generate samples.  Simulation
+is often done as a means of testing out statistical ideas and methods, 
+or (in the case of the bootstrap method) when conventional ways of estimating
+standard errors (and therefore confidence intervals) don't work. 
+
+## Random numbers
+
+In both settings (sampling and simulation) we need to start with a method
+of generating random numbers.  We'll start by assuming we have 
+some means of generating a random sequence of numbers uniformly 
+distributed in the interval [0,1]:
+\[
+    U_i \sim \text{Uniform}(0,1)\qquad \text{for $i=1,2,3, \ldots$}
+\]
+In R this is done using the `runif()` function.  For example to generate 10 
+random draws from Uniform(0,1):
+```{r}
+runif(10)
+```
+
+Another draw will a different set of random numbers:
+```{r}
+runif(10)
+```
+
+If we draw a histogram of 100 draws it looks a bit lumpy:
+```{r} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="100 draws from Uniform(0,1)"
+hist(runif(100), xlab="x", ylab="Frequency")
+```
+
+But a histogram of 100,000 draws is very uniform:
+```{r} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="100000 draws from Uniform(0,1)"
+hist(runif(100000), xlab="x", ylab="Frequency")
+```
+
+
+Although the numbers appear to be random they are in fact generated using
+formulae, so if one knows the formula they are predictable.  However the formula
+is complex enough that there are no easily discernible patterns in sequences of 
+many millions of draws.  These numbers are **psuedo-random**, but they are
+random enough for our purposes.  
+
+Underlying the random number generator is a **seed** value, which initiates the
+sequence.  If we set the seed to a particular value, the sequence of random
+numbers that will be generated after doing so will always be the same.
+
+```{r}
+set.seed(111)
+runif(10)
+runif(10)
+runif(10)
+```
+
+```{r}
+set.seed(8)
+runif(10)
+```
+
+```{r}
+set.seed(111)
+runif(10)
+```
+
+This property can be very useful when testing algorithms.  

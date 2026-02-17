@@ -3,7 +3,7 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">STAT392: Sample Surveys</a></li>
+        <li><a href="./">STAT395: Sampling</a></li>
       after: |
         <li>Lecture notes</li>
     download: ["pdf", "epub"]

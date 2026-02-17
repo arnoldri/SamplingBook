@@ -1,0 +1,52 @@
+# Computing the Required Sample Size
+
+  1. Identify your **design estimate** -- this is the estimate that will
+     underlie a headline you could imagine being written about your survey.
+
+  1. Identify the desired MOE, $m$, for this design estimate, noting whether
+     you want this MOE to apply to the overall estimate, or for that estimate in
+     each of, say, $H$ subgroups/strata.
+
+  1. Compute the sample size required, $n_1$, assuming that you're going to select a
+     Simple Random Sample and ignoring the fpc.  
+
+     For estimation of a mean $\bar{Y}$ of some characteristic $y$:
+     \[
+      n_1 = \left(\frac{Z}{MOE}\right)^2 s^2
+     \]
+     where $Z$ is appropriate for the desired level of confidence and $s$ is the
+     estimated population standard deviation of the characteristic $y$.
+
+     For estimation of a proportion $P$:
+     \[
+      n_1 = \left(\frac{Z}{MOE}\right)^2 p(1-p)
+     \]
+     where $p$ is the estimated proportion, or 0.5 if really unknown.
+
+  1. If the sample size is a substantial proportion of the population or
+     subgroup size $N$, then apply the fpc adjustment:
+     \[
+        n_2 = \frac{n_1}{1+\frac{n_1}{N}}
+     \]
+
+  1. If you have $H$ subgroups and are using equal allocation then multiply by $H$
+     \[
+        n_3 = Hn_2
+     \]
+     or alternatively sum over the $n_2$ values in each of the strata you've
+     defined.
+
+  1. Apply the design effect (Deff) appropriate for the actual design you'll
+     be using.
+     \[
+        n_4 = \text{Deff}\times n_3
+     \]
+
+  1. Adjust for anticipated non-response: if response rate $\phi$ is expected
+     then 
+     \[
+        n_5 = \frac{n_4}{\phi}
+     \]
+     (If non-response is likely to vary between strata, then apply this correction 
+     to $n_2$, within each stratum.)
+     
