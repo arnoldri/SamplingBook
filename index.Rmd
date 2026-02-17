@@ -1,0 +1,65 @@
+--- 
+title: "STAT392: Sample Surveys"
+author: "Richard Arnold et al."
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Sample Surveys notes."
+output: 
+  bookdown::html_document2: default
+  bookdown::pdf_book: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+  bookdown::pdf_document2: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+---
+
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, out.align="center")
+```
+
+# Introductory Remarks
+
+These STAT 392 Lecture Notes are derived from notes created by Richard Arnold, 
+Alistair Gray, and other present and former members of staff at Victoria 
+University of Wellington and at Statistics New Zealand.
+
+They should not be distributed without persmission.  
+
+## Recommended reading
+
+There are lots of books on sample surveys.
+
+ * Thomas Lumley's book 'Complex Surveys' (@Lumley2010) is a good introduction to sample survey analysis with R,
+   and accompanies the `survey` package (@survey2004).
+ * Groves et al. 'Survey Methodology' (groves.etal) is a good general summary of the important issues in survey design.
+ * Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (@ssw)
+ * Likewise the books by @cochran and @kish
+ * Little and Rubin have a great book on missing data (@littlerubin)
+ * More recent are the books by @lohr and @scheaffer.mendenhall.ott
+ * And in 1994 StatsNZ published 'A Guide to Good Survey Design' (@statsnz)
+ 
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'survey'
+), 'packages.bib')
+```
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
