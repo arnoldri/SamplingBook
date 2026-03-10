@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-02-17}
+\date{2026-03-04}
 
 \begin{document}
 \maketitle
@@ -388,7 +388,8 @@ Use of \texttt{sample()} and other simulation methods in R for a variety of desi
   \textbf{Tutorial:} using R to specify designs and draw inferences
 \end{itemize}
 
-\subsection{Week 4 -- Non-response and complex designs}\label{week-4-non-response-and-complex-designs}
+\subsection*{Week 4 -- Non-response and complex designs}\label{week-4-non-response-and-complex-designs}
+\addcontentsline{toc}{subsection}{Week 4 -- Non-response and complex designs}
 
 \begin{itemize}
 \tightlist
@@ -514,7 +515,7 @@ Data
 \item
   \texttt{sampling} package for drawing samples according to various designs
 \item
-  \texttt{mice} package for imputatoin
+  \texttt{mice} package for imputation
 \item
   \texttt{simputation} package for imputation (difficult to build/load)
 \item
@@ -672,7 +673,555 @@ numbers that will be generated after doing so will always be the same.
 ##  [7] 0.01065785 0.53229524 0.43216062 0.09368152
 \end{verbatim}
 
-This property can be very useful when testing algorithms.
+This property can be very useful when testing and comparing algorithms:
+we can generate an identical sequence of random numbers and check (for
+example) that two methods of estimation give the same results on
+two identical randomly generated datasets.
+
+\section{Sampling from categorical random variables}\label{sampling-from-categorical-random-variables}
+
+Draws from a uniform distribution are all we need to simulate/sample
+from any distribution.
+
+\textbf{Heads or tails}: if the probability of flipping heads is 0.5,
+we can generate \texttt{n} random numbers, and then label any values less
+than 0.5 as Heads and the remainder as tails.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(n)}
+\NormalTok{u}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055
+##  [8] 0.8924190 0.5514350 0.4566147
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(u}\SpecialCharTok{\textless{}}\FloatTok{0.5}\NormalTok{,}\StringTok{"Heads"}\NormalTok{,}\StringTok{"Tails"}\NormalTok{)}
+\NormalTok{y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Heads" "Tails" "Heads" "Tails" "Tails" "Heads" "Tails" "Tails" "Tails"
+## [10] "Heads"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+## Heads Tails 
+##     4     6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(}\FunctionTok{runif}\NormalTok{(}\DecValTok{10000}\NormalTok{)}\SpecialCharTok{\textless{}}\FloatTok{0.5}\NormalTok{,}\StringTok{"Heads"}\NormalTok{,}\StringTok{"Tails"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Heads Tails 
+##  5059  4941
+\end{verbatim}
+
+We can extend this idea to any set of categories.
+
+\textbf{Red, Green or Blue}: Say we have a six sided die: three sides are red, two are green and one is blue.
+The probabilities of rolling the three colours are therefore \(\frac12\), \(\frac13\), \(\frac16\) respectively.\\
+These probabilities add to one.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pp }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{Red=}\DecValTok{1}\SpecialCharTok{/}\DecValTok{2}\NormalTok{, }\AttributeTok{Green=}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{, }\AttributeTok{Blue=}\DecValTok{1}\SpecialCharTok{/}\DecValTok{6}\NormalTok{)}
+\FunctionTok{sum}\NormalTok{(pp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+In general we might have \(m\) categories, where the probability of category \(k\) is \(p_k\) and
+\[
+   \sum_{k=1}^m p_k = 1
+\]
+We then compute the \textbf{cumulative probabilities} \(c_k\), the partial sums of these probabilities:
+\[
+   c_k = \sum_{j=1}^k p_j
+\]
+The final cumulative probability \(c_m\) is always 1 by definition.
+
+Implicitly we also have a value \(c_0=0\), which is the the empty sum and always
+equal to zero.
+
+These cumulative probabilities \(c_k\) are 'the probability that random variable \(Y\) has
+a category label less than or equal to \(k\):
+\[
+    \Pr(Y\leq k) = c_k = \sum_{j=1}^k p_j
+\]
+
+\textbf{Red, Green or Blue}: the cumulative probabilities are
+\begin{eqnarray*}
+  c_0 &=& 0.0000\\
+  c_1 &=& p_1 = 0.5000\\
+  c_2 &=& p_1+p_2 = 0.5000 + 0.3333 = 0.8333\\
+  c_3 &=& p_1+p_2+p_3 = 0.5000 + 0.3333 + 0.1667 = 1.0000
+\end{eqnarray*}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(pp) }\CommentTok{\# Number of categories}
+\NormalTok{cp }\OtherTok{\textless{}{-}} \FunctionTok{cumsum}\NormalTok{(pp)}
+\NormalTok{cp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Red     Green      Blue 
+## 0.5000000 0.8333333 1.0000000
+\end{verbatim}
+
+We then take a set of uniform random numbers \(u_1,\ldots,u_n\). We then
+want to find which of the \(m\) labels corresponds to each random number \(u_i\).
+
+The rule is that if \(u_i\) is less than cumulative probability \(c_k\) but
+greater than \(c_{k-1}\), then we assign the label \(k\).
+
+There are various ways to do this, here's a version using \texttt{case\_when()} from
+the \texttt{dplyr} package:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{112}\NormalTok{)}
+\NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(}\DecValTok{8}\NormalTok{)}
+\NormalTok{u}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.37667253 0.92201944 0.99187774 0.97723602 0.23629728 0.10706678 0.03915213
+## [8] 0.72802690
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{case\_when}\NormalTok{(u }\SpecialCharTok{\textless{}}\NormalTok{ cp[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textasciitilde{}} \StringTok{"Red"}\NormalTok{,}
+\NormalTok{               u }\SpecialCharTok{\textless{}}\NormalTok{ cp[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\textasciitilde{}} \StringTok{"Green"}\NormalTok{,}
+               \AttributeTok{.default=}\StringTok{"Blue"}\NormalTok{)   }\CommentTok{\# here .default means "otherwise"}
+\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{round}\NormalTok{(u,}\DecValTok{5}\NormalTok{),y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   round.u..5.     y
+## 1     0.37667   Red
+## 2     0.92202  Blue
+## 3     0.99188  Blue
+## 4     0.97724  Blue
+## 5     0.23630   Red
+## 6     0.10707   Red
+## 7     0.03915   Red
+## 8     0.72803 Green
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##  Blue Green   Red 
+##     3     1     4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(y)}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##  Blue Green   Red 
+## 0.375 0.125 0.500
+\end{verbatim}
+
+Note that the categories in the table haven't come out in the Red-Green-Blue order that we want -
+instead they're in the default alphabetical order.
+
+We can fix this by converting \texttt{y} to a \texttt{factor} object:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(y,}\AttributeTok{levels=}\FunctionTok{names}\NormalTok{(pp))}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##   Red Green  Blue 
+##     4     1     3
+\end{verbatim}
+
+Here's what is really going on: we if we plot the cumulative probabilities as
+a staircase -- a \textbf{cumulative distribution function (cdf)} then
+we draw \(u_i\) from a Uniform(0,1) distribution, and then find where
+a horizontal line drawn at the level of \(u_i\) intersects the cdf: and that
+is the value of the categorical variable \(y_i\).
+
+The larger the probability \(p_k\) the bigger the jump in the staircase, and
+the larger the probability that category \(k\) will be selected.
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-19-1} 
+
+}
+
+\caption{Drawing a random category}\label{fig:unnamed-chunk-19}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-20-1} 
+
+}
+
+\caption{Drawing a random category}\label{fig:unnamed-chunk-20}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{112}\NormalTok{)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(n)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{case\_when}\NormalTok{(u }\SpecialCharTok{\textless{}}\NormalTok{ cp[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{\textasciitilde{}} \StringTok{"Red"}\NormalTok{,}
+\NormalTok{               u }\SpecialCharTok{\textless{}}\NormalTok{ cp[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\textasciitilde{}} \StringTok{"Green"}\NormalTok{,}
+               \AttributeTok{.default=}\StringTok{"Blue"}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(y, }\AttributeTok{levels=}\FunctionTok{names}\NormalTok{(pp))}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##   Red Green  Blue 
+##  4976  3336  1688
+\end{verbatim}
+
+The \texttt{sample()} function implements this conveniently: select from the integers
+1 to \texttt{m}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(m, }\AttributeTok{size=}\NormalTok{n, }\AttributeTok{prob=}\NormalTok{pp, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##    1    2    3 
+## 5014 3350 1636
+\end{verbatim}
+
+(need \texttt{replace=TRUE} here, see below).
+
+\ldots{} or state the vector \texttt{1:m} explicitly
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{m, }\AttributeTok{size=}\NormalTok{n, }\AttributeTok{prob=}\NormalTok{pp, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##    1    2    3 
+## 5010 3371 1619
+\end{verbatim}
+
+\ldots{} or directly from the vector of labels \ldots{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Red"}\NormalTok{,}\StringTok{"Green"}\NormalTok{,}\StringTok{"Blue"}\NormalTok{), }\AttributeTok{size=}\NormalTok{n, }\AttributeTok{prob=}\NormalTok{pp, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(y,}\AttributeTok{levels=}\FunctionTok{names}\NormalTok{(pp))}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##   Red Green  Blue 
+##  4980  3325  1695
+\end{verbatim}
+
+\ldots{} get the labels from \texttt{pp} \ldots{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{names}\NormalTok{(pp), }\AttributeTok{size=}\NormalTok{n, }\AttributeTok{prob=}\NormalTok{pp, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(y,}\AttributeTok{levels=}\FunctionTok{names}\NormalTok{(pp))}
+\FunctionTok{table}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## y
+##   Red Green  Blue 
+##  4994  3389  1617
+\end{verbatim}
+
+\section{Sampling from discrete random variables}\label{sampling-from-discrete-random-variables}
+
+The ideas above carry straight over to discrete random variables.
+
+The Binomial distribution \(Y\sim\text{Bin}(m,p)\) is the number
+of successes in \(m\) trials where the probability of success on each
+trial is the same \(p\), and all the trials are independent. \(Y\) takes
+values 0 to \(m\), and those probabilities can be calculated by
+\[
+   P(Y=k) = \binom{m}{k} p^k (1-p)^{m-k} = \frac{m!}{k!(m-k)!} p^k (1-p)^{m-k}
+\]
+R provides these probabilities in the function \texttt{dbinom()}
+
+e.g.~\(m=10\) rolls of a die, and \(Y\) is the number of times we get a 6,
+so \(p=1/6\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{p }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{6}
+\NormalTok{pp }\OtherTok{\textless{}{-}} \FunctionTok{dbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m, m, p)}
+\NormalTok{pp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1.615056e-01 3.230112e-01 2.907100e-01 1.550454e-01 5.426588e-02
+##  [6] 1.302381e-02 2.170635e-03 2.480726e-04 1.860544e-05 8.269086e-07
+## [11] 1.653817e-08
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{barplot}\NormalTok{(pp, }\AttributeTok{names=}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m,}
+        \AttributeTok{xlab=}\StringTok{"y"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Pr(Y=y)"}\NormalTok{,}
+        \AttributeTok{main=}\FunctionTok{bquote}\NormalTok{(}\StringTok{"Bin("}\SpecialCharTok{*}\NormalTok{.(m)}\SpecialCharTok{*}\StringTok{","}\SpecialCharTok{*}\NormalTok{.(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{" \%.4f"}\NormalTok{,p))}\SpecialCharTok{*}\StringTok{")"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-27-1} 
+
+}
+
+\caption{Binomial probabilities}\label{fig:unnamed-chunk-27}
+\end{figure}
+
+The cdf is given by the function \texttt{pbinom()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cp }\OtherTok{\textless{}{-}} \FunctionTok{pbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m, m, p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m, cp, }\AttributeTok{type=}\StringTok{"s"}\NormalTok{,}
+        \AttributeTok{xlab=}\StringTok{"y"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Pr(Y\textless{}=y)"}\NormalTok{,}
+        \AttributeTok{main=}\FunctionTok{bquote}\NormalTok{(}\StringTok{"Bin("}\SpecialCharTok{*}\NormalTok{.(m)}\SpecialCharTok{*}\StringTok{","}\SpecialCharTok{*}\NormalTok{.(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{" \%.4f"}\NormalTok{,p))}\SpecialCharTok{*}\StringTok{")"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-29-1} 
+
+}
+
+\caption{Binomial CDF}\label{fig:unnamed-chunk-29}
+\end{figure}
+
+Drawing a single value of \(Y\) proceeds the same way as for a categorical
+variable:
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-30-1} 
+
+}
+
+\caption{Drawing from a Binomial(10,1/6) distribution}\label{fig:unnamed-chunk-30}
+\end{figure}
+
+So we can draw multiple values of \(Y\) from Bin(10,\(\frac16\))
+using the \texttt{sample()} function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{pp }\OtherTok{\textless{}{-}} \FunctionTok{dbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m, m, p)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\NormalTok{m, n, }\AttributeTok{prob=}\NormalTok{pp, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{barplot}\NormalTok{(}\FunctionTok{table}\NormalTok{(y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-31-1} 
+
+}
+
+\caption{10000 draws from a Binomial(10,1/6)}\label{fig:unnamed-chunk-31}
+\end{figure}
+
+Of course R provides a specific function for doing the same thing: \texttt{rbinom()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(n, m, p)}
+\FunctionTok{barplot}\NormalTok{(}\FunctionTok{table}\NormalTok{(y))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-32-1} 
+
+}
+
+\caption{10000 draws from a Binomial(10,1/6)}\label{fig:unnamed-chunk-32}
+\end{figure}
+
+But that function is just doing what we've described above using \texttt{sample()}.
+
+\section{Sampling from continuous random variables}\label{sampling-from-continuous-random-variables}
+
+Continous random variables are simulated using the same principle.\\
+If \(F(y)\) is the cdf of a random variable \(Y\) then we can draw a random
+value of \(Y\) by drawing a random value \(U\) from a Uniform(0,1) distribution.
+
+We then need to solve the equation
+\[
+   U = F(y)
+\]
+for \(y\). For many standard distributions (including the Normal and Gamma distributions)
+there is no analytic formula which gives the solution for \(y\) given \(u\):
+but there are numerical approximations which can be used in those settings.
+
+One simple case which does have an analytic solution is the Exponential
+distribution \(Y\sim\text{Exp}(\lambda)\). This is a one parameter distribution
+where \(Y\) is non-negative (\(Y\geq 0\)), and can be used to model cases such
+the length of time it takes for an event to occur (e.g.~the length of time for a
+radioactive nucleus to decay). The single parameter \(\lambda\) is the \textbf{rate}
+(e.g.~number of radioactive decay events per unit time).
+
+The exponential distribution has probability density function
+\[
+   f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lambda }\OtherTok{\textless{}{-}} \FloatTok{0.5}
+\NormalTok{np }\OtherTok{\textless{}{-}} \DecValTok{101}
+\NormalTok{yvec }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\DecValTok{0}\NormalTok{, }\AttributeTok{to=}\DecValTok{10}\NormalTok{, }\AttributeTok{length=}\NormalTok{np)}
+\NormalTok{fvec }\OtherTok{\textless{}{-}}\NormalTok{ lambda}\SpecialCharTok{*}\FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{lambda}\SpecialCharTok{*}\NormalTok{yvec)}
+\FunctionTok{plot}\NormalTok{(yvec, fvec, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }
+     \AttributeTok{xlab=}\StringTok{"y"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f(y)"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Probability density of Exp(0.1)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-33-1} 
+
+}
+
+\caption{Exponential probability distribution}\label{fig:unnamed-chunk-33}
+\end{figure}
+
+The cdf is the integral of the probability density function
+\[
+   \Pr(Y\leq y) = F(y) = \int_0^y f(y)\,{\rm d}y
+\]
+which for the Exponential distribution is
+\[
+  F(y) = \int_0^y \lambda e^{-\lambda t} {\rm d}t = 1 - e^{-\lambda y}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lambda }\OtherTok{\textless{}{-}} \FloatTok{0.5}
+\NormalTok{np }\OtherTok{\textless{}{-}} \DecValTok{101}
+\NormalTok{yvec }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\DecValTok{0}\NormalTok{, }\AttributeTok{to=}\DecValTok{10}\NormalTok{, }\AttributeTok{length=}\NormalTok{np)}
+\NormalTok{cdfvec }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{lambda}\SpecialCharTok{*}\NormalTok{yvec)}
+\FunctionTok{plot}\NormalTok{(yvec, cdfvec, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }
+     \AttributeTok{xlab=}\StringTok{"y"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f(y)"}\NormalTok{, }\AttributeTok{main=}\StringTok{"CDF of Exp(0.1)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-34-1} 
+
+}
+
+\caption{Exponential cumulative probability distribution}\label{fig:unnamed-chunk-34}
+\end{figure}
+
+Solving
+\[
+   u = F(y) = 1-e^{-\lambda y}
+\]
+for \(y\) leads to
+\[
+   y = -\frac{1}{\lambda}\log(1-u)
+\]
+
+Using this function we can easily draw directly from an
+Exponential distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(n)}
+\NormalTok{lambda }\OtherTok{\textless{}{-}} \FloatTok{0.5}
+\NormalTok{y }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{lambda)}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{u)}
+\FunctionTok{hist}\NormalTok{(y, }\AttributeTok{main=}\StringTok{"Histogram of draws from Exp(0.5)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-35-1} 
+
+}
+
+\caption{10000 draws from an Exponential distribution}\label{fig:unnamed-chunk-35}
+\end{figure}
 
 \chapter{The Survey Process}\label{the-survey-process}
 

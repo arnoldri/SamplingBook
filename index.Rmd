@@ -42,7 +42,6 @@ library(mice)
 #library(simputation) # error installing/loading this
 ```
 
-
 # Introductory Remarks
 
 These are notes for the Sampling section of STAT395/455.  The course
@@ -88,7 +87,7 @@ Use of `sample()` and other simulation methods in R for a variety of designs
 * Definition and interpretation of the design effect
 * **Tutorial:** using R to specify designs and draw inferences
 
-### Week 4 – Non-response and complex designs
+### Week 4 – Non-response and complex designs {-}
 
 *	Post-stratification for non-response adjustment
 * Imputation (`simputation` package)
@@ -151,7 +150,7 @@ Data
 * `srvyr` a dplyr wrapper for the `survey` package
 * `gtsummary` creates outputs ready for publication (difficult to build/load)
 * `sampling` package for drawing samples according to various designs
-* `mice` package for imputatoin
+* `mice` package for imputation
 * `simputation` package for imputation (difficult to build/load)
 * `haven` package to import `SAS`, `Stata` and `SPSS` data files
  

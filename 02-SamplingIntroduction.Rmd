@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Sampling
 
 ```{r echo=FALSE}
@@ -51,7 +56,6 @@ But a histogram of 100,000 draws is very uniform:
 hist(runif(100000), xlab="x", ylab="Frequency")
 ```
 
-
 Although the numbers appear to be random they are in fact generated using
 formulae, so if one knows the formula they are predictable.  However the formula
 is complex enough that there are no easily discernible patterns in sequences of 
@@ -79,4 +83,388 @@ set.seed(111)
 runif(10)
 ```
 
-This property can be very useful when testing algorithms.  
+This property can be very useful when testing and comparing algorithms: 
+we can generate an identical sequence of random numbers and check (for
+example) that two methods of estimation give the same results on 
+two identical randomly generated datasets.  
+
+## Sampling from categorical random variables
+
+Draws from a uniform distribution are all we need to simulate/sample
+from any distribution.  
+
+**Heads or tails**: if the probability of flipping heads is 0.5, 
+we can generate `n` random numbers, and then label any values less 
+than 0.5 as Heads and the remainder as tails.
+
+```{r echo=FALSE}
+set.seed(123)
+```
+
+
+```{r}
+n <- 10
+u <- runif(n)
+u
+y <- ifelse(u<0.5,"Heads","Tails")
+y
+table(y)
+```
+
+```{r}
+table(ifelse(runif(10000)<0.5,"Heads","Tails"))
+```
+
+We can extend this idea to any set of categories.
+
+**Red, Green or Blue**: Say we have a six sided die: three sides are red, two are green and one is blue.
+The probabilities of rolling the three colours are therefore $\frac12$, $\frac13$, $\frac16$ respectively.  
+These probabilities add to one.
+
+```{r}
+pp <- c(Red=1/2, Green=1/3, Blue=1/6)
+sum(pp)
+```
+In general we might have $m$ categories, where the probability of category $k$ is $p_k$ and
+\[
+   \sum_{k=1}^m p_k = 1
+\]
+We then compute the **cumulative probabilities** $c_k$, the partial sums of these probabilities:
+\[
+   c_k = \sum_{j=1}^k p_j
+\]
+The final cumulative probability $c_m$ is always 1 by definition.  
+
+Implicitly we also have a value $c_0=0$, which is the the empty sum and always 
+equal to zero. 
+
+These cumulative probabilities $c_k$ are 'the probability that random variable $Y$ has
+a category label less than or equal to $k$:
+\[
+    \Pr(Y\leq k) = c_k = \sum_{j=1}^k p_j
+\]
+
+**Red, Green or Blue**: the cumulative probabilities are
+\begin{eqnarray*}
+  c_0 &=& 0.0000\\
+  c_1 &=& p_1 = 0.5000\\
+  c_2 &=& p_1+p_2 = 0.5000 + 0.3333 = 0.8333\\
+  c_3 &=& p_1+p_2+p_3 = 0.5000 + 0.3333 + 0.1667 = 1.0000
+\end{eqnarray*}
+
+```{r}
+m <- length(pp) # Number of categories
+cp <- cumsum(pp)
+cp
+```
+
+We then take a set of uniform random numbers $u_1,\ldots,u_n$.  We then
+want to find which of the $m$ labels corresponds to each random number $u_i$. 
+
+The rule is that if $u_i$ is less than cumulative probability $c_k$ but 
+greater than $c_{k-1}$, then we assign the label $k$.  
+
+There are various ways to do this, here's a version using `case_when()` from 
+the `dplyr` package:
+```{r}
+set.seed(112)
+u <- runif(8)
+u
+y <- case_when(u < cp[1] ~ "Red",
+               u < cp[2] ~ "Green",
+               .default="Blue")   # here .default means "otherwise"
+data.frame(round(u,5),y)
+table(y)
+table(y)/length(y)
+```
+
+Note that the categories in the table haven't come out in the Red-Green-Blue order that we want -
+instead they're in the default alphabetical order.
+
+We can fix this by converting `y` to a `factor` object:
+
+```{r}
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+Here's what is really going on: we if we plot the cumulative probabilities as
+a staircase -- a **cumulative distribution function (cdf)** then 
+we draw $u_i$ from a Uniform(0,1) distribution, and then find where
+a horizontal line drawn at the level of $u_i$ intersects the cdf: and that
+is the value of the categorical variable $y_i$.  
+
+The larger the probability $p_k$ the bigger the jump in the staircase, and
+the larger the probability that category $k$ will be selected.  
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing a random category"
+i <- 1
+plot(0:m,c(0,cp),type="s",ylim=c(0,1),axes=FALSE,
+     xlab="Category",ylab="U")
+axis(1,at=1:m,labels=names(pp)); axis(2); box()
+axis(4,at=c(0,cp),lab=sprintf("%.3f",c(0,cp)),las=2)
+text(0,u[i],label=bquote(u[.(i)]),pos=2,xpd=TRUE)
+points(0,u[i],pch=16,cex=1.7,col="red")
+arrows(0,u[i], as.numeric(y[i]),u[i], col="red", lwd=2)
+arrows(as.numeric(y[i]),u[i], as.numeric(y[i]),0, col="red", lwd=2)
+title(bquote(u[.(i)]==.(sprintf("%.3f",u[i]))*"; "*y[.(i)]*"="*.(as.character(y[i]))))
+```
+
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing a random category"
+i <- 2
+plot(0:m,c(0,cp),type="s",ylim=c(0,1),axes=FALSE,
+     xlab="Category",ylab="U")
+axis(1,at=1:m,labels=names(pp)); axis(2); box()
+axis(4,at=c(0,cp),lab=sprintf("%.3f",c(0,cp)),las=2)
+text(0,u[i],label=bquote(u[.(i)]),pos=2,xpd=TRUE)
+points(0,u[i],pch=16,cex=1.7,col="red")
+arrows(0,u[i], as.numeric(y[i]),u[i], col="red", lwd=2)
+arrows(as.numeric(y[i]),u[i], as.numeric(y[i]),0, col="red", lwd=2)
+title(bquote(u[.(i)]==.(sprintf("%.3f",u[i]))*"; "*y[.(i)]*"="*.(as.character(y[i]))))
+```
+
+
+```{r}
+set.seed(112)
+n <- 10000
+u <- runif(n)
+y <- case_when(u < cp[1] ~ "Red",
+               u < cp[2] ~ "Green",
+               .default="Blue")
+y <- factor(y, levels=names(pp))
+table(y)
+```
+
+The `sample()` function implements this conveniently: select from the integers
+1 to `m`
+```{r}
+n <- 10000
+y <- sample(m, size=n, prob=pp, replace=TRUE)
+table(y)
+```
+(need `replace=TRUE` here, see below).
+
+... or state the vector `1:m` explicitly
+```{r}
+y <- sample(1:m, size=n, prob=pp, replace=TRUE)
+table(y)
+```
+
+... or directly from the vector of labels ...
+```{r}
+y <- sample(c("Red","Green","Blue"), size=n, prob=pp, replace=TRUE)
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+... get the labels from `pp` ...
+```{r}
+y <- sample(names(pp), size=n, prob=pp, replace=TRUE)
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+
+## Sampling from discrete random variables
+
+The ideas above carry straight over to discrete random variables.
+
+The Binomial distribution $Y\sim\text{Bin}(m,p)$ is the number
+of successes in $m$ trials where the probability of success on each
+trial is the same $p$, and all the trials are independent.  $Y$ takes
+values 0 to $m$, and those probabilities can be calculated by
+\[
+   P(Y=k) = \binom{m}{k} p^k (1-p)^{m-k} = \frac{m!}{k!(m-k)!} p^k (1-p)^{m-k}
+\]
+R provides these probabilities in the function `dbinom()`
+
+e.g. $m=10$ rolls of a die, and $Y$ is the number of times we get a 6, 
+so $p=1/6$
+```{r}
+m <- 10
+p <- 1/6
+pp <- dbinom(0:m, m, p)
+pp
+```
+
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Binomial probabilities"
+barplot(pp, names=0:m,
+        xlab="y", ylab="Pr(Y=y)",
+        main=bquote("Bin("*.(m)*","*.(sprintf(" %.4f",p))*")"))
+```
+
+The cdf is given by the function `pbinom()`
+```{r}
+cp <- pbinom(0:m, m, p)
+```
+
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Binomial CDF"
+plot(0:m, cp, type="s",
+        xlab="y", ylab="Pr(Y<=y)",
+        main=bquote("Bin("*.(m)*","*.(sprintf(" %.4f",p))*")"))
+```
+
+Drawing a single value of $Y$ proceeds the same way as for a categorical
+variable:
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing from a Binomial(10,1/6) distribution"
+u <- 0.511
+cp <- pbinom(0:m, m, p)
+y <- min((0:m)[u<cp])
+plot(c(0,0:m),c(0,cp),type="s",ylim=c(0,1),
+     xlab="Y",ylab="U")
+text(0,u,label=expression(u),pos=2,xpd=TRUE)
+points(0,u,pch=16,cex=1.7,col="red")
+arrows(0,u, y,u, col="red", lwd=2)
+arrows(y,u, y,0, col="red", lwd=2)
+title(bquote(u==.(sprintf("%.3f",u))*"; "*y*"="*.(y)))
+```
+
+So we can draw multiple values of $Y$ from Bin(10,$\frac16$) 
+using the `sample()` function:
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from a Binomial(10,1/6)"
+n <- 10000
+pp <- dbinom(0:m, m, p)
+y <- sample(0:m, n, prob=pp, replace=TRUE)
+barplot(table(y))
+```
+
+Of course R provides a specific function for doing the same thing: `rbinom()`
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from a Binomial(10,1/6)"
+n <- 10000
+y <- rbinom(n, m, p)
+barplot(table(y))
+```
+But that function is just doing what we've described above using `sample()`.
+
+A particular common example is where we have $m$ objects and want to select 
+one of them at random, with each object having equal probability of being 
+selected: i.e. each has probability $1/m$.  
+
+## Sampling from continuous random variables
+
+Continous random variables are simulated using the same principle.  
+If $F(y)$ is the cdf of a random variable $Y$ then we can draw a random 
+value of $Y$ by drawing a random value $U$ from a Uniform(0,1) distribution. 
+
+We then need to solve the equation
+\[
+   U = F(y)
+\]
+for  $y$.  For many standard distributions (including the Normal and Gamma distributions) 
+there is no analytic formula which gives the solution for $y$ given $u$: 
+but there are numerical approximations which can be used in those settings.
+
+One simple case which does have an analytic solution is the Exponential 
+distribution $Y\sim\text{Exp}(\lambda)$.  This is a one parameter distribution 
+where $Y$ is non-negative ($Y\geq 0$), and can be used to model cases such 
+the length of time it takes for an event to occur (e.g. the length of time for a 
+radioactive nucleus to decay).  The single parameter $\lambda$ is the **rate** 
+(e.g. number of radioactive decay events per unit time).  
+
+The exponential distribution has probability density function
+\[
+   f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
+\]
+and has mean $E[Y]=1/\lambda$. 
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Exponential probability distribution"
+lambda <- 0.5
+np <- 101
+yvec <- seq(from=0, to=10, length=np)
+fvec <- lambda*exp(-lambda*yvec)
+plot(yvec, fvec, type="l", 
+     xlab="y", ylab="f(y)", main="Probability density of Exp(0.1)")
+```
+
+The cdf is the integral of the probability density function
+\[
+   \Pr(Y\leq y) = F(y) = \int_0^y f(y)\,{\rm d}y
+\]
+which for the Exponential distribution is
+\[
+  F(y) = \int_0^y \lambda e^{-\lambda t} {\rm d}t = 1 - e^{-\lambda y}
+\]
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Exponential cumulative probability distribution"
+lambda <- 0.5
+np <- 101
+yvec <- seq(from=0, to=10, length=np)
+cdfvec <- 1-exp(-lambda*yvec)
+plot(yvec, cdfvec, type="l", 
+     xlab="y", ylab="f(y)", main="CDF of Exp(0.1)")
+```
+
+Solving
+\[
+   u = F(y) = 1-e^{-\lambda y}
+\]
+for $y$ leads to 
+\[
+   y = -\frac{1}{\lambda}\log(1-u)
+\]
+
+Using this function we can easily draw directly from an 
+Exponential distribution.  
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from an Exponential distribution"
+n <- 10000
+u <- runif(n)
+lambda <- 0.5
+y <- -(1/lambda)*log(1-u)
+mean(y)
+hist(y, main="Histogram of draws from Exp(0.5)")
+```
+
+
+## Sampling from a finite collection
+
+The simulations discussed so far all draw from **infinite** populations: 
+we can set the sample size $n$ to any value.  However it often occurs that
+we have only a finite population - e.g. when drawing a random sample 
+of students from a class, or households from a suburb for interview. 
+
+Consider the case where we have a street of $N=10$ households, numbered 1-10. 
+We want to select 5 of these with equal probability.  There are a number of 
+ways we could do this.
+
+**Sampling without replacement**
+
+We draw a random number from 1-10
+
+
+
+
