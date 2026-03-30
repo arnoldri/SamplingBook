@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Sampling | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Sampling | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-03-04" />
+<meta name="date" content="2026-03-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,6 +184,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
 <li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete random variables</a></li>
 <li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
+<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="the-survey-process.html"><a href="the-survey-process.html"><i class="fa fa-check"></i><b>3</b> The Survey Process</a>
 <ul>
@@ -519,6 +520,9 @@ Figure 2.9: 10000 draws from a Binomial(10,1/6)
 </p>
 </div>
 <p>But that function is just doing what we’ve described above using <code>sample()</code>.</p>
+<p>A particular common example is where we have <span class="math inline">\(m\)</span> objects and want to select
+one of them at random, with each object having equal probability of being
+selected: i.e. each has probability <span class="math inline">\(1/m\)</span>.</p>
 </div>
 <div id="sampling-from-continuous-random-variables" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> Sampling from continuous random variables<a href="sampling.html#sampling-from-continuous-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -541,7 +545,8 @@ radioactive nucleus to decay). The single parameter <span class="math inline">\(
 <p>The exponential distribution has probability density function
 <span class="math display">\[
    f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
-\]</span></p>
+\]</span>
+and has mean <span class="math inline">\(E[Y]=1/\lambda\)</span>.</p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="sampling.html#cb81-1" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
 <span id="cb81-2"><a href="sampling.html#cb81-2" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="dv">101</span></span>
 <span id="cb81-3"><a href="sampling.html#cb81-3" tabindex="-1"></a>yvec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">10</span>, <span class="at">length=</span>np)</span>
@@ -588,13 +593,27 @@ Exponential distribution.</p>
 <span id="cb83-2"><a href="sampling.html#cb83-2" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
 <span id="cb83-3"><a href="sampling.html#cb83-3" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
 <span id="cb83-4"><a href="sampling.html#cb83-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>lambda)<span class="sc">*</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>u)</span>
-<span id="cb83-5"><a href="sampling.html#cb83-5" tabindex="-1"></a><span class="fu">hist</span>(y, <span class="at">main=</span><span class="st">&quot;Histogram of draws from Exp(0.5)&quot;</span>)</span></code></pre></div>
+<span id="cb83-5"><a href="sampling.html#cb83-5" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div>
+<pre><code>## [1] 1.990456</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="sampling.html#cb85-1" tabindex="-1"></a><span class="fu">hist</span>(y, <span class="at">main=</span><span class="st">&quot;Histogram of draws from Exp(0.5)&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
 <img src="_main_files/figure-html/unnamed-chunk-35-1.png" alt="10000 draws from an Exponential distribution" width="480" />
 <p class="caption">
 Figure 2.12: 10000 draws from an Exponential distribution
 </p>
 </div>
+</div>
+<div id="sampling-from-a-finite-collection" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Sampling from a finite collection<a href="sampling.html#sampling-from-a-finite-collection" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The simulations discussed so far all draw from <strong>infinite</strong> populations:
+we can set the sample size <span class="math inline">\(n\)</span> to any value. However it often occurs that
+we have only a finite population - e.g. when drawing a random sample
+of students from a class, or households from a suburb for interview.</p>
+<p>Consider the case where we have a street of <span class="math inline">\(N=10\)</span> households, numbered 1-10.
+We want to select 5 of these with equal probability. There are a number of
+ways we could do this.</p>
+<p><strong>Sampling without replacement</strong></p>
+<p>We draw a random number from 1-10</p>
 
 </div>
 </div>
@@ -618,42 +637,42 @@ Figure 2.12: 10000 draws from an Exponential distribution
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-  "sharing": {
-    "github": false,
-    "facebook": true,
-    "twitter": true,
-    "linkedin": false,
-    "weibo": false,
-    "instapaper": false,
-    "vk": false,
-    "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-  },
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": null,
-    "text": null
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": null,
-    "text": null
-  },
-  "download": ["_main.pdf", "_main.epub"],
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "subsection"
-  }
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
 });
 });
 </script>

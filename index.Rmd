@@ -131,6 +131,7 @@ There are lots of books on sample surveys.
 And also
  
  * CRAN site on R resources for Official Statistics https://cran.r-project.org/web/views/OfficialStatistics.html
+ * Online book on using R for survey analysis: https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
  
 Some simple lectures on Sample Surveys
 

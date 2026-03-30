@@ -19,6 +19,7 @@ random-numbers
 sampling-from-categorical-random-variables
 sampling-from-discrete-random-variables
 sampling-from-continuous-random-variables
+sampling-from-a-finite-collection
 the-survey-process
 populations
 frames

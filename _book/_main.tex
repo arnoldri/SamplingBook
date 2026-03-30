@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-03-04}
+\date{2026-03-30}
 
 \begin{document}
 \maketitle
@@ -476,6 +476,8 @@ And also
 \tightlist
 \item
   CRAN site on R resources for Official Statistics \url{https://cran.r-project.org/web/views/OfficialStatistics.html}
+\item
+  Online book on using R for survey analysis: \url{https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/}
 \end{itemize}
 
 Some simple lectures on Sample Surveys
@@ -1117,6 +1119,10 @@ Of course R provides a specific function for doing the same thing: \texttt{rbino
 
 But that function is just doing what we've described above using \texttt{sample()}.
 
+A particular common example is where we have \(m\) objects and want to select
+one of them at random, with each object having equal probability of being
+selected: i.e.~each has probability \(1/m\).
+
 \section{Sampling from continuous random variables}\label{sampling-from-continuous-random-variables}
 
 Continous random variables are simulated using the same principle.\\
@@ -1142,6 +1148,7 @@ The exponential distribution has probability density function
 \[
    f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
 \]
+and has mean \(E[Y]=1/\lambda\).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1210,6 +1217,16 @@ Exponential distribution.
 \NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(n)}
 \NormalTok{lambda }\OtherTok{\textless{}{-}} \FloatTok{0.5}
 \NormalTok{y }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{lambda)}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{u)}
+\FunctionTok{mean}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.990456
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \FunctionTok{hist}\NormalTok{(y, }\AttributeTok{main=}\StringTok{"Histogram of draws from Exp(0.5)"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1222,6 +1239,21 @@ Exponential distribution.
 
 \caption{10000 draws from an Exponential distribution}\label{fig:unnamed-chunk-35}
 \end{figure}
+
+\section{Sampling from a finite collection}\label{sampling-from-a-finite-collection}
+
+The simulations discussed so far all draw from \textbf{infinite} populations:
+we can set the sample size \(n\) to any value. However it often occurs that
+we have only a finite population - e.g.~when drawing a random sample
+of students from a class, or households from a suburb for interview.
+
+Consider the case where we have a street of \(N=10\) households, numbered 1-10.
+We want to select 5 of these with equal probability. There are a number of
+ways we could do this.
+
+\textbf{Sampling without replacement}
+
+We draw a random number from 1-10
 
 \chapter{The Survey Process}\label{the-survey-process}
 
