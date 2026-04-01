@@ -58,13 +58,15 @@ Course Learning Objectives
 
 Lecture plan (3 lectures + 1 tutorial per week)
 
+Bring a laptop to the Friday (tutorial) lecture.
+
 ### Week 1 – The Survey Process {-}
 
 * The survey process, sources of survey error
 * Populations and Frames
 * Sampling in finite and infinite populations;
   Basics of SRSWOR inference; sample weights;
-* **Tutorial:** Population and Frames
+* **Tutorial:** Sampling basics; Population and Frames
 
 ### Week 2 – Sampling {-}
 

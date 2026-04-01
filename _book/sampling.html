@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-03-30" />
+<meta name="date" content="2026-04-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,7 +182,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="sampling.html"><a href="sampling.html#random-numbers"><i class="fa fa-check"></i><b>2.1</b> Random numbers</a></li>
 <li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
-<li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete random variables</a></li>
+<li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-numerical-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete numerical random variables</a></li>
 <li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
 <li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a></li>
 </ul></li>
@@ -191,6 +191,9 @@ div.csl-indent {
 <li class="chapter" data-level="3.1" data-path="the-survey-process.html"><a href="the-survey-process.html#populations"><i class="fa fa-check"></i><b>3.1</b> Populations</a></li>
 <li class="chapter" data-level="3.2" data-path="the-survey-process.html"><a href="the-survey-process.html#frames"><i class="fa fa-check"></i><b>3.2</b> Frames</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>4</b> Sample Designs</a></li>
+<li class="chapter" data-level="5" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>5</b> Inference with R</a></li>
+<li class="chapter" data-level="6" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>6</b> Missing data</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
 <li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
@@ -216,15 +219,24 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sampling" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">2</span> Sampling<a href="sampling.html#sampling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>The generation of data often includes the selection of a subset of
-members of a <strong>population</strong>. This subset is called a <strong>sample</strong>.<br />
-Our focus in statistics is often the <strong>estimation</strong> of population characteristics
-(<strong>population parameters</strong>) on the bases of sample characteristics
-(<strong>sample statistics</strong>),</p>
+<p>In statistics the data we analyse is often a subset, i.e. 
+a <strong>sample</strong> of members of a <strong>population</strong>.</p>
+<blockquote>
+<p>For example we might have a sample of households whose members respond to a questionnaire,
+or a sample of plants from a field.</p>
+</blockquote>
+<p>In order to select from a population we first enumerate (list) the popualation in some
+way and then make a random selection of our subset members from that list. The method
+by which we do so is called the <strong>sample design</strong>.</p>
+<p>Our focus in statistics is often the <strong>estimation</strong> of population characteristics
+(known as <strong>population parameters</strong>) on the basis of sample characteristics
+(which are called <strong>sample statistics</strong>),</p>
 <p>When generating <strong>simulated</strong> datasets we also generate samples. Simulation
 is often done as a means of testing out statistical ideas and methods,
 or (in the case of the bootstrap method) when conventional ways of estimating
 standard errors (and therefore confidence intervals) don’t work.</p>
+<p>Before we get into detail of estimation and inference, let’s spend some time
+thinking about how sampling works.</p>
 <div id="random-numbers" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Random numbers<a href="sampling.html#random-numbers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In both settings (sampling and simulation) we need to start with a method
@@ -234,15 +246,15 @@ distributed in the interval [0,1]:
 <span class="math display">\[
     U_i \sim \text{Uniform}(0,1)\qquad \text{for $i=1,2,3, \ldots$}
 \]</span>
-In R this is done using the <code>runif()</code> function. For example to generate 10
+Here ‘uniformly distributed’ means that all values in the range [0,1] are
+equally likely to occur.</p>
+<p>In R this is done using the <code>runif()</code> function. For example to generate 5
 random draws from Uniform(0,1):</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="sampling.html#cb26-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055
-##  [8] 0.8924190 0.5514350 0.4566147</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="sampling.html#cb26-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673</code></pre>
 <p>Another draw will a different set of random numbers:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="sampling.html#cb28-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.95683335 0.45333416 0.67757064 0.57263340 0.10292468 0.89982497
-##  [7] 0.24608773 0.04205953 0.32792072 0.95450365</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="sampling.html#cb28-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.0455565 0.5281055 0.8924190 0.5514350 0.4566147</code></pre>
 <p>If we draw a histogram of 100 draws it looks a bit lumpy:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="sampling.html#cb30-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">runif</span>(<span class="dv">100</span>), <span class="at">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
@@ -260,7 +272,8 @@ Figure 2.2: 100000 draws from Uniform(0,1)
 </p>
 </div>
 <p>Although the numbers appear to be random they are in fact generated using
-formulae, so if one knows the formula they are predictable. However the formula
+formulae, so if one knows the formula the sequence of random numbers generated by
+<code>runif()</code> is completed predictable. However the formula
 is complex enough that there are no easily discernible patterns in sequences of
 many millions of draws. These numbers are <strong>psuedo-random</strong>, but they are
 random enough for our purposes.</p>
@@ -268,23 +281,18 @@ random enough for our purposes.</p>
 sequence. If we set the seed to a particular value, the sequence of random
 numbers that will be generated after doing so will always be the same.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="sampling.html#cb32-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb32-2"><a href="sampling.html#cb32-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.59298128 0.72648112 0.37042200 0.51492383 0.37766322 0.41833733
-##  [7] 0.01065785 0.53229524 0.43216062 0.09368152</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="sampling.html#cb34-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.55577991 0.59022849 0.06714114 0.04754785 0.15620252 0.44642776
-##  [7] 0.17144369 0.96653429 0.31066643 0.61446640</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="sampling.html#cb36-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.4310608 0.2855271 0.3421513 0.3866276 0.9675275 0.3220267 0.6532295
-##  [8] 0.2833035 0.7874279 0.5959206</code></pre>
+<span id="cb32-2"><a href="sampling.html#cb32-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.5929813 0.7264811 0.3704220 0.5149238 0.3776632</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="sampling.html#cb34-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.41833733 0.01065785 0.53229524 0.43216062 0.09368152</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="sampling.html#cb36-1" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.55577991 0.59022849 0.06714114 0.04754785 0.15620252</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="sampling.html#cb38-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8</span>)</span>
-<span id="cb38-2"><a href="sampling.html#cb38-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.4662952 0.2078233 0.7996580 0.6518713 0.3215092 0.7189275 0.2908734
-##  [8] 0.9322698 0.7691470 0.6444911</code></pre>
+<span id="cb38-2"><a href="sampling.html#cb38-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4662952 0.2078233 0.7996580 0.6518713 0.3215092</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="sampling.html#cb40-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb40-2"><a href="sampling.html#cb40-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##  [1] 0.59298128 0.72648112 0.37042200 0.51492383 0.37766322 0.41833733
-##  [7] 0.01065785 0.53229524 0.43216062 0.09368152</code></pre>
+<span id="cb40-2"><a href="sampling.html#cb40-2" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 0.5929813 0.7264811 0.3704220 0.5149238 0.3776632</code></pre>
 <p>This property can be very useful when testing and comparing algorithms:
 we can generate an identical sequence of random numbers and check (for
 example) that two methods of estimation give the same results on
@@ -302,7 +310,7 @@ than 0.5 as Heads and the remainder as tails.</p>
 <span id="cb42-3"><a href="sampling.html#cb42-3" tabindex="-1"></a>u</span></code></pre></div>
 <pre><code>##  [1] 0.2875775 0.7883051 0.4089769 0.8830174 0.9404673 0.0455565 0.5281055
 ##  [8] 0.8924190 0.5514350 0.4566147</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="sampling.html#cb44-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(u<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="st">&quot;Heads&quot;</span>,<span class="st">&quot;Tails&quot;</span>)</span>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="sampling.html#cb44-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(u<span class="sc">&lt;=</span><span class="fl">0.5</span>,<span class="st">&quot;Heads&quot;</span>,<span class="st">&quot;Tails&quot;</span>)</span>
 <span id="cb44-2"><a href="sampling.html#cb44-2" tabindex="-1"></a>y</span></code></pre></div>
 <pre><code>##  [1] &quot;Heads&quot; &quot;Tails&quot; &quot;Heads&quot; &quot;Tails&quot; &quot;Tails&quot; &quot;Heads&quot; &quot;Tails&quot; &quot;Tails&quot; &quot;Tails&quot;
 ## [10] &quot;Heads&quot;</code></pre>
@@ -310,7 +318,7 @@ than 0.5 as Heads and the remainder as tails.</p>
 <pre><code>## y
 ## Heads Tails 
 ##     4     6</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="sampling.html#cb48-1" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">ifelse</span>(<span class="fu">runif</span>(<span class="dv">10000</span>)<span class="sc">&lt;</span><span class="fl">0.5</span>,<span class="st">&quot;Heads&quot;</span>,<span class="st">&quot;Tails&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="sampling.html#cb48-1" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">ifelse</span>(<span class="fu">runif</span>(<span class="dv">10000</span>)<span class="sc">&lt;=</span><span class="fl">0.5</span>,<span class="st">&quot;Heads&quot;</span>,<span class="st">&quot;Tails&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ## Heads Tails 
 ##  5059  4941</code></pre>
@@ -318,10 +326,12 @@ than 0.5 as Heads and the remainder as tails.</p>
 <p><strong>Red, Green or Blue</strong>: Say we have a six sided die: three sides are red, two are green and one is blue.
 The probabilities of rolling the three colours are therefore <span class="math inline">\(\frac12\)</span>, <span class="math inline">\(\frac13\)</span>, <span class="math inline">\(\frac16\)</span> respectively.<br />
 These probabilities add to one.</p>
+<p>The random variable <span class="math inline">\(Y\)</span> is the colour that the die shows when we roll it.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="sampling.html#cb50-1" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Red=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">Green=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">Blue=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>)</span>
 <span id="cb50-2"><a href="sampling.html#cb50-2" tabindex="-1"></a><span class="fu">sum</span>(pp)</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<p>In general we might have <span class="math inline">\(m\)</span> categories, where the probability of category <span class="math inline">\(k\)</span> is <span class="math inline">\(p_k\)</span> and
+<p>In general we might have <span class="math inline">\(m\)</span> categories, where the probability of that <span class="math inline">\(Y\)</span>
+category <span class="math inline">\(k\)</span> is <span class="math inline">\(p_k\)</span>: <span class="math inline">\(\Pr(Y=k)=p_k\)</span>. and
 <span class="math display">\[
    \sum_{k=1}^m p_k = 1
 \]</span>
@@ -360,8 +370,8 @@ the <code>dplyr</code> package:</p>
 <span id="cb54-3"><a href="sampling.html#cb54-3" tabindex="-1"></a>u</span></code></pre></div>
 <pre><code>## [1] 0.37667253 0.92201944 0.99187774 0.97723602 0.23629728 0.10706678 0.03915213
 ## [8] 0.72802690</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="sampling.html#cb56-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">case_when</span>(u <span class="sc">&lt;</span> cp[<span class="dv">1</span>] <span class="sc">~</span> <span class="st">&quot;Red&quot;</span>,</span>
-<span id="cb56-2"><a href="sampling.html#cb56-2" tabindex="-1"></a>               u <span class="sc">&lt;</span> cp[<span class="dv">2</span>] <span class="sc">~</span> <span class="st">&quot;Green&quot;</span>,</span>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="sampling.html#cb56-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">case_when</span>(u <span class="sc">&lt;=</span> cp[<span class="dv">1</span>] <span class="sc">~</span> <span class="st">&quot;Red&quot;</span>,</span>
+<span id="cb56-2"><a href="sampling.html#cb56-2" tabindex="-1"></a>               u <span class="sc">&lt;=</span> cp[<span class="dv">2</span>] <span class="sc">~</span> <span class="st">&quot;Green&quot;</span>,</span>
 <span id="cb56-3"><a href="sampling.html#cb56-3" tabindex="-1"></a>               <span class="at">.default=</span><span class="st">&quot;Blue&quot;</span>)   <span class="co"># here .default means &quot;otherwise&quot;</span></span>
 <span id="cb56-4"><a href="sampling.html#cb56-4" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">round</span>(u,<span class="dv">5</span>),y)</span></code></pre></div>
 <pre><code>##   round.u..5.     y
@@ -390,9 +400,9 @@ instead they’re in the default alphabetical order.</p>
 ##   Red Green  Blue 
 ##     4     1     3</code></pre>
 <p>Here’s what is really going on: we if we plot the cumulative probabilities as
-a staircase – a <strong>cumulative distribution function (cdf)</strong> then
+a staircase – a <strong>cumulative distribution function (CDF)</strong> then
 we draw <span class="math inline">\(u_i\)</span> from a Uniform(0,1) distribution, and then find where
-a horizontal line drawn at the level of <span class="math inline">\(u_i\)</span> intersects the cdf: and that
+a horizontal line drawn at the level of <span class="math inline">\(u_i\)</span> intersects the CDF: and that
 is the value of the categorical variable <span class="math inline">\(y_i\)</span>.</p>
 <p>The larger the probability <span class="math inline">\(p_k\)</span> the bigger the jump in the staircase, and
 the larger the probability that category <span class="math inline">\(k\)</span> will be selected.</p>
@@ -411,8 +421,8 @@ Figure 2.4: Drawing a random category
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="sampling.html#cb64-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">112</span>)</span>
 <span id="cb64-2"><a href="sampling.html#cb64-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
 <span id="cb64-3"><a href="sampling.html#cb64-3" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb64-4"><a href="sampling.html#cb64-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">case_when</span>(u <span class="sc">&lt;</span> cp[<span class="dv">1</span>] <span class="sc">~</span> <span class="st">&quot;Red&quot;</span>,</span>
-<span id="cb64-5"><a href="sampling.html#cb64-5" tabindex="-1"></a>               u <span class="sc">&lt;</span> cp[<span class="dv">2</span>] <span class="sc">~</span> <span class="st">&quot;Green&quot;</span>,</span>
+<span id="cb64-4"><a href="sampling.html#cb64-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">case_when</span>(u <span class="sc">&lt;=</span> cp[<span class="dv">1</span>] <span class="sc">~</span> <span class="st">&quot;Red&quot;</span>,</span>
+<span id="cb64-5"><a href="sampling.html#cb64-5" tabindex="-1"></a>               u <span class="sc">&lt;=</span> cp[<span class="dv">2</span>] <span class="sc">~</span> <span class="st">&quot;Green&quot;</span>,</span>
 <span id="cb64-6"><a href="sampling.html#cb64-6" tabindex="-1"></a>               <span class="at">.default=</span><span class="st">&quot;Blue&quot;</span>)</span>
 <span id="cb64-7"><a href="sampling.html#cb64-7" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">factor</span>(y, <span class="at">levels=</span><span class="fu">names</span>(pp))</span>
 <span id="cb64-8"><a href="sampling.html#cb64-8" tabindex="-1"></a><span class="fu">table</span>(y)</span></code></pre></div>
@@ -449,18 +459,18 @@ Figure 2.4: Drawing a random category
 ##   Red Green  Blue 
 ##  4994  3389  1617</code></pre>
 </div>
-<div id="sampling-from-discrete-random-variables" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Sampling from discrete random variables<a href="sampling.html#sampling-from-discrete-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The ideas above carry straight over to discrete random variables.</p>
+<div id="sampling-from-discrete-numerical-random-variables" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Sampling from discrete numerical random variables<a href="sampling.html#sampling-from-discrete-numerical-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The ideas above carry straight over to discrete numerical random variables.</p>
 <p>The Binomial distribution <span class="math inline">\(Y\sim\text{Bin}(m,p)\)</span> is the number
 of successes in <span class="math inline">\(m\)</span> trials where the probability of success on each
-trial is the same <span class="math inline">\(p\)</span>, and all the trials are independent. <span class="math inline">\(Y\)</span> takes
-values 0 to <span class="math inline">\(m\)</span>, and those probabilities can be calculated by
+trial is the same <span class="math inline">\(p\)</span>, and all the trials are independent.</p>
+<p><span class="math inline">\(Y\)</span> takes values 0 to <span class="math inline">\(m\)</span>, and those probabilities can be calculated by
 <span class="math display">\[
    P(Y=k) = \binom{m}{k} p^k (1-p)^{m-k} = \frac{m!}{k!(m-k)!} p^k (1-p)^{m-k}
 \]</span>
 R provides these probabilities in the function <code>dbinom()</code></p>
-<p>e.g. <span class="math inline">\(m=10\)</span> rolls of a die, and <span class="math inline">\(Y\)</span> is the number of times we get a 6,
+<p>e.g. <span class="math inline">\(m=10\)</span> rolls of a six-sided die, and <span class="math inline">\(Y\)</span> is the number of times we get a 1,
 so <span class="math inline">\(p=1/6\)</span></p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="sampling.html#cb74-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">10</span></span>
 <span id="cb74-2"><a href="sampling.html#cb74-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span>
@@ -478,7 +488,7 @@ so <span class="math inline">\(p=1/6\)</span></p>
 Figure 2.5: Binomial probabilities
 </p>
 </div>
-<p>The cdf is given by the function <code>pbinom()</code></p>
+<p>The CDF is given by the function <code>pbinom()</code></p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="sampling.html#cb77-1" tabindex="-1"></a>cp <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(<span class="dv">0</span><span class="sc">:</span>m, m, p)</span></code></pre></div>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="sampling.html#cb78-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span>m, cp, <span class="at">type=</span><span class="st">&quot;s&quot;</span>,</span>
 <span id="cb78-2"><a href="sampling.html#cb78-2" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;y&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Pr(Y&lt;=y)&quot;</span>,</span>
@@ -526,14 +536,26 @@ selected: i.e. each has probability <span class="math inline">\(1/m\)</span>.</
 </div>
 <div id="sampling-from-continuous-random-variables" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> Sampling from continuous random variables<a href="sampling.html#sampling-from-continuous-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Continous random variables are simulated using the same principle.<br />
-If <span class="math inline">\(F(y)\)</span> is the cdf of a random variable <span class="math inline">\(Y\)</span> then we can draw a random
-value of <span class="math inline">\(Y\)</span> by drawing a random value <span class="math inline">\(U\)</span> from a Uniform(0,1) distribution.</p>
-<p>We then need to solve the equation
+<p>Continous random variables are simulated using the same principle.</p>
+The cumulative distribution function (CDF) of a continuous random variable <span class="math inline">\(Y\)</span> is
+defined to be
+<span class="math display">\[
+   F(y) = \Pr(Y\leq y) = \int_{-\infty}^y f(y&#39;)\;{\rm d}y&#39;
+\]</span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
+<img src="_main_files/figure-html/unnamed-chunk-33-1.png" alt="Normal distribution density and CDF" width="768" />
+<p class="caption">
+Figure 2.10: Normal distribution density and CDF
+</p>
+</div>
+<p>We can use <span class="math inline">\(F(y)\)</span> to draw a random value from the distribution of <span class="math inline">\(Y\)</span>
+by first drawing a random value <span class="math inline">\(U\)</span> from a Uniform(0,1) distribution.</p>
+<p>We then solve the equation
 <span class="math display">\[
    U = F(y)
 \]</span>
-for <span class="math inline">\(y\)</span>. For many standard distributions (including the Normal and Gamma distributions)
+for <span class="math inline">\(y\)</span>: i.e. find the value of <span class="math inline">\(y\)</span> corresponding to a CDF value of <span class="math inline">\(U\)</span>.</p>
+<p>For many standard distributions (including the Normal and Gamma distributions)
 there is no analytic formula which gives the solution for <span class="math inline">\(y\)</span> given <span class="math inline">\(u\)</span>:
 but there are numerical approximations which can be used in those settings.</p>
 <p>One simple case which does have an analytic solution is the Exponential
@@ -547,19 +569,13 @@ radioactive nucleus to decay). The single parameter <span class="math inline">\(
    f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
 \]</span>
 and has mean <span class="math inline">\(E[Y]=1/\lambda\)</span>.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="sampling.html#cb81-1" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb81-2"><a href="sampling.html#cb81-2" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="dv">101</span></span>
-<span id="cb81-3"><a href="sampling.html#cb81-3" tabindex="-1"></a>yvec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">10</span>, <span class="at">length=</span>np)</span>
-<span id="cb81-4"><a href="sampling.html#cb81-4" tabindex="-1"></a>fvec <span class="ot">&lt;-</span> lambda<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>lambda<span class="sc">*</span>yvec)</span>
-<span id="cb81-5"><a href="sampling.html#cb81-5" tabindex="-1"></a><span class="fu">plot</span>(yvec, fvec, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, </span>
-<span id="cb81-6"><a href="sampling.html#cb81-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;y&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;f(y)&quot;</span>, <span class="at">main=</span><span class="st">&quot;Probability density of Exp(0.1)&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
-<img src="_main_files/figure-html/unnamed-chunk-33-1.png" alt="Exponential probability distribution" width="480" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
+<img src="_main_files/figure-html/unnamed-chunk-34-1.png" alt="Exponential probability distribution" width="480" />
 <p class="caption">
-Figure 2.10: Exponential probability distribution
+Figure 2.11: Exponential probability distribution
 </p>
 </div>
-<p>The cdf is the integral of the probability density function
+<p>The CDF is the integral of the probability density function
 <span class="math display">\[
    \Pr(Y\leq y) = F(y) = \int_0^y f(y)\,{\rm d}y
 \]</span>
@@ -567,16 +583,10 @@ which for the Exponential distribution is
 <span class="math display">\[
   F(y) = \int_0^y \lambda e^{-\lambda t} {\rm d}t = 1 - e^{-\lambda y}
 \]</span></p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="sampling.html#cb82-1" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb82-2"><a href="sampling.html#cb82-2" tabindex="-1"></a>np <span class="ot">&lt;-</span> <span class="dv">101</span></span>
-<span id="cb82-3"><a href="sampling.html#cb82-3" tabindex="-1"></a>yvec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">10</span>, <span class="at">length=</span>np)</span>
-<span id="cb82-4"><a href="sampling.html#cb82-4" tabindex="-1"></a>cdfvec <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>lambda<span class="sc">*</span>yvec)</span>
-<span id="cb82-5"><a href="sampling.html#cb82-5" tabindex="-1"></a><span class="fu">plot</span>(yvec, cdfvec, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, </span>
-<span id="cb82-6"><a href="sampling.html#cb82-6" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;y&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;f(y)&quot;</span>, <span class="at">main=</span><span class="st">&quot;CDF of Exp(0.1)&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
-<img src="_main_files/figure-html/unnamed-chunk-34-1.png" alt="Exponential cumulative probability distribution" width="480" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
+<img src="_main_files/figure-html/unnamed-chunk-35-1.png" alt="Exponential cumulative probability distribution" width="480" />
 <p class="caption">
-Figure 2.11: Exponential cumulative probability distribution
+Figure 2.12: Exponential cumulative probability distribution
 </p>
 </div>
 <p>Solving
@@ -589,17 +599,17 @@ for <span class="math inline">\(y\)</span> leads to
 \]</span></p>
 <p>Using this function we can easily draw directly from an
 Exponential distribution.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="sampling.html#cb83-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb83-2"><a href="sampling.html#cb83-2" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
-<span id="cb83-3"><a href="sampling.html#cb83-3" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb83-4"><a href="sampling.html#cb83-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>lambda)<span class="sc">*</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>u)</span>
-<span id="cb83-5"><a href="sampling.html#cb83-5" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="sampling.html#cb81-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb81-2"><a href="sampling.html#cb81-2" tabindex="-1"></a>u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
+<span id="cb81-3"><a href="sampling.html#cb81-3" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb81-4"><a href="sampling.html#cb81-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="dv">1</span><span class="sc">/</span>lambda)<span class="sc">*</span><span class="fu">log</span>(<span class="dv">1</span><span class="sc">-</span>u)</span>
+<span id="cb81-5"><a href="sampling.html#cb81-5" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div>
 <pre><code>## [1] 1.990456</code></pre>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="sampling.html#cb85-1" tabindex="-1"></a><span class="fu">hist</span>(y, <span class="at">main=</span><span class="st">&quot;Histogram of draws from Exp(0.5)&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
-<img src="_main_files/figure-html/unnamed-chunk-35-1.png" alt="10000 draws from an Exponential distribution" width="480" />
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="sampling.html#cb83-1" tabindex="-1"></a><span class="fu">hist</span>(y, <span class="at">main=</span><span class="st">&quot;Histogram of draws from Exp(0.5)&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
+<img src="_main_files/figure-html/unnamed-chunk-36-1.png" alt="10000 draws from an Exponential distribution" width="480" />
 <p class="caption">
-Figure 2.12: 10000 draws from an Exponential distribution
+Figure 2.13: 10000 draws from an Exponential distribution
 </p>
 </div>
 </div>

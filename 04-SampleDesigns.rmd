@@ -1,0 +1,11 @@
+# Sample Designs
+
+Theory, and how to do this in R
+
+* SRSWOR, SRSWR
+* Stratified designs
+* Cluster designs
+* PPSWR
+* Complex designs
+
+Introduction to the design effect

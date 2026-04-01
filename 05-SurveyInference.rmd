@@ -1,0 +1,11 @@
+# Inference with R
+
+Data display and inference
+
+Analytic and jackknife methods
+
+* SRSWOR, SRSWR
+* Stratified designs
+* Cluster designs
+* PPSWR
+* Complex designs

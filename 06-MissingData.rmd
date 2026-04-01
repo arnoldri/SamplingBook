@@ -1,0 +1,9 @@
+# Missing data
+
+Origin of missing data
+
+Calibration for unit non-response
+
+* Poststratification
+
+Imputation for item non-response
