@@ -134,6 +134,7 @@ And also
  
  * CRAN site on R resources for Official Statistics https://cran.r-project.org/web/views/OfficialStatistics.html
  * Online book on using R for survey analysis: https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
+ * This gallery of R graphs https://r-graph-gallery.com/
  
 Some simple lectures on Sample Surveys
 
