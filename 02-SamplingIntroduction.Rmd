@@ -10,13 +10,26 @@ a **sample** of members of a **population**.
 > For example we might have a sample of households whose members respond to a questionnaire,
 > or a sample of plants from a field. 
 
-In order to select from a population we first enumerate (list) the popualation in some
+In order to select from a population we first enumerate (list) the population in some
 way and then make a random selection of our subset members from that list.  The method
 by which we do so is called the **sample design**.  
 
 Our focus in statistics is often the **estimation** of population characteristics
 (known as **population parameters**) on the basis of sample characteristics
-(which are called **sample statistics**),  
+(which are called **sample statistics**).  We are always aware that the sample 
+we drew from the population is not the only sample we could have drawn, and therefore
+our conclusions are subject to uncertainty, which we call **sampling error**.  
+
+This uncertainty associated with sampling is the reason we have confidence intervals
+on our estimates, and why we can neither **prove** nor **disprove** hypotheses.  
+
+```{r statistical-infrence, fig.cap="Statistical Inference", out.width='100%', echo=FALSE, fig.align="center"}
+knitr::include_graphics("include-files/fig/StatisticalInference.png")
+```
+
+(One exception is when we do a **census** where we select and get fully accurate data
+from every member of the population.  Then there's no uncertainty left at all, 
+and our sampling errors are zero.)
 
 When generating **simulated** datasets we also generate samples.  Simulation
 is often done as a means of testing out statistical ideas and methods, 
@@ -499,14 +512,167 @@ The simulations discussed so far all draw from **infinite** populations:
 we can set the sample size $n$ to any value.  However it often occurs that
 we have only a finite population - e.g. when drawing a random sample 
 of students from a class, or households from a suburb for interview. 
+Then the population size $N$ is finite.
 
-Consider the case where we have a street of $N=10$ households, numbered 1-10. 
-We want to select 5 of these with equal probability.  There are a number of 
+In the general case we have a set of $N$ **units** (i.e. students or households)
+in a population of finite size, and we want to draw a sample of $n$ of these units.   
+
+We usually start by listing or **enumerating** the units.  This list is called 
+a **frame** or a **sample frame**.  
+
+Consider the case where we have a small street containing 
+$N=10$ houses, numbered 1-10. 
+We want to select 5 of these houses with equal probability.  There are a number of 
 ways we could do this.
 
-**Sampling without replacement**
+### Sampling without replacement
 
-We draw a random number from 1-10
+If the houses have equal probability then we could proceed as follows:
+
+ * We draw a random number from 1-10, e.g. house number 2, and mark it as selected
+ * We draw another random number from 1-10, e.g. house number 5, and mark it as selected
+ * We repeat this process, but if we choose a house that is already selected, we discard that
+   selection;
+ * The process continues until we have a set of 5 distinct houses.
+ 
+At the start we take our frame (i.e. list) of houses, 
+and initially mark them all as unselected.  Then at each step where we 
+successfully select a previously unselected house we mark that house as selected.
+ 
+```{r}
+bigN <- 10 # population size
+frame <- data.frame(house=1:bigN, selected=FALSE)
+n <- 5  # sample size
+nselected <- 0
+while(nselected < n) {
+  i <- sample(bigN, 1)  # sample a single number at random from 1:bigN with equal probability
+  if(!frame$selected[i]) {
+    frame$selected[i] <- TRUE
+    nselected <- nselected + 1 
+  }
+}
+frame$house[frame$selected]
+```
+
+It's not guaranteed how many steps this process is going to take, since the number
+of times we select a house that has already been selected is random.  If the sample size
+$n$ is small and the population size $N$ is large then it will take $n$ steps, or possibly 
+just a few more.   If $n$ is close to $N$ and $N$ is large, it could take a very very
+long time.
+
+A simpler way to solve this is to assign each house a distinct random number
+between 0 and 1, and then sort the frame in order of the random numbers.  
+
+```{r}
+bigN <- 10 # population size
+frame <- data.frame(house=1:bigN, selected=FALSE)
+n <- 5  # sample size
+frame$u <- runif(bigN)
+frame <- frame[order(frame$u),]
+frame$selected[1:n] <- TRUE
+frame
+frame <- frame[order(frame$house),]
+frame$house[frame$selected]
+```
+
+Of course, the simplest way of all is just to use the `sample()` function
+
+```{r}
+bigN <- 10 # population size
+n <- 5  # sample size
+sample(bigN, n)
+```
+
+It's very often that we do have a frame, a list of objects with names, and we 
+want to select from this at random.
+
+```{r}
+frame <- data.frame(Name=c("Mark","Chloe","Sam","Caitlin","Harry","Nina"),
+                    Age=c(20,19,18,19,19,21),
+                    Major=c("STAT","STAT","DATA","COMP","MATH","STAT"))
+frame
+```
+
+We can select, say, 3 names 
+
+```{r}
+n <- 3
+samplenames <- sample(frame$Name, n)
+samplenames
+```
+
+and then subset the frame
+```{r}
+samplemembers <- frame[frame$Name%in%samplenames,]
+samplemembers
+```
+
+If you like dplyr
+```{r}
+samplemembers <- frame %>% 
+  filter(Name%in%samplenames)
+samplemembers
+```
+
+Note we can find out where in the frame particular individuals are located
+```{r}
+match(c('Mark','Harry'),frame$Name)
+```
+
+If we're sampling without replacement, note (of course) that the sample
+size can be no bigger than the population size $n\leq N$.  
+
+### Sampling with replacement
+
+When selecting a sample of 5 houses it makes sense not to allow the possibility
+of selecting the same house twice.  So when we've selected a house we remove
+it from the list of houses available to select.  When using `sample()` this means 
+that we set `replace=FALSE`, meaning after we've selected a member of the population
+we don't put it back again.  
+
+But there are occasions where we select **with replacement** is the sensible
+thing to do.  This means there is a chance where a unit can be selected more than
+once, and this occurs in situations where we want to assign different probabilities
+of selection to different units of the population.
+
+Starting with the the case of equal probabilities, we repeatedly draw
+units from the population under identical circumstances: on every draw
+each unit is available for selection, and we count how many times each
+unit is selected.
+
+```{r}
+set.seed(111)
+bigN <- 10
+n <- 5
+replicate(n, sample(bigN, 1))
+```
+In this sample we've drawn Unit 3 twice.
+
+If $n$ is small and $bigN$ is large the probability of repeats is small.  But if a repeat
+happens we of course do not make our selected household repeat the questionnaire, instead
+we count them twice (or as many times as they are selected) in our analysis.  
+
+Imagine our sample of 10 houses aren't actually just houses, they're farms, and some of them 
+are very large and some are very small.  We want to give the large farms a high chance of
+selection.  
+
+```{r}
+set.seed(122)
+bigN <- 10
+n <- 5
+frame <- data.frame(farm=1:10, ncows=c(1000,5000,2000,500,500,
+                                       5000,500,5000,30000,100))
+frame
+sample(frame$farm, n, prob=frame$ncows, replace=TRUE)
+```
+Unsurprisingly, the very large farm number 9 has been selected three times here.
+
+It **is** possible to have unequal probability sampling **without** replacement, estimation
+of standard errors is complicated in such designs, so we won't be using such designs.  
+
+For now, just note that we switch to with replacement designs when we're sampling from
+sets of units where want to have units with different probabilities of selection.  
+
 
 
 

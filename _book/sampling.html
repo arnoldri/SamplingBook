@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Sampling | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Sampling | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-01" />
+<meta name="date" content="2026-04-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="the-survey-process.html"/>
+<link rel="next" href="sample-surveys.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -184,16 +186,31 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
 <li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-numerical-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete numerical random variables</a></li>
 <li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
-<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="the-survey-process.html"><a href="the-survey-process.html"><i class="fa fa-check"></i><b>3</b> The Survey Process</a>
+<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="the-survey-process.html"><a href="the-survey-process.html#populations"><i class="fa fa-check"></i><b>3.1</b> Populations</a></li>
-<li class="chapter" data-level="3.2" data-path="the-survey-process.html"><a href="the-survey-process.html#frames"><i class="fa fa-check"></i><b>3.2</b> Frames</a></li>
+<li class="chapter" data-level="2.5.1" data-path="sampling.html"><a href="sampling.html#sampling-without-replacement"><i class="fa fa-check"></i><b>2.5.1</b> Sampling without replacement</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sampling.html"><a href="sampling.html#sampling-with-replacement"><i class="fa fa-check"></i><b>2.5.2</b> Sampling with replacement</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>4</b> Sample Designs</a></li>
-<li class="chapter" data-level="5" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>5</b> Inference with R</a></li>
-<li class="chapter" data-level="6" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>6</b> Missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sample-surveys.html"><a href="sample-surveys.html"><i class="fa fa-check"></i><b>3</b> Sample Surveys</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sample-surveys.html"><a href="sample-surveys.html#the-survey-process"><i class="fa fa-check"></i><b>3.1</b> The Survey Process</a></li>
+<li class="chapter" data-level="3.2" data-path="sample-surveys.html"><a href="sample-surveys.html#populations-and-frames"><i class="fa fa-check"></i><b>3.2</b> Populations and Frames</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-sampling-frame"><i class="fa fa-check"></i><b>3.2.1</b> What is a sampling frame?</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-good-sampling-frame"><i class="fa fa-check"></i><b>3.2.2</b> What is a <em>good</em> sampling frame?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sample-surveys.html"><a href="sample-surveys.html#approaches-to-sampling"><i class="fa fa-check"></i><b>3.3</b> Approaches to sampling</a></li>
+<li class="chapter" data-level="3.4" data-path="sample-surveys.html"><a href="sample-surveys.html#example-datasets"><i class="fa fa-check"></i><b>3.4</b> Example datasets</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sample-surveys.html"><a href="sample-surveys.html#api"><i class="fa fa-check"></i><b>3.4.1</b> API</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.2</b> From the dplyr package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="statistical-inference.html"><a href="statistical-inference.html"><i class="fa fa-check"></i><b>4</b> Statistical Inference</a></li>
+<li class="chapter" data-level="5" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>5</b> Sample Designs</a></li>
+<li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
+<li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
 <li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
@@ -225,12 +242,25 @@ a <strong>sample</strong> of members of a <strong>population</strong>.</p>
 <p>For example we might have a sample of households whose members respond to a questionnaire,
 or a sample of plants from a field.</p>
 </blockquote>
-<p>In order to select from a population we first enumerate (list) the popualation in some
+<p>In order to select from a population we first enumerate (list) the population in some
 way and then make a random selection of our subset members from that list. The method
 by which we do so is called the <strong>sample design</strong>.</p>
 <p>Our focus in statistics is often the <strong>estimation</strong> of population characteristics
 (known as <strong>population parameters</strong>) on the basis of sample characteristics
-(which are called <strong>sample statistics</strong>),</p>
+(which are called <strong>sample statistics</strong>). We are always aware that the sample
+we drew from the population is not the only sample we could have drawn, and therefore
+our conclusions are subject to uncertainty, which we call <strong>sampling error</strong>.</p>
+<p>This uncertainty associated with sampling is the reason we have confidence intervals
+on our estimates, and why we can neither <strong>prove</strong> nor <strong>disprove</strong> hypotheses.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:statistical-infrence"></span>
+<img src="include-files/fig/StatisticalInference.png" alt="Statistical Inference" width="100%" />
+<p class="caption">
+Figure 2.1: Statistical Inference
+</p>
+</div>
+<p>(One exception is when we do a <strong>census</strong> where we select and get fully accurate data
+from every member of the population. Then there’s no uncertainty left at all,
+and our sampling errors are zero.)</p>
 <p>When generating <strong>simulated</strong> datasets we also generate samples. Simulation
 is often done as a means of testing out statistical ideas and methods,
 or (in the case of the bootstrap method) when conventional ways of estimating
@@ -260,7 +290,7 @@ random draws from Uniform(0,1):</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="_main_files/figure-html/unnamed-chunk-7-1.png" alt="100 draws from Uniform(0,1)" width="480" />
 <p class="caption">
-Figure 2.1: 100 draws from Uniform(0,1)
+Figure 2.2: 100 draws from Uniform(0,1)
 </p>
 </div>
 <p>But a histogram of 100,000 draws is very uniform:</p>
@@ -268,7 +298,7 @@ Figure 2.1: 100 draws from Uniform(0,1)
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
 <img src="_main_files/figure-html/unnamed-chunk-8-1.png" alt="100000 draws from Uniform(0,1)" width="480" />
 <p class="caption">
-Figure 2.2: 100000 draws from Uniform(0,1)
+Figure 2.3: 100000 draws from Uniform(0,1)
 </p>
 </div>
 <p>Although the numbers appear to be random they are in fact generated using
@@ -409,13 +439,13 @@ the larger the probability that category <span class="math inline">\(k\)</span> 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
 <img src="_main_files/figure-html/unnamed-chunk-19-1.png" alt="Drawing a random category" width="480" />
 <p class="caption">
-Figure 2.3: Drawing a random category
+Figure 2.4: Drawing a random category
 </p>
 </div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
 <img src="_main_files/figure-html/unnamed-chunk-20-1.png" alt="Drawing a random category" width="480" />
 <p class="caption">
-Figure 2.4: Drawing a random category
+Figure 2.5: Drawing a random category
 </p>
 </div>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="sampling.html#cb64-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">112</span>)</span>
@@ -485,7 +515,7 @@ so <span class="math inline">\(p=1/6\)</span></p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-27"></span>
 <img src="_main_files/figure-html/unnamed-chunk-27-1.png" alt="Binomial probabilities" width="480" />
 <p class="caption">
-Figure 2.5: Binomial probabilities
+Figure 2.6: Binomial probabilities
 </p>
 </div>
 <p>The CDF is given by the function <code>pbinom()</code></p>
@@ -496,7 +526,7 @@ Figure 2.5: Binomial probabilities
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
 <img src="_main_files/figure-html/unnamed-chunk-29-1.png" alt="Binomial CDF" width="480" />
 <p class="caption">
-Figure 2.6: Binomial CDF
+Figure 2.7: Binomial CDF
 </p>
 </div>
 <p>Drawing a single value of <span class="math inline">\(Y\)</span> proceeds the same way as for a categorical
@@ -504,7 +534,7 @@ variable:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
 <img src="_main_files/figure-html/unnamed-chunk-30-1.png" alt="Drawing from a Binomial(10,1/6) distribution" width="480" />
 <p class="caption">
-Figure 2.7: Drawing from a Binomial(10,1/6) distribution
+Figure 2.8: Drawing from a Binomial(10,1/6) distribution
 </p>
 </div>
 <p>So we can draw multiple values of <span class="math inline">\(Y\)</span> from Bin(10,<span class="math inline">\(\frac16\)</span>)
@@ -516,7 +546,7 @@ using the <code>sample()</code> function:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-31"></span>
 <img src="_main_files/figure-html/unnamed-chunk-31-1.png" alt="10000 draws from a Binomial(10,1/6)" width="480" />
 <p class="caption">
-Figure 2.8: 10000 draws from a Binomial(10,1/6)
+Figure 2.9: 10000 draws from a Binomial(10,1/6)
 </p>
 </div>
 <p>Of course R provides a specific function for doing the same thing: <code>rbinom()</code></p>
@@ -526,7 +556,7 @@ Figure 2.8: 10000 draws from a Binomial(10,1/6)
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
 <img src="_main_files/figure-html/unnamed-chunk-32-1.png" alt="10000 draws from a Binomial(10,1/6)" width="480" />
 <p class="caption">
-Figure 2.9: 10000 draws from a Binomial(10,1/6)
+Figure 2.10: 10000 draws from a Binomial(10,1/6)
 </p>
 </div>
 <p>But that function is just doing what we’ve described above using <code>sample()</code>.</p>
@@ -545,7 +575,7 @@ defined to be
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
 <img src="_main_files/figure-html/unnamed-chunk-33-1.png" alt="Normal distribution density and CDF" width="768" />
 <p class="caption">
-Figure 2.10: Normal distribution density and CDF
+Figure 2.11: Normal distribution density and CDF
 </p>
 </div>
 <p>We can use <span class="math inline">\(F(y)\)</span> to draw a random value from the distribution of <span class="math inline">\(Y\)</span>
@@ -572,7 +602,7 @@ and has mean <span class="math inline">\(E[Y]=1/\lambda\)</span>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
 <img src="_main_files/figure-html/unnamed-chunk-34-1.png" alt="Exponential probability distribution" width="480" />
 <p class="caption">
-Figure 2.11: Exponential probability distribution
+Figure 2.12: Exponential probability distribution
 </p>
 </div>
 <p>The CDF is the integral of the probability density function
@@ -586,7 +616,7 @@ which for the Exponential distribution is
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
 <img src="_main_files/figure-html/unnamed-chunk-35-1.png" alt="Exponential cumulative probability distribution" width="480" />
 <p class="caption">
-Figure 2.12: Exponential cumulative probability distribution
+Figure 2.13: Exponential cumulative probability distribution
 </p>
 </div>
 <p>Solving
@@ -609,7 +639,7 @@ Exponential distribution.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
 <img src="_main_files/figure-html/unnamed-chunk-36-1.png" alt="10000 draws from an Exponential distribution" width="480" />
 <p class="caption">
-Figure 2.13: 10000 draws from an Exponential distribution
+Figure 2.14: 10000 draws from an Exponential distribution
 </p>
 </div>
 </div>
@@ -618,13 +648,167 @@ Figure 2.13: 10000 draws from an Exponential distribution
 <p>The simulations discussed so far all draw from <strong>infinite</strong> populations:
 we can set the sample size <span class="math inline">\(n\)</span> to any value. However it often occurs that
 we have only a finite population - e.g. when drawing a random sample
-of students from a class, or households from a suburb for interview.</p>
-<p>Consider the case where we have a street of <span class="math inline">\(N=10\)</span> households, numbered 1-10.
-We want to select 5 of these with equal probability. There are a number of
+of students from a class, or households from a suburb for interview.
+Then the population size <span class="math inline">\(N\)</span> is finite.</p>
+<p>In the general case we have a set of <span class="math inline">\(N\)</span> <strong>units</strong> (i.e. students or households)
+in a population of finite size, and we want to draw a sample of <span class="math inline">\(n\)</span> of these units.</p>
+<p>We usually start by listing or <strong>enumerating</strong> the units. This list is called
+a <strong>frame</strong> or a <strong>sample frame</strong>.</p>
+<p>Consider the case where we have a small street containing
+<span class="math inline">\(N=10\)</span> houses, numbered 1-10.
+We want to select 5 of these houses with equal probability. There are a number of
 ways we could do this.</p>
-<p><strong>Sampling without replacement</strong></p>
-<p>We draw a random number from 1-10</p>
+<div id="sampling-without-replacement" class="section level3 hasAnchor" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Sampling without replacement<a href="sampling.html#sampling-without-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If the houses have equal probability then we could proceed as follows:</p>
+<ul>
+<li>We draw a random number from 1-10, e.g. house number 2, and mark it as selected</li>
+<li>We draw another random number from 1-10, e.g. house number 5, and mark it as selected</li>
+<li>We repeat this process, but if we choose a house that is already selected, we discard that
+selection;</li>
+<li>The process continues until we have a set of 5 distinct houses.</li>
+</ul>
+<p>At the start we take our frame (i.e. list) of houses,
+and initially mark them all as unselected. Then at each step where we
+successfully select a previously unselected house we mark that house as selected.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="sampling.html#cb84-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># population size</span></span>
+<span id="cb84-2"><a href="sampling.html#cb84-2" tabindex="-1"></a>frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">house=</span><span class="dv">1</span><span class="sc">:</span>bigN, <span class="at">selected=</span><span class="cn">FALSE</span>)</span>
+<span id="cb84-3"><a href="sampling.html#cb84-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># sample size</span></span>
+<span id="cb84-4"><a href="sampling.html#cb84-4" tabindex="-1"></a>nselected <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb84-5"><a href="sampling.html#cb84-5" tabindex="-1"></a><span class="cf">while</span>(nselected <span class="sc">&lt;</span> n) {</span>
+<span id="cb84-6"><a href="sampling.html#cb84-6" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="fu">sample</span>(bigN, <span class="dv">1</span>)  <span class="co"># sample a single number at random from 1:bigN with equal probability</span></span>
+<span id="cb84-7"><a href="sampling.html#cb84-7" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>frame<span class="sc">$</span>selected[i]) {</span>
+<span id="cb84-8"><a href="sampling.html#cb84-8" tabindex="-1"></a>    frame<span class="sc">$</span>selected[i] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb84-9"><a href="sampling.html#cb84-9" tabindex="-1"></a>    nselected <span class="ot">&lt;-</span> nselected <span class="sc">+</span> <span class="dv">1</span> </span>
+<span id="cb84-10"><a href="sampling.html#cb84-10" tabindex="-1"></a>  }</span>
+<span id="cb84-11"><a href="sampling.html#cb84-11" tabindex="-1"></a>}</span>
+<span id="cb84-12"><a href="sampling.html#cb84-12" tabindex="-1"></a>frame<span class="sc">$</span>house[frame<span class="sc">$</span>selected]</span></code></pre></div>
+<pre><code>## [1]  1  6  7  8 10</code></pre>
+<p>It’s not guaranteed how many steps this process is going to take, since the number
+of times we select a house that has already been selected is random. If the sample size
+<span class="math inline">\(n\)</span> is small and the population size <span class="math inline">\(N\)</span> is large then it will take <span class="math inline">\(n\)</span> steps, or possibly
+just a few more. If <span class="math inline">\(n\)</span> is close to <span class="math inline">\(N\)</span> and <span class="math inline">\(N\)</span> is large, it could take a very very
+long time.</p>
+<p>A simpler way to solve this is to assign each house a distinct random number
+between 0 and 1, and then sort the frame in order of the random numbers.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="sampling.html#cb86-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># population size</span></span>
+<span id="cb86-2"><a href="sampling.html#cb86-2" tabindex="-1"></a>frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">house=</span><span class="dv">1</span><span class="sc">:</span>bigN, <span class="at">selected=</span><span class="cn">FALSE</span>)</span>
+<span id="cb86-3"><a href="sampling.html#cb86-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># sample size</span></span>
+<span id="cb86-4"><a href="sampling.html#cb86-4" tabindex="-1"></a>frame<span class="sc">$</span>u <span class="ot">&lt;-</span> <span class="fu">runif</span>(bigN)</span>
+<span id="cb86-5"><a href="sampling.html#cb86-5" tabindex="-1"></a>frame <span class="ot">&lt;-</span> frame[<span class="fu">order</span>(frame<span class="sc">$</span>u),]</span>
+<span id="cb86-6"><a href="sampling.html#cb86-6" tabindex="-1"></a>frame<span class="sc">$</span>selected[<span class="dv">1</span><span class="sc">:</span>n] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb86-7"><a href="sampling.html#cb86-7" tabindex="-1"></a>frame</span></code></pre></div>
+<pre><code>##    house selected         u
+## 9      9     TRUE 0.0812427
+## 4      4     TRUE 0.3739315
+## 2      2     TRUE 0.4137952
+## 6      6     TRUE 0.4341604
+## 10    10     TRUE 0.4909159
+## 3      3    FALSE 0.5850114
+## 8      8    FALSE 0.8708720
+## 5      5    FALSE 0.8837804
+## 1      1    FALSE 0.9278206
+## 7      7    FALSE 0.9475266</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="sampling.html#cb88-1" tabindex="-1"></a>frame <span class="ot">&lt;-</span> frame[<span class="fu">order</span>(frame<span class="sc">$</span>house),]</span>
+<span id="cb88-2"><a href="sampling.html#cb88-2" tabindex="-1"></a>frame<span class="sc">$</span>house[frame<span class="sc">$</span>selected]</span></code></pre></div>
+<pre><code>## [1]  2  4  6  9 10</code></pre>
+<p>Of course, the simplest way of all is just to use the <code>sample()</code> function</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="sampling.html#cb90-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># population size</span></span>
+<span id="cb90-2"><a href="sampling.html#cb90-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># sample size</span></span>
+<span id="cb90-3"><a href="sampling.html#cb90-3" tabindex="-1"></a><span class="fu">sample</span>(bigN, n)</span></code></pre></div>
+<pre><code>## [1] 10  4  6  3  2</code></pre>
+<p>It’s very often that we do have a frame, a list of objects with names, and we
+want to select from this at random.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="sampling.html#cb92-1" tabindex="-1"></a>frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Name=</span><span class="fu">c</span>(<span class="st">&quot;Mark&quot;</span>,<span class="st">&quot;Chloe&quot;</span>,<span class="st">&quot;Sam&quot;</span>,<span class="st">&quot;Caitlin&quot;</span>,<span class="st">&quot;Harry&quot;</span>,<span class="st">&quot;Nina&quot;</span>),</span>
+<span id="cb92-2"><a href="sampling.html#cb92-2" tabindex="-1"></a>                    <span class="at">Age=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">19</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">21</span>),</span>
+<span id="cb92-3"><a href="sampling.html#cb92-3" tabindex="-1"></a>                    <span class="at">Major=</span><span class="fu">c</span>(<span class="st">&quot;STAT&quot;</span>,<span class="st">&quot;STAT&quot;</span>,<span class="st">&quot;DATA&quot;</span>,<span class="st">&quot;COMP&quot;</span>,<span class="st">&quot;MATH&quot;</span>,<span class="st">&quot;STAT&quot;</span>))</span>
+<span id="cb92-4"><a href="sampling.html#cb92-4" tabindex="-1"></a>frame</span></code></pre></div>
+<pre><code>##      Name Age Major
+## 1    Mark  20  STAT
+## 2   Chloe  19  STAT
+## 3     Sam  18  DATA
+## 4 Caitlin  19  COMP
+## 5   Harry  19  MATH
+## 6    Nina  21  STAT</code></pre>
+<p>We can select, say, 3 names</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="sampling.html#cb94-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb94-2"><a href="sampling.html#cb94-2" tabindex="-1"></a>samplenames <span class="ot">&lt;-</span> <span class="fu">sample</span>(frame<span class="sc">$</span>Name, n)</span>
+<span id="cb94-3"><a href="sampling.html#cb94-3" tabindex="-1"></a>samplenames</span></code></pre></div>
+<pre><code>## [1] &quot;Nina&quot; &quot;Sam&quot;  &quot;Mark&quot;</code></pre>
+<p>and then subset the frame</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="sampling.html#cb96-1" tabindex="-1"></a>samplemembers <span class="ot">&lt;-</span> frame[frame<span class="sc">$</span>Name<span class="sc">%in%</span>samplenames,]</span>
+<span id="cb96-2"><a href="sampling.html#cb96-2" tabindex="-1"></a>samplemembers</span></code></pre></div>
+<pre><code>##   Name Age Major
+## 1 Mark  20  STAT
+## 3  Sam  18  DATA
+## 6 Nina  21  STAT</code></pre>
+<p>If you like dplyr</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="sampling.html#cb98-1" tabindex="-1"></a>samplemembers <span class="ot">&lt;-</span> frame <span class="sc">%&gt;%</span> </span>
+<span id="cb98-2"><a href="sampling.html#cb98-2" tabindex="-1"></a>  <span class="fu">filter</span>(Name<span class="sc">%in%</span>samplenames)</span>
+<span id="cb98-3"><a href="sampling.html#cb98-3" tabindex="-1"></a>samplemembers</span></code></pre></div>
+<pre><code>##   Name Age Major
+## 1 Mark  20  STAT
+## 2  Sam  18  DATA
+## 3 Nina  21  STAT</code></pre>
+<p>Note we can find out where in the frame particular individuals are located</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="sampling.html#cb100-1" tabindex="-1"></a><span class="fu">match</span>(<span class="fu">c</span>(<span class="st">&#39;Mark&#39;</span>,<span class="st">&#39;Harry&#39;</span>),frame<span class="sc">$</span>Name)</span></code></pre></div>
+<pre><code>## [1] 1 5</code></pre>
+<p>If we’re sampling without replacement, note (of course) that the sample
+size can be no bigger than the population size <span class="math inline">\(n\leq N\)</span>.</p>
+</div>
+<div id="sampling-with-replacement" class="section level3 hasAnchor" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Sampling with replacement<a href="sampling.html#sampling-with-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When selecting a sample of 5 houses it makes sense not to allow the possibility
+of selecting the same house twice. So when we’ve selected a house we remove
+it from the list of houses available to select. When using <code>sample()</code> this means
+that we set <code>replace=FALSE</code>, meaning after we’ve selected a member of the population
+we don’t put it back again.</p>
+<p>But there are occasions where we select <strong>with replacement</strong> is the sensible
+thing to do. This means there is a chance where a unit can be selected more than
+once, and this occurs in situations where we want to assign different probabilities
+of selection to different units of the population.</p>
+<p>Starting with the the case of equal probabilities, we repeatedly draw
+units from the population under identical circumstances: on every draw
+each unit is available for selection, and we count how many times each
+unit is selected.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="sampling.html#cb102-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb102-2"><a href="sampling.html#cb102-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb102-3"><a href="sampling.html#cb102-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb102-4"><a href="sampling.html#cb102-4" tabindex="-1"></a><span class="fu">replicate</span>(n, <span class="fu">sample</span>(bigN, <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>## [1] 4 3 9 5 3</code></pre>
+<p>In this sample we’ve drawn Unit 3 twice.</p>
+<p>If <span class="math inline">\(n\)</span> is small and <span class="math inline">\(bigN\)</span> is large the probability of repeats is small. But if a repeat
+happens we of course do not make our selected household repeat the questionnaire, instead
+we count them twice (or as many times as they are selected) in our analysis.</p>
+<p>Imagine our sample of 10 houses aren’t actually just houses, they’re farms, and some of them
+are very large and some are very small. We want to give the large farms a high chance of
+selection.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="sampling.html#cb104-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">122</span>)</span>
+<span id="cb104-2"><a href="sampling.html#cb104-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb104-3"><a href="sampling.html#cb104-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb104-4"><a href="sampling.html#cb104-4" tabindex="-1"></a>frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">farm=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">ncows=</span><span class="fu">c</span>(<span class="dv">1000</span>,<span class="dv">5000</span>,<span class="dv">2000</span>,<span class="dv">500</span>,<span class="dv">500</span>,</span>
+<span id="cb104-5"><a href="sampling.html#cb104-5" tabindex="-1"></a>                                       <span class="dv">5000</span>,<span class="dv">500</span>,<span class="dv">5000</span>,<span class="dv">30000</span>,<span class="dv">100</span>))</span>
+<span id="cb104-6"><a href="sampling.html#cb104-6" tabindex="-1"></a>frame</span></code></pre></div>
+<pre><code>##    farm ncows
+## 1     1  1000
+## 2     2  5000
+## 3     3  2000
+## 4     4   500
+## 5     5   500
+## 6     6  5000
+## 7     7   500
+## 8     8  5000
+## 9     9 30000
+## 10   10   100</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="sampling.html#cb106-1" tabindex="-1"></a><span class="fu">sample</span>(frame<span class="sc">$</span>farm, n, <span class="at">prob=</span>frame<span class="sc">$</span>ncows, <span class="at">replace=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 2 2 9 9 9</code></pre>
+<p>Unsurprisingly, the very large farm number 9 has been selected three times here.</p>
+<p>It <strong>is</strong> possible to have unequal probability sampling <strong>without</strong> replacement, estimation
+of standard errors is complicated in such designs, so we won’t be using such designs.</p>
+<p>For now, just note that we switch to with replacement designs when we’re sampling from
+sets of units where want to have units with different probabilities of selection.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -633,7 +817,7 @@ ways we could do this.</p>
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="the-survey-process.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sample-surveys.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -647,42 +831,42 @@ ways we could do this.</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

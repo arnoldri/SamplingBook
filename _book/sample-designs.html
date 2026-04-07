@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Sample Designs | STAT395: Sampling</title>
+  <title>5 Sample Designs | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Sample Designs | STAT395: Sampling" />
+  <meta property="og:title" content="5 Sample Designs | STAT395: Sampling" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Sampling notes." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Sample Designs | STAT395: Sampling" />
+  <meta name="twitter:title" content="5 Sample Designs | STAT395: Sampling" />
   
   <meta name="twitter:description" content="Sampling notes." />
   
@@ -23,14 +23,14 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-01" />
+<meta name="date" content="2026-04-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="the-survey-process.html"/>
+<link rel="prev" href="statistical-inference.html"/>
 <link rel="next" href="inference-with-r.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -184,16 +186,31 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
 <li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-numerical-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete numerical random variables</a></li>
 <li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
-<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="the-survey-process.html"><a href="the-survey-process.html"><i class="fa fa-check"></i><b>3</b> The Survey Process</a>
+<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="the-survey-process.html"><a href="the-survey-process.html#populations"><i class="fa fa-check"></i><b>3.1</b> Populations</a></li>
-<li class="chapter" data-level="3.2" data-path="the-survey-process.html"><a href="the-survey-process.html#frames"><i class="fa fa-check"></i><b>3.2</b> Frames</a></li>
+<li class="chapter" data-level="2.5.1" data-path="sampling.html"><a href="sampling.html#sampling-without-replacement"><i class="fa fa-check"></i><b>2.5.1</b> Sampling without replacement</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sampling.html"><a href="sampling.html#sampling-with-replacement"><i class="fa fa-check"></i><b>2.5.2</b> Sampling with replacement</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>4</b> Sample Designs</a></li>
-<li class="chapter" data-level="5" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>5</b> Inference with R</a></li>
-<li class="chapter" data-level="6" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>6</b> Missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sample-surveys.html"><a href="sample-surveys.html"><i class="fa fa-check"></i><b>3</b> Sample Surveys</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sample-surveys.html"><a href="sample-surveys.html#the-survey-process"><i class="fa fa-check"></i><b>3.1</b> The Survey Process</a></li>
+<li class="chapter" data-level="3.2" data-path="sample-surveys.html"><a href="sample-surveys.html#populations-and-frames"><i class="fa fa-check"></i><b>3.2</b> Populations and Frames</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-sampling-frame"><i class="fa fa-check"></i><b>3.2.1</b> What is a sampling frame?</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-good-sampling-frame"><i class="fa fa-check"></i><b>3.2.2</b> What is a <em>good</em> sampling frame?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sample-surveys.html"><a href="sample-surveys.html#approaches-to-sampling"><i class="fa fa-check"></i><b>3.3</b> Approaches to sampling</a></li>
+<li class="chapter" data-level="3.4" data-path="sample-surveys.html"><a href="sample-surveys.html#example-datasets"><i class="fa fa-check"></i><b>3.4</b> Example datasets</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sample-surveys.html"><a href="sample-surveys.html#api"><i class="fa fa-check"></i><b>3.4.1</b> API</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.2</b> From the dplyr package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="statistical-inference.html"><a href="statistical-inference.html"><i class="fa fa-check"></i><b>4</b> Statistical Inference</a></li>
+<li class="chapter" data-level="5" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>5</b> Sample Designs</a></li>
+<li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
+<li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
 <li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
@@ -217,8 +234,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sample-designs" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">4</span> Sample Designs<a href="sample-designs.html#sample-designs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="sample-designs" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Sample Designs<a href="sample-designs.html#sample-designs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Theory, and how to do this in R</p>
 <ul>
 <li>SRSWOR, SRSWR</li>
@@ -235,7 +252,7 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="the-survey-process.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="statistical-inference.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="inference-with-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -250,42 +267,42 @@ div.csl-indent {
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

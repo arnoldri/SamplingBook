@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-01}
+\date{2026-04-07}
 
 \begin{document}
 \maketitle
@@ -480,6 +480,8 @@ And also
   CRAN site on R resources for Official Statistics \url{https://cran.r-project.org/web/views/OfficialStatistics.html}
 \item
   Online book on using R for survey analysis: \url{https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/}
+\item
+  This gallery of R graphs \url{https://r-graph-gallery.com/}
 \end{itemize}
 
 Some simple lectures on Sample Surveys
@@ -536,13 +538,31 @@ For example we might have a sample of households whose members respond to a ques
 or a sample of plants from a field.
 \end{quote}
 
-In order to select from a population we first enumerate (list) the popualation in some
+In order to select from a population we first enumerate (list) the population in some
 way and then make a random selection of our subset members from that list. The method
 by which we do so is called the \textbf{sample design}.
 
 Our focus in statistics is often the \textbf{estimation} of population characteristics
 (known as \textbf{population parameters}) on the basis of sample characteristics
-(which are called \textbf{sample statistics}),
+(which are called \textbf{sample statistics}). We are always aware that the sample
+we drew from the population is not the only sample we could have drawn, and therefore
+our conclusions are subject to uncertainty, which we call \textbf{sampling error}.
+
+This uncertainty associated with sampling is the reason we have confidence intervals
+on our estimates, and why we can neither \textbf{prove} nor \textbf{disprove} hypotheses.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{include-files/fig/StatisticalInference} 
+
+}
+
+\caption{Statistical Inference}\label{fig:statistical-infrence}
+\end{figure}
+
+(One exception is when we do a \textbf{census} where we select and get fully accurate data
+from every member of the population. Then there's no uncertainty left at all,
+and our sampling errors are zero.)
 
 When generating \textbf{simulated} datasets we also generate samples. Simulation
 is often done as a means of testing out statistical ideas and methods,
@@ -1258,22 +1278,797 @@ The simulations discussed so far all draw from \textbf{infinite} populations:
 we can set the sample size \(n\) to any value. However it often occurs that
 we have only a finite population - e.g.~when drawing a random sample
 of students from a class, or households from a suburb for interview.
+Then the population size \(N\) is finite.
 
-Consider the case where we have a street of \(N=10\) households, numbered 1-10.
-We want to select 5 of these with equal probability. There are a number of
+In the general case we have a set of \(N\) \textbf{units} (i.e.~students or households)
+in a population of finite size, and we want to draw a sample of \(n\) of these units.
+
+We usually start by listing or \textbf{enumerating} the units. This list is called
+a \textbf{frame} or a \textbf{sample frame}.
+
+Consider the case where we have a small street containing
+\(N=10\) houses, numbered 1-10.
+We want to select 5 of these houses with equal probability. There are a number of
 ways we could do this.
 
-\textbf{Sampling without replacement}
+\subsection{Sampling without replacement}\label{sampling-without-replacement}
 
-We draw a random number from 1-10
+If the houses have equal probability then we could proceed as follows:
 
-\chapter{The Survey Process}\label{the-survey-process}
+\begin{itemize}
+\tightlist
+\item
+  We draw a random number from 1-10, e.g.~house number 2, and mark it as selected
+\item
+  We draw another random number from 1-10, e.g.~house number 5, and mark it as selected
+\item
+  We repeat this process, but if we choose a house that is already selected, we discard that
+  selection;
+\item
+  The process continues until we have a set of 5 distinct houses.
+\end{itemize}
 
-Steps in survey sampling
+At the start we take our frame (i.e.~list) of houses,
+and initially mark them all as unselected. Then at each step where we
+successfully select a previously unselected house we mark that house as selected.
 
-\section{Populations}\label{populations}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# population size}
+\NormalTok{frame }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{house=}\DecValTok{1}\SpecialCharTok{:}\NormalTok{bigN, }\AttributeTok{selected=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}  \CommentTok{\# sample size}
+\NormalTok{nselected }\OtherTok{\textless{}{-}} \DecValTok{0}
+\ControlFlowTok{while}\NormalTok{(nselected }\SpecialCharTok{\textless{}}\NormalTok{ n) \{}
+\NormalTok{  i }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(bigN, }\DecValTok{1}\NormalTok{)  }\CommentTok{\# sample a single number at random from 1:bigN with equal probability}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{frame}\SpecialCharTok{$}\NormalTok{selected[i]) \{}
+\NormalTok{    frame}\SpecialCharTok{$}\NormalTok{selected[i] }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
+\NormalTok{    nselected }\OtherTok{\textless{}{-}}\NormalTok{ nselected }\SpecialCharTok{+} \DecValTok{1} 
+\NormalTok{  \}}
+\NormalTok{\}}
+\NormalTok{frame}\SpecialCharTok{$}\NormalTok{house[frame}\SpecialCharTok{$}\NormalTok{selected]}
+\end{Highlighting}
+\end{Shaded}
 
-\section{Frames}\label{frames}
+\begin{verbatim}
+## [1]  1  6  7  8 10
+\end{verbatim}
+
+It's not guaranteed how many steps this process is going to take, since the number
+of times we select a house that has already been selected is random. If the sample size
+\(n\) is small and the population size \(N\) is large then it will take \(n\) steps, or possibly
+just a few more. If \(n\) is close to \(N\) and \(N\) is large, it could take a very very
+long time.
+
+A simpler way to solve this is to assign each house a distinct random number
+between 0 and 1, and then sort the frame in order of the random numbers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# population size}
+\NormalTok{frame }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{house=}\DecValTok{1}\SpecialCharTok{:}\NormalTok{bigN, }\AttributeTok{selected=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}  \CommentTok{\# sample size}
+\NormalTok{frame}\SpecialCharTok{$}\NormalTok{u }\OtherTok{\textless{}{-}} \FunctionTok{runif}\NormalTok{(bigN)}
+\NormalTok{frame }\OtherTok{\textless{}{-}}\NormalTok{ frame[}\FunctionTok{order}\NormalTok{(frame}\SpecialCharTok{$}\NormalTok{u),]}
+\NormalTok{frame}\SpecialCharTok{$}\NormalTok{selected[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n] }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
+\NormalTok{frame}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    house selected         u
+## 9      9     TRUE 0.0812427
+## 4      4     TRUE 0.3739315
+## 2      2     TRUE 0.4137952
+## 6      6     TRUE 0.4341604
+## 10    10     TRUE 0.4909159
+## 3      3    FALSE 0.5850114
+## 8      8    FALSE 0.8708720
+## 5      5    FALSE 0.8837804
+## 1      1    FALSE 0.9278206
+## 7      7    FALSE 0.9475266
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{frame }\OtherTok{\textless{}{-}}\NormalTok{ frame[}\FunctionTok{order}\NormalTok{(frame}\SpecialCharTok{$}\NormalTok{house),]}
+\NormalTok{frame}\SpecialCharTok{$}\NormalTok{house[frame}\SpecialCharTok{$}\NormalTok{selected]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  2  4  6  9 10
+\end{verbatim}
+
+Of course, the simplest way of all is just to use the \texttt{sample()} function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# population size}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}  \CommentTok{\# sample size}
+\FunctionTok{sample}\NormalTok{(bigN, n)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10  4  6  3  2
+\end{verbatim}
+
+It's very often that we do have a frame, a list of objects with names, and we
+want to select from this at random.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{frame }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Name=}\FunctionTok{c}\NormalTok{(}\StringTok{"Mark"}\NormalTok{,}\StringTok{"Chloe"}\NormalTok{,}\StringTok{"Sam"}\NormalTok{,}\StringTok{"Caitlin"}\NormalTok{,}\StringTok{"Harry"}\NormalTok{,}\StringTok{"Nina"}\NormalTok{),}
+                    \AttributeTok{Age=}\FunctionTok{c}\NormalTok{(}\DecValTok{20}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{21}\NormalTok{),}
+                    \AttributeTok{Major=}\FunctionTok{c}\NormalTok{(}\StringTok{"STAT"}\NormalTok{,}\StringTok{"STAT"}\NormalTok{,}\StringTok{"DATA"}\NormalTok{,}\StringTok{"COMP"}\NormalTok{,}\StringTok{"MATH"}\NormalTok{,}\StringTok{"STAT"}\NormalTok{))}
+\NormalTok{frame}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Name Age Major
+## 1    Mark  20  STAT
+## 2   Chloe  19  STAT
+## 3     Sam  18  DATA
+## 4 Caitlin  19  COMP
+## 5   Harry  19  MATH
+## 6    Nina  21  STAT
+\end{verbatim}
+
+We can select, say, 3 names
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{3}
+\NormalTok{samplenames }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(frame}\SpecialCharTok{$}\NormalTok{Name, n)}
+\NormalTok{samplenames}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Nina" "Sam"  "Mark"
+\end{verbatim}
+
+and then subset the frame
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ frame[frame}\SpecialCharTok{$}\NormalTok{Name}\SpecialCharTok{\%in\%}\NormalTok{samplenames,]}
+\NormalTok{samplemembers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Name Age Major
+## 1 Mark  20  STAT
+## 3  Sam  18  DATA
+## 6 Nina  21  STAT
+\end{verbatim}
+
+If you like dplyr
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ frame }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Name}\SpecialCharTok{\%in\%}\NormalTok{samplenames)}
+\NormalTok{samplemembers}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Name Age Major
+## 1 Mark  20  STAT
+## 2  Sam  18  DATA
+## 3 Nina  21  STAT
+\end{verbatim}
+
+Note we can find out where in the frame particular individuals are located
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{match}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Mark\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Harry\textquotesingle{}}\NormalTok{),frame}\SpecialCharTok{$}\NormalTok{Name)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1 5
+\end{verbatim}
+
+If we're sampling without replacement, note (of course) that the sample
+size can be no bigger than the population size \(n\leq N\).
+
+\subsection{Sampling with replacement}\label{sampling-with-replacement}
+
+When selecting a sample of 5 houses it makes sense not to allow the possibility
+of selecting the same house twice. So when we've selected a house we remove
+it from the list of houses available to select. When using \texttt{sample()} this means
+that we set \texttt{replace=FALSE}, meaning after we've selected a member of the population
+we don't put it back again.
+
+But there are occasions where we select \textbf{with replacement} is the sensible
+thing to do. This means there is a chance where a unit can be selected more than
+once, and this occurs in situations where we want to assign different probabilities
+of selection to different units of the population.
+
+Starting with the the case of equal probabilities, we repeatedly draw
+units from the population under identical circumstances: on every draw
+each unit is available for selection, and we count how many times each
+unit is selected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{111}\NormalTok{)}
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}
+\FunctionTok{replicate}\NormalTok{(n, }\FunctionTok{sample}\NormalTok{(bigN, }\DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4 3 9 5 3
+\end{verbatim}
+
+In this sample we've drawn Unit 3 twice.
+
+If \(n\) is small and \(bigN\) is large the probability of repeats is small. But if a repeat
+happens we of course do not make our selected household repeat the questionnaire, instead
+we count them twice (or as many times as they are selected) in our analysis.
+
+Imagine our sample of 10 houses aren't actually just houses, they're farms, and some of them
+are very large and some are very small. We want to give the large farms a high chance of
+selection.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{122}\NormalTok{)}
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{frame }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{farm=}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{ncows=}\FunctionTok{c}\NormalTok{(}\DecValTok{1000}\NormalTok{,}\DecValTok{5000}\NormalTok{,}\DecValTok{2000}\NormalTok{,}\DecValTok{500}\NormalTok{,}\DecValTok{500}\NormalTok{,}
+                                       \DecValTok{5000}\NormalTok{,}\DecValTok{500}\NormalTok{,}\DecValTok{5000}\NormalTok{,}\DecValTok{30000}\NormalTok{,}\DecValTok{100}\NormalTok{))}
+\NormalTok{frame}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    farm ncows
+## 1     1  1000
+## 2     2  5000
+## 3     3  2000
+## 4     4   500
+## 5     5   500
+## 6     6  5000
+## 7     7   500
+## 8     8  5000
+## 9     9 30000
+## 10   10   100
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sample}\NormalTok{(frame}\SpecialCharTok{$}\NormalTok{farm, n, }\AttributeTok{prob=}\NormalTok{frame}\SpecialCharTok{$}\NormalTok{ncows, }\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 2 9 9 9
+\end{verbatim}
+
+Unsurprisingly, the very large farm number 9 has been selected three times here.
+
+It \textbf{is} possible to have unequal probability sampling \textbf{without} replacement, estimation
+of standard errors is complicated in such designs, so we won't be using such designs.
+
+For now, just note that we switch to with replacement designs when we're sampling from
+sets of units where want to have units with different probabilities of selection.
+
+\chapter{Sample Surveys}\label{sample-surveys}
+
+A sample survey is an exercise in which \textbf{data} are collected from a
+\textbf{sample} (a subset) or a \textbf{population}. The data collected are used to
+create \textbf{estimates} of the characteristics or \textbf{parameters} of the
+population.
+
+Some examples:
+
+\begin{itemize}
+\tightlist
+\item
+  A sample of voters are telephoned to ask their voting intentions, with
+  the aim of predicting the outcome of the election;
+\item
+  A sample of sites in a river catchment is tested for the presence of
+  algae to determine the spread of the algae throughout the entire catchment;
+\item
+  A sample of households is selected, and the residents asked about their
+  employment status, in order to estimate the national unemployment rate.
+\end{itemize}
+
+A \textbf{census} is a special case of a sample survey in which every member of
+the population is surveyed.
+
+\section{The Survey Process}\label{the-survey-process}
+
+The different steps in the survey process are shown in Figure \ref{fig:survey-process1}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{include-files/fig/SurveyProcess1} 
+
+}
+
+\caption{The Survey Process}\label{fig:survey-process1}
+\end{figure}
+
+\begin{itemize}
+\tightlist
+\item
+  Every survey has a set of \textbf{objectives} -- the particular populations
+  which are of interest;
+\item
+  These parameters are properties of the \textbf{target population}: the
+  population about which estimates are to be made;
+\item
+  Not all members of the target population are able to be identified: the
+  ones that can be surveyed make up the \textbf{survey population};
+\item
+  The \textbf{sample frame} is a listing of all members of the survey
+  population;
+\item
+  The \textbf{sample design} is the method of selecting the sample from the
+  frame. The \textbf{sample size} is usually decided as a compromise between the
+  required \textbf{accuracy of estimates} and the survey \textbf{costs} and other
+  constraints (e.g.~the time available for the survey);
+\item
+  \textbf{survey instrument} is the means of data collection. It is
+  usually a paper or electronic questionnaire, completed by the respondent or
+  the interviewer/observer. The instrument aims to measure the properties of
+  the sample members which mean that the desired population characteristic can
+  be estimated. The instrument must be \textbf{valid} (it must actually measure
+  what it intends to measure) and \textbf{reliable} (repeated measurements of the
+  same sample member under identical circumstances should always yield similar
+  results);
+\item
+  The sample members are \textbf{contacted} and \textbf{recruited} into the
+  sample. Not all selected members will be able to be contacted (even after
+  strenuous efforts), and some will not respond even if contacted;
+\item
+  The data are collected from the sample members in some \textbf{mode}
+  (e.g.~face-to-face, telephone, web, observational, \ldots);
+\item
+  The data collected are \textbf{captured} (stored on a computer); \textbf{coded}
+  (converted into standard classification systems); \textbf{edited} (checks for
+  data consistency); and \textbf{stored} in a final dataset;
+\item
+  The data may be \textbf{adjusted}, e.g.~imputation or weight adjustments
+  for nonresponse may be done;
+\item
+  \textbf{Estimates} of the parameters of interest are constructed, and other
+  \textbf{analysis} of the data is carried out (e.g.~regression estimation,
+  comparison with other data etc.);
+\item
+  The results are summarised in a \textbf{report};
+\item
+  The original data may be \textbf{archived} in some appropriate form,
+  or \textbf{destroyed};
+\item
+  A post-survey \textbf{evaluation} may be made to determine how well the survey
+  met its goals.
+\end{itemize}
+
+For example: The Household Labour Force Survey (HLFS).
+
+\begin{itemize}
+\tightlist
+\item
+  One of the main \textbf{objectives} of the HLFS is to estimate the
+  unemployment rate every quarter;
+\item
+  The \textbf{target population} is the working age population of
+  New Zealand;
+\item
+  The \textbf{survey population} is the civilian, non-institutionalised
+  usually resident population of adults aged 15+
+  living in permanent, private dwellings on the main islands of New
+  Zealand (North Island, South Island and Waiheke Island);
+\item
+  The \textbf{sample frame} is a list of dwellings created at the most recent
+  census and regularly updated to reflect changes;
+\item
+  The \textbf{sample design} is a stratified cluster design. Within each regional
+  government area a sample of small areas (PSUs) is selected. A sample of
+  households is selected from within each PSU. Every adult from the selected
+  households is surveyed. 15000 households and 30000 adults are surveyed every
+  three months, in order to create unemployment estimates accurate to within
+  \(0.5\)\%.
+\item
+  The \textbf{survey instrument} is an electronic questionnaire.
+\item
+  The interviewers contact the households in person or by telephone,
+  making up to 10 call backs to ensure contact is made. \textbf{Proxy responses}
+  are permitted (i.e.~one household member can respond on behalf of another).
+  The interview takes place by computer assisted personal or telephone
+  interviewing (CAPI or CATI).
+\item
+  The results are \textbf{post-stratified} to match the current population estimates
+  in each local government area;
+\item
+  \textbf{Estimates} of the unemployment rate are published within about 6
+  weeks of the end of the quarter.
+\end{itemize}
+
+\section{Populations and Frames}\label{populations-and-frames}
+
+The target population defines the \textbf{scope} of the survey: the set of units
+which make up the population in which we are interested.
+
+The sample frame is a method of gaining access to the members of the target
+population. It is an actual or conceptual list. However it may not be
+perfect (Figure \ref{fig:scope-coverage}).
+
+\begin{itemize}
+\tightlist
+\item
+  Not all members of the target population will appear on the sample frame:
+  the missing units are \textbf{out of coverage};
+\item
+  Not all units listed on the sample frame are members of the target
+  population: the extra units are \textbf{out of scope}.
+\item
+  The survey population are those units which are both in the target
+  population (in scope) and on the frame (in coverage).
+\end{itemize}
+
+Our aim is to have a sample frame which covers most if not all of the target
+population, and which has only very few out of scope units.
+
+The reason for this is very important: we can make estimates about units in a population
+\textbf{only} if they are included in the sample frame. This inference is possible
+\textbf{whether or not we select them}. If there is a subpopulation of units that is
+not on our frame (i.e.~they are out of coverage) then we can never select them, we
+can never learn anything about them, and therefore we cannot make inferences about them.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{include-files/fig/ScopeCoverage} 
+
+}
+
+\caption{Scope and Coverage}\label{fig:scope-coverage}
+\end{figure}
+
+\subsection{What is a sampling frame?}\label{what-is-a-sampling-frame}
+
+The sampling frame is a key element in the survey process which provides the
+basis from which a \emph{random} (probability based) sample can be selected. The
+purpose of having a sampling frame is to enable each member of the target
+population a nonzero probability of being selected to participate in the
+survey. The \emph{quality} of the data, from a survey which has as its basis a
+comprehensive frame, can be \emph{measured and controlled}.
+
+The term sampling frame is sometimes misunderstood, often being thought of as a
+list containing each member of the population. In fact that is more a
+description of an `ideal' sampling frame. The best way to show what a sampling
+frame can be in practice is to examine some examples:
+
+\begin{itemize}
+\item
+  \textbf{List Frames.} Good up-to-date lists make ideal frames. However lists of
+  units (electoral rolls, telephone listings etc.) are generally formed for
+  purposes other than for use as sampling frames. For this reason they are
+  often not close to `ideal' sampling frames. Some discussion of list frame
+  problems comes later.
+\item
+  \textbf{Multi-stage Sampling Frames.} These frames consist of a set of lists
+  which are arranged in a hierarchy of stages. For example a typical household
+  survey frame will be organised like so: The first list is a a set of
+  non-overlapping geographic areas from which a sample of areas is taken. For
+  example we may list all the local regional councils and take a sample of
+  them. Within these areas we might then list all the households and take
+  samples from the household lists. From each household we would then list the
+  residents and interview selections of them. Note that we do not have to list
+  the entire population. The only comprehensive list needed is the list of the
+  areas which will be quite small. By giving each area a chance of being
+  selected we ensure each person living in each area has a chance of selection.
+\item
+  \textbf{Continuous Sampling Frames.} Consider the population of people entering a
+  country from international flights. Suppose we choose a random number
+  between one and ten (\(=k\)) and then interview the \(k\)th, \((k+10)\)th,
+  \((k+20)\)th \ldots{} persons who file through customs. We will have a sample where
+  every person has had a 1 in 10 chance of being selected. But what is the
+  frame? There is no list. We call such a situation a `conceptual list', where
+  the people filing into the country effectively formed a long queue of people
+  which we have treated like a listing of the population, although a listing of
+  names was never constructed. \textbackslash end\{description\}
+\end{itemize}
+
+One can find many different definitions of sampling frames. The following is a
+simplified definition that should serve our purposes:
+
+\begin{quote}
+A \emph{sampling frame} is part of the system of rules and procedures used when
+determining who is to be surveyed and which ensure that each member of the
+population get some measurable (non-zero) chance of participating in the
+survey.
+\end{quote}
+
+The examples above show that we need to think beyond the concept of a list of
+units, whose construction is a separate exercise from the other survey stages.
+
+\subsection{\texorpdfstring{What is a \emph{good} sampling frame?}{What is a good sampling frame?}}\label{what-is-a-good-sampling-frame}
+
+We will often have several frames available and will have to decide between
+different options. To help us with this decision we need to be a little more
+specific about what makes a good sampling frame. The first thing we should
+consider is the effective coverage of the sampling frame. This can be
+determined by testing it for the following properties:
+
+\begin{itemize}
+\item
+  \textbf{Each unit should be counted at least once}. If there are missing
+  units (out of coverage) then the survey results may be biased if the excluded
+  units tend to be different to the units which are included.
+\item
+  \textbf{Each unit should be counted only once}. The problem is that we
+  usually can not tell how many times a unit is duplicated. This means we can
+  not tell how many chances a unit has of being sampled. This can cause
+  similar bias if the units which are duplicated are different to the other
+  units. The results will be biased towards the duplicated sub-group of the
+  population.
+\item
+  \textbf{Each unit should be distinguishable from the other units on the
+  frame}. If we select a unit from the frame (say Jane Smith) but then can
+  not tell who this refers to, when there are many Jane Smiths in the
+  population, then the frame has not done its job.
+\item
+  \textbf{Should provide up-to-date information about the units}. For example
+  it if it claims to provide Jane Smith's address it should be the current
+  address.
+\item
+  \textbf{No units should be there if they are not meant to be}. Extra units
+  (out of scope) are not a serious problem unless we fall into the elementary
+  error of replacing them whenever we come across them in the sample. This
+  confuses selection probabilities. The correct procedure is to drop any
+  ineligible unit found in the sample and not replace them.
+\item
+  \textbf{Should allow direct access to each unit}. Ideally the frame will
+  ultimately supply us with a list of the units we are interested in analyzing.
+  Sometimes a frame will only give samples of groups of units e.g.~a list of
+  addresses, each of which may contain many people. Further work is needed
+  before a sample of people is realized.
+\end{itemize}
+
+\section{Approaches to sampling}\label{approaches-to-sampling}
+
+We're talking here about random sampling, or \textbf{probability sampling}. For
+the purposes of statistical inference such sampling is the only defensible method -
+it's the only one that leads us to properly constructed confidence intervals
+and hypothesis tests. Other approaches do exist though, and even though you'll see
+them used they all have significant defects.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Probability sampling} is the gold standard: every member of the population
+  has a known, non-zero chance of selection;
+\item
+  \textbf{Purposive sampling}: the surveyor selects members of the population that
+  they consider to be representative - dangerously biased towards the views
+  and prejudices of the surveyor;
+\item
+  \textbf{Haphazard sampling}: the surveyor uses any members of the population that
+  they come across. This is what happens on the street corner when you're asked
+  questions by a surveyor;
+\item
+  \textbf{Quota sampling}: resembles stratified sample (see later): the surveyor fills
+  quotas of respondents to balance numbers of respondents in categories (e.g.~by
+  age/gender/ethnicity), but does not make an accounting for non-response (see later);
+\item
+  \textbf{Snowball sampling}: used in rare populations that are highly connected (e.g.
+  refugees from a particular country): existing sample members recruit new sample
+  members using their contacts;
+\item
+  \textbf{Self-selected sampling}: this is the \textbf{worst} of all: the respondents themselves
+  decide whether to be selected: they see an advertisement on a webpage or phone
+  in with their views. Only profiles motivated population members - the silent
+  majority are never measured.
+\end{itemize}
+
+\section{Example datasets}\label{example-datasets}
+
+We'll use and re-use a number of standard datasets.
+
+\subsection{API}\label{api}
+
+This is a dataset on Student performance in California schools. The dataset is distributed with the \texttt{survey} library in R, and there are a number of unit record datasets which are drawn from a population dataset \texttt{apipop} under various sample designs. The population units are the schools, and a number of characteristics are available. Full documentation can be found in the \texttt{survey} package. The variables we use mostly are:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{stype} - School type (Elementary/Middle/High School)
+\item
+  \texttt{snum} - School number
+\item
+  \texttt{dnum} - District number
+\item
+  \texttt{api99} - Academic Performance Indicator for the school in the year 1999
+\item
+  \texttt{api00} - Academic Performance Indicator for the school in the year 2000
+\item
+  \texttt{sch.wide} - Did the school meet its school-wide growth target?
+\item
+  \texttt{awards} - Is the school eligible for an awards program
+\item
+  \texttt{meals} - Percentage of students eligible for subsidised meals
+\item
+  \texttt{ell} - Percentage of students that are English Language Learners
+\item
+  \texttt{grad.sch} - Percentage of students with parents with a postgraduate education
+\item
+  \texttt{enroll} - Number of students enrolled
+\item
+  \texttt{api.stu} - Number of students tested in the API
+\end{itemize}
+
+\subsection{From the dplyr package}\label{from-the-dplyr-package}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{starwars} - a list of characteristics of 87 characters from the Star Wars
+  movie series;
+\end{itemize}
+
+\chapter{Statistical Inference}\label{statistical-inference}
+
+Let's briefly review a few familiar results from earlier statistics courses.
+
+Most of what we've done in earlier courses has assumed that we have
+a \textbf{simple random sample} from an \textbf{infinite} population.
+
+We'll use data from the \texttt{starwars} dataset (in the dplyr package). There
+are data on 87 characters, including their heights in centimetres.\\
+Six heights are missing, but let's just guess them so we have no missing data
+(this process of inventing data has a respectable name: \textbf{`imputation'},
+and we'll come back to it later).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{data}\NormalTok{(starwars)}
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(starwars}\SpecialCharTok{$}\NormalTok{height))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{starwars }\OtherTok{\textless{}{-}}\NormalTok{ starwars }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{height=}\FunctionTok{case\_when}\NormalTok{(name}\SpecialCharTok{==}\StringTok{"Arvel Crynyd"} \SpecialCharTok{\textasciitilde{}} \DecValTok{172}\NormalTok{, }\CommentTok{\# same as Luke}
+\NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Finn"} \SpecialCharTok{\textasciitilde{}} \DecValTok{172}\NormalTok{, }\CommentTok{\# same as Luke}
+\NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Rey"} \SpecialCharTok{\textasciitilde{}} \DecValTok{150}\NormalTok{,  }\CommentTok{\# same as Leia}
+\NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Poe Dameron"} \SpecialCharTok{\textasciitilde{}} \DecValTok{172}\NormalTok{, }\CommentTok{\# same as Luke}
+\NormalTok{                          name}\SpecialCharTok{==}\StringTok{"BB8"} \SpecialCharTok{\textasciitilde{}} \DecValTok{96}\NormalTok{, }\CommentTok{\# same as R2D2}
+\NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Captain Phasma"} \SpecialCharTok{\textasciitilde{}} \DecValTok{167}\NormalTok{, }\CommentTok{\# same as C3P0}
+                          \AttributeTok{.default=}\NormalTok{height))}
+\end{Highlighting}
+\end{Shaded}
+
+The mean height \(\bar{Y}\) of characters in the Star Wars universe is a \textbf{population parameter}.
+We can \textbf{estimate} it from a sample of characters. For the purposes of this exercise let's imagine
+there are only \(N=87\) individuals in the Star Wars universe.
+
+Let's draw a random sample of \(n=20\) from this population:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{222}\NormalTok{)}
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(starwars)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{20}
+\NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ starwars[}\FunctionTok{sample}\NormalTok{(bigN, n, }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{),]}
+\NormalTok{samplemembers }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(name,height,mass,hair\_color,homeworld) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|l|l}
+\hline
+name & height & mass & hair\_color & homeworld\\
+\hline
+Tarfful & 234 & 136 & brown & Kashyyyk\\
+\hline
+Jek Tono Porkins & 180 & 110 & brown & Bestine IV\\
+\hline
+Bossk & 190 & 113 & none & Trandosha\\
+\hline
+Lando Calrissian & 177 & 79 & black & Socorro\\
+\hline
+IG-88 & 200 & 140 & none & NA\\
+\hline
+Kit Fisto & 196 & 87 & none & Glee Anselm\\
+\hline
+Biggs Darklighter & 183 & 84 & black & Tatooine\\
+\hline
+Obi-Wan Kenobi & 182 & 77 & auburn, white & Stewjon\\
+\hline
+Quarsh Panaka & 183 & NA & black & Naboo\\
+\hline
+Mace Windu & 188 & 84 & none & Haruun Kal\\
+\hline
+Ratts Tyerel & 79 & 15 & none & Aleen Minor\\
+\hline
+Beru Whitesun Lars & 165 & 75 & brown & Tatooine\\
+\hline
+Chewbacca & 228 & 112 & brown & Kashyyyk\\
+\hline
+Jabba Desilijic Tiure & 175 & 1358 & NA & Nal Hutta\\
+\hline
+Rugor Nass & 206 & NA & none & Naboo\\
+\hline
+Sly Moore & 178 & 48 & none & Umbara\\
+\hline
+Dormé & 165 & NA & brown & Naboo\\
+\hline
+Leia Organa & 150 & 49 & brown & Alderaan\\
+\hline
+Finn & 172 & NA & black & NA\\
+\hline
+Darth Maul & 175 & 80 & none & Dathomir\\
+\hline
+\end{tabular}
+\end{table}
+
+Compute the sample mean \(\bar{y}\) and standard deviation \(s_y\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ybar }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height)}
+\NormalTok{ybar}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 180.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sdy }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height)}
+\NormalTok{sdy}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 31.13147
+\end{verbatim}
+
+We know how to make a point estimate \(\widehat{\bar{Y}}\) for the population
+mean \(\bar{Y}\) (remember that a hat \(\widehat{.}\) over a symbol indicates
+an estimate of that parameter): the population mean is estimated by the sample
+mean \(\bar{y}\):
+\[
+    \widehat{\bar{Y}} = \bar{y} = 180.30
+\]
+and a confidence interval is given by
+\begin{eqnarray}
+    \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
+    &=& \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &=&  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &=& 
+    180.3 \pm 1.96 \times \frac{31.1}{\sqrt{20}}\\
+    &=& 
+    180.3 \pm 1.96 \times 7.0\\
+    &=& 
+    180.3 \pm 13.6\\
+    &=& 
+    (166.7,193.9)
+\end{eqnarray}
 
 \chapter{Sample Designs}\label{sample-designs}
 

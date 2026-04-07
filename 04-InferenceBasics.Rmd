@@ -1,0 +1,87 @@
+# Statistical Inference
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'
+
+Let's briefly review a few familiar results from earlier statistics courses.
+
+Most of what we've done in earlier courses has assumed that we have
+a **simple random sample** from an **infinite** population.
+
+We'll use data from the `starwars` dataset (in the dplyr package).  There
+are data on 87 characters, including their heights in centimetres.  
+Six heights are missing, but let's just guess them so we have no missing data
+(this process of inventing data has a respectable name:  **'imputation'**, 
+and we'll come back to it later).
+
+```{r}
+library(dplyr)
+data(starwars)
+sum(is.na(starwars$height))
+starwars <- starwars %>% 
+  mutate(height=case_when(name=="Arvel Crynyd" ~ 172, # same as Luke
+                          name=="Finn" ~ 172, # same as Luke
+                          name=="Rey" ~ 150,  # same as Leia
+                          name=="Poe Dameron" ~ 172, # same as Luke
+                          name=="BB8" ~ 96, # same as R2D2
+                          name=="Captain Phasma" ~ 167, # same as C3P0
+                          .default=height))
+```
+
+The mean height $\bar{Y}$ of characters in the Star Wars universe is a **population parameter**.
+We can **estimate** it from a sample of characters.  For the purposes of this exercise let's imagine 
+there are only $N=87$ individuals in the Star Wars universe.
+
+Let's draw a random sample of $n=20$ from this population:
+```{r}
+set.seed(222)
+bigN <- nrow(starwars)
+n <- 20
+samplemembers <- starwars[sample(bigN, n, replace=FALSE),]
+samplemembers %>%
+  dplyr::select(name,height,mass,hair_color,homeworld) %>%
+  kbl() %>%
+  kable_styling()
+```
+
+Compute the sample mean $\bar{y}$ and standard deviation $s_y$:
+```{r}
+ybar <- mean(samplemembers$height)
+ybar
+sdy <- sd(samplemembers$height)
+sdy
+```
+
+```{r echo=FALSE}
+se <- sdy/sqrt(n)
+moe <- 1.96*se
+ci <- ybar + moe*c(-1,1)
+```
+
+We know how to make a point estimate $\widehat{\bar{Y}}$ for the population
+mean $\bar{Y}$ (remember that a hat $\widehat{.}$ over a symbol indicates 
+an estimate of that parameter): the population mean is estimated by the sample
+mean $\bar{y}$:
+\[
+    \widehat{\bar{Y}} = \bar{y} = `r sprintf("%.2f",ybar)`
+\]
+and a confidence interval is given by
+\begin{eqnarray}
+    \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
+    &=& \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &=&  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm 1.96 \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm 1.96 \times `r sprintf("%.1f",se)`\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.1f",moe)`\\
+    &=& 
+    `r sprintf("(%.1f,%.1f)",ci[1],ci[2])`
+\end{eqnarray}
+

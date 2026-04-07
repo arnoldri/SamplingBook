@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Sample Surveys | STAT395: Sampling</title>
+  <meta name="description" content="Sampling notes." />
+  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Sample Surveys | STAT395: Sampling" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Sampling notes." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Sample Surveys | STAT395: Sampling" />
+  
+  <meta name="twitter:description" content="Sampling notes." />
+  
+
+<meta name="author" content="Richard Arnold et al." />
+
+
+<meta name="date" content="2026-04-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sampling.html"/>
+<link rel="next" href="statistical-inference.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">STAT395: Sampling</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introductory Remarks</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lecture-plan"><i class="fa fa-check"></i><b>1.1</b> Lecture Plan</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-1-the-survey-process"><i class="fa fa-check"></i>Week 1 – The Survey Process</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-2-sampling"><i class="fa fa-check"></i>Week 2 – Sampling</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-3---inference-with-the-r-survey-package"><i class="fa fa-check"></i>Week 3 - Inference with the R survey package</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-4-non-response-and-complex-designs"><i class="fa fa-check"></i>Week 4 – Non-response and complex designs</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11"><i class="fa fa-check"></i>Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11]</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#test-2-30-assessment-period-1.5-hours-closed-book"><i class="fa fa-check"></i>Test 2 (30%) [assessment period] [1.5 hours, closed book]</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#recommended-reading"><i class="fa fa-check"></i><b>1.2</b> Recommended reading</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>2</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sampling.html"><a href="sampling.html#random-numbers"><i class="fa fa-check"></i><b>2.1</b> Random numbers</a></li>
+<li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
+<li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-numerical-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete numerical random variables</a></li>
+<li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
+<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="sampling.html"><a href="sampling.html#sampling-without-replacement"><i class="fa fa-check"></i><b>2.5.1</b> Sampling without replacement</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sampling.html"><a href="sampling.html#sampling-with-replacement"><i class="fa fa-check"></i><b>2.5.2</b> Sampling with replacement</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sample-surveys.html"><a href="sample-surveys.html"><i class="fa fa-check"></i><b>3</b> Sample Surveys</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sample-surveys.html"><a href="sample-surveys.html#the-survey-process"><i class="fa fa-check"></i><b>3.1</b> The Survey Process</a></li>
+<li class="chapter" data-level="3.2" data-path="sample-surveys.html"><a href="sample-surveys.html#populations-and-frames"><i class="fa fa-check"></i><b>3.2</b> Populations and Frames</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-sampling-frame"><i class="fa fa-check"></i><b>3.2.1</b> What is a sampling frame?</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-good-sampling-frame"><i class="fa fa-check"></i><b>3.2.2</b> What is a <em>good</em> sampling frame?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sample-surveys.html"><a href="sample-surveys.html#approaches-to-sampling"><i class="fa fa-check"></i><b>3.3</b> Approaches to sampling</a></li>
+<li class="chapter" data-level="3.4" data-path="sample-surveys.html"><a href="sample-surveys.html#example-datasets"><i class="fa fa-check"></i><b>3.4</b> Example datasets</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sample-surveys.html"><a href="sample-surveys.html#api"><i class="fa fa-check"></i><b>3.4.1</b> API</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.2</b> From the dplyr package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="statistical-inference.html"><a href="statistical-inference.html"><i class="fa fa-check"></i><b>4</b> Statistical Inference</a></li>
+<li class="chapter" data-level="5" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>5</b> Sample Designs</a></li>
+<li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
+<li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="appendix"><span><b> </b></span></li>
+<li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
+<li class="divider"></li>
+<li>Lecture notes</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT395: Sampling</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sample-surveys" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Sample Surveys<a href="sample-surveys.html#sample-surveys" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>A sample survey is an exercise in which <strong>data</strong> are collected from a
+<strong>sample</strong> (a subset) or a <strong>population</strong>. The data collected are used to
+create <strong>estimates</strong> of the characteristics or <strong>parameters</strong> of the
+population.</p>
+<p>Some examples:</p>
+<ul>
+<li>A sample of voters are telephoned to ask their voting intentions, with
+the aim of predicting the outcome of the election;</li>
+<li>A sample of sites in a river catchment is tested for the presence of
+algae to determine the spread of the algae throughout the entire catchment;</li>
+<li>A sample of households is selected, and the residents asked about their
+employment status, in order to estimate the national unemployment rate.</li>
+</ul>
+<p>A <strong>census</strong> is a special case of a sample survey in which every member of
+the population is surveyed.</p>
+<div id="the-survey-process" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> The Survey Process<a href="sample-surveys.html#the-survey-process" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The different steps in the survey process are shown in Figure <a href="sample-surveys.html#fig:survey-process1">3.1</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:survey-process1"></span>
+<img src="include-files/fig/SurveyProcess1.png" alt="The Survey Process" width="100%" />
+<p class="caption">
+Figure 3.1: The Survey Process
+</p>
+</div>
+<ul>
+<li>Every survey has a set of <strong>objectives</strong> – the particular populations
+which are of interest;</li>
+<li>These parameters are properties of the <strong>target population</strong>: the
+population about which estimates are to be made;</li>
+<li>Not all members of the target population are able to be identified: the
+ones that can be surveyed make up the <strong>survey population</strong>;</li>
+<li>The <strong>sample frame</strong> is a listing of all members of the survey
+population;</li>
+<li>The <strong>sample design</strong> is the method of selecting the sample from the
+frame. The <strong>sample size</strong> is usually decided as a compromise between the
+required <strong>accuracy of estimates</strong> and the survey <strong>costs</strong> and other
+constraints (e.g. the time available for the survey);</li>
+<li><strong>survey instrument</strong> is the means of data collection. It is
+usually a paper or electronic questionnaire, completed by the respondent or
+the interviewer/observer. The instrument aims to measure the properties of
+the sample members which mean that the desired population characteristic can
+be estimated. The instrument must be <strong>valid</strong> (it must actually measure
+what it intends to measure) and <strong>reliable</strong> (repeated measurements of the
+same sample member under identical circumstances should always yield similar
+results);</li>
+<li>The sample members are <strong>contacted</strong> and <strong>recruited</strong> into the
+sample. Not all selected members will be able to be contacted (even after
+strenuous efforts), and some will not respond even if contacted;</li>
+<li>The data are collected from the sample members in some <strong>mode</strong>
+(e.g. face-to-face, telephone, web, observational, …);</li>
+<li>The data collected are <strong>captured</strong> (stored on a computer); <strong>coded</strong>
+(converted into standard classification systems); <strong>edited</strong> (checks for
+data consistency); and <strong>stored</strong> in a final dataset;</li>
+<li>The data may be <strong>adjusted</strong>, e.g. imputation or weight adjustments
+for nonresponse may be done;</li>
+<li><strong>Estimates</strong> of the parameters of interest are constructed, and other
+<strong>analysis</strong> of the data is carried out (e.g. regression estimation,
+comparison with other data etc.);</li>
+<li>The results are summarised in a <strong>report</strong>;</li>
+<li>The original data may be <strong>archived</strong> in some appropriate form,
+or <strong>destroyed</strong>;</li>
+<li>A post-survey <strong>evaluation</strong> may be made to determine how well the survey
+met its goals.</li>
+</ul>
+<p>For example: The Household Labour Force Survey (HLFS).</p>
+<ul>
+<li>One of the main <strong>objectives</strong> of the HLFS is to estimate the
+unemployment rate every quarter;</li>
+<li>The <strong>target population</strong> is the working age population of
+New Zealand;</li>
+<li>The <strong>survey population</strong> is the civilian, non-institutionalised
+usually resident population of adults aged 15+
+living in permanent, private dwellings on the main islands of New
+Zealand (North Island, South Island and Waiheke Island);</li>
+<li>The <strong>sample frame</strong> is a list of dwellings created at the most recent
+census and regularly updated to reflect changes;</li>
+<li>The <strong>sample design</strong> is a stratified cluster design. Within each regional
+government area a sample of small areas (PSUs) is selected. A sample of
+households is selected from within each PSU. Every adult from the selected
+households is surveyed. 15000 households and 30000 adults are surveyed every
+three months, in order to create unemployment estimates accurate to within
+<span class="math inline">\(0.5\)</span>%.</li>
+<li>The <strong>survey instrument</strong> is an electronic questionnaire.</li>
+<li>The interviewers contact the households in person or by telephone,
+making up to 10 call backs to ensure contact is made. <strong>Proxy responses</strong>
+are permitted (i.e. one household member can respond on behalf of another).
+The interview takes place by computer assisted personal or telephone
+interviewing (CAPI or CATI).</li>
+<li>The results are <strong>post-stratified</strong> to match the current population estimates
+in each local government area;</li>
+<li><strong>Estimates</strong> of the unemployment rate are published within about 6
+weeks of the end of the quarter.</li>
+</ul>
+</div>
+<div id="populations-and-frames" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Populations and Frames<a href="sample-surveys.html#populations-and-frames" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The target population defines the <strong>scope</strong> of the survey: the set of units
+which make up the population in which we are interested.</p>
+<p>The sample frame is a method of gaining access to the members of the target
+population. It is an actual or conceptual list. However it may not be
+perfect (Figure <a href="sample-surveys.html#fig:scope-coverage">3.2</a>).</p>
+<ul>
+<li>Not all members of the target population will appear on the sample frame:
+the missing units are <strong>out of coverage</strong>;</li>
+<li>Not all units listed on the sample frame are members of the target
+population: the extra units are <strong>out of scope</strong>.</li>
+<li>The survey population are those units which are both in the target
+population (in scope) and on the frame (in coverage).</li>
+</ul>
+<p>Our aim is to have a sample frame which covers most if not all of the target
+population, and which has only very few out of scope units.</p>
+<p>The reason for this is very important: we can make estimates about units in a population
+<strong>only</strong> if they are included in the sample frame. This inference is possible
+<strong>whether or not we select them</strong>. If there is a subpopulation of units that is
+not on our frame (i.e. they are out of coverage) then we can never select them, we
+can never learn anything about them, and therefore we cannot make inferences about them.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:scope-coverage"></span>
+<img src="include-files/fig/ScopeCoverage.png" alt="Scope and Coverage" width="70%" />
+<p class="caption">
+Figure 3.2: Scope and Coverage
+</p>
+</div>
+<div id="what-is-a-sampling-frame" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> What is a sampling frame?<a href="sample-surveys.html#what-is-a-sampling-frame" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The sampling frame is a key element in the survey process which provides the
+basis from which a <em>random</em> (probability based) sample can be selected. The
+purpose of having a sampling frame is to enable each member of the target
+population a nonzero probability of being selected to participate in the
+survey. The <em>quality</em> of the data, from a survey which has as its basis a
+comprehensive frame, can be <em>measured and controlled</em>.</p>
+<p>The term sampling frame is sometimes misunderstood, often being thought of as a
+list containing each member of the population. In fact that is more a
+description of an `ideal’ sampling frame. The best way to show what a sampling
+frame can be in practice is to examine some examples:</p>
+<ul>
+<li><p><strong>List Frames.</strong> Good up-to-date lists make ideal frames. However lists of
+units (electoral rolls, telephone listings etc.) are generally formed for
+purposes other than for use as sampling frames. For this reason they are
+often not close to `ideal’ sampling frames. Some discussion of list frame
+problems comes later.</p></li>
+<li><p><strong>Multi-stage Sampling Frames.</strong> These frames consist of a set of lists
+which are arranged in a hierarchy of stages. For example a typical household
+survey frame will be organised like so: The first list is a a set of
+non-overlapping geographic areas from which a sample of areas is taken. For
+example we may list all the local regional councils and take a sample of
+them. Within these areas we might then list all the households and take
+samples from the household lists. From each household we would then list the
+residents and interview selections of them. Note that we do not have to list
+the entire population. The only comprehensive list needed is the list of the
+areas which will be quite small. By giving each area a chance of being
+selected we ensure each person living in each area has a chance of selection.</p></li>
+<li><p><strong>Continuous Sampling Frames.</strong> Consider the population of people entering a
+country from international flights. Suppose we choose a random number
+between one and ten (<span class="math inline">\(=k\)</span>) and then interview the <span class="math inline">\(k\)</span>th, <span class="math inline">\((k+10)\)</span>th,
+<span class="math inline">\((k+20)\)</span>th … persons who file through customs. We will have a sample where
+every person has had a 1 in 10 chance of being selected. But what is the
+frame? There is no list. We call such a situation a `conceptual list’, where
+the people filing into the country effectively formed a long queue of people
+which we have treated like a listing of the population, although a listing of
+names was never constructed. \end{description}</p></li>
+</ul>
+<p>One can find many different definitions of sampling frames. The following is a
+simplified definition that should serve our purposes:</p>
+<blockquote>
+<p>A <em>sampling frame</em> is part of the system of rules and procedures used when
+determining who is to be surveyed and which ensure that each member of the
+population get some measurable (non-zero) chance of participating in the
+survey.</p>
+</blockquote>
+<p>The examples above show that we need to think beyond the concept of a list of
+units, whose construction is a separate exercise from the other survey stages.</p>
+</div>
+<div id="what-is-a-good-sampling-frame" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> What is a <em>good</em> sampling frame?<a href="sample-surveys.html#what-is-a-good-sampling-frame" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will often have several frames available and will have to decide between
+different options. To help us with this decision we need to be a little more
+specific about what makes a good sampling frame. The first thing we should
+consider is the effective coverage of the sampling frame. This can be
+determined by testing it for the following properties:</p>
+<ul>
+<li><p><strong>Each unit should be counted at least once</strong>. If there are missing
+units (out of coverage) then the survey results may be biased if the excluded
+units tend to be different to the units which are included.</p></li>
+<li><p><strong>Each unit should be counted only once</strong>. The problem is that we
+usually can not tell how many times a unit is duplicated. This means we can
+not tell how many chances a unit has of being sampled. This can cause
+similar bias if the units which are duplicated are different to the other
+units. The results will be biased towards the duplicated sub-group of the
+population.</p></li>
+<li><p><strong>Each unit should be distinguishable from the other units on the
+frame</strong>. If we select a unit from the frame (say Jane Smith) but then can
+not tell who this refers to, when there are many Jane Smiths in the
+population, then the frame has not done its job.</p></li>
+<li><p><strong>Should provide up-to-date information about the units</strong>. For example
+it if it claims to provide Jane Smith’s address it should be the current
+address.</p></li>
+<li><p><strong>No units should be there if they are not meant to be</strong>. Extra units
+(out of scope) are not a serious problem unless we fall into the elementary
+error of replacing them whenever we come across them in the sample. This
+confuses selection probabilities. The correct procedure is to drop any
+ineligible unit found in the sample and not replace them.</p></li>
+<li><p><strong>Should allow direct access to each unit</strong>. Ideally the frame will
+ultimately supply us with a list of the units we are interested in analyzing.
+Sometimes a frame will only give samples of groups of units e.g. a list of
+addresses, each of which may contain many people. Further work is needed
+before a sample of people is realized.</p></li>
+</ul>
+</div>
+</div>
+<div id="approaches-to-sampling" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Approaches to sampling<a href="sample-surveys.html#approaches-to-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’re talking here about random sampling, or <strong>probability sampling</strong>. For
+the purposes of statistical inference such sampling is the only defensible method -
+it’s the only one that leads us to properly constructed confidence intervals
+and hypothesis tests. Other approaches do exist though, and even though you’ll see
+them used they all have significant defects.</p>
+<ul>
+<li><strong>Probability sampling</strong> is the gold standard: every member of the population
+has a known, non-zero chance of selection;</li>
+<li><strong>Purposive sampling</strong>: the surveyor selects members of the population that
+they consider to be representative - dangerously biased towards the views
+and prejudices of the surveyor;</li>
+<li><strong>Haphazard sampling</strong>: the surveyor uses any members of the population that
+they come across. This is what happens on the street corner when you’re asked
+questions by a surveyor;</li>
+<li><strong>Quota sampling</strong>: resembles stratified sample (see later): the surveyor fills
+quotas of respondents to balance numbers of respondents in categories (e.g. by
+age/gender/ethnicity), but does not make an accounting for non-response (see later);</li>
+<li><strong>Snowball sampling</strong>: used in rare populations that are highly connected (e.g.
+refugees from a particular country): existing sample members recruit new sample
+members using their contacts;</li>
+<li><strong>Self-selected sampling</strong>: this is the <strong>worst</strong> of all: the respondents themselves
+decide whether to be selected: they see an advertisement on a webpage or phone
+in with their views. Only profiles motivated population members - the silent
+majority are never measured.</li>
+</ul>
+</div>
+<div id="example-datasets" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Example datasets<a href="sample-surveys.html#example-datasets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’ll use and re-use a number of standard datasets.</p>
+<div id="api" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> API<a href="sample-surveys.html#api" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is a dataset on Student performance in California schools. The dataset is distributed with the <code>survey</code> library in R, and there are a number of unit record datasets which are drawn from a population dataset <code>apipop</code> under various sample designs. The population units are the schools, and a number of characteristics are available. Full documentation can be found in the <code>survey</code> package. The variables we use mostly are:</p>
+<ul>
+<li><code>stype</code> - School type (Elementary/Middle/High School)</li>
+<li><code>snum</code> - School number</li>
+<li><code>dnum</code> - District number</li>
+<li><code>api99</code> - Academic Performance Indicator for the school in the year 1999</li>
+<li><code>api00</code> - Academic Performance Indicator for the school in the year 2000</li>
+<li><code>sch.wide</code> - Did the school meet its school-wide growth target?</li>
+<li><code>awards</code> - Is the school eligible for an awards program</li>
+<li><code>meals</code> - Percentage of students eligible for subsidised meals</li>
+<li><code>ell</code> - Percentage of students that are English Language Learners</li>
+<li><code>grad.sch</code> - Percentage of students with parents with a postgraduate education</li>
+<li><code>enroll</code> - Number of students enrolled</li>
+<li><code>api.stu</code> - Number of students tested in the API</li>
+</ul>
+</div>
+<div id="from-the-dplyr-package" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> From the dplyr package<a href="sample-surveys.html#from-the-dplyr-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><code>starwars</code> - a list of characteristics of 87 characters from the Star Wars
+movie series;</li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sampling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="statistical-inference.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

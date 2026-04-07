@@ -24,6 +24,12 @@ output:
       in_header: preamble.tex
 ---
 
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
 
 ```{r echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, out.align="center")
