@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-07" />
+<meta name="date" content="2026-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -236,10 +236,16 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="statistical-inference" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">4</span> Statistical Inference<a href="statistical-inference.html#statistical-inference" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
 <p>Let’s briefly review a few familiar results from earlier statistics courses.</p>
 <p>Most of what we’ve done in earlier courses has assumed that we have
 a <strong>simple random sample</strong> from an <strong>infinite</strong> population.</p>
-<p>We’ll use data from the <code>starwars</code> dataset (in the dplyr package). There
+<p>We’ll use data from the <code>starwars</code> dataset (in the <code>dplyr</code> package). There
 are data on 87 characters, including their heights in centimetres.<br />
 Six heights are missing, but let’s just guess them so we have no missing data
 (this process of inventing data has a respectable name: <strong>‘imputation’</strong>,
@@ -257,9 +263,17 @@ and we’ll come back to it later).</p>
 <span id="cb110-7"><a href="statistical-inference.html#cb110-7" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Captain Phasma&quot;</span> <span class="sc">~</span> <span class="dv">167</span>, <span class="co"># same as C3P0</span></span>
 <span id="cb110-8"><a href="statistical-inference.html#cb110-8" tabindex="-1"></a>                          <span class="at">.default=</span>height))</span></code></pre></div>
 <p>The mean height <span class="math inline">\(\bar{Y}\)</span> of characters in the Star Wars universe is a <strong>population parameter</strong>.
-We can <strong>estimate</strong> it from a sample of characters. For the purposes of this exercise let’s imagine
-there are only <span class="math inline">\(N=87\)</span> individuals in the Star Wars universe.</p>
-<p>Let’s draw a random sample of <span class="math inline">\(n=20\)</span> from this population:</p>
+We can <strong>estimate</strong> it from a sample of characters.</p>
+<blockquote>
+<p><strong>Note:</strong> we’re using capital letters for <strong>population parameters</strong>
+(<span class="math inline">\(\bar{Y}\)</span> is the population mean), and lower case letters for <strong>sample statistics</strong>
+(<span class="math inline">\(\bar{y}\)</span> is the sample mean).</p>
+<p>It’s also common to see Greek letters for <strong>population parameters</strong> (e.g. <span class="math inline">\(\mu\)</span> for the
+population mean), upper case latin letters for random variables, and lower case latin letters
+for sample statistics.</p>
+</blockquote>
+<p>For the purposes of this exercise let’s imagine there are only <span class="math inline">\(N=87\)</span> individuals in the entire
+Star Wars universe. Let’s draw a random sample of <span class="math inline">\(n=20\)</span> from this population of <span class="math inline">\(N=87\)</span>:</p>
 <div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="statistical-inference.html#cb111-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
 <span id="cb111-2"><a href="statistical-inference.html#cb111-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(starwars)</span>
 <span id="cb111-3"><a href="statistical-inference.html#cb111-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
@@ -631,35 +645,176 @@ Dathomir
 </tr>
 </tbody>
 </table>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="statistical-inference.html#cb112-1" tabindex="-1"></a><span class="fu">hist</span>(samplemembers<span class="sc">$</span>height, <span class="at">xlab=</span><span class="st">&quot;Height (cm)&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>, </span>
+<span id="cb112-2"><a href="statistical-inference.html#cb112-2" tabindex="-1"></a>     <span class="at">breaks=</span><span class="dv">15</span>, <span class="at">main=</span><span class="st">&quot;Heights of Star Wars characters&quot;</span>)</span>
+<span id="cb112-3"><a href="statistical-inference.html#cb112-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fu">mean</span>(samplemembers<span class="sc">$</span>height),<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:starwarssample"></span>
+<img src="_main_files/figure-html/starwarssample-1.png" alt="Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)" width="480" />
+<p class="caption">
+Figure 4.1: Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)
+</p>
+</div>
 <p>Compute the sample mean <span class="math inline">\(\bar{y}\)</span> and standard deviation <span class="math inline">\(s_y\)</span>:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="statistical-inference.html#cb112-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(samplemembers<span class="sc">$</span>height)</span>
-<span id="cb112-2"><a href="statistical-inference.html#cb112-2" tabindex="-1"></a>ybar</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="statistical-inference.html#cb113-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(samplemembers<span class="sc">$</span>height)</span>
+<span id="cb113-2"><a href="statistical-inference.html#cb113-2" tabindex="-1"></a>ybar</span></code></pre></div>
 <pre><code>## [1] 180.3</code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="statistical-inference.html#cb114-1" tabindex="-1"></a>sdy <span class="ot">&lt;-</span> <span class="fu">sd</span>(samplemembers<span class="sc">$</span>height)</span>
-<span id="cb114-2"><a href="statistical-inference.html#cb114-2" tabindex="-1"></a>sdy</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="statistical-inference.html#cb115-1" tabindex="-1"></a>sdy <span class="ot">&lt;-</span> <span class="fu">sd</span>(samplemembers<span class="sc">$</span>height)</span>
+<span id="cb115-2"><a href="statistical-inference.html#cb115-2" tabindex="-1"></a>sdy</span></code></pre></div>
 <pre><code>## [1] 31.13147</code></pre>
 <p>We know how to make a point estimate <span class="math inline">\(\widehat{\bar{Y}}\)</span> for the population
 mean <span class="math inline">\(\bar{Y}\)</span> (remember that a hat <span class="math inline">\(\widehat{.}\)</span> over a symbol indicates
 an estimate of that parameter): the population mean is estimated by the sample
 mean <span class="math inline">\(\bar{y}\)</span>:
 <span class="math display">\[
-    \widehat{\bar{Y}} = \bar{y} = 180.30
+    \widehat{\bar{Y}} = \bar{y} = 180.3
 \]</span>
-and a confidence interval is given by
+and a 95% confidence interval is given by
 <span class="math display">\[\begin{eqnarray}
     \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
-    &amp;=&amp; \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
-    &amp;=&amp;  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &amp;=&amp; \widehat{\bar{Y}} \pm T^\ast_{n-1}\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &amp;=&amp;  \bar{y} \pm T^\ast_{n-1}\times\frac{s_y}{\sqrt{n}}\\
     &amp;=&amp;
-    180.3 \pm 1.96 \times \frac{31.1}{\sqrt{20}}\\
+    180.3 \pm 2.09 \times \frac{31.1}{\sqrt{20}}\\
     &amp;=&amp;
-    180.3 \pm 1.96 \times 7.0\\
+    180.3 \pm 2.09 \times 6.96\\
     &amp;=&amp;
-    180.3 \pm 13.6\\
+    180.3 \pm 14.6\\
     &amp;=&amp;
-    (166.7,193.9)
+    (165.7,194.9)
 \end{eqnarray}\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(\bfa{SE}{\widehat{\bar{Y}}}\)</span> is the <strong>standard error</strong> or <strong>sampling error</strong> of the
+estimator <span class="math inline">\(\widehat{\bar{Y}}\)</span> of the population mean <span class="math inline">\(\bar{Y}\)</span>;</li>
+<li><span class="math inline">\(T^\ast_{n-1}\)</span> is the quantile of the <span class="math inline">\(t-\)</span>distribution with <span class="math inline">\(n-1\)</span> degrees of
+freedom so that the interval <span class="math inline">\([-T^\ast_{n-1},+T^\ast_{n-1}]\)</span> encloses 95% of the probability
+of the <span class="math inline">\(t-\)</span>distribution;</li>
+<li><span class="math inline">\(\bfa{MOE}{\widehat{\bar{Y}}}\)</span> is the <strong>margin of error</strong>, the half-width of the confidence interval,
+and is the standard error scaled by <span class="math inline">\(T^\ast_{n-1}\)</span>.</li>
+</ul>
+<p>This is what is known as a <strong>model based</strong> estimate, the statistical model being
+<span class="math display" id="eq:simplelinearmodel">\[\begin{equation}
+   y_i = \mu + \varepsilon_i \qquad \text{where $\varepsilon_i\overset{\rm iid}{\sim} N(0,\sigma^2)$}
+   \tag{4.1}
+\end{equation}\]</span>
+There are just two parameters here: the population mean <span class="math inline">\(\mu\)</span>, and the population
+standard deviation <span class="math inline">\(\sigma\)</span>.</p>
+<p>We can fit this simplest of all linear regression models using the <code>lm()</code> function and
+get the same results:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="statistical-inference.html#cb117-1" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(height <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>samplemembers)</span>
+<span id="cb117-2"><a href="statistical-inference.html#cb117-2" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = height ~ 1, data = samplemembers)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -101.30   -6.05    0.70   11.20   53.70 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  180.300      6.961    25.9 2.77e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 31.13 on 19 degrees of freedom</code></pre>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="statistical-inference.html#cb119-1" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div>
+<pre><code>##              2.5 % 97.5 %
+## (Intercept) 165.73 194.87</code></pre>
+<p>Here <code>(Intercept)</code> is the estimate for <span class="math inline">\(\mu\)</span>, the population mean.<br />
+The ‘residual standard error’ in the R output is actually what we’d rather
+call <span class="math inline">\(\widehat{\sigma}\)</span>, our estimate of the standard deivation <span class="math inline">\(\sigma\)</span>.</p>
+<p>The confidence interval is only valid if the model in equation <a href="statistical-inference.html#eq:simplelinearmodel">(4.1)</a>
+holds: i.e. if the data are normally distributed about the mean. The histogram
+in Figure <a href="statistical-inference.html#fig:starwarssample">4.1</a> suggests that this is not the case however, since
+there is a clear outlier at low height.</p>
+<blockquote>
+<p>The Central Limit Theorem (CLT) tells us that if <span class="math inline">\(n\)</span> is large enough then our
+estimate for <span class="math inline">\(\mu\)</span> is useable, and its confidence interval realistic, even
+if the model in equation <a href="statistical-inference.html#eq:simplelinearmodel">(4.1)</a> doesn’t actually hold.</p>
+<p>The CLT enables a lot of statistics to yield meaningful results even
+without our knowing the true data generation model.</p>
+<p>In this course most of the examples will have sample sizes large enough
+that the CLT will mean our results are valid.</p>
+</blockquote>
+<p>The standard error of an estimate is the variability
+of estimates between different samples: in fact it is defined as the standard deviation
+of all possible estimates from all possible estimates drawn using the
+same sample design.</p>
+<p>In an infinite population there are an infinite number of possible samples.</p>
+<p>However in a finite population that isn’t the case. In a population of size <span class="math inline">\(N\)</span>
+if we draw a simple random sample without replacement of size <span class="math inline">\(n\)</span> there are
+<span class="math display">\[\begin{eqnarray}
+    \binom{N}{n} &amp;=&amp; {}^NC_n\\
+                 &amp;=&amp; \frac{N!}{n! (N-n)!}\\
+                 &amp;=&amp; \frac{N\times (N-1)\times (N-2)\times ... \times (N-n+1)}{
+                           n\times (n-1)\times (n-2)\times ... \times 1}
+\end{eqnarray}\]</span>
+possible samples: i.e. the number of ways it is possible to draw <span class="math inline">\(n\)</span> objects
+from a collection of <span class="math inline">\(N\)</span> without regard to the order they are selected.</p>
+<p>In our example of selecting <span class="math inline">\(n=20\)</span> from <span class="math inline">\(N=87\)</span> there are an astronomical
+number of possible samples:
+<span class="math display">\[
+   \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
+\]</span>
+There is of course only one way to select a census though:
+<span class="math display">\[  
+   \binom{87}{87} = \frac{87!}{87!0!} = 1
+\]</span>
+(using the at first face slightly annoying definition 0!=1). Since there’s only
+one possible sample when we’re drawing a census the variation among sample estimates
+from different samples is zero: i.e. the standard error is zero.</p>
+<p>It’s also true that if <span class="math inline">\(n\)</span> is close to <span class="math inline">\(N\)</span> then sample estimates hardly differ from
+one another.</p>
+<p>We clearly need a modification of our standard error formula
+<span class="math display">\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \frac{s_y}{\sqrt{n}}
+   \qquad \text{(Infinite population)}
+\]</span>
+to allow for sample sizes <span class="math inline">\(n\)</span> being close to the population size.</p>
+<p>That modification is the <strong>finite population correction (fpc)</strong>:
+<span class="math display">\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}
+   \qquad \text{(Finite population)}
+\]</span>
+The factor <span class="math inline">\(\sqrt{1-n/N}\)</span> squashes the standard error to zero in the case that <span class="math inline">\(n=N\)</span>,
+but for very small <span class="math inline">\(n\)</span> has a value close to 1, and makes no difference at all.</p>
+<p>In our example we had a standard error of
+<span class="math display">\[\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &amp;=&amp; \frac{s_y}{\sqrt{n}}\\
+                              &amp;=&amp; \frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 6.96
+\end{eqnarray}\]</span>
+If we incorporate the fpc this becomes
+<span class="math display">\[\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &amp;=&amp; \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+                              &amp;=&amp; \sqrt{1-\frac{20}{87}}\frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 0.8776 \times \frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 6.11
+\end{eqnarray}\]</span>
+This narrows the confidence interval for the estimate of the population mean height
+from (165.7,194.9)
+to (167.5,193.1).</p>
+<p>This is a <strong>design based</strong> confidence interval, in which it is the sample design
+which foremost in our derivation of standard errors.</p>
+<p>There is quite a lot of theory behind derivation of standard errors in the complex
+designs which arise in sample surveys.</p>
+<p>The <code>survey</code> package in R implements the consequences of sample designs which will
+mean we can use the theory without having to derive it.</p>
+<p>For example here’s a call to some <code>survey</code> package functions which
+gives us the effect of the fpc in our example:</p>
+<pre><code>##         mean     SE
+## height 180.3 6.1089</code></pre>
+<pre><code>##           2.5 %   97.5 %
+## height 168.3268 192.2732</code></pre>
+<p>If you’re interested in the theory take a look at a text like <span class="citation">Särndal, Swensson, and Wretmann (<a href="#ref-ssw">1992</a>)</span>.</p>
 
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-ssw" class="csl-entry">
+Särndal, C-E., B. Swensson, and J. Wretmann. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.
+</div>
 </div>
             </section>
 

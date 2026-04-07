@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-07}
+\date{2026-04-08}
 
 \begin{document}
 \maketitle
@@ -307,6 +307,7 @@
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#library(simputation) \# error installing/loading this}
+\FunctionTok{library}\NormalTok{(scales)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1925,7 +1926,7 @@ Let's briefly review a few familiar results from earlier statistics courses.
 Most of what we've done in earlier courses has assumed that we have
 a \textbf{simple random sample} from an \textbf{infinite} population.
 
-We'll use data from the \texttt{starwars} dataset (in the dplyr package). There
+We'll use data from the \texttt{starwars} dataset (in the \texttt{dplyr} package). There
 are data on 87 characters, including their heights in centimetres.\\
 Six heights are missing, but let's just guess them so we have no missing data
 (this process of inventing data has a respectable name: \textbf{`imputation'},
@@ -1957,10 +1958,20 @@ and we'll come back to it later).
 \end{Shaded}
 
 The mean height \(\bar{Y}\) of characters in the Star Wars universe is a \textbf{population parameter}.
-We can \textbf{estimate} it from a sample of characters. For the purposes of this exercise let's imagine
-there are only \(N=87\) individuals in the Star Wars universe.
+We can \textbf{estimate} it from a sample of characters.
 
-Let's draw a random sample of \(n=20\) from this population:
+\begin{quote}
+\textbf{Note:} we're using capital letters for \textbf{population parameters}
+(\(\bar{Y}\) is the population mean), and lower case letters for \textbf{sample statistics}
+(\(\bar{y}\) is the sample mean).
+
+It's also common to see Greek letters for \textbf{population parameters} (e.g.~\(\mu\) for the
+population mean), upper case latin letters for random variables, and lower case latin letters
+for sample statistics.
+\end{quote}
+
+For the purposes of this exercise let's imagine there are only \(N=87\) individuals in the entire
+Star Wars universe. Let's draw a random sample of \(n=20\) from this population of \(N=87\):
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2024,6 +2035,23 @@ Darth Maul & 175 & 80 & none & Dathomir\\
 \end{tabular}
 \end{table}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height, }\AttributeTok{xlab=}\StringTok{"Height (cm)"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Frequency"}\NormalTok{, }
+     \AttributeTok{breaks=}\DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{"Heights of Star Wars characters"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{mean}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/starwarssample-1} 
+
+}
+
+\caption{Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)}\label{fig:starwarssample}
+\end{figure}
+
 Compute the sample mean \(\bar{y}\) and standard deviation \(s_y\):
 
 \begin{Shaded}
@@ -2053,22 +2081,196 @@ mean \(\bar{Y}\) (remember that a hat \(\widehat{.}\) over a symbol indicates
 an estimate of that parameter): the population mean is estimated by the sample
 mean \(\bar{y}\):
 \[
-    \widehat{\bar{Y}} = \bar{y} = 180.30
+    \widehat{\bar{Y}} = \bar{y} = 180.3
 \]
-and a confidence interval is given by
+and a 95\% confidence interval is given by
 \begin{eqnarray}
     \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
-    &=& \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
-    &=&  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &=& \widehat{\bar{Y}} \pm T^\ast_{n-1}\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &=&  \bar{y} \pm T^\ast_{n-1}\times\frac{s_y}{\sqrt{n}}\\
     &=& 
-    180.3 \pm 1.96 \times \frac{31.1}{\sqrt{20}}\\
+    180.3 \pm 2.09 \times \frac{31.1}{\sqrt{20}}\\
     &=& 
-    180.3 \pm 1.96 \times 7.0\\
+    180.3 \pm 2.09 \times 6.96\\
     &=& 
-    180.3 \pm 13.6\\
+    180.3 \pm 14.6\\
     &=& 
-    (166.7,193.9)
+    (165.7,194.9)
 \end{eqnarray}
+
+Here:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\bfa{SE}{\widehat{\bar{Y}}}\) is the \textbf{standard error} or \textbf{sampling error} of the
+  estimator \(\widehat{\bar{Y}}\) of the population mean \(\bar{Y}\);
+\item
+  \(T^\ast_{n-1}\) is the quantile of the \(t-\)distribution with \(n-1\) degrees of
+  freedom so that the interval \([-T^\ast_{n-1},+T^\ast_{n-1}]\) encloses 95\% of the probability
+  of the \(t-\)distribution;
+\item
+  \(\bfa{MOE}{\widehat{\bar{Y}}}\) is the \textbf{margin of error}, the half-width of the confidence interval,
+  and is the standard error scaled by \(T^\ast_{n-1}\).
+\end{itemize}
+
+This is what is known as a \textbf{model based} estimate, the statistical model being
+\begin{equation}
+   y_i = \mu + \varepsilon_i \qquad \text{where $\varepsilon_i\overset{\rm iid}{\sim} N(0,\sigma^2)$}
+   \label{eq:simplelinearmodel}
+\end{equation}
+There are just two parameters here: the population mean \(\mu\), and the population
+standard deviation \(\sigma\).
+
+We can fit this simplest of all linear regression models using the \texttt{lm()} function and
+get the same results:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm1 }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(height }\SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{samplemembers)}
+\FunctionTok{summary}\NormalTok{(lm1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = height ~ 1, data = samplemembers)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -101.30   -6.05    0.70   11.20   53.70 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  180.300      6.961    25.9 2.77e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 31.13 on 19 degrees of freedom
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(lm1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              2.5 % 97.5 %
+## (Intercept) 165.73 194.87
+\end{verbatim}
+
+Here \texttt{(Intercept)} is the estimate for \(\mu\), the population mean.\\
+The `residual standard error' in the R output is actually what we'd rather
+call \(\widehat{\sigma}\), our estimate of the standard deivation \(\sigma\).
+
+The confidence interval is only valid if the model in equation \eqref{eq:simplelinearmodel}
+holds: i.e.~if the data are normally distributed about the mean. The histogram
+in Figure \ref{fig:starwarssample} suggests that this is not the case however, since
+there is a clear outlier at low height.
+
+\begin{quote}
+The Central Limit Theorem (CLT) tells us that if \(n\) is large enough then our
+estimate for \(\mu\) is useable, and its confidence interval realistic, even
+if the model in equation \eqref{eq:simplelinearmodel} doesn't actually hold.
+
+The CLT enables a lot of statistics to yield meaningful results even
+without our knowing the true data generation model.
+
+In this course most of the examples will have sample sizes large enough
+that the CLT will mean our results are valid.
+\end{quote}
+
+The standard error of an estimate is the variability
+of estimates between different samples: in fact it is defined as the standard deviation
+of all possible estimates from all possible estimates drawn using the
+same sample design.
+
+In an infinite population there are an infinite number of possible samples.
+
+However in a finite population that isn't the case. In a population of size \(N\)
+if we draw a simple random sample without replacement of size \(n\) there are
+\begin{eqnarray}
+    \binom{N}{n} &=& {}^NC_n\\
+                 &=& \frac{N!}{n! (N-n)!}\\ 
+                 &=& \frac{N\times (N-1)\times (N-2)\times ... \times (N-n+1)}{
+                           n\times (n-1)\times (n-2)\times ... \times 1}
+\end{eqnarray}
+possible samples: i.e.~the number of ways it is possible to draw \(n\) objects
+from a collection of \(N\) without regard to the order they are selected.
+
+In our example of selecting \(n=20\) from \(N=87\) there are an astronomical
+number of possible samples:
+\[
+   \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
+\]
+There is of course only one way to select a census though:
+\[  
+   \binom{87}{87} = \frac{87!}{87!0!} = 1
+\]
+(using the at first face slightly annoying definition 0!=1). Since there's only
+one possible sample when we're drawing a census the variation among sample estimates
+from different samples is zero: i.e.~the standard error is zero.
+
+It's also true that if \(n\) is close to \(N\) then sample estimates hardly differ from
+one another.
+
+We clearly need a modification of our standard error formula
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \frac{s_y}{\sqrt{n}}
+   \qquad \text{(Infinite population)}
+\]
+to allow for sample sizes \(n\) being close to the population size.
+
+That modification is the \textbf{finite population correction (fpc)}:
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}
+   \qquad \text{(Finite population)}
+\]
+The factor \(\sqrt{1-n/N}\) squashes the standard error to zero in the case that \(n=N\),
+but for very small \(n\) has a value close to 1, and makes no difference at all.
+
+In our example we had a standard error of
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \frac{s_y}{\sqrt{n}}\\
+                              &=& \frac{31.1}{\sqrt{20}}\\
+                              &=& 6.96
+\end{eqnarray}
+If we incorporate the fpc this becomes
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+                              &=& \sqrt{1-\frac{20}{87}}\frac{31.1}{\sqrt{20}}\\
+                              &=& 0.8776 \times \frac{31.1}{\sqrt{20}}\\
+                              &=& 6.11
+\end{eqnarray}
+This narrows the confidence interval for the estimate of the population mean height
+from (165.7,194.9)
+to (167.5,193.1).
+
+This is a \textbf{design based} confidence interval, in which it is the sample design
+which foremost in our derivation of standard errors.
+
+There is quite a lot of theory behind derivation of standard errors in the complex
+designs which arise in sample surveys.
+
+The \texttt{survey} package in R implements the consequences of sample designs which will
+mean we can use the theory without having to derive it.
+
+For example here's a call to some \texttt{survey} package functions which
+gives us the effect of the fpc in our example:
+
+\begin{verbatim}
+##         mean     SE
+## height 180.3 6.1089
+\end{verbatim}
+
+\begin{verbatim}
+##           2.5 %   97.5 %
+## height 168.3268 192.2732
+\end{verbatim}
+
+If you're interested in the theory take a look at a text like \citet{ssw}.
 
 \chapter{Sample Designs}\label{sample-designs}
 

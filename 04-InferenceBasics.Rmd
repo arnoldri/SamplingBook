@@ -6,14 +6,14 @@ $\\DeclareMathOperator*{\\argmin}{argmin}$
 $\\newcommand{\\var}{\\mathrm{Var}}$
 $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
-$\\newcommand{\\estm}{\\widehat}$'
+$\\newcommand{\\estm}{\\widehat}$'`
 
 Let's briefly review a few familiar results from earlier statistics courses.
 
 Most of what we've done in earlier courses has assumed that we have
 a **simple random sample** from an **infinite** population.
 
-We'll use data from the `starwars` dataset (in the dplyr package).  There
+We'll use data from the `starwars` dataset (in the `dplyr` package).  There
 are data on 87 characters, including their heights in centimetres.  
 Six heights are missing, but let's just guess them so we have no missing data
 (this process of inventing data has a respectable name:  **'imputation'**, 
@@ -34,10 +34,18 @@ starwars <- starwars %>%
 ```
 
 The mean height $\bar{Y}$ of characters in the Star Wars universe is a **population parameter**.
-We can **estimate** it from a sample of characters.  For the purposes of this exercise let's imagine 
-there are only $N=87$ individuals in the Star Wars universe.
+We can **estimate** it from a sample of characters.  
 
-Let's draw a random sample of $n=20$ from this population:
+> **Note:** we're using capital letters for **population parameters** 
+> ($\bar{Y}$ is the population mean), and lower case letters for **sample statistics**
+> ($\bar{y}$ is the sample mean).
+> 
+> It's also common to see Greek letters for **population parameters** (e.g. $\mu$ for the
+> population mean), upper case latin letters for random variables, and lower case latin letters
+> for sample statistics.  
+
+For the purposes of this exercise let's imagine there are only $N=87$ individuals in the entire 
+Star Wars universe. Let's draw a random sample of $n=20$ from this population of $N=87$:
 ```{r}
 set.seed(222)
 bigN <- nrow(starwars)
@@ -49,6 +57,15 @@ samplemembers %>%
   kable_styling()
 ```
 
+```{r starwarssample, echo=FALSE} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)"
+hist(samplemembers$height, xlab="Height (cm)", ylab="Frequency", 
+     breaks=15, main="Heights of Star Wars characters")
+abline(v=mean(samplemembers$height),col="red",lwd=2)
+```
+
 Compute the sample mean $\bar{y}$ and standard deviation $s_y$:
 ```{r}
 ybar <- mean(samplemembers$height)
@@ -58,9 +75,14 @@ sdy
 ```
 
 ```{r echo=FALSE}
+tstar <- qt(0.05/2, df=n-1, lower.tail=FALSE)
 se <- sdy/sqrt(n)
-moe <- 1.96*se
+moe <- tstar*se
 ci <- ybar + moe*c(-1,1)
+fpc <- sqrt(1-n/bigN)
+sefpc <- se*fpc
+moefpc <- moe*fpc
+cifpc <- ybar + moefpc*c(-1,1)
 ```
 
 We know how to make a point estimate $\widehat{\bar{Y}}$ for the population
@@ -68,20 +90,155 @@ mean $\bar{Y}$ (remember that a hat $\widehat{.}$ over a symbol indicates
 an estimate of that parameter): the population mean is estimated by the sample
 mean $\bar{y}$:
 \[
-    \widehat{\bar{Y}} = \bar{y} = `r sprintf("%.2f",ybar)`
+    \widehat{\bar{Y}} = \bar{y} = `r sprintf("%.1f",ybar)`
 \]
-and a confidence interval is given by
+and a 95% confidence interval is given by
 \begin{eqnarray}
     \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
-    &=& \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
-    &=&  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &=& \widehat{\bar{Y}} \pm T^\ast_{n-1}\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &=&  \bar{y} \pm T^\ast_{n-1}\times\frac{s_y}{\sqrt{n}}\\
     &=& 
-    `r sprintf("%.1f",ybar)` \pm 1.96 \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.2f",tstar)` \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
     &=& 
-    `r sprintf("%.1f",ybar)` \pm 1.96 \times `r sprintf("%.1f",se)`\\
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.2f",tstar)` \times `r sprintf("%.2f",se)`\\
     &=& 
     `r sprintf("%.1f",ybar)` \pm `r sprintf("%.1f",moe)`\\
     &=& 
     `r sprintf("(%.1f,%.1f)",ci[1],ci[2])`
 \end{eqnarray}
+
+Here:
+
+* $\bfa{SE}{\widehat{\bar{Y}}}$ is the **standard error** or **sampling error** of the 
+  estimator $\widehat{\bar{Y}}$ of the population mean $\bar{Y}$;
+* $T^\ast_{n-1}$ is the quantile of the $t-$distribution with $n-1$ degrees of
+  freedom so that the interval $[-T^\ast_{n-1},+T^\ast_{n-1}]$ encloses 95% of the probability
+  of the $t-$distribution;
+* $\bfa{MOE}{\widehat{\bar{Y}}}$ is the **margin of error**, the half-width of the confidence interval, 
+  and is the standard error scaled by $T^\ast_{n-1}$.
+
+This is what is known as a **model based** estimate, the statistical model being
+\begin{equation}
+   y_i = \mu + \varepsilon_i \qquad \text{where $\varepsilon_i\overset{\rm iid}{\sim} N(0,\sigma^2)$}
+   (\#eq:simplelinearmodel)
+\end{equation}
+There are just two parameters here: the population mean $\mu$, and the population 
+standard deviation $\sigma$.
+
+We can fit this simplest of all linear regression models using the `lm()` function and 
+get the same results:
+```{r}
+lm1 <- lm(height ~ 1, data=samplemembers)
+summary(lm1)
+confint(lm1)
+```
+
+Here `(Intercept)` is the estimate for $\mu$, the population mean.  
+The 'residual standard error' in the R output is actually what we'd rather
+call $\widehat{\sigma}$, our estimate of the standard deivation $\sigma$.  
+
+The confidence interval is only valid if the model in equation \@ref(eq:simplelinearmodel) 
+holds: i.e. if the data are normally distributed about the mean.  The histogram
+in Figure \@ref(fig:starwarssample) suggests that this is not the case however, since
+there is a clear outlier at low height.  
+
+> The Central Limit Theorem (CLT) tells us that if $n$ is large enough then our
+> estimate for $\mu$ is useable, and its confidence interval realistic, even 
+> if the model in equation \@ref(eq:simplelinearmodel) doesn't actually hold.  
+> 
+> The CLT enables much of statistcal practice to yield meaningful results even
+> without our knowing the true data generation model. 
+> 
+> In this course most of the examples will have sample sizes large enough
+> that the CLT will mean our results are valid.  In these cases when
+> constructing a confidence interval it will 
+> be sufficient to replace $T^\ast_{n-1}$ with the equivalent $Z^\ast=1.96$
+> from the Normal distribution.  
+
+The standard error of an estimate is the variability
+of estimates between different samples: in fact it is defined as the standard deviation
+of all possible estimates from all possible estimates drawn using the
+same sample design. 
+
+In an infinite population there are an infinite number of possible samples.
+
+However in a finite population that isn't the case.  In a population of size $N$
+if we draw a simple random sample without replacement of size $n$ there are
+\begin{eqnarray}
+    \binom{N}{n} &=& {}^NC_n\\
+                 &=& \frac{N!}{n! (N-n)!}\\ 
+                 &=& \frac{N\times (N-1)\times (N-2)\times ... \times (N-n+1)}{
+                           n\times (n-1)\times (n-2)\times ... \times 1}
+\end{eqnarray}
+possible samples: i.e. the number of ways it is possible to draw $n$ objects
+from a collection of $N$ without regard to the order they are selected.
+
+In our example of selecting $n=20$ from $N=87$ there are an astronomical
+number of possible samples:
+\[
+   \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
+\]
+There is of course only one way to select a census though:
+\[  
+   \binom{87}{87} = \frac{87!}{87!0!} = 1
+\]
+(using the at first face slightly annoying definition 0!=1).  Since there's only 
+one possible sample when we're drawing a census the variation among sample estimates 
+from different samples is zero: i.e. the standard error is zero.  
+
+It's also true that if $n$ is close to $N$ then sample estimates hardly differ from
+one another.
+
+We clearly need a modification of our standard error formula
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \frac{s_y}{\sqrt{n}}
+   \qquad \text{(Infinite population)}
+\]
+to allow for sample sizes $n$ being close to the population size.
+
+That modification is the **finite population correction (fpc)**:
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}
+   \qquad \text{(Finite population)}
+\]
+The factor $\sqrt{1-n/N}$ squashes the standard error to zero in the case that $n=N$, 
+but for very small $n$ has a value close to 1, and makes no difference at all.
+
+In our example we had a standard error of
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \frac{s_y}{\sqrt{n}}\\
+                              &=& \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.2f",se)`
+\end{eqnarray}
+If we incorporate the fpc this becomes
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+                              &=& \sqrt{1-\frac{`r n`}{`r bigN`}}\frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.4f",fpc)` \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.2f",sefpc)`
+\end{eqnarray}
+This narrows the confidence interval for the estimate of the population mean height 
+from `r sprintf("(%.1f,%.1f)", ci[1], ci[2])`
+to `r sprintf("(%.1f,%.1f)", cifpc[1], cifpc[2])`.
+
+This is a **design based** confidence interval, in which it is the sample design
+which foremost in our derivation of standard errors.  
+
+There is quite a lot of theory behind derivation of standard errors in the complex
+designs which arise in sample surveys.  
+
+The `survey` package in R implements the consequences of sample designs which will 
+mean we can use the theory without having to derive it.  
+
+For example here's a call to some `survey` package functions which
+gives us the effect of the fpc in our example:
+```{r}
+samplemembers$bigN <- bigN
+ss <- svymean(height~1, design=svydesign(ids=~1, fpc=~bigN, data=samplemembers))
+ss
+confint(ss)
+```
+
+If you're interested in the theory take a look at a text like @cochran or @ssw. 
+
 

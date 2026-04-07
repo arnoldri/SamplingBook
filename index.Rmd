@@ -46,6 +46,7 @@ library(sampling)
 #library(gtsummary) # error installing/loading this
 library(mice)
 #library(simputation) # error installing/loading this
+library(scales)
 ```
 
 # Introductory Remarks

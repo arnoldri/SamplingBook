@@ -11,7 +11,7 @@
 
 <meta name="author" content="Richard Arnold et al." />
 
-<meta name="date" content="2026-04-07" />
+<meta name="date" content="2026-04-08" />
 
 <title>STAT395: Sampling</title>
 
@@ -586,7 +586,7 @@ display: none;
 
 <h1 class="title toc-ignore">STAT395: Sampling</h1>
 <h4 class="author">Richard Arnold et al.</h4>
-<h4 class="date">2026-04-07</h4>
+<h4 class="date">2026-04-08</h4>
 
 </div>
 
@@ -647,7 +647,8 @@ library(mice)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     cbind, rbind</code></pre>
-<pre class="r"><code>#library(simputation) # error installing/loading this</code></pre>
+<pre class="r"><code>#library(simputation) # error installing/loading this
+library(scales)</code></pre>
 <div id="introductory-remarks" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introductory Remarks</h1>
 <p>These are notes for the Sampling section of STAT395/455. The course
@@ -1632,10 +1633,16 @@ movie series;</li>
 </div>
 <div id="statistical-inference" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Statistical Inference</h1>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
 <p>Let’s briefly review a few familiar results from earlier statistics courses.</p>
 <p>Most of what we’ve done in earlier courses has assumed that we have
 a <strong>simple random sample</strong> from an <strong>infinite</strong> population.</p>
-<p>We’ll use data from the <code>starwars</code> dataset (in the dplyr package). There
+<p>We’ll use data from the <code>starwars</code> dataset (in the <code>dplyr</code> package). There
 are data on 87 characters, including their heights in centimetres.<br />
 Six heights are missing, but let’s just guess them so we have no missing data
 (this process of inventing data has a respectable name: <strong>‘imputation’</strong>,
@@ -1653,9 +1660,17 @@ sum(is.na(starwars$height))</code></pre>
                           name==&quot;Captain Phasma&quot; ~ 167, # same as C3P0
                           .default=height))</code></pre>
 <p>The mean height <span class="math inline">\(\bar{Y}\)</span> of characters in the Star Wars universe is a <strong>population parameter</strong>.
-We can <strong>estimate</strong> it from a sample of characters. For the purposes of this exercise let’s imagine
-there are only <span class="math inline">\(N=87\)</span> individuals in the Star Wars universe.</p>
-<p>Let’s draw a random sample of <span class="math inline">\(n=20\)</span> from this population:</p>
+We can <strong>estimate</strong> it from a sample of characters.</p>
+<blockquote>
+<p><strong>Note:</strong> we’re using capital letters for <strong>population parameters</strong>
+(<span class="math inline">\(\bar{Y}\)</span> is the population mean), and lower case letters for <strong>sample statistics</strong>
+(<span class="math inline">\(\bar{y}\)</span> is the sample mean).</p>
+<p>It’s also common to see Greek letters for <strong>population parameters</strong> (e.g. <span class="math inline">\(\mu\)</span> for the
+population mean), upper case latin letters for random variables, and lower case latin letters
+for sample statistics.</p>
+</blockquote>
+<p>For the purposes of this exercise let’s imagine there are only <span class="math inline">\(N=87\)</span> individuals in the entire
+Star Wars universe. Let’s draw a random sample of <span class="math inline">\(n=20\)</span> from this population of <span class="math inline">\(N=87\)</span>:</p>
 <pre class="r"><code>set.seed(222)
 bigN &lt;- nrow(starwars)
 n &lt;- 20
@@ -2027,6 +2042,15 @@ Dathomir
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>hist(samplemembers$height, xlab=&quot;Height (cm)&quot;, ylab=&quot;Frequency&quot;, 
+     breaks=15, main=&quot;Heights of Star Wars characters&quot;)
+abline(v=mean(samplemembers$height),col=&quot;red&quot;,lwd=2)</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:starwarssample"></span>
+<img role="img" aria-label="Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)" src="data:image/png;base64,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" alt="Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)" width="480" />
+<p class="caption">
+Figure 4.1: Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)
+</p>
+</div>
 <p>Compute the sample mean <span class="math inline">\(\bar{y}\)</span> and standard deviation <span class="math inline">\(s_y\)</span>:</p>
 <pre class="r"><code>ybar &lt;- mean(samplemembers$height)
 ybar</code></pre>
@@ -2039,22 +2063,148 @@ mean <span class="math inline">\(\bar{Y}\)</span> (remember that a hat <span cla
 an estimate of that parameter): the population mean is estimated by the sample
 mean <span class="math inline">\(\bar{y}\)</span>:
 <span class="math display">\[
-    \widehat{\bar{Y}} = \bar{y} = 180.30
+    \widehat{\bar{Y}} = \bar{y} = 180.3
 \]</span>
-and a confidence interval is given by
+and a 95% confidence interval is given by
 <span class="math display">\[\begin{eqnarray}
     \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
-    &amp;=&amp; \widehat{\bar{Y}} \pm Z\times \bfa{SE}{\widehat{\bar{Y}}}\\
-    &amp;=&amp;  \bar{y} \pm Z\times\frac{s_y}{\sqrt{n}}\\
+    &amp;=&amp; \widehat{\bar{Y}} \pm T^\ast_{n-1}\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &amp;=&amp;  \bar{y} \pm T^\ast_{n-1}\times\frac{s_y}{\sqrt{n}}\\
     &amp;=&amp;
-    180.3 \pm 1.96 \times \frac{31.1}{\sqrt{20}}\\
+    180.3 \pm 2.09 \times \frac{31.1}{\sqrt{20}}\\
     &amp;=&amp;
-    180.3 \pm 1.96 \times 7.0\\
+    180.3 \pm 2.09 \times 6.96\\
     &amp;=&amp;
-    180.3 \pm 13.6\\
+    180.3 \pm 14.6\\
     &amp;=&amp;
-    (166.7,193.9)
+    (165.7,194.9)
 \end{eqnarray}\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(\bfa{SE}{\widehat{\bar{Y}}}\)</span> is the <strong>standard error</strong> or <strong>sampling error</strong> of the
+estimator <span class="math inline">\(\widehat{\bar{Y}}\)</span> of the population mean <span class="math inline">\(\bar{Y}\)</span>;</li>
+<li><span class="math inline">\(T^\ast_{n-1}\)</span> is the quantile of the <span class="math inline">\(t-\)</span>distribution with <span class="math inline">\(n-1\)</span> degrees of
+freedom so that the interval <span class="math inline">\([-T^\ast_{n-1},+T^\ast_{n-1}]\)</span> encloses 95% of the probability
+of the <span class="math inline">\(t-\)</span>distribution;</li>
+<li><span class="math inline">\(\bfa{MOE}{\widehat{\bar{Y}}}\)</span> is the <strong>margin of error</strong>, the half-width of the confidence interval,
+and is the standard error scaled by <span class="math inline">\(T^\ast_{n-1}\)</span>.</li>
+</ul>
+<p>This is what is known as a <strong>model based</strong> estimate, the statistical model being
+<span class="math display" id="eq:simplelinearmodel">\[\begin{equation}
+   y_i = \mu + \varepsilon_i \qquad \text{where $\varepsilon_i\overset{\rm iid}{\sim} N(0,\sigma^2)$}
+   \tag{4.1}
+\end{equation}\]</span>
+There are just two parameters here: the population mean <span class="math inline">\(\mu\)</span>, and the population
+standard deviation <span class="math inline">\(\sigma\)</span>.</p>
+<p>We can fit this simplest of all linear regression models using the <code>lm()</code> function and
+get the same results:</p>
+<pre class="r"><code>lm1 &lt;- lm(height ~ 1, data=samplemembers)
+summary(lm1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = height ~ 1, data = samplemembers)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -101.30   -6.05    0.70   11.20   53.70 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  180.300      6.961    25.9 2.77e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 31.13 on 19 degrees of freedom</code></pre>
+<pre class="r"><code>confint(lm1)</code></pre>
+<pre><code>##              2.5 % 97.5 %
+## (Intercept) 165.73 194.87</code></pre>
+<p>Here <code>(Intercept)</code> is the estimate for <span class="math inline">\(\mu\)</span>, the population mean.<br />
+The ‘residual standard error’ in the R output is actually what we’d rather
+call <span class="math inline">\(\widehat{\sigma}\)</span>, our estimate of the standard deivation <span class="math inline">\(\sigma\)</span>.</p>
+<p>The confidence interval is only valid if the model in equation <a href="#eq:simplelinearmodel">(4.1)</a>
+holds: i.e. if the data are normally distributed about the mean. The histogram
+in Figure <a href="#fig:starwarssample">4.1</a> suggests that this is not the case however, since
+there is a clear outlier at low height.</p>
+<blockquote>
+<p>The Central Limit Theorem (CLT) tells us that if <span class="math inline">\(n\)</span> is large enough then our
+estimate for <span class="math inline">\(\mu\)</span> is useable, and its confidence interval realistic, even
+if the model in equation <a href="#eq:simplelinearmodel">(4.1)</a> doesn’t actually hold.</p>
+<p>The CLT enables a lot of statistics to yield meaningful results even
+without our knowing the true data generation model.</p>
+<p>In this course most of the examples will have sample sizes large enough
+that the CLT will mean our results are valid.</p>
+</blockquote>
+<p>The standard error of an estimate is the variability
+of estimates between different samples: in fact it is defined as the standard deviation
+of all possible estimates from all possible estimates drawn using the
+same sample design.</p>
+<p>In an infinite population there are an infinite number of possible samples.</p>
+<p>However in a finite population that isn’t the case. In a population of size <span class="math inline">\(N\)</span>
+if we draw a simple random sample without replacement of size <span class="math inline">\(n\)</span> there are
+<span class="math display">\[\begin{eqnarray}
+    \binom{N}{n} &amp;=&amp; {}^NC_n\\
+                 &amp;=&amp; \frac{N!}{n! (N-n)!}\\
+                 &amp;=&amp; \frac{N\times (N-1)\times (N-2)\times ... \times (N-n+1)}{
+                           n\times (n-1)\times (n-2)\times ... \times 1}
+\end{eqnarray}\]</span>
+possible samples: i.e. the number of ways it is possible to draw <span class="math inline">\(n\)</span> objects
+from a collection of <span class="math inline">\(N\)</span> without regard to the order they are selected.</p>
+<p>In our example of selecting <span class="math inline">\(n=20\)</span> from <span class="math inline">\(N=87\)</span> there are an astronomical
+number of possible samples:
+<span class="math display">\[
+   \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
+\]</span>
+There is of course only one way to select a census though:
+<span class="math display">\[  
+   \binom{87}{87} = \frac{87!}{87!0!} = 1
+\]</span>
+(using the at first face slightly annoying definition 0!=1). Since there’s only
+one possible sample when we’re drawing a census the variation among sample estimates
+from different samples is zero: i.e. the standard error is zero.</p>
+<p>It’s also true that if <span class="math inline">\(n\)</span> is close to <span class="math inline">\(N\)</span> then sample estimates hardly differ from
+one another.</p>
+<p>We clearly need a modification of our standard error formula
+<span class="math display">\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \frac{s_y}{\sqrt{n}}
+   \qquad \text{(Infinite population)}
+\]</span>
+to allow for sample sizes <span class="math inline">\(n\)</span> being close to the population size.</p>
+<p>That modification is the <strong>finite population correction (fpc)</strong>:
+<span class="math display">\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}
+   \qquad \text{(Finite population)}
+\]</span>
+The factor <span class="math inline">\(\sqrt{1-n/N}\)</span> squashes the standard error to zero in the case that <span class="math inline">\(n=N\)</span>,
+but for very small <span class="math inline">\(n\)</span> has a value close to 1, and makes no difference at all.</p>
+<p>In our example we had a standard error of
+<span class="math display">\[\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &amp;=&amp; \frac{s_y}{\sqrt{n}}\\
+                              &amp;=&amp; \frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 6.96
+\end{eqnarray}\]</span>
+If we incorporate the fpc this becomes
+<span class="math display">\[\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &amp;=&amp; \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+                              &amp;=&amp; \sqrt{1-\frac{20}{87}}\frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 0.8776 \times \frac{31.1}{\sqrt{20}}\\
+                              &amp;=&amp; 6.11
+\end{eqnarray}\]</span>
+This narrows the confidence interval for the estimate of the population mean height
+from (165.7,194.9)
+to (167.5,193.1).</p>
+<p>This is a <strong>design based</strong> confidence interval, in which it is the sample design
+which foremost in our derivation of standard errors.</p>
+<p>There is quite a lot of theory behind derivation of standard errors in the complex
+designs which arise in sample surveys.</p>
+<p>The <code>survey</code> package in R implements the consequences of sample designs which will
+mean we can use the theory without having to derive it.</p>
+<p>For example here’s a call to some <code>survey</code> package functions which
+gives us the effect of the fpc in our example:</p>
+<pre><code>##         mean     SE
+## height 180.3 6.1089</code></pre>
+<pre><code>##           2.5 %   97.5 %
+## height 168.3268 192.2732</code></pre>
+<p>If you’re interested in the theory take a look at a text like <span class="citation">Särndal, Swensson, and Wretmann (<a href="#ref-ssw">1992</a>)</span>.</p>
 <!--chapter:end:04-InferenceBasics.Rmd-->
 </div>
 <div id="sample-designs" class="section level1" number="5">
