@@ -47,6 +47,7 @@ library(sampling)
 library(mice)
 #library(simputation) # error installing/loading this
 library(scales)
+source("utils.R")
 ```
 
 # Introductory Remarks
@@ -148,12 +149,19 @@ Some simple lectures on Sample Surveys
  * https://r-project.ro/conference2017/presentations/Camelia_Goga_sondages.pdf
  * Notes for epidemiologists: https://www.epirhandbook.com/en/new_pages/survey_analysis.html
  * Notes on imputation: https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/
- 
+ * An online book about spatial sampling https://dickbrus.github.io/SpatialSamplingwithR/
+ * From Qualtrics https://www.qualtrics.com/articles/strategy-research/sampling-methods/
+
 Data
 
  * UC Irvine Machine Learning data repository: http://archive.ics.uci.edu/
  * Some free microdata sets: https://asdfree.com/
  * Kaggle data repository: https://www.kaggle.com/
+   * Airline dataset from Kaggle:
+     https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics
+     - distributed under the Creative Commons Licence 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/
+ * Address file from LINZ: https://data.linz.govt.nz/layer/123113-nz-addresses/
+ * List of NZ schools https://www.educationcounts.govt.nz/directories/list-of-nz-schools
  
 ## R Packages
 

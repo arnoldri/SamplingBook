@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-08}
+\date{2026-04-11}
 
 \begin{document}
 \maketitle
@@ -308,6 +308,7 @@
 \begin{Highlighting}[]
 \CommentTok{\#library(simputation) \# error installing/loading this}
 \FunctionTok{library}\NormalTok{(scales)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"utils.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -495,6 +496,10 @@ Some simple lectures on Sample Surveys
   Notes for epidemiologists: \url{https://www.epirhandbook.com/en/new_pages/survey_analysis.html}
 \item
   Notes on imputation: \url{https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/}
+\item
+  An online book about spatial sampling \url{https://dickbrus.github.io/SpatialSamplingwithR/}
+\item
+  From Qualtrics \url{https://www.qualtrics.com/articles/strategy-research/sampling-methods/}
 \end{itemize}
 
 Data
@@ -507,6 +512,23 @@ Data
   Some free microdata sets: \url{https://asdfree.com/}
 \item
   Kaggle data repository: \url{https://www.kaggle.com/}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Airline dataset from Kaggle:
+    \url{https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      distributed under the Creative Commons Licence 4.0: \url{https://creativecommons.org/licenses/by-nc-sa/4.0/}
+    \end{itemize}
+  \end{itemize}
+\item
+  Address file from LINZ: \url{https://data.linz.govt.nz/layer/123113-nz-addresses/}
+\item
+  List of NZ schools \url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools}
 \end{itemize}
 
 \section{R Packages}\label{r-packages}
@@ -1921,6 +1943,8 @@ This is a dataset on Student performance in California schools. The dataset is d
 
 \chapter{Statistical Inference}\label{statistical-inference}
 
+\section{Inference in infinite populations}\label{inference-in-infinite-populations}
+
 Let's briefly review a few familiar results from earlier statistics courses.
 
 Most of what we've done in earlier courses has assumed that we have
@@ -2034,14 +2058,6 @@ Darth Maul & 175 & 80 & none & Dathomir\\
 \hline
 \end{tabular}
 \end{table}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{hist}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height, }\AttributeTok{xlab=}\StringTok{"Height (cm)"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Frequency"}\NormalTok{, }
-     \AttributeTok{breaks=}\DecValTok{15}\NormalTok{, }\AttributeTok{main=}\StringTok{"Heights of Star Wars characters"}\NormalTok{)}
-\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{mean}\NormalTok{(samplemembers}\SpecialCharTok{$}\NormalTok{height),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{figure}
 
@@ -2175,14 +2191,19 @@ The Central Limit Theorem (CLT) tells us that if \(n\) is large enough then our
 estimate for \(\mu\) is useable, and its confidence interval realistic, even
 if the model in equation \eqref{eq:simplelinearmodel} doesn't actually hold.
 
-The CLT enables a lot of statistics to yield meaningful results even
+The CLT enables much of statistcal practice to yield meaningful results even
 without our knowing the true data generation model.
 
 In this course most of the examples will have sample sizes large enough
-that the CLT will mean our results are valid.
+that the CLT will mean our results are valid. In these cases when
+constructing a confidence interval it will
+be sufficient to replace \(T^\ast_{n-1}\) with the equivalent \(Z^\ast=1.96\)
+from the Normal distribution.
 \end{quote}
 
-The standard error of an estimate is the variability
+\section{Inference in finite populations}\label{inference-in-finite-populations}
+
+Recall that the standard error of an estimate is the variability
 of estimates between different samples: in fact it is defined as the standard deviation
 of all possible estimates from all possible estimates drawn using the
 same sample design.
@@ -2260,37 +2281,1209 @@ mean we can use the theory without having to derive it.
 For example here's a call to some \texttt{survey} package functions which
 gives us the effect of the fpc in our example:
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samplemembers}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
+\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svymean}\NormalTok{(height}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{design=}\FunctionTok{svydesign}\NormalTok{(}\AttributeTok{ids=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN, }\AttributeTok{data=}\NormalTok{samplemembers))}
+\NormalTok{ss}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ##         mean     SE
 ## height 180.3 6.1089
 \end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(ss)}
+\end{Highlighting}
+\end{Shaded}
 
 \begin{verbatim}
 ##           2.5 %   97.5 %
 ## height 168.3268 192.2732
 \end{verbatim}
 
-If you're interested in the theory take a look at a text like \citet{ssw}.
+If you're interested in the theory take a look at a text like \citet{cochran} or \citet{ssw}.
+
+\section{The survey inference process}\label{the-survey-inference-process}
+
+Sampling begins with the sample frame - usually this is a \textbf{list} of the
+members, or \textbf{units}, which make up the population.
+
+The list contains at minimum some \textbf{identifier} of each unit, which enables
+it to be found/contacted/measured once it has been selected, and possibly
+a lot of other information too.
+
+Data that we have on the frame is called \textbf{auxiliary information}: it is
+data that is available about a unit whether or not it has been sampled. Some
+sample designs rely on this auxiliary data during the process of sample selection.
+
+In probabilistic (random) sampling each unit \(i\) has a known nonzero chance of
+selection \(\pi_i\), which may depend on the auxiliary data in some way.
+These probabilities don't have to be equal, just known and nonzero.
+
+In random sampling we generate a random variable \(I_i\) for each
+population member, based on the sample design, to decide whether it is
+selected into the sample or not:
+\begin{equation}
+   I_i = \begin{cases}
+         1,\qquad &\text{if unit $i$ is selected}\\
+         0,       &\text{otherwise}
+         \end{cases}
+\end{equation}
+The sample size is just the sum of these random variables
+\[
+   n = \sum_{i=1}^N I_i
+\]
+
+\begin{table}
+\centering
+\caption{\label{tab:sampleframe}Sample Frame ($N$ rows)}
+\centering
+\begin{tabular}[t]{c|c|c|c}
+\hline
+\multicolumn{1}{c|}{ } & \multicolumn{1}{c|}{Auxiliary} & \multicolumn{1}{c|}{Selection} & \multicolumn{1}{c}{Selection} \\
+\cline{2-2} \cline{3-3} \cline{4-4}
+Unit ID & Data & Probability & Indicator\\
+\hline
+1 & ${\bf X}_1$ & $\pi_1$ & $I_1$\\
+\hline
+2 & ${\bf X}_2$ & $\pi_2$ & $I_2$\\
+\hline
+3 & ${\bf X}_3$ & $\pi_3$ & $I_3$\\
+\hline
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+\hline
+$i$ & ${\bf X}_i$ & $\pi_i$ & $I_i$\\
+\hline
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+\hline
+N & ${\bf X}_N$ & $\pi_N$ & $I_N$\\
+\hline
+\end{tabular}
+\end{table}
+
+So we start with the \(N\) rows of the sample frame (Table \ref{tab:sampleframe}) generate
+the sample indicators \(I_i\), and reduce to the \(n\) rows of data in Table \ref{tab:sampledata}.
+For each member \(k\) of the sample we know its population identifier \(i_k\), its auxiliary information
+\({\bf x}_k\), selection probability \(\pi_k\), and we also collect and record the survey data \({\bf y}_k\).
+
+\begin{table}
+\centering
+\caption{\label{tab:sampledata}Sample Data ($n$ rows)}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c}
+\hline
+\multicolumn{1}{c|}{Sample} & \multicolumn{1}{c|}{ } & \multicolumn{1}{c|}{Auxiliary} & \multicolumn{1}{c|}{Selection} & \multicolumn{1}{c|}{Sample} & \multicolumn{1}{c}{Sample} \\
+\cline{1-1} \cline{3-3} \cline{4-4} \cline{5-5} \cline{6-6}
+Unit & Unit ID & Data & Probability & Weight & Data\\
+\hline
+1 & $i_1$ & ${\bf x}_1$ & $\pi_1$ & $w_1$ & ${\bf y}_1$\\
+\hline
+2 & $i_2$ & ${\bf x}_2$ & $\pi_2$ & $w_2$ & ${\bf y}_2$\\
+\hline
+3 & $i_3$ & ${\bf x}_3$ & $\pi_3$ & $w_3$ & ${\bf y}_3$\\
+\hline
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+\hline
+$k$ & $i_k$ & ${\bf x}_k$ & $\pi_k$ & $w_k$ & ${\bf y}_k$\\
+\hline
+$\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$\\
+\hline
+$n$ & $i_n$ & ${\bf x}_n$ & $\pi_n$ & $w_n$ & ${\bf y}_n$\\
+\hline
+\end{tabular}
+\end{table}
+
+The \textbf{expected value} of each indicator variable is \(\pi_i\)
+\begin{eqnarray}
+    E[I_i] &=& 1\times\Pr(I_i=1) + 0\times\Pr(I_i=0)\\
+           &=& 1\times\pi_i + 0\times(1-\pi_i)\\
+           &=& \pi_i
+\end{eqnarray}
+Each selected sample member carries a \textbf{sample weight} which is the number of units
+in the population that that unit represents. These weights are defined as the
+inverses of the selection probabilities.
+\[
+   W_i = \frac{1}{\pi_i}
+\]
+
+Consider some characteristic \(Y_i\) which each population member has. e.g.~in a
+survey of households we might be measuring the amount of money \(Y_i\) that household
+\(i\) spends on internet streaming services. The total amount of money spent by
+all households in the population combined is
+\[
+   Y = \sum_{i=1}^N Y_i
+\]
+However we only know \(Y_i\) for some households: those which are selected, i.e.
+those which have \(I_i=1\).
+
+The \textbf{Horwitz-Thompson} (HT) estimator of the population total is
+\begin{eqnarray}
+  \widehat{Y} &=& \sum_{i=1}^N I_i W_i Y_i\\
+              &=& \sum_{k=1}^n w_k y_k
+\end{eqnarray}
+i.e.~a weighted sum of the observed household spending values \(y_k\) just for the \(n\)
+selected households. (\(I_i=0\) for any unselected households, so the sum of \(N\) terms
+simplifies to a sum of \(n\) terms, just over the sample members.)
+
+We can see that the HT estimator is \textbf{unbiased}:
+\begin{eqnarray}
+  E[\widehat{Y}] &=& \sum_{i=1}^N E[I_i] W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i} Y_i\\
+                 &=& \sum_{i=1}^N Y_i\\
+                 &=& Y
+\end{eqnarray}
+i.e.~although the observed value \(\widehat{Y}\) from a given sample may not equal the
+true value \(Y\), when averaged over all possible samples we can see that on average
+it does equal the true population value.
+
+We also want the standard error \(\bfa{SE}{\widehat{Y}}\) to be small, so that we have
+precise estimates.
+
+We're all familiar with the idea that the larger the sample size \(n\) the smaller the
+standard error. We now know that the standard error is going to crush down to zero
+in finite populations the closer we get to a census.
+
+There's a further advantage we can get by making a good choice of \textbf{sample design}.\\
+Two different methods of selecting a sample of the \textbf{same sample size \(n\)} may lead
+to very different values of the standard error, and thus confidence intervals of
+very different widths.
+
+Incidentally, the expected value of the sum of the sample weights among sample members is equal to
+the population size:
+\begin{eqnarray}
+    \sum_{k=1}^n w_k &=& \sum_{i=1}^N I_i W_i\\
+  E\left[\sum_{k=1}^n w_k\right] 
+                      &=& \sum_{i=1}^N E[I_i] W_i\\
+                      &=& \sum_{i=1}^N \pi_i W_i\\
+                      &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i}\\
+                      &=& \sum_{i=1}^N 1\\
+                      &=& N
+\end{eqnarray}
+
+\section{Example}\label{example}
+
+We might have a small street of five houses. Our frame is
+just the list of addresses. We might know the household rateable value
+from the City Council list of dwellings.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{c|l|c}
+\hline
+ID & Address & Value (\$M)\\
+\hline
+6451 & 1 Chestnut Place & 1.201\\
+\hline
+6452 & 2 Chestnut Place & 0.780\\
+\hline
+8773 & 2A Chestnut Place & 0.520\\
+\hline
+7164 & 3 Chestnut Place & 2.530\\
+\hline
+6125 & 4 Chestnut Place & 0.900\\
+\hline
+\end{tabular}
+\end{table}
+
+We might then select a simple random sample of \(n=2\) houses
+from the \(N=5\) in the small street. The probability of selection is \(\pi_i=2/5\)
+for each house. We draw our random sample and select house number 2A and
+house number 5 into our sample.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{c|l|c|c|c}
+\hline
+ID & Address & Value (\$M) & Prob. $\pi_i$ & Selected, $I_i$\\
+\hline
+6451 & 1 Chestnut Place & 1.201 & 0.4 & 0\\
+\hline
+6452 & 2 Chestnut Place & 0.780 & 0.4 & 0\\
+\hline
+8773 & 2A Chestnut Place & 0.520 & 0.4 & 1\\
+\hline
+7164 & 3 Chestnut Place & 2.530 & 0.4 & 0\\
+\hline
+6125 & 4 Chestnut Place & 0.900 & 0.4 & 1\\
+\hline
+\end{tabular}
+\end{table}
+
+We visit each selected house and ask how much they spend \(y_k\) on all their internet streaming
+services each month.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|c|l|c|c|c}
+\hline
+  & ID & Address & Value (\$M) & Weight $w_k$ & Internet spend, $y_k$\\
+\hline
+3 & 8773 & 2A Chestnut Place & 0.52 & 2.5 & 75\\
+\hline
+5 & 6125 & 4 Chestnut Place & 0.90 & 2.5 & 19\\
+\hline
+\end{tabular}
+\end{table}
+
+Each house in the sample has a weight of 2.5 = 5/2: i.e.~it represents itself and 1.5 other houses
+in the street. The sum of the weights of the two selected houses is equal to the population size
+\(N=5\).
+
+Our sample is really too small to do any sensible inference on: but let's do it anyway to show how things
+work. We calculate the mean and standard deviation of the monthly internet streaming values:
+\(\bar{y}=\$47.00\), and \(s_y=\$39.60\).
+
+Our estimate of the mean monthly spend is \(\bar{y}=\$47.0\), with a margin of error of
+\begin{eqnarray}
+   \bfa{MOE}{\widehat{\bar{Y}}} 
+   &=& Z^\ast\sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+   &=& 1.96\sqrt{1-\frac{2}{5}}\times\frac{\$39.60}{\sqrt{2}}\\
+   &=& \$42.51
+\end{eqnarray}
+which gives a 95\% confidence interval of (\$4.49,\$89.51) (although
+the use of the large sample value \(Z^\ast=1.96\) is very much \textbf{not} justified here.)
+
+In finite populations we are sometimes interested in population totals - which don't make any
+sense in infinite populations. Now we have an estimate of the mean spend per house, we can
+scale it up by the population size to see how much per month is being spent by all of the houses
+combined:
+\begin{eqnarray}
+  \widehat{Y} &=& N\widehat{\bar{Y}}\\
+              &=& 5\times \$47.00\\
+              &=& \$235.00
+\end{eqnarray}
+and we can scale the confidence interval up in the same way
+\begin{eqnarray}
+  \bfa{CI}{\widehat{Y}} &=& N\bfa{CI}{\widehat{\bar{Y}}}\\
+                        &=& 5\times (\$4.49,\$89.51)\\
+                        &=& (\$22.45,\$447.55)
+\end{eqnarray}
 
 \chapter{Sample Designs}\label{sample-designs}
 
-Theory, and how to do this in R
+In this Chapter we will consider the various sample designs in common
+use, the reasons for using each one, and methods for selecting from suitable
+frames.
+
+We'll use a variety of datasets.
+
+\section{Census}\label{census}
+
+The simplest of all! We select every unit in the population, so \(n=N\).
+
+The probability of selection is
+\[
+   \pi = \frac{n}{N} = \frac{N}{N} = 1
+\]
+i.e.~every unit is selected with certainty, and the sample weights are all
+\[
+   w_i = \frac{1}{\pi_i} = \frac{1}{1} = 1
+\]
+so each unit in the sample represents itself alone.
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/Census} 
+
+}
+
+\caption{Census}\label{fig:census}
+\end{figure}
+
+\subsection*{Design considerations}\label{design-considerations}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+None: we're sampling all \(N\) members of the population.
+
+\section{Simple Random Sampling Without Replacement (SRSWOR)}\label{simple-random-sampling-without-replacement-srswor}
+
+The Simple Random Sample WithOut Replacement is the most fundamental of all
+sample designs, and it appears nested inside many more complex designs as we'll see later.
+
+We have a population of size \(N\) which is fully enumerated (i.e.~fully listed), and
+we want to select a sample of size \(n\).
+
+The defining property of a SRSWOR is that all samples of size \(n\) have an equal chance
+of selection. A \textbf{consequence} of this definition is that all population units have
+the same chance of selection.
+
+There are
+\[
+   \binom{N}{n} = {}^NC_n = \frac{N!}{n!(N-n)!} 
+\]
+possible samples. The R function \texttt{choose(n,k)} can be used for evaluating the number
+of possible samples. e.g.~the number of ways to select \(n=20\) units from \(N=87\) is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{choose}\NormalTok{(}\DecValTok{87}\NormalTok{,}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.375456e+19
+\end{verbatim}
+
+The probability of selection of each unit is
+\[
+   \pi_i = \frac{n}{N}
+\]
+leading to sample weights
+\[
+   w_i = \frac{N}{n}
+\]
+The SRSWOR is used when the \textbf{costs} of different samples are not known to differ
+(e.g.~there are no units that are more costly to visit than others), and where
+there is no informative auxiliary information.
+
+If we have a sample frame stored as an R data frame \texttt{sframe} with a column \texttt{ĪD} uniquely
+identifying the units, then we can select an SRSWOR as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(sframe)}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ sframe[}\FunctionTok{sample}\NormalTok{(bigN,n),]}
+\NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+or
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(sframe)}
+\NormalTok{IDset }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(sframe}\SpecialCharTok{$}\NormalTok{ID,n)}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ sframe[sframe}\SpecialCharTok{$}\NormalTok{ID }\SpecialCharTok{\%in\%}\NormalTok{ IDset,]}
+\NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+or as a function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.srswor }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n) \{}
+  \CommentTok{\# SRSWOR}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+  \ControlFlowTok{if}\NormalTok{(n}\SpecialCharTok{\textless{}=}\NormalTok{bigN) \{}
+\NormalTok{    samp }\OtherTok{\textless{}{-}}\NormalTok{ df[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{),]}
+\NormalTok{    samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
+\NormalTok{    samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Cannot have a SRSWOR with n\textgreater{}N"}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\} }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/SRS} 
+
+}
+
+\caption{Simple Random Sample WithOut Replacement (SRSWOR)}\label{fig:srswor}
+\end{figure}
+
+\subsection*{Design considerations}\label{design-considerations-1}
+\addcontentsline{toc}{subsection}{Design considerations}
 
 \begin{itemize}
 \tightlist
 \item
-  SRSWOR, SRSWR
-\item
-  Stratified designs
-\item
-  Cluster designs
-\item
-  PPSWR
-\item
-  Complex designs
+  We only need to decide on the sample size \(n\) (see later).
 \end{itemize}
 
-Introduction to the design effect
+\subsection*{Example}\label{example-1}
+\addcontentsline{toc}{subsection}{Example}
+
+Select \(n=5\) units from a frame listing of airports with IATA codes
+sourced from Kaggle \url{https://www.kaggle.com/datasets/syedasimalishah/airports/data}
+
+The top ten rows of the dataset of \(N=6072\) are shown here:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l|l|l|l|r|r}
+\hline
+ID & IATA & Name & City & Country & Latitude & Longitude\\
+\hline
+1 & AAA & Anaa Airport & Anaa & French Polynesia & -17.352600 & -145.509995\\
+\hline
+2 & AAC & El Arish International Airport & El Arish & Egypt & 31.073299 & 33.835800\\
+\hline
+3 & AAE & Rabah Bitat Airport & Annaba & Algeria & 36.822201 & 7.809174\\
+\hline
+4 & AAF & Apalachicola Regional Airport & Apalachicola & United States & 29.727501 & -85.027496\\
+\hline
+5 & AAH & Aachen-Merzbrück Airport & Aachen & Germany & 50.823055 & 6.186389\\
+\hline
+6 & AAK & Buariki Airport & Buariki & Kiribati & 0.185278 & 173.636993\\
+\hline
+7 & AAL & Aalborg Airport & Aalborg & Denmark & 57.092759 & 9.849243\\
+\hline
+8 & AAM & Malamala Airport & Malamala & South Africa & -24.818100 & 31.544600\\
+\hline
+9 & AAN & Al Ain International Airport & Al Ain & United Arab Emirates & 24.261700 & 55.609200\\
+\hline
+10 & AAO & Anaco Airport & Anaco & Venezuela & 9.430225 & -64.470726\\
+\hline
+\end{tabular}
+\end{table}
+
+And here is a SRSWOR of \(n=5\) airports
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:unnamed-chunk-64}Sample of airports (SRSWOR)}
+\centering
+\begin{tabular}[t]{r|l|l|l|l|r|r|r|r}
+\hline
+ID & IATA & Name & City & Country & Latitude & Longitude & bigN & weight\\
+\hline
+3593 & NTD & Point Mugu Naval Air Station (Naval Base Ventura Co) & Point Mugu & United States & 34.12030 & -119.121002 & 6072 & 1214.4\\
+\hline
+1472 & EUM & Neumünster Airport & Neumuenster & Germany & 54.07944 & 9.941389 & 6072 & 1214.4\\
+\hline
+2512 & KHZ & Kauehi Airport & Kauehi & French Polynesia & -15.78080 & -145.123993 & 6072 & 1214.4\\
+\hline
+197 & ANC & Ted Stevens Anchorage International Airport & Anchorage & United States & 61.17440 & -149.996002 & 6072 & 1214.4\\
+\hline
+4710 & SRN & Strahan Airport & Strahan & Australia & -42.15500 & 145.292007 & 6072 & 1214.4\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Simple Random Sampling With Replacement (SRSWR)}\label{simple-random-sampling-with-replacement-srswr}
+
+This design is rarely used, but is the simplest form of Probability Proportional to Size
+With Replacement (PPSWR) sampling, but with the sizes all equal.
+
+Sampling proceeds in principle by selecting one unit at a time where each unit has a \(1/N\)
+chance of being selected each time. After \(n\) draws the probability a unit has been selected
+at least once is
+\[
+    p_i = 1 - \left(1-\frac{1}{N}\right)^n
+\]
+(This is 1 minus the chance that a unit is not selected on each of the \(n\) sampling occasions.)
+
+If \(n\) is tiny compared to \(N\), \(p_i\) is approximately \(n/N\) which is the SRSWOR selection
+probability. In practice we assign a weight of \(N/n\) to each unit as it is selected, so a unit
+that is selected \(m\) times ends up with a weight of \(mN/n\).
+
+If we use weights calculated in this way we have what is known as the Hansen-Hurwitz estimator,
+rather than the Horwitz-Thompson estimator. However this distinction need not concern us.
+
+\subsection*{Design considerations}\label{design-considerations-2}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+As in a SRSWOR, we only need to decide on the sample size \(n\).
+
+\subsection*{Example}\label{example-2}
+\addcontentsline{toc}{subsection}{Example}
+
+Here is a SRSWR of \(n=5\) airports: note that we have aggregated
+across any instances of multiple selections, so that in the output
+sample list each unit appears only once no matter how often it was selected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(airports)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
+\NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(ID) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight))}
+\end{Highlighting}
+\end{Shaded}
+
+or as a function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.srswr }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n) \{}
+  \CommentTok{\# SRSWR}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{rownames }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\NormalTok{bigN}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ df[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight)) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{rownames)}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\} }
+
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:unnamed-chunk-67}Sample of airports (SRSWOR)}
+\centering
+\begin{tabular}[t]{r|l|l|l|l|r|r|r|r}
+\hline
+ID & IATA & Name & City & Country & Latitude & Longitude & nsampled & weight\\
+\hline
+805 & CCB & Cable Airport & Upland & United States & 34.11160 & -117.6880 & 1 & 1214.4\\
+\hline
+1063 & CUD & Caloundra Airport & Caloundra & Australia & -26.80000 & 153.1000 & 1 & 1214.4\\
+\hline
+1077 & CVE & Coveñas Airport & Coveñas & Colombia & 9.40092 & -75.6913 & 1 & 1214.4\\
+\hline
+2738 & LAY & Ladysmith Airport & Ladysmith & South Africa & -28.58170 & 29.7497 & 1 & 1214.4\\
+\hline
+4804 & SXN & Sua Pan Airport & Sowa & Botswana & -20.55340 & 26.1158 & 1 & 1214.4\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Probability proportion to size Sampling (PPSWR)}\label{probability-proportion-to-size-sampling-ppswr}
+
+This sample design generalises the SRSWR design to unequal probabilities of
+selection. This design recognises that some units may have more influence on
+our estimates because of some \textbf{size} property that is known (it must be on the
+frame). We therefore give these units higher probabilities of being selected,
+and therefore lower weight.
+
+We draw \(n\) units, one at a time, but with probabilities which are proportional to
+the size measure \(X_i\): thus the probability of selection of unit \(i\) on each
+of the \(n\) draws from the population is
+\[
+   p_i = \frac{X_i}{\sum_{j=1}^N X_j}
+\]
+Approximating the probability of selection \(\pi\) after \(n\) draws as \(np_i\)
+leads to the sample weights
+\[
+   w_i = \frac{1}{np_i}
+\]
+In a PPSWR sample these weights are not guaranteed to add up to the population size.
+
+\subsection*{Design considerations}\label{design-considerations-3}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+We need to decide on:
+
+\begin{itemize}
+\tightlist
+\item
+  the size variable \(X_i\) (which must be known for every unit in the population), and
+\item
+  the sample size \(n\).
+\end{itemize}
+
+The size variable \(X_i\) should correlate in some way with the population characteristics
+we want to estimate. If we're interested in estimating the total economic output of
+businesses, then the amount of tax each business paid last year would be a good size
+variable. But it wouldn't be helpful if we were interested in estimating the
+proportion of businesses with family friendly employment practices.
+
+With replacement designs lose some efficiency because their estimators do not
+incorporate a finite population correction in their standard errors.
+For small sampling fractions (i.e.~small \(n/N\)) this is not a significant drawback.
+
+\subsection*{Example}\label{example-3}
+\addcontentsline{toc}{subsection}{Example}
+
+We have a list of \(N=236\) countries and their 2023 populations:
+the first 10 are listed below
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{,] }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Country & Code & Year & Population & Prob\\
+\hline
+Afghanistan & AFG & 2023 & 41454762 & 0.0051249\\
+\hline
+Albania & ALB & 2023 & 2811660 & 0.0003476\\
+\hline
+Algeria & DZA & 2023 & 46164222 & 0.0057071\\
+\hline
+American Samoa & ASM & 2023 & 47544 & 0.0000059\\
+\hline
+Andorra & AND & 2023 & 80869 & 0.0000100\\
+\hline
+Angola & AGO & 2023 & 36749909 & 0.0045432\\
+\hline
+Anguilla & AIA & 2023 & 14435 & 0.0000018\\
+\hline
+Antigua and Barbuda & ATG & 2023 & 93331 & 0.0000115\\
+\hline
+Argentina & ARG & 2023 & 45538402 & 0.0056297\\
+\hline
+Armenia & ARM & 2023 & 2943398 & 0.0003639\\
+\hline
+\end{tabular}
+\end{table}
+
+Select a PPSWR sample of \(n=10\) countries, with probability proportional to their population sizes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{111}\NormalTok{)}
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(pop)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ pop[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{prob=}\NormalTok{pop}\SpecialCharTok{$}\NormalTok{Prob,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
+\NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{samp}\SpecialCharTok{$}\NormalTok{Prob)}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Country) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight))}
+\end{Highlighting}
+\end{Shaded}
+
+or as a function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.ppswr }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, sizevar) \{}
+  \CommentTok{\# PPSWR}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{rownames }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\NormalTok{bigN}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ df[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{prob=}\NormalTok{df[,sizevar],}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight)) }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{rownames)}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ pop }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Population"}\NormalTok{)}
+\NormalTok{samp }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Country Code Year Population        Prob bigN nsampled weight
+## 1    Bangladesh  BGD 2023  171466986 0.021197666  236        1   23.6
+## 2        Brazil  BRA 2023  211140731 0.026102347  236        1   23.6
+## 3         India  IND 2023 1438069597 0.177781857  236        2   47.2
+## 4     Indonesia  IDN 2023  281190068 0.034762221  236        1   23.6
+## 5         Japan  JPN 2023  124370947 0.015375402  236        1   23.6
+## 6      Pakistan  PAK 2023  247504505 0.030597831  236        1   23.6
+## 7  South Africa  ZAF 2023   63212386 0.007814653  236        1   23.6
+## 8 United States  USA 2023  343477330 0.042462505  236        2   47.2
+\end{verbatim}
+
+\section{Linear Systematic Random Sample (LSRS)}\label{linear-systematic-random-sample-lsrs}
+
+This design is often used in cases where the population is not fully enumerated, but is
+presented to us in the form of a queue. For example we might want to select one in ten
+passengers cars checking in for a ferry crossing. Another example is where there is information
+in the ordering of a list: for example a list might be sorted from youngest to oldest, or
+sorted from north to south. We can space out our sample down the list, avoiding the chance
+that our sample doesn't have a good spread of ages, or a good spread of latitudes.
+
+We select \(n\) units from \(N\) by first calculating the \textbf{skip} \(k\), which is the nearest integer
+at or below \(N/n\). We then choose at random one unit from the first \(k\) of our list or queue, say that is unit
+number \(j\). We then select units \(j\), \(j+k\), \(j+2k\), \(j+3k\), etc.
+
+Selecting one unit at random in the first \(k\) (rather than just selecting the \textbf{first} unit,
+as we might naively think of doing) means that every unit in the list has a chance of selection.
+
+The selection probabilities are
+\[
+   \pi_i = \frac{n}{N}
+\]
+and weights are
+\[
+   w_i = \frac{N}{n}
+\]
+Data from this design are often analysed as if they were drawn as a SRSWOR, but in fact this is a special case of
+a one-stage cluster sample (S1C, see below).
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/LSRS} 
+
+}
+
+\caption{Linear Systematic Random Sample (LSRS)}\label{fig:lsrs}
+\end{figure}
+
+Note that if there are \(N\) units but \(N\) is not an exact multiple of the skip \(k\), then
+the sample size will differ depending on which of the first \(k\) units we select to
+initiate sampling. For example if we wanted to select \(n=3\) units by LSRS from a
+list of \(N=11\) units, then the skip size is \(k=\text{floor}(11/3)=\text{floor}(3.67)=3\).
+If we start the process by selecting the first unit, we'd end up with the sample
+of 4 units, \(\{1,4,7,10\}\), but if we start by selecting the 4th unit we'd end up
+with only 3 units, \(\{4,7,10\}\).
+
+Another common reason to take an LSRS is in household surveys: we're selecting
+dwellings from a small area, and for reasons of confidentiality (we don't want
+members of different selected households to be aware that they
+are both in the same survey), or to prevent collusion between neighbouring selected households,
+we space the sample out along the street using a LSRS to separate the selected
+dwellings as much as possible.
+
+An LSRS is also a convenient way to sample if you have a printed list.\\
+After setting your random starts location you can skip down the list at
+fixed intervals.
+
+\subsection{Design considerations}\label{design-considerations-4}
+
+\begin{itemize}
+\tightlist
+\item
+  Choose a sample size \(n\)
+\item
+  Consider the ordering of the list and whether units differ systematically
+  through the list
+\end{itemize}
+
+An LSRS has one risk, and that is a periodicity in the frame that you
+are unaware of. For example if we are selecting apartments from a building to
+inspect for structural weaknesses, and select every fourth one (after a random start),
+we had better be sure that there aren't exactly four apartments per floor:
+otherwise we'll have inadvertently selected a column of apartments stacked one
+above the other, e.g.~all in the north-east corner. We'll miss any
+systematic issues that occur with the north-west apartments in that case.
+
+Such unknown periodicities are unlikely in most cases, but we should be aware
+that they can occur.
+
+\subsection*{Example}\label{example-4}
+\addcontentsline{toc}{subsection}{Example}
+
+To select a LSRS of airports, let's order the airports by latitude, and then
+take a LSRS of \(n=5\) units.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(airports)}
+\NormalTok{airports }\OtherTok{\textless{}{-}}\NormalTok{ airports[}\FunctionTok{order}\NormalTok{(airports}\SpecialCharTok{$}\NormalTok{Latitude),]}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{k }\OtherTok{\textless{}{-}} \FunctionTok{floor}\NormalTok{(bigN}\SpecialCharTok{/}\NormalTok{n)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Skip size is k ="}\NormalTok{,k,}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Skip size is k = 1214
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{i0 }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(k,}\DecValTok{1}\NormalTok{) }\CommentTok{\# first selected unit}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Starting sampling at unit"}\NormalTok{,i0,}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Starting sampling at unit 305
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}}\NormalTok{ (bigN}\SpecialCharTok{{-}}\NormalTok{i0)}\SpecialCharTok{\%/\%}\NormalTok{k }\SpecialCharTok{+} \DecValTok{1} \CommentTok{\# recalculate the sample size}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Actual sample size is"}\NormalTok{,n,}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Actual sample size is 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports[i0 }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{0}\SpecialCharTok{:}\NormalTok{(n}\DecValTok{{-}1}\NormalTok{))}\SpecialCharTok{*}\NormalTok{k,]}
+\NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.lsrs }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n) \{}
+  \CommentTok{\# LSRS}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+\NormalTok{  k }\OtherTok{\textless{}{-}} \FunctionTok{floor}\NormalTok{(bigN}\SpecialCharTok{/}\NormalTok{n)}
+\NormalTok{  i0 }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(k,}\DecValTok{1}\NormalTok{) }\CommentTok{\# first selected unit}
+\NormalTok{  n }\OtherTok{\textless{}{-}}\NormalTok{ (bigN}\SpecialCharTok{{-}}\NormalTok{i0)}\SpecialCharTok{\%/\%}\NormalTok{k }\SpecialCharTok{+} \DecValTok{1} \CommentTok{\# recalculate the sample size}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ df[i0 }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{0}\SpecialCharTok{:}\NormalTok{(n}\DecValTok{{-}1}\NormalTok{))}\SpecialCharTok{*}\NormalTok{k,]}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
+\NormalTok{  samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\}}
+
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select.lsrs}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{\label{tab:unnamed-chunk-76}Sample of airports (SRSWOR)}
+\centering
+\begin{tabular}[t]{l|r|l|l|l|l|r|r|r}
+\hline
+  & ID & IATA & Name & City & Country & Latitude & Longitude & weight\\
+\hline
+5304 & 5304 & VAO & Suavanao Airport & Suavanao & Solomon Islands & -7.58556 & 158.73100 & 1214.4\\
+\hline
+4746 & 4746 & STV & Surat Airport & Surat & India & 21.11410 & 72.74180 & 1214.4\\
+\hline
+1714 & 1714 & GIB & Gibraltar Airport & Gibraltar & Gibraltar & 36.15120 & -5.34966 & 1214.4\\
+\hline
+1638 & 1638 & FYN & Fuyun Koktokay Airport & Fuyun & China & 46.80417 & 89.51201 & 1214.4\\
+\hline
+5277 & 5277 & UTO & Indian Mountain LRRS Airport & Indian Mountains & United States & 65.99280 & -153.70399 & 1214.4\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Stratified Simple Random Sample (STSRS)}\label{stratified-simple-random-sample-stsrs}
+
+In this design we take our population of \(N\) units and break it into \(H\) subgroups
+using our auxiliary data from the frame. We then draw separate samples from \textbf{each of
+the subgroups}.
+
+To draw a stratified sample each population unit needs to be assigned in advance
+to one, and only one, of these subgroups - which are known as \textbf{strata}
+(singular: \textbf{stratum}).
+
+There are \(N_h\) units in stratum \(h\), and all of these stratum-level population sizes add to the
+total population size:
+\[
+   N = \sum_{h=1}^H N_h
+\]
+Dividing both sides of this equation by \(N\) we have the stratum fractions \(F_h=N_h/N\): these are
+the proportions of the \textbf{population} that belong to the various strata, and they add up to 1:
+\[
+   1 = \sum_{h=1}^H \frac{N_h}{N} = \sum_{h=1}^H F_h
+\]
+
+For example, we can assign all residential addresses in New Zealand to exactly one of
+a defined set of non-overlapping regions, such as regional council areas. Or we might just have
+two strata: North Island, South Island (neglecting any addresses on offshore islands). There are
+\$N=\$2.4 million addresses in New Zealand, of which \(N_1=1.72\) million in the North Island (\(F_1=0.74=74%
+\))
+and \(N_2=0.62\) million are in the South Island (\(F_2=0.26=26%
+\)).
+
+We then divide or \textbf{allocate} our total sample size \(n\) to the strata. Stratum \(h\) is allocated
+\(n_h\) units, and the total sample size is then the sum of these:
+\[
+   n = \sum_{h=1}^H n_h
+\]
+We then carry out independent sampling in each of the strata.
+
+The way we choose to define the strata and the way we then choose to allocate the
+sample across the strata depend on our goals.
+
+Stratified sampling is done for a number of reasons
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Estimation Efficiency} - efficiency is the word statisticians use when considering
+  how we can get standard errors which are as \textbf{small as possible}.
+
+  In business surveys we often stratify because businesses differ from
+  each other dramatically, particularly in size measures such as turnover
+  or size of workforce. That means a small number of businesses (e.g.~Spark,
+  Air New Zealand, Fonterra) have a very large effect on estimates, and they
+  differ dramatically from each other as well. If they
+  happen to be included or happen to be missed from our samples that means we'd
+  get estimates which differ very much between samples. To protect ourselves
+  against this we stratify by business size (using tax data). The largest
+  businesses are in the top stratum, which is small, but a census is always done
+  of those businesses (the top stratum is called a \textbf{full coverage stratum}).\\
+  The smallest businesses are in the lowest stratum, and
+  they are selected with low probability: since they resemble each other more, and
+  one can stand in for another.
+
+  Having a strata designed so that the units within the strata resemble each other
+  strongly (one can stand in for another easily), but where units in different
+  strata differ strongly from each other. For the same sample size as a SRSWOR
+  stratified designs can sometimes achieve much much smaller standard errors.
+\item
+  \textbf{Subgroup estimates} - we may stratify by region because we want to make
+  estimates for each region separately. In that case we need to ensure that our sample
+  is large enough in each stratum to get reliable estimates. A national SRSWOR runs
+  the risk that one region might happen to miss out on getting much sample.
+\item
+  \textbf{Operational considerations} - we may stratify by region because that is the
+  easiest way to manage an interview workforce - we may have interviewers based in
+  a number of regional cities, and having them interview in their local areas is
+  the best way to organise that workforce.
+\end{enumerate}
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/STSRS} 
+
+}
+
+\caption{Stratified Simple Random Sample (STSRS)}\label{fig:stsrs}
+\end{figure}
+
+Two common methods for allocating the \(n\) sample units across the \(H\) strata are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Equal allocation}
+  \[
+     n_h = \frac{n}{H}
+  \]
+  Every stratum gets the same number of units allocated - independent of
+  the stratum size. That means we get different weights in each stratum:
+  \[
+     w_h = \frac{N_h}{n_h} = H\frac{N_h}{n}
+  \]
+  This is sensible when we want to have high precision estimates in
+  each stratum separately.
+\item
+  \textbf{Proportional allocation}
+  \[
+     n_h = nF_h = n\frac{N_h}{N}
+  \]
+  Here large strata get a lot of units allocated to them, and small strata
+  get fewer units. The consequence of this design is that the weights
+  of all units are equal, no matter which stratum they come from:
+  \[
+     w_h = \frac{N_h}{n_h} = \frac{N}{n}
+  \]
+  This allocation is also called \textbf{self weighting}, and the weights
+  are the same as in SRSWOR. (Though note: even though the weights are the
+  same, the standard errors of estimates
+  can differ \textbf{very significantly} from those from a SRSWOR.)
+\end{enumerate}
+
+\subsection*{Design considerations}\label{design-considerations-5}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+\begin{itemize}
+\tightlist
+\item
+  Choose the stratification variable(s) \(X_i\), decide the number of strata \(H\),
+  define the strata using the stratification variable(s),
+  determine the stratum sizes \(N_h\), and stratum fractions \(F_h=N_h/N\).
+\item
+  Choose the overall sample size \(n\) and \textbf{allocate} it across the strata.
+\end{itemize}
+
+\subsection*{Example}\label{example-5}
+\addcontentsline{toc}{subsection}{Example}
+
+The 2026 directory of NZ schools available from \url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools}
+lists 2504 schools of various types. Each School is associated with one
+of \(H=12\) Education Regions, with counts \(N_h\) and stratum fractions \(F_h\) listed below.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l|r|l}
+\hline
+$h$ & Education Region & $N_h$ & $F_h$\\
+\hline
+1 & Bay of Plenty, Waiariki & 185 & 0.0739\\
+\hline
+2 & Canterbury, Chatham Islands & 283 & 0.1130\\
+\hline
+3 & Hawke's Bay, Tairāwhiti & 174 & 0.0695\\
+\hline
+4 & Nelson, Marlborough, West Coast & 127 & 0.0507\\
+\hline
+5 & Otago, Southland & 228 & 0.0911\\
+\hline
+6 & Tai Tokerau & 151 & 0.0603\\
+\hline
+7 & Taranaki, Whanganui, Manawatū & 234 & 0.0935\\
+\hline
+8 & Tāmaki Herenga Manawa & 188 & 0.0751\\
+\hline
+9 & Tāmaki Herenga Tāngata & 197 & 0.0787\\
+\hline
+10 & Tāmaki Herenga Waka & 179 & 0.0715\\
+\hline
+11 & Waikato & 277 & 0.1106\\
+\hline
+12 & Wellington & 281 & 0.1122\\
+\hline
+\end{tabular}
+\end{table}
+
+We can select a stratified sample using the following function
+which implements an independent simple random sample within
+each stratum with either equal or proportional allocation.
+
+It implements PPSWR sampling within strata as well.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.stsrs }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, stratumvar, }
+                         \AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{,}
+                         \AttributeTok{method=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar=}\ConstantTok{NULL}\NormalTok{) \{}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{stratumvar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Stratum variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  stratumproperties }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(df[,stratumvar]))}
+  \FunctionTok{names}\NormalTok{(stratumproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(stratumvar,}\StringTok{"Nh"}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"equal"}\NormalTok{) \{}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"proportional"}\NormalTok{) \{}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Invalid allocation"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,stratumproperties,}\AttributeTok{by=}\NormalTok{stratumvar)}
+
+  \ControlFlowTok{if}\NormalTok{(method}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
+\NormalTok{    samp }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }\FunctionTok{by}\NormalTok{(df, df[,stratumvar], }
+                              \ControlFlowTok{function}\NormalTok{(dfx) }\FunctionTok{select.srswor}\NormalTok{(dfx,}\FunctionTok{first}\NormalTok{(dfx}\SpecialCharTok{$}\NormalTok{nh))))}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
+\NormalTok{    samp }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }\FunctionTok{by}\NormalTok{(df, df[,stratumvar], }
+                              \ControlFlowTok{function}\NormalTok{(dfx) }\FunctionTok{select.ppswr}\NormalTok{(dfx,}\FunctionTok{first}\NormalTok{(dfx}\SpecialCharTok{$}\NormalTok{nh),}\AttributeTok{sizevar=}\NormalTok{sizevar)))}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Sampling method invalid"}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+SRSWOR with Equal allocation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{120}\NormalTok{,  }
+                                \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{)}
+\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   Education_Region SampleSize
+## 1          Bay of Plenty, Waiariki         10
+## 2      Canterbury, Chatham Islands         10
+## 3          Hawke's Bay, Tairāwhiti         10
+## 4  Nelson, Marlborough, West Coast         10
+## 5                 Otago, Southland         10
+## 6                      Tai Tokerau         10
+## 7            Tāmaki Herenga Manawa         10
+## 8           Tāmaki Herenga Tāngata         10
+## 9              Tāmaki Herenga Waka         10
+## 10   Taranaki, Whanganui, Manawatū         10
+## 11                         Waikato         10
+## 12                      Wellington         10
+\end{verbatim}
+
+SRSWOR with proportional allocation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{120}\NormalTok{, }
+                                \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }
+                                \AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Total"}\NormalTok{)}
+\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   Education_Region SampleSize
+## 1          Bay of Plenty, Waiariki          9
+## 2      Canterbury, Chatham Islands         14
+## 3          Hawke's Bay, Tairāwhiti          8
+## 4  Nelson, Marlborough, West Coast          6
+## 5                 Otago, Southland         11
+## 6                      Tai Tokerau          7
+## 7            Tāmaki Herenga Manawa          9
+## 8           Tāmaki Herenga Tāngata          9
+## 9              Tāmaki Herenga Waka          9
+## 10   Taranaki, Whanganui, Manawatū         11
+## 11                         Waikato         13
+## 12                      Wellington         13
+\end{verbatim}
+
+PPSWR with Equal Allocation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{120}\NormalTok{,  }
+                                \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }
+                                \AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{, }
+                                \AttributeTok{method=}\StringTok{"PPSWR"}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Total"}\NormalTok{)}
+\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   Education_Region SampleSize
+## 1          Bay of Plenty, Waiariki          9
+## 2      Canterbury, Chatham Islands         10
+## 3          Hawke's Bay, Tairāwhiti         10
+## 4  Nelson, Marlborough, West Coast          8
+## 5                 Otago, Southland         10
+## 6                      Tai Tokerau          9
+## 7            Tāmaki Herenga Manawa         10
+## 8           Tāmaki Herenga Tāngata          9
+## 9              Tāmaki Herenga Waka         10
+## 10   Taranaki, Whanganui, Manawatū          9
+## 11                         Waikato         10
+## 12                      Wellington         10
+\end{verbatim}
+
+\section{One stage cluster sampling (S1C)}\label{one-stage-cluster-sampling-s1c}
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/SRS1C} 
+
+}
+
+\caption{One Stage Cluster Sample (STSRS)}\label{fig:s1c}
+\end{figure}
+
+\section{Two stage cluster sampling (S2C)}\label{two-stage-cluster-sampling-s2c}
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/SRS2C} 
+
+}
+
+\caption{Two Stage Cluster Sample (STSRS)}\label{fig:s2c}
+\end{figure}
+
+\section{Complex multistage designs}\label{complex-multistage-designs}
+
+\section{Introduction to the design effect}\label{introduction-to-the-design-effect}
 
 \chapter{Inference with R}\label{inference-with-r}
 

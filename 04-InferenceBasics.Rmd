@@ -8,6 +8,8 @@ $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
 $\\newcommand{\\estm}{\\widehat}$'`
 
+## Inference in infinite populations
+
 Let's briefly review a few familiar results from earlier statistics courses.
 
 Most of what we've done in earlier courses has assumed that we have
@@ -155,7 +157,9 @@ there is a clear outlier at low height.
 > be sufficient to replace $T^\ast_{n-1}$ with the equivalent $Z^\ast=1.96$
 > from the Normal distribution.  
 
-The standard error of an estimate is the variability
+## Inference in finite populations
+
+Recall that the standard error of an estimate is the variability
 of estimates between different samples: in fact it is defined as the standard deviation
 of all possible estimates from all possible estimates drawn using the
 same sample design. 
@@ -241,4 +245,235 @@ confint(ss)
 
 If you're interested in the theory take a look at a text like @cochran or @ssw. 
 
+## The survey inference process
 
+Sampling begins with the sample frame - usually this is a **list** of the
+members, or **units**, which make up the population.  
+
+The list contains at minimum some **identifier** of each unit, which enables
+it to be found/contacted/measured once it has been selected, and possibly 
+a lot of other information too.
+
+Data that we have on the frame is called **auxiliary information**: it is
+data that is available about a unit whether or not it has been sampled.  Some
+sample designs rely on this auxiliary data during the process of sample selection. 
+
+In probabilistic (random) sampling each unit $i$ has a known nonzero chance of
+selection $\pi_i$, which may depend on the auxiliary data in some way. 
+These probabilities don't have to be equal, just known and nonzero.
+
+In random sampling we generate a random variable $I_i$ for each 
+population member, based on the sample design, to decide whether it is 
+selected into the sample or not:
+\begin{equation}
+   I_i = \begin{cases}
+         1,\qquad &\text{if unit $i$ is selected}\\
+         0,       &\text{otherwise}
+         \end{cases}
+\end{equation}
+The sample size is just the sum of these random variables
+\[
+   n = \sum_{i=1}^N I_i
+\]
+
+```{r sampleframe, echo=FALSE}
+ff <- data.frame(UnitID=c(1, 2, 3, "$\\vdots$", "$i$", "$\\vdots$", "N"),
+                 X=c("${\\bf X}_1$","${\\bf X}_2$","${\\bf X}_3$",
+                     "$\\vdots$","${\\bf X}_i$","$\\vdots$","${\\bf X}_N$"),
+                 P=c("$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\vdots$","$\\pi_i$","$\\vdots$","$\\pi_N$"),
+                 I=c("$I_1$","$I_2$","$I_3$","$\\vdots$","$I_i$","$\\vdots$","$I_N$")
+                 )
+ff %>%
+  kbl(caption = "Sample Frame ($N$ rows)",
+      col.names=c("Unit ID", "Data", "Probability", "Indicator"),
+      escape=FALSE, align = 'cccc') %>%
+  kable_styling() %>%
+  add_header_above(c(" ","Auxiliary", "Selection", "Selection")) 
+```
+
+So we start with the $N$ rows of the sample frame (Table \@ref(tab:sampleframe)) generate
+the sample indicators $I_i$, and reduce to the $n$ rows of data in Table \@ref(tab:sampledata).
+For each member $k$ of the sample we know its population identifier $i_k$, its auxiliary information
+${\bf x}_k$, selection probability $\pi_k$, and we also collect and record the survey data ${\bf y}_k$.  
+
+```{r sampledata, echo=FALSE}
+fs <- data.frame(Unit=c(1, 2, 3, "$\\vdots$", "$k$", "$\\vdots$", "$n$"),
+                 UnitID=c("$i_1$", "$i_2$", "$i_3$", "$\\vdots$", "$i_k$", "$\\vdots$", "$i_n$"),
+                 X=c("${\\bf x}_1$","${\\bf x}_2$","${\\bf x}_3$",
+                     "$\\vdots$","${\\bf x}_k$","$\\vdots$","${\\bf x}_n$"),
+                 P=c("$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\vdots$","$\\pi_k$","$\\vdots$","$\\pi_n$"),
+                 W=c("$w_1$","$w_2$","$w_3$","$\\vdots$","$w_k$","$\\vdots$","$w_n$"),
+                 Y=c("${\\bf y}_1$","${\\bf y}_2$","${\\bf y}_3$",
+                     "$\\vdots$","${\\bf y}_k$","$\\vdots$","${\\bf y}_n$")
+                 )
+fs %>%
+  kbl(caption = "Sample Data ($n$ rows)",
+      col.names=c("Unit", "Unit ID", "Data", "Probability", "Weight", "Data"),
+      escape=FALSE, align = 'ccccc') %>%
+  kable_styling() %>%
+  add_header_above(c("Sample"," ","Auxiliary", "Selection", "Sample", "Sample")) 
+```
+
+The **expected value** of each indicator variable is $\pi_i$
+\begin{eqnarray}
+    E[I_i] &=& 1\times\Pr(I_i=1) + 0\times\Pr(I_i=0)\\
+           &=& 1\times\pi_i + 0\times(1-\pi_i)\\
+           &=& \pi_i
+\end{eqnarray}
+Each selected sample member carries a **sample weight** which is the number of units
+in the population that that unit represents.  These weights are defined as the 
+inverses of the selection probabilities.
+\[
+   W_i = \frac{1}{\pi_i}
+\]
+
+Consider some characteristic $Y_i$ which each population member has.  e.g. in a 
+survey of households we might be measuring the amount of money $Y_i$ that household
+$i$ spends on internet streaming services.  The total amount of money spent by 
+all households in the population combined is
+\[
+   Y = \sum_{i=1}^N Y_i
+\]
+However we only know $Y_i$ for some households: those which are selected, i.e.
+those which have $I_i=1$.
+
+The **Horwitz-Thompson** (HT) estimator of the population total is
+\begin{eqnarray}
+  \widehat{Y} &=& \sum_{i=1}^N I_i W_i Y_i\\
+              &=& \sum_{k=1}^n w_k y_k
+\end{eqnarray}
+i.e. a weighted sum of the observed household spending values $y_k$ just for the $n$
+selected households. ($I_i=0$ for any unselected households, so the sum of $N$ terms
+simplifies to a sum of $n$ terms, just over the sample members.)
+
+We can see that the HT estimator is **unbiased**: 
+\begin{eqnarray}
+  E[\widehat{Y}] &=& \sum_{i=1}^N E[I_i] W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i} Y_i\\
+                 &=& \sum_{i=1}^N Y_i\\
+                 &=& Y
+\end{eqnarray}
+i.e. although the observed value $\widehat{Y}$ from a given sample may not equal the
+true value $Y$, when averaged over all possible samples we can see that on average
+it does equal the true population value.  
+
+We also want the standard error $\bfa{SE}{\widehat{Y}}$ to be small, so that we have
+precise estimates.
+
+We're all familiar with the idea that the larger the sample size $n$ the smaller the 
+standard error.  We now know that the standard error is going to crush down to zero 
+in finite populations the closer we get to a census. 
+
+There's a further advantage we can get by making a good choice of **sample design**.  
+Two different methods of selecting a sample of the **same sample size $n$** may lead
+to very different values of the standard error, and thus confidence intervals of 
+very different widths.  
+
+Incidentally, the expected value of the sum of the sample weights among sample members is equal to 
+the population size:
+\begin{eqnarray}
+    \sum_{k=1}^n w_k &=& \sum_{i=1}^N I_i W_i\\
+  E\left[\sum_{k=1}^n w_k\right] 
+                      &=& \sum_{i=1}^N E[I_i] W_i\\
+                      &=& \sum_{i=1}^N \pi_i W_i\\
+                      &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i}\\
+                      &=& \sum_{i=1}^N 1\\
+                      &=& N
+\end{eqnarray}
+
+## Example
+
+We might have a small street of five houses.  Our frame is 
+just the list of addresses.  We might know the household rateable value
+from the City Council list of dwellings.
+
+```{r echo=FALSE}
+hframe <- data.frame(
+  ID=c(6451,6452,8773,7164,6125),
+  Address=c("1 Chestnut Place","2 Chestnut Place","2A Chestnut Place",
+            "3 Chestnut Place","4 Chestnut Place"),
+  Value=c(1.201, 0.780, 0.520, 2.530, 0.900)
+)
+hframe %>%
+  kbl(col.names=c("ID","Address","Value ($M)"), 
+      align='clc') %>%
+  kable_styling()
+```
+
+We might then select a simple random sample of $n=2$ houses
+from the $N=5$ in the small street.  The probability of selection is $\pi_i=2/5$ 
+for each house.  We draw our random sample and select house number 2A and 
+house number 5 into our sample.
+
+```{r echo=FALSE}
+hframe$prob <- rep(0.4,5)
+hframe$selected <- c(0,0,1,0,1)
+hframe %>%
+  kbl(col.names=c("ID","Address","Value (\\$M)","Prob. $\\pi_i$", "Selected, $I_i$"), 
+      align='clccc', escape=FALSE) %>%
+  kable_styling()
+```
+
+We visit each selected house and ask how much they spend $y_k$ on all their internet streaming
+services each month.  
+
+```{r echo=FALSE}
+dframe <- hframe[hframe$selected==1,]
+dframe$weight <- 1/dframe$prob
+dframe$y <- c(75, 19)
+dframe$prob <- NULL
+dframe$selected <- NULL
+dframe %>%
+  kbl(col.names=c("ID","Address","Value (\\$M)","Weight $w_k$", "Internet spend, $y_k$"), 
+      align='clccc', escape=FALSE) %>%
+  kable_styling()
+```
+
+```{r echo=FALSE}
+n <- 2
+N <- 5
+ybar <- mean(dframe$y)
+sy <- sd(dframe$y)
+se <- sqrt(1-n/N)*sy/sqrt(n)
+tstar <- abs(qt(0.025,n-1))
+tstar <- 1.96
+moe <- tstar*se
+ci <- ybar + moe*c(-1,1)
+ytot <- N*ybar
+citot <- N*ci
+```
+
+Each house in the sample has a weight of 2.5 = 5/2: i.e. it represents itself and 1.5 other houses
+in the street.  The sum of the weights of the two selected houses is equal to the population size 
+$N=5$.
+
+Our sample is really too small to do any sensible inference on: but let's do it anyway to show how things 
+work.  We calculate the mean and standard deviation of the monthly internet streaming values: 
+$\bar{y}=`r sprintf("\\$%.2f",ybar)`$, and $s_y=`r sprintf("\\$%.2f",sy)`$.
+
+Our estimate of the mean monthly spend is $\bar{y}=`r sprintf("\\$%.1f",ybar)`$, with a margin of error of
+\begin{eqnarray}
+   \bfa{MOE}{\widehat{\bar{Y}}} 
+   &=& Z^\ast\sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+   &=& 1.96\sqrt{1-\frac{2}{5}}\times\frac{`r sprintf("\\$%.2f",sy)`}{\sqrt{2}}\\
+   &=& `r sprintf("\\$%.2f",moe)`
+\end{eqnarray}
+which gives a 95% confidence interval of `r sprintf("(\\$%.2f,\\$%.2f)",ci[1],ci[2])` (although
+the use of the large sample value $Z^\ast=1.96$ is very much **not** justified here.)
+
+In finite populations we are sometimes interested in population totals - which don't make any 
+sense in infinite populations.   Now we have an estimate of the mean spend per house, we can 
+scale it up by the population size to see how much per month is being spent by all of the houses
+combined:
+\begin{eqnarray}
+  \widehat{Y} &=& N\widehat{\bar{Y}}\\
+              &=& 5\times `r sprintf("\\$%.2f",ybar)`\\
+              &=& `r sprintf("\\$%.2f",ytot)`
+\end{eqnarray}
+and we can scale the confidence interval up in the same way
+\begin{eqnarray}
+  \bfa{CI}{\widehat{Y}} &=& N\bfa{CI}{\widehat{\bar{Y}}}\\
+                        &=& 5\times `r sprintf("(\\$%.2f,\\$%.2f)",ci[1],ci[2])`\\
+                        &=& `r sprintf("(\\$%.2f,\\$%.2f)",citot[1],citot[2])`
+\end{eqnarray}
