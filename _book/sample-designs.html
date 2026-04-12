@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-11" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -237,7 +237,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="sample-designs.html"><a href="sample-designs.html#linear-systematic-random-sample-lsrs"><i class="fa fa-check"></i><b>5.5</b> Linear Systematic Random Sample (LSRS)</a>
 <ul>
-<li class="chapter" data-level="5.5.1" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-4"><i class="fa fa-check"></i><b>5.5.1</b> Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-4"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-4"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
 <li class="chapter" data-level="5.6" data-path="sample-designs.html"><a href="sample-designs.html#stratified-simple-random-sample-stsrs"><i class="fa fa-check"></i><b>5.6</b> Stratified Simple Random Sample (STSRS)</a>
@@ -245,10 +245,17 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-5"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-5"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a></li>
-<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a></li>
+<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-6"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-6"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-7"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-7"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
 <li class="chapter" data-level="5.9" data-path="sample-designs.html"><a href="sample-designs.html#complex-multistage-designs"><i class="fa fa-check"></i><b>5.9</b> Complex multistage designs</a></li>
-<li class="chapter" data-level="5.10" data-path="sample-designs.html"><a href="sample-designs.html#introduction-to-the-design-effect"><i class="fa fa-check"></i><b>5.10</b> Introduction to the design effect</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
 <li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
@@ -828,12 +835,16 @@ at least once is
 <span class="math display">\[
     p_i = 1 - \left(1-\frac{1}{N}\right)^n
 \]</span>
-(This is 1 minus the chance that a unit is not selected on each of the <span class="math inline">\(n\)</span> sampling occasions.)</p>
+(This is 1 minus the chance that a unit is not selected on any of the <span class="math inline">\(n\)</span> sampling occasions.)</p>
 <p>If <span class="math inline">\(n\)</span> is tiny compared to <span class="math inline">\(N\)</span>, <span class="math inline">\(p_i\)</span> is approximately <span class="math inline">\(n/N\)</span> which is the SRSWOR selection
-probability. In practice we assign a weight of <span class="math inline">\(N/n\)</span> to each unit as it is selected, so a unit
-that is selected <span class="math inline">\(m\)</span> times ends up with a weight of <span class="math inline">\(mN/n\)</span>.</p>
-<p>If we use weights calculated in this way we have what is known as the Hansen-Hurwitz estimator,
-rather than the Horwitz-Thompson estimator. However this distinction need not concern us.</p>
+probability. In practice we assign a weight of <span class="math inline">\(N/n\)</span> to each unit as it is selected, so if unit
+<span class="math inline">\(i\)</span> is selected <span class="math inline">\(m_i\)</span> times then it ends up with a weight of
+<span class="math display">\[
+   w_i = m_\frac{N}{n}
+\]</span><br />
+If we use the approximate weights calculated in this way we have what is known as the
+Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator. However we think of
+the weights in the same way and this distinction need not concern us.</p>
 <div id="design-considerations-2" class="section level3 unnumbered hasAnchor">
 <h3>Design considerations<a href="sample-designs.html#design-considerations-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As in a SRSWOR, we only need to decide on the sample size <span class="math inline">\(n\)</span>.</p>
@@ -847,8 +858,8 @@ sample list each unit appears only once no matter how often it was selected.</p>
 <span id="cb130-2"><a href="sample-designs.html#cb130-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
 <span id="cb130-3"><a href="sample-designs.html#cb130-3" tabindex="-1"></a>samp <span class="ot">&lt;-</span> airports[<span class="fu">sample</span>(bigN,n,<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
 <span id="cb130-4"><a href="sample-designs.html#cb130-4" tabindex="-1"></a>samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
-<span id="cb130-5"><a href="sample-designs.html#cb130-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> samp <span class="sc">%&gt;%</span></span>
-<span id="cb130-6"><a href="sample-designs.html#cb130-6" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb130-5"><a href="sample-designs.html#cb130-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> samp <span class="sc">|&gt;</span></span>
+<span id="cb130-6"><a href="sample-designs.html#cb130-6" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">|&gt;</span></span>
 <span id="cb130-7"><a href="sample-designs.html#cb130-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight))</span></code></pre></div>
 <p>or as a function</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="sample-designs.html#cb131-1" tabindex="-1"></a>select.srswr <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n) {</span>
@@ -858,8 +869,8 @@ sample list each unit appears only once no matter how often it was selected.</p>
 <span id="cb131-5"><a href="sample-designs.html#cb131-5" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> df[<span class="fu">sample</span>(bigN,n,<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
 <span id="cb131-6"><a href="sample-designs.html#cb131-6" tabindex="-1"></a>  samp<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
 <span id="cb131-7"><a href="sample-designs.html#cb131-7" tabindex="-1"></a>  samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
-<span id="cb131-8"><a href="sample-designs.html#cb131-8" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> samp <span class="sc">%&gt;%</span></span>
-<span id="cb131-9"><a href="sample-designs.html#cb131-9" tabindex="-1"></a>    <span class="fu">group_by</span>(rownames) <span class="sc">%&gt;%</span></span>
+<span id="cb131-8"><a href="sample-designs.html#cb131-8" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> samp <span class="sc">|&gt;</span></span>
+<span id="cb131-9"><a href="sample-designs.html#cb131-9" tabindex="-1"></a>    <span class="fu">group_by</span>(rownames) <span class="sc">|&gt;</span></span>
 <span id="cb131-10"><a href="sample-designs.html#cb131-10" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight)) <span class="sc">|&gt;</span></span>
 <span id="cb131-11"><a href="sample-designs.html#cb131-11" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
 <span id="cb131-12"><a href="sample-designs.html#cb131-12" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
@@ -1090,11 +1101,8 @@ For small sampling fractions (i.e. small <span class="math inline">\(n/N\)</spa
 </div>
 <div id="example-3" class="section level3 unnumbered hasAnchor">
 <h3>Example<a href="sample-designs.html#example-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We have a list of <span class="math inline">\(N=236\)</span> countries and their 2023 populations:
-the first 10 are listed below</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="sample-designs.html#cb132-1" tabindex="-1"></a>pop[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,] <span class="sc">%&gt;%</span></span>
-<span id="cb132-2"><a href="sample-designs.html#cb132-2" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb132-3"><a href="sample-designs.html#cb132-3" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+We have a list of <span class="math inline">\(N=236\)</span> countries and their 2023 populations:
+the first 10 are listed below
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1289,41 +1297,271 @@ ARM
 </tbody>
 </table>
 <p>Select a PPSWR sample of <span class="math inline">\(n=10\)</span> countries, with probability proportional to their population sizes.</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="sample-designs.html#cb133-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb133-2"><a href="sample-designs.html#cb133-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop)</span>
-<span id="cb133-3"><a href="sample-designs.html#cb133-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb133-4"><a href="sample-designs.html#cb133-4" tabindex="-1"></a>samp <span class="ot">&lt;-</span> pop[<span class="fu">sample</span>(bigN,n,<span class="at">prob=</span>pop<span class="sc">$</span>Prob,<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
-<span id="cb133-5"><a href="sample-designs.html#cb133-5" tabindex="-1"></a>samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="sc">*</span>samp<span class="sc">$</span>Prob)</span>
-<span id="cb133-6"><a href="sample-designs.html#cb133-6" tabindex="-1"></a>samp <span class="ot">&lt;-</span> samp <span class="sc">%&gt;%</span></span>
-<span id="cb133-7"><a href="sample-designs.html#cb133-7" tabindex="-1"></a>  <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span></span>
-<span id="cb133-8"><a href="sample-designs.html#cb133-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight))</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="sample-designs.html#cb132-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb132-2"><a href="sample-designs.html#cb132-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop)</span>
+<span id="cb132-3"><a href="sample-designs.html#cb132-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb132-4"><a href="sample-designs.html#cb132-4" tabindex="-1"></a>samp <span class="ot">&lt;-</span> pop[<span class="fu">sample</span>(bigN,n,<span class="at">prob=</span>pop<span class="sc">$</span>Prob,<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
+<span id="cb132-5"><a href="sample-designs.html#cb132-5" tabindex="-1"></a>samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(n<span class="sc">*</span>samp<span class="sc">$</span>Prob)</span>
+<span id="cb132-6"><a href="sample-designs.html#cb132-6" tabindex="-1"></a>samp <span class="ot">&lt;-</span> samp <span class="sc">|&gt;</span></span>
+<span id="cb132-7"><a href="sample-designs.html#cb132-7" tabindex="-1"></a>  <span class="fu">group_by</span>(Country) <span class="sc">|&gt;</span></span>
+<span id="cb132-8"><a href="sample-designs.html#cb132-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight))</span></code></pre></div>
 <p>or as a function</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="sample-designs.html#cb134-1" tabindex="-1"></a>select.ppswr <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, sizevar) {</span>
-<span id="cb134-2"><a href="sample-designs.html#cb134-2" tabindex="-1"></a>  <span class="co"># PPSWR</span></span>
-<span id="cb134-3"><a href="sample-designs.html#cb134-3" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
-<span id="cb134-4"><a href="sample-designs.html#cb134-4" tabindex="-1"></a>  df<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>bigN</span>
-<span id="cb134-5"><a href="sample-designs.html#cb134-5" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> df[<span class="fu">sample</span>(bigN,n,<span class="at">prob=</span>df[,sizevar],<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
-<span id="cb134-6"><a href="sample-designs.html#cb134-6" tabindex="-1"></a>  samp<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
-<span id="cb134-7"><a href="sample-designs.html#cb134-7" tabindex="-1"></a>  samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
-<span id="cb134-8"><a href="sample-designs.html#cb134-8" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> samp <span class="sc">%&gt;%</span></span>
-<span id="cb134-9"><a href="sample-designs.html#cb134-9" tabindex="-1"></a>    <span class="fu">group_by</span>(rownames) <span class="sc">%&gt;%</span></span>
-<span id="cb134-10"><a href="sample-designs.html#cb134-10" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight)) <span class="sc">|&gt;</span></span>
-<span id="cb134-11"><a href="sample-designs.html#cb134-11" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb134-12"><a href="sample-designs.html#cb134-12" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb134-13"><a href="sample-designs.html#cb134-13" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>rownames)</span>
-<span id="cb134-14"><a href="sample-designs.html#cb134-14" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
-<span id="cb134-15"><a href="sample-designs.html#cb134-15" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="sample-designs.html#cb135-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> pop <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">sizevar=</span><span class="st">&quot;Population&quot;</span>)</span>
-<span id="cb135-2"><a href="sample-designs.html#cb135-2" tabindex="-1"></a>samp </span></code></pre></div>
-<pre><code>##         Country Code Year Population        Prob bigN nsampled weight
-## 1    Bangladesh  BGD 2023  171466986 0.021197666  236        1   23.6
-## 2        Brazil  BRA 2023  211140731 0.026102347  236        1   23.6
-## 3         India  IND 2023 1438069597 0.177781857  236        2   47.2
-## 4     Indonesia  IDN 2023  281190068 0.034762221  236        1   23.6
-## 5         Japan  JPN 2023  124370947 0.015375402  236        1   23.6
-## 6      Pakistan  PAK 2023  247504505 0.030597831  236        1   23.6
-## 7  South Africa  ZAF 2023   63212386 0.007814653  236        1   23.6
-## 8 United States  USA 2023  343477330 0.042462505  236        2   47.2</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="sample-designs.html#cb133-1" tabindex="-1"></a>select.ppswr <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, sizevar) {</span>
+<span id="cb133-2"><a href="sample-designs.html#cb133-2" tabindex="-1"></a>  <span class="co"># PPSWR</span></span>
+<span id="cb133-3"><a href="sample-designs.html#cb133-3" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb133-4"><a href="sample-designs.html#cb133-4" tabindex="-1"></a>  df<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>bigN</span>
+<span id="cb133-5"><a href="sample-designs.html#cb133-5" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> df[<span class="fu">sample</span>(bigN,n,<span class="at">prob=</span>df[,sizevar],<span class="at">replace=</span><span class="cn">TRUE</span>),]</span>
+<span id="cb133-6"><a href="sample-designs.html#cb133-6" tabindex="-1"></a>  samp<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
+<span id="cb133-7"><a href="sample-designs.html#cb133-7" tabindex="-1"></a>  samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
+<span id="cb133-8"><a href="sample-designs.html#cb133-8" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> samp <span class="sc">|&gt;</span></span>
+<span id="cb133-9"><a href="sample-designs.html#cb133-9" tabindex="-1"></a>    <span class="fu">group_by</span>(rownames) <span class="sc">|&gt;</span></span>
+<span id="cb133-10"><a href="sample-designs.html#cb133-10" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>weight, first), <span class="at">nsampled=</span><span class="fu">n</span>(), <span class="at">weight=</span><span class="fu">sum</span>(weight)) <span class="sc">|&gt;</span></span>
+<span id="cb133-11"><a href="sample-designs.html#cb133-11" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb133-12"><a href="sample-designs.html#cb133-12" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb133-13"><a href="sample-designs.html#cb133-13" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>rownames)</span>
+<span id="cb133-14"><a href="sample-designs.html#cb133-14" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
+<span id="cb133-15"><a href="sample-designs.html#cb133-15" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="sample-designs.html#cb134-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> pop <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">sizevar=</span><span class="st">&quot;Population&quot;</span>)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Country
+</th>
+<th style="text-align:left;">
+Code
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Population
+</th>
+<th style="text-align:right;">
+Prob
+</th>
+<th style="text-align:right;">
+bigN
+</th>
+<th style="text-align:right;">
+nsampled
+</th>
+<th style="text-align:right;">
+weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bangladesh
+</td>
+<td style="text-align:left;">
+BGD
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+171466986
+</td>
+<td style="text-align:right;">
+0.0211977
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brazil
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+211140731
+</td>
+<td style="text-align:right;">
+0.0261023
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+India
+</td>
+<td style="text-align:left;">
+IND
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+1438069597
+</td>
+<td style="text-align:right;">
+0.1777819
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+47.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Indonesia
+</td>
+<td style="text-align:left;">
+IDN
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+281190068
+</td>
+<td style="text-align:right;">
+0.0347622
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Japan
+</td>
+<td style="text-align:left;">
+JPN
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+124370947
+</td>
+<td style="text-align:right;">
+0.0153754
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pakistan
+</td>
+<td style="text-align:left;">
+PAK
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+247504505
+</td>
+<td style="text-align:right;">
+0.0305978
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+ZAF
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+63212386
+</td>
+<td style="text-align:right;">
+0.0078147
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+United States
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+343477330
+</td>
+<td style="text-align:right;">
+0.0424625
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+47.2
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="linear-systematic-random-sample-lsrs" class="section level2 hasAnchor" number="5.5">
@@ -1347,8 +1585,8 @@ and weights are
 <span class="math display">\[
    w_i = \frac{N}{n}
 \]</span>
-Data from this design are often analysed as if they were drawn as a SRSWOR, but in fact this is a special case of
-a one-stage cluster sample (S1C, see below).</p>
+Data from this design are often analysed as if they were drawn as a SRSWOR,
+but in fact this is a special case of a one-stage cluster sample (S1C, see below).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:lsrs"></span>
 <img src="include-files/fig/LSRS.png" alt="Linear Systematic Random Sample (LSRS)" width="640" />
 <p class="caption">
@@ -1368,11 +1606,12 @@ members of different selected households to be aware that they
 are both in the same survey), or to prevent collusion between neighbouring selected households,
 we space the sample out along the street using a LSRS to separate the selected
 dwellings as much as possible.</p>
-<p>An LSRS is also a convenient way to sample if you have a printed list.<br />
-After setting your random starts location you can skip down the list at
-fixed intervals.</p>
-<div id="design-considerations-4" class="section level3 hasAnchor" number="5.5.1">
-<h3><span class="header-section-number">5.5.1</span> Design considerations<a href="sample-designs.html#design-considerations-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An LSRS is also a convenient way to sample if you have a printed list.
+After choosing the random start location among the first <span class="math inline">\(k\)</span> units you can
+skip down the list at fixed intervals - something that is conventient
+and simple to do on a printed list.</p>
+<div id="design-considerations-4" class="section level3 unnumbered hasAnchor">
+<h3>Design considerations<a href="sample-designs.html#design-considerations-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>Choose a sample size <span class="math inline">\(n\)</span></li>
 <li>Consider the ordering of the list and whether units differ systematically
@@ -1387,46 +1626,51 @@ above the other, e.g. all in the north-east corner. We’ll miss any
 systematic issues that occur with the north-west apartments in that case.</p>
 <p>Such unknown periodicities are unlikely in most cases, but we should be aware
 that they can occur.</p>
+<p>More importantly if the list is ordered in some way, e.g. by size of location,
+then a LSRS guarantees a spread across the variable that defines the ordering.
+This can be highly desirable since we are sure to be sampling across the full
+diversity of the ordering variable. A good example is sampling passengers seated
+in an aircraft - if we take an LSRS using a list of passengers ordered by row and
+seat number we’ll be guaranteed to get a spread of business class, premium economy and
+economy class passengers in our sample.</p>
 </div>
 <div id="example-4" class="section level3 unnumbered hasAnchor">
 <h3>Example<a href="sample-designs.html#example-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To select a LSRS of airports, let’s order the airports by latitude, and then
 take a LSRS of <span class="math inline">\(n=5\)</span> units.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sample-designs.html#cb137-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(airports)</span>
-<span id="cb137-2"><a href="sample-designs.html#cb137-2" tabindex="-1"></a>airports <span class="ot">&lt;-</span> airports[<span class="fu">order</span>(airports<span class="sc">$</span>Latitude),]</span>
-<span id="cb137-3"><a href="sample-designs.html#cb137-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb137-4"><a href="sample-designs.html#cb137-4" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">floor</span>(bigN<span class="sc">/</span>n)</span>
-<span id="cb137-5"><a href="sample-designs.html#cb137-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Skip size is k =&quot;</span>,k,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="sample-designs.html#cb135-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(airports)</span>
+<span id="cb135-2"><a href="sample-designs.html#cb135-2" tabindex="-1"></a>airports <span class="ot">&lt;-</span> airports[<span class="fu">order</span>(airports<span class="sc">$</span>Latitude),]</span>
+<span id="cb135-3"><a href="sample-designs.html#cb135-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb135-4"><a href="sample-designs.html#cb135-4" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">floor</span>(bigN<span class="sc">/</span>n)</span>
+<span id="cb135-5"><a href="sample-designs.html#cb135-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Skip size is k =&quot;</span>,k,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>## Skip size is k = 1214</code></pre>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sample-designs.html#cb139-1" tabindex="-1"></a>i0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(k,<span class="dv">1</span>) <span class="co"># first selected unit</span></span>
-<span id="cb139-2"><a href="sample-designs.html#cb139-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Starting sampling at unit&quot;</span>,i0,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sample-designs.html#cb137-1" tabindex="-1"></a>i0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(k,<span class="dv">1</span>) <span class="co"># first selected unit</span></span>
+<span id="cb137-2"><a href="sample-designs.html#cb137-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Starting sampling at unit&quot;</span>,i0,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>## Starting sampling at unit 305</code></pre>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sample-designs.html#cb141-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> (bigN<span class="sc">-</span>i0)<span class="sc">%/%</span>k <span class="sc">+</span> <span class="dv">1</span> <span class="co"># recalculate the sample size</span></span>
-<span id="cb141-2"><a href="sample-designs.html#cb141-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Actual sample size is&quot;</span>,n,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sample-designs.html#cb139-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> (bigN<span class="sc">-</span>i0)<span class="sc">%/%</span>k <span class="sc">+</span> <span class="dv">1</span> <span class="co"># recalculate the sample size</span></span>
+<span id="cb139-2"><a href="sample-designs.html#cb139-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Actual sample size is&quot;</span>,n,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>## Actual sample size is 5</code></pre>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="sample-designs.html#cb143-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> airports[i0 <span class="sc">+</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>))<span class="sc">*</span>k,]</span>
-<span id="cb143-2"><a href="sample-designs.html#cb143-2" tabindex="-1"></a>samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span></code></pre></div>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="sample-designs.html#cb144-1" tabindex="-1"></a>select.lsrs <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n) {</span>
-<span id="cb144-2"><a href="sample-designs.html#cb144-2" tabindex="-1"></a>  <span class="co"># LSRS</span></span>
-<span id="cb144-3"><a href="sample-designs.html#cb144-3" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
-<span id="cb144-4"><a href="sample-designs.html#cb144-4" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">floor</span>(bigN<span class="sc">/</span>n)</span>
-<span id="cb144-5"><a href="sample-designs.html#cb144-5" tabindex="-1"></a>  i0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(k,<span class="dv">1</span>) <span class="co"># first selected unit</span></span>
-<span id="cb144-6"><a href="sample-designs.html#cb144-6" tabindex="-1"></a>  n <span class="ot">&lt;-</span> (bigN<span class="sc">-</span>i0)<span class="sc">%/%</span>k <span class="sc">+</span> <span class="dv">1</span> <span class="co"># recalculate the sample size</span></span>
-<span id="cb144-7"><a href="sample-designs.html#cb144-7" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> df[i0 <span class="sc">+</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>))<span class="sc">*</span>k,]</span>
-<span id="cb144-8"><a href="sample-designs.html#cb144-8" tabindex="-1"></a>  samp<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
-<span id="cb144-9"><a href="sample-designs.html#cb144-9" tabindex="-1"></a>  samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
-<span id="cb144-10"><a href="sample-designs.html#cb144-10" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
-<span id="cb144-11"><a href="sample-designs.html#cb144-11" tabindex="-1"></a>}</span>
-<span id="cb144-12"><a href="sample-designs.html#cb144-12" tabindex="-1"></a></span>
-<span id="cb144-13"><a href="sample-designs.html#cb144-13" tabindex="-1"></a>samp <span class="ot">&lt;-</span> airports <span class="sc">%&gt;%</span> <span class="fu">select.lsrs</span>(<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sample-designs.html#cb141-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> airports[i0 <span class="sc">+</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>))<span class="sc">*</span>k,]</span>
+<span id="cb141-2"><a href="sample-designs.html#cb141-2" tabindex="-1"></a>samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="sample-designs.html#cb142-1" tabindex="-1"></a>select.lsrs <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n) {</span>
+<span id="cb142-2"><a href="sample-designs.html#cb142-2" tabindex="-1"></a>  <span class="co"># LSRS</span></span>
+<span id="cb142-3"><a href="sample-designs.html#cb142-3" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb142-4"><a href="sample-designs.html#cb142-4" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">floor</span>(bigN<span class="sc">/</span>n)</span>
+<span id="cb142-5"><a href="sample-designs.html#cb142-5" tabindex="-1"></a>  i0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(k,<span class="dv">1</span>) <span class="co"># first selected unit</span></span>
+<span id="cb142-6"><a href="sample-designs.html#cb142-6" tabindex="-1"></a>  n <span class="ot">&lt;-</span> (bigN<span class="sc">-</span>i0)<span class="sc">%/%</span>k <span class="sc">+</span> <span class="dv">1</span> <span class="co"># recalculate the sample size</span></span>
+<span id="cb142-7"><a href="sample-designs.html#cb142-7" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> df[i0 <span class="sc">+</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>))<span class="sc">*</span>k,]</span>
+<span id="cb142-8"><a href="sample-designs.html#cb142-8" tabindex="-1"></a>  samp<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
+<span id="cb142-9"><a href="sample-designs.html#cb142-9" tabindex="-1"></a>  samp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span>n</span>
+<span id="cb142-10"><a href="sample-designs.html#cb142-10" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
+<span id="cb142-11"><a href="sample-designs.html#cb142-11" tabindex="-1"></a>}</span>
+<span id="cb142-12"><a href="sample-designs.html#cb142-12" tabindex="-1"></a></span>
+<span id="cb142-13"><a href="sample-designs.html#cb142-13" tabindex="-1"></a>samp <span class="ot">&lt;-</span> airports <span class="sc">|&gt;</span> <span class="fu">select.lsrs</span>(<span class="dv">5</span>)</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:unnamed-chunk-76">Table 5.3: </span>Sample of airports (SRSWOR)
+<span id="tab:unnamed-chunk-77">Table 5.3: </span>Sample of airports (SRSWOR)
 </caption>
 <thead>
 <tr>
-<th style="text-align:left;">
-</th>
 <th style="text-align:right;">
 ID
 </th>
@@ -1455,9 +1699,6 @@ weight
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-5304
-</td>
 <td style="text-align:right;">
 5304
 </td>
@@ -1484,9 +1725,6 @@ Solomon Islands
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-4746
-</td>
 <td style="text-align:right;">
 4746
 </td>
@@ -1513,9 +1751,6 @@ India
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-1714
-</td>
 <td style="text-align:right;">
 1714
 </td>
@@ -1542,9 +1777,6 @@ Gibraltar
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-1638
-</td>
 <td style="text-align:right;">
 1638
 </td>
@@ -1571,9 +1803,6 @@ China
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-5277
-</td>
 <td style="text-align:right;">
 5277
 </td>
@@ -1624,7 +1853,7 @@ the proportions of the <strong>population</strong> that belong to the various st
 <p>For example, we can assign all residential addresses in New Zealand to exactly one of
 a defined set of non-overlapping regions, such as regional council areas. Or we might just have
 two strata: North Island, South Island (neglecting any addresses on offshore islands). There are
-$N=$2.4 million addresses in New Zealand, of which <span class="math inline">\(N_1=1.72\)</span> million in the North Island (<span class="math inline">\(F_1=0.74=74%\)</span>)
+<span class="math inline">\(N=2.4\)</span> million addresses in New Zealand, of which <span class="math inline">\(N_1=1.72\)</span> million in the North Island (<span class="math inline">\(F_1=0.74=74%\)</span>)
 and <span class="math inline">\(N_2=0.62\)</span> million are in the South Island (<span class="math inline">\(F_2=0.26=26%\)</span>).</p>
 <p>We then divide or <strong>allocate</strong> our total sample size <span class="math inline">\(n\)</span> to the strata. Stratum <span class="math inline">\(h\)</span> is allocated
 <span class="math inline">\(n_h\)</span> units, and the total sample size is then the sum of these:
@@ -1647,7 +1876,7 @@ happen to be included or happen to be missed from our samples that means we’d
 get estimates which differ very much between samples. To protect ourselves
 against this we stratify by business size (using tax data). The largest
 businesses are in the top stratum, which is small, but a census is always done
-of those businesses (the top stratum is called a <strong>full coverage stratum</strong>).<br />
+of those businesses (the top stratum is called a <strong>full coverage stratum</strong>).
 The smallest businesses are in the lowest stratum, and
 they are selected with low probability: since they resemble each other more, and
 one can stand in for another.</p>
@@ -1904,117 +2133,1446 @@ Wellington
 which implements an independent simple random sample within
 each stratum with either equal or proportional allocation.</p>
 <p>It implements PPSWR sampling within strata as well.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="sample-designs.html#cb145-1" tabindex="-1"></a>select.stsrs <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, stratumvar, </span>
-<span id="cb145-2"><a href="sample-designs.html#cb145-2" tabindex="-1"></a>                         <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>,</span>
-<span id="cb145-3"><a href="sample-designs.html#cb145-3" tabindex="-1"></a>                         <span class="at">method=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar=</span><span class="cn">NULL</span>) {</span>
-<span id="cb145-4"><a href="sample-designs.html#cb145-4" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
-<span id="cb145-5"><a href="sample-designs.html#cb145-5" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>stratumvar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
-<span id="cb145-6"><a href="sample-designs.html#cb145-6" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Stratum variable is not present in the data frame&quot;</span>)</span>
-<span id="cb145-7"><a href="sample-designs.html#cb145-7" tabindex="-1"></a>  }</span>
-<span id="cb145-8"><a href="sample-designs.html#cb145-8" tabindex="-1"></a>  stratumproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,stratumvar]))</span>
-<span id="cb145-9"><a href="sample-designs.html#cb145-9" tabindex="-1"></a>  <span class="fu">names</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(stratumvar,<span class="st">&quot;Nh&quot;</span>)</span>
-<span id="cb145-10"><a href="sample-designs.html#cb145-10" tabindex="-1"></a>  <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;equal&quot;</span>) {</span>
-<span id="cb145-11"><a href="sample-designs.html#cb145-11" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">round</span>(n<span class="sc">/</span><span class="fu">nrow</span>(stratumproperties))</span>
-<span id="cb145-12"><a href="sample-designs.html#cb145-12" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;proportional&quot;</span>) {</span>
-<span id="cb145-13"><a href="sample-designs.html#cb145-13" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">round</span>(n<span class="sc">*</span>stratumproperties<span class="sc">$</span>Nh<span class="sc">/</span><span class="fu">sum</span>(stratumproperties<span class="sc">$</span>Nh))</span>
-<span id="cb145-14"><a href="sample-designs.html#cb145-14" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb145-15"><a href="sample-designs.html#cb145-15" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Invalid allocation&quot;</span>)</span>
-<span id="cb145-16"><a href="sample-designs.html#cb145-16" tabindex="-1"></a>  }</span>
-<span id="cb145-17"><a href="sample-designs.html#cb145-17" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,stratumproperties,<span class="at">by=</span>stratumvar)</span>
-<span id="cb145-18"><a href="sample-designs.html#cb145-18" tabindex="-1"></a></span>
-<span id="cb145-19"><a href="sample-designs.html#cb145-19" tabindex="-1"></a>  <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
-<span id="cb145-20"><a href="sample-designs.html#cb145-20" tabindex="-1"></a>    samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar], </span>
-<span id="cb145-21"><a href="sample-designs.html#cb145-21" tabindex="-1"></a>                              <span class="cf">function</span>(dfx) <span class="fu">select.srswor</span>(dfx,<span class="fu">first</span>(dfx<span class="sc">$</span>nh))))</span>
-<span id="cb145-22"><a href="sample-designs.html#cb145-22" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
-<span id="cb145-23"><a href="sample-designs.html#cb145-23" tabindex="-1"></a>    samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar], </span>
-<span id="cb145-24"><a href="sample-designs.html#cb145-24" tabindex="-1"></a>                              <span class="cf">function</span>(dfx) <span class="fu">select.ppswr</span>(dfx,<span class="fu">first</span>(dfx<span class="sc">$</span>nh),<span class="at">sizevar=</span>sizevar)))</span>
-<span id="cb145-25"><a href="sample-designs.html#cb145-25" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb145-26"><a href="sample-designs.html#cb145-26" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Sampling method invalid&quot;</span>)</span>
-<span id="cb145-27"><a href="sample-designs.html#cb145-27" tabindex="-1"></a>  }</span>
-<span id="cb145-28"><a href="sample-designs.html#cb145-28" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
-<span id="cb145-29"><a href="sample-designs.html#cb145-29" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="sample-designs.html#cb143-1" tabindex="-1"></a>select.stsrs <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, stratumvar, </span>
+<span id="cb143-2"><a href="sample-designs.html#cb143-2" tabindex="-1"></a>                         <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>,</span>
+<span id="cb143-3"><a href="sample-designs.html#cb143-3" tabindex="-1"></a>                         <span class="at">method=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar=</span><span class="cn">NULL</span>) {</span>
+<span id="cb143-4"><a href="sample-designs.html#cb143-4" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb143-5"><a href="sample-designs.html#cb143-5" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>stratumvar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb143-6"><a href="sample-designs.html#cb143-6" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Stratum variable is not present in the data frame&quot;</span>)</span>
+<span id="cb143-7"><a href="sample-designs.html#cb143-7" tabindex="-1"></a>  }</span>
+<span id="cb143-8"><a href="sample-designs.html#cb143-8" tabindex="-1"></a>  stratumproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,stratumvar]))</span>
+<span id="cb143-9"><a href="sample-designs.html#cb143-9" tabindex="-1"></a>  <span class="fu">names</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(stratumvar,<span class="st">&quot;Nh&quot;</span>)</span>
+<span id="cb143-10"><a href="sample-designs.html#cb143-10" tabindex="-1"></a>  <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;equal&quot;</span>) {</span>
+<span id="cb143-11"><a href="sample-designs.html#cb143-11" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">round</span>(n<span class="sc">/</span><span class="fu">nrow</span>(stratumproperties))</span>
+<span id="cb143-12"><a href="sample-designs.html#cb143-12" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;proportional&quot;</span>) {</span>
+<span id="cb143-13"><a href="sample-designs.html#cb143-13" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">round</span>(n<span class="sc">*</span>stratumproperties<span class="sc">$</span>Nh<span class="sc">/</span><span class="fu">sum</span>(stratumproperties<span class="sc">$</span>Nh))</span>
+<span id="cb143-14"><a href="sample-designs.html#cb143-14" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb143-15"><a href="sample-designs.html#cb143-15" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Invalid allocation&quot;</span>)</span>
+<span id="cb143-16"><a href="sample-designs.html#cb143-16" tabindex="-1"></a>  }</span>
+<span id="cb143-17"><a href="sample-designs.html#cb143-17" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,stratumproperties,<span class="at">by=</span>stratumvar)</span>
+<span id="cb143-18"><a href="sample-designs.html#cb143-18" tabindex="-1"></a></span>
+<span id="cb143-19"><a href="sample-designs.html#cb143-19" tabindex="-1"></a>  <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb143-20"><a href="sample-designs.html#cb143-20" tabindex="-1"></a>    samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar], </span>
+<span id="cb143-21"><a href="sample-designs.html#cb143-21" tabindex="-1"></a>                              <span class="cf">function</span>(dfx) <span class="fu">select.srswor</span>(dfx,<span class="fu">first</span>(dfx<span class="sc">$</span>nh))))</span>
+<span id="cb143-22"><a href="sample-designs.html#cb143-22" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb143-23"><a href="sample-designs.html#cb143-23" tabindex="-1"></a>    samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar], </span>
+<span id="cb143-24"><a href="sample-designs.html#cb143-24" tabindex="-1"></a>                              <span class="cf">function</span>(dfx) <span class="fu">select.ppswr</span>(dfx,<span class="fu">first</span>(dfx<span class="sc">$</span>nh),<span class="at">sizevar=</span>sizevar)))</span>
+<span id="cb143-25"><a href="sample-designs.html#cb143-25" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb143-26"><a href="sample-designs.html#cb143-26" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Sampling method invalid&quot;</span>)</span>
+<span id="cb143-27"><a href="sample-designs.html#cb143-27" tabindex="-1"></a>  }</span>
+<span id="cb143-28"><a href="sample-designs.html#cb143-28" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
+<span id="cb143-29"><a href="sample-designs.html#cb143-29" tabindex="-1"></a>}</span></code></pre></div>
 <p>SRSWOR with Equal allocation</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="sample-designs.html#cb146-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>,  </span>
-<span id="cb146-2"><a href="sample-designs.html#cb146-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>)</span>
-<span id="cb146-3"><a href="sample-designs.html#cb146-3" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">table</span>(samp<span class="sc">$</span>Education_Region)) <span class="sc">|&gt;</span></span>
-<span id="cb146-4"><a href="sample-designs.html#cb146-4" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Education_Region=</span>Var1, <span class="at">SampleSize=</span>Freq)</span></code></pre></div>
-<pre><code>##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki         10
-## 2      Canterbury, Chatham Islands         10
-## 3          Hawke&#39;s Bay, Tairāwhiti         10
-## 4  Nelson, Marlborough, West Coast         10
-## 5                 Otago, Southland         10
-## 6                      Tai Tokerau         10
-## 7            Tāmaki Herenga Manawa         10
-## 8           Tāmaki Herenga Tāngata         10
-## 9              Tāmaki Herenga Waka         10
-## 10   Taranaki, Whanganui, Manawatū         10
-## 11                         Waikato         10
-## 12                      Wellington         10</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="sample-designs.html#cb144-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>,  </span>
+<span id="cb144-2"><a href="sample-designs.html#cb144-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Education Region, <span class="math inline">\(h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(N_h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(n_h\)</span>
+</th>
+<th style="text-align:right;">
+Weight, <span class="math inline">\(w_h\)</span>
+</th>
+<th style="text-align:left;">
+Selected Schools
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bay of Plenty, Waiariki
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+185
+</td>
+<td style="text-align:right;">
+18.5
+</td>
+<td style="text-align:left;">
+143;463;719;1170;1762;1811;1820;1821;2057;6940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canterbury, Chatham Islands
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+28.3
+</td>
+<td style="text-align:left;">
+357;418;1611;3288;3304;3348;3479;3505;3535;3586
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hawke’s Bay, Tairāwhiti
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+174
+</td>
+<td style="text-align:right;">
+17.4
+</td>
+<td style="text-align:left;">
+208;218;2560;2575;2593;2599;2654;2687;2691;2705
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nelson, Marlborough, West Coast
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:right;">
+12.7
+</td>
+<td style="text-align:left;">
+293;295;303;3062;3071;3180;3233;3343;3690;6975
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Otago, Southland
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+228
+</td>
+<td style="text-align:right;">
+22.8
+</td>
+<td style="text-align:left;">
+377;400;3737;3753;3824;3827;3943;3982;4017;4050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tai Tokerau
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+15.1
+</td>
+<td style="text-align:left;">
+1011;1013;1019;1038;1047;1058;1059;1094;1129;4552
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Taranaki, Whanganui, Manawatū
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+234
+</td>
+<td style="text-align:right;">
+23.4
+</td>
+<td style="text-align:left;">
+2152;2165;2167;2178;2232;2341;2365;2416;2440;4123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Manawa
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+188
+</td>
+<td style="text-align:right;">
+18.8
+</td>
+<td style="text-align:left;">
+48;530;618;1319;1334;1381;1436;1510;1522;1563
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Tāngata
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+197
+</td>
+<td style="text-align:right;">
+19.7
+</td>
+<td style="text-align:left;">
+32;42;1266;1326;1407;1505;1555;1567;1577;6788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Waka
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+179
+</td>
+<td style="text-align:right;">
+17.9
+</td>
+<td style="text-align:left;">
+91;95;553;594;1201;1203;1259;1427;1491;1580
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waikato
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+277
+</td>
+<td style="text-align:right;">
+27.7
+</td>
+<td style="text-align:left;">
+1682;1706;1835;1941;2008;2033;2074;2090;2215;6941
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wellington
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+281
+</td>
+<td style="text-align:right;">
+28.1
+</td>
+<td style="text-align:left;">
+246;546;2742;2846;2874;2963;2967;3013;3032;3045
+</td>
+</tr>
+</tbody>
+</table>
 <p>SRSWOR with proportional allocation</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sample-designs.html#cb148-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>, </span>
-<span id="cb148-2"><a href="sample-designs.html#cb148-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, </span>
-<span id="cb148-3"><a href="sample-designs.html#cb148-3" tabindex="-1"></a>                                <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span>
-<span id="cb148-4"><a href="sample-designs.html#cb148-4" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">table</span>(samp<span class="sc">$</span>Education_Region)) <span class="sc">|&gt;</span></span>
-<span id="cb148-5"><a href="sample-designs.html#cb148-5" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Education_Region=</span>Var1, <span class="at">SampleSize=</span>Freq)</span></code></pre></div>
-<pre><code>##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki          9
-## 2      Canterbury, Chatham Islands         14
-## 3          Hawke&#39;s Bay, Tairāwhiti          8
-## 4  Nelson, Marlborough, West Coast          6
-## 5                 Otago, Southland         11
-## 6                      Tai Tokerau          7
-## 7            Tāmaki Herenga Manawa          9
-## 8           Tāmaki Herenga Tāngata          9
-## 9              Tāmaki Herenga Waka          9
-## 10   Taranaki, Whanganui, Manawatū         11
-## 11                         Waikato         13
-## 12                      Wellington         13</code></pre>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="sample-designs.html#cb145-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>, </span>
+<span id="cb145-2"><a href="sample-designs.html#cb145-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, </span>
+<span id="cb145-3"><a href="sample-designs.html#cb145-3" tabindex="-1"></a>                                <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Education Region, <span class="math inline">\(h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(N_h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(n_h\)</span>
+</th>
+<th style="text-align:right;">
+Weight, <span class="math inline">\(w_h\)</span>
+</th>
+<th style="text-align:left;">
+Selected Schools
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bay of Plenty, Waiariki
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+185
+</td>
+<td style="text-align:right;">
+20.55556
+</td>
+<td style="text-align:left;">
+148;545;558;1698;1711;1788;1852;1933;2068
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canterbury, Chatham Islands
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+20.21429
+</td>
+<td style="text-align:left;">
+531;738;3275;3301;3336;3381;3384;3412;3418;3549;3554;3580;3581;4135
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hawke’s Bay, Tairāwhiti
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+174
+</td>
+<td style="text-align:right;">
+21.75000
+</td>
+<td style="text-align:left;">
+210;1669;2547;2574;2651;2702;2723;2725
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nelson, Marlborough, West Coast
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:right;">
+21.16667
+</td>
+<td style="text-align:left;">
+300;301;2811;3181;3207;3231
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Otago, Southland
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+228
+</td>
+<td style="text-align:right;">
+20.72727
+</td>
+<td style="text-align:left;">
+386;387;391;3716;3731;3772;3812;3826;3830;3836;3957
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tai Tokerau
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+21.57143
+</td>
+<td style="text-align:left;">
+1024;1028;1084;1096;1111;1138;1667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Taranaki, Whanganui, Manawatū
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+234
+</td>
+<td style="text-align:right;">
+21.27273
+</td>
+<td style="text-align:left;">
+2157;2160;2175;2265;2336;2357;2389;2412;2442;2475;2481
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Manawa
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+188
+</td>
+<td style="text-align:right;">
+20.88889
+</td>
+<td style="text-align:left;">
+57;61;1210;1362;1368;1480;1606;4228;6939
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Tāngata
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+197
+</td>
+<td style="text-align:right;">
+21.88889
+</td>
+<td style="text-align:left;">
+37;39;1221;1296;1331;1557;1592;4146;6937
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Waka
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+179
+</td>
+<td style="text-align:right;">
+19.88889
+</td>
+<td style="text-align:left;">
+91;97;103;466;1271;1329;1355;1418;6944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waikato
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+277
+</td>
+<td style="text-align:right;">
+21.30769
+</td>
+<td style="text-align:left;">
+146;159;160;671;1358;1891;1912;1946;1963;2013;2071;2094;6976
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wellington
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+281
+</td>
+<td style="text-align:right;">
+21.61538
+</td>
+<td style="text-align:left;">
+244;1651;2669;2818;2847;2859;2876;2911;2916;2991;3015;3022;3035
+</td>
+</tr>
+</tbody>
+</table>
 <p>PPSWR with Equal Allocation</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sample-designs.html#cb150-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>,  </span>
-<span id="cb150-2"><a href="sample-designs.html#cb150-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, </span>
-<span id="cb150-3"><a href="sample-designs.html#cb150-3" tabindex="-1"></a>                                <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>, </span>
-<span id="cb150-4"><a href="sample-designs.html#cb150-4" tabindex="-1"></a>                                <span class="at">method=</span><span class="st">&quot;PPSWR&quot;</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span>
-<span id="cb150-5"><a href="sample-designs.html#cb150-5" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">table</span>(samp<span class="sc">$</span>Education_Region)) <span class="sc">|&gt;</span></span>
-<span id="cb150-6"><a href="sample-designs.html#cb150-6" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Education_Region=</span>Var1, <span class="at">SampleSize=</span>Freq)</span></code></pre></div>
-<pre><code>##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki          9
-## 2      Canterbury, Chatham Islands         10
-## 3          Hawke&#39;s Bay, Tairāwhiti         10
-## 4  Nelson, Marlborough, West Coast          8
-## 5                 Otago, Southland         10
-## 6                      Tai Tokerau          9
-## 7            Tāmaki Herenga Manawa         10
-## 8           Tāmaki Herenga Tāngata          9
-## 9              Tāmaki Herenga Waka         10
-## 10   Taranaki, Whanganui, Manawatū          9
-## 11                         Waikato         10
-## 12                      Wellington         10</code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="sample-designs.html#cb146-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">120</span>,  </span>
+<span id="cb146-2"><a href="sample-designs.html#cb146-2" tabindex="-1"></a>                                <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>, </span>
+<span id="cb146-3"><a href="sample-designs.html#cb146-3" tabindex="-1"></a>                                <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>, </span>
+<span id="cb146-4"><a href="sample-designs.html#cb146-4" tabindex="-1"></a>                                <span class="at">method=</span><span class="st">&quot;PPSWR&quot;</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Education Region, <span class="math inline">\(h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(N_h\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(n_h\)</span>
+</th>
+<th style="text-align:left;">
+Selected Schools
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Bay of Plenty, Waiariki
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+185
+</td>
+<td style="text-align:left;">
+120;121;143;152;532;1699*;1730;1761;1766
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canterbury, Chatham Islands
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:left;">
+311;321;325;333;337;686;2113;3372;3521;4212
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hawke’s Bay, Tairāwhiti
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+174
+</td>
+<td style="text-align:left;">
+216;217;227;230;2445;2564;2581;2628;2677;2688
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nelson, Marlborough, West Coast
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+127
+</td>
+<td style="text-align:left;">
+289;296*;1148;1587;3189;3206;3208;3229
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Otago, Southland
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+228
+</td>
+<td style="text-align:left;">
+374;377;405;533;552;586;747;3864;3967;4054
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tai Tokerau
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:left;">
+5;8;9;13*;15;21;1032;1050;1648
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Taranaki, Whanganui, Manawatū
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+234
+</td>
+<td style="text-align:left;">
+189;203*;204;422;2164;2205;2216;2244;2397
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Manawa
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+188
+</td>
+<td style="text-align:left;">
+65;1190;1319;1370;1383;1402;1462;2085;3630;6760
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Tāngata
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+197
+</td>
+<td style="text-align:left;">
+47;725;767;1223;1320;1341;1396*;1406;1572
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tāmaki Herenga Waka
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+179
+</td>
+<td style="text-align:left;">
+90;91;631;949;1203;1393;1423;1435;1460;1547
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waikato
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+277
+</td>
+<td style="text-align:left;">
+131;158;615;1695;1700;1783;1877;2007;2021;3612
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wellington
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+281
+</td>
+<td style="text-align:left;">
+241;248;253;260;272;498;614;2918;2994;3036
+</td>
+</tr>
+</tbody>
+</table>
+<p>(Schools selected multiple times are indicated with a *)</p>
 </div>
 </div>
 <div id="one-stage-cluster-sampling-s1c" class="section level2 hasAnchor" number="5.7">
 <h2><span class="header-section-number">5.7</span> One stage cluster sampling (S1C)<a href="sample-designs.html#one-stage-cluster-sampling-s1c" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One stage cluster sampling superficially resembles stratified sampling.
+As in stratified sampling we divide the population into groups, in this
+case called <strong>clusters</strong>, assign each member of the population to one and only one group.
+However rather than sample members from each cluster, we instead draw a sample
+of clusters (by SRSWOR, or sometimes by PPSWR). We then take a <strong>census</strong> of
+each selected cluster.</p>
+<p>In the Schools example this would could define small regions across the
+country, select a random sample of those regions, and then carry out a
+census of schools in each selected region.</p>
+<p>Unlike stratified sampling, which is often <strong>more efficient</strong> than simple
+random sampling (i.e. it has smaller standard errors for the same sample size),
+cluster sampling is <strong>less efficient</strong>: i.e. its standard errors are worse (larger)
+than we’d get with a SRS with the same size.</p>
+<p>We can see why the standard errors are worse when we consider <strong>why</strong>
+we take cluster samples: the reason is predominantly to controlling costs.
+If we want to do a household survey in a city like Wellington we could list
+all of the residential addresses, and
+then draw a simple random sample of those dwellings. That would mean having a sample
+that is scattered all over the city - and if we have to visit each dwelling to
+collect the data, then that means a lot of travelling for the interviewers: especially
+if they have to visit some houses multiple times to make contact with the residents.
+So it’s more <strong>convenient</strong> to select a set of houses on the same street and survey
+them - we can go from one to the next without much travel time.</p>
+<p>The trouble is that people who live near each other tend to resemble each other:
+they have similar incomes, jobs, family sizes etc. That means that for each
+additional house you survey in a street you’re not really getting as much new
+information as if you were to survey an additional house somewhere else in the
+city.</p>
+<p>For that reason cluster samples have to be larger than SRS to achieve the
+same accuracy of their estimates.</p>
+<p>Note that it makes no sense to cluster if there is no saving to be made regarding
+cost or some other equivalent operational consideration. If we are doing a phone
+survey, where no travel at all is involved, then clustering doesn’t make any sense.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:s1c"></span>
-<img src="include-files/fig/SRS1C.png" alt="One Stage Cluster Sample (STSRS)" width="640" />
+<img src="include-files/fig/SRS1C.png" alt="One Stage Cluster Sample (S1C)" width="640" />
 <p class="caption">
-Figure 5.5: One Stage Cluster Sample (STSRS)
+Figure 5.5: One Stage Cluster Sample (S1C)
 </p>
+</div>
+<p>Our notation becomes slightly more complex here: we have <span class="math inline">\(N\)</span> clusters, labelled
+<span class="math inline">\(i=1,\ldots,N\)</span>. Then in cluster <span class="math inline">\(i\)</span> we have <span class="math inline">\(M_i\)</span> units, labelled <span class="math inline">\(j=1,\ldots,M_i\)</span>.
+There is a total of
+<span class="math display">\[
+   M = \sum_{i=1}^N M_i
+\]</span>
+units in the population.</p>
+<p>The selection probability of a unit is simply the probability that the cluster
+they are a member of is selected. So if we select clusters by SRSWOR then unit <span class="math inline">\(j\)</span>
+in cluster <span class="math inline">\(i\)</span> has selection probability
+<span class="math display">\[
+   \pi_{ij} = \frac{n}{N}
+\]</span>
+leading to a weight of
+<span class="math display">\[
+   w_{ij} = \frac{N}{n}
+\]</span>
+where again we note that <span class="math inline">\(n\)</span> is the number of <strong>clusters</strong> selected, and <span class="math inline">\(N\)</span>
+is the number of <strong>clusters</strong> in the population.</p>
+<div id="design-considerations-6" class="section level3 unnumbered hasAnchor">
+<h3>Design considerations<a href="sample-designs.html#design-considerations-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>We need to decide how to break our populations into clusters,
+and also the sizes of those clusters</li>
+<li>We need to choose an overall sample size.</li>
+</ul>
+<p>Clusters can vary in size, so we even though we can control
+the number of clusters we select, we can’t control the overall
+sample size: we might select by chance a set of very large
+clusters, or a set of very small clusters.</p>
+<p>In stratified sampling we want to make the strata as different from
+one another as possible, and to be as internally homogeneous.<br />
+In cluster sampling it’s the reverse situation: we want our clusters to be internally
+diverse, and for that diversity to be present as far as possible within
+every cluster. This is because we’re only selecting a few clusters, and
+they have to stand in for all of the unselected clusters. So they’d better
+reflect the full population diversity.</p>
+</div>
+<div id="example-6" class="section level3 unnumbered hasAnchor">
+<h3>Example<a href="sample-designs.html#example-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are <span class="math inline">\(N=87\)</span> Territorial Authorities (TAs) in New Zealand (these are
+local government districts). Each TA has <span class="math inline">\(M_i\)</span> schools, so the total
+number of schools in the population is
+<span class="math display">\[
+    M = \sum_{i=1}^N M_i
+\]</span>
+We could select a SRS of <span class="math inline">\(n=10\)</span> TAs and then do a
+census of the Schools in each selected TA. Here <span class="math inline">\(n\)</span> is the sample size
+of clusters, not the sample size of schools. If cluster <span class="math inline">\(i\)</span> contains <span class="math inline">\(M_i\)</span>
+schools then the total number of schools selected is
+<span class="math display">\[
+    m = \sum_{i\in\text{sample}} M_i
+\]</span></p>
+<p>A function to do this selection in R is:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="sample-designs.html#cb147-1" tabindex="-1"></a>select.s1c <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, clustervar, </span>
+<span id="cb147-2"><a href="sample-designs.html#cb147-2" tabindex="-1"></a>                       <span class="at">method=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar=</span><span class="cn">NULL</span>) {</span>
+<span id="cb147-3"><a href="sample-designs.html#cb147-3" tabindex="-1"></a>  bigM <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb147-4"><a href="sample-designs.html#cb147-4" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb147-5"><a href="sample-designs.html#cb147-5" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Cluster ID variable is not present in the data frame&quot;</span>)</span>
+<span id="cb147-6"><a href="sample-designs.html#cb147-6" tabindex="-1"></a>  }</span>
+<span id="cb147-7"><a href="sample-designs.html#cb147-7" tabindex="-1"></a>  clusterproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,clustervar]))</span>
+<span id="cb147-8"><a href="sample-designs.html#cb147-8" tabindex="-1"></a>  <span class="fu">names</span>(clusterproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(clustervar,<span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb147-9"><a href="sample-designs.html#cb147-9" tabindex="-1"></a>  <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb147-10"><a href="sample-designs.html#cb147-10" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span> </span>
+<span id="cb147-11"><a href="sample-designs.html#cb147-11" tabindex="-1"></a>                       <span class="fu">select.srswor</span>(<span class="at">n=</span>n)</span>
+<span id="cb147-12"><a href="sample-designs.html#cb147-12" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb147-13"><a href="sample-designs.html#cb147-13" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span></span>
+<span id="cb147-14"><a href="sample-designs.html#cb147-14" tabindex="-1"></a>                       <span class="fu">select.ppswr</span>(<span class="at">n=</span>n, <span class="at">sizevar=</span><span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb147-15"><a href="sample-designs.html#cb147-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb147-16"><a href="sample-designs.html#cb147-16" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Sampling method invalid&quot;</span>)</span>
+<span id="cb147-17"><a href="sample-designs.html#cb147-17" tabindex="-1"></a>  }</span>
+<span id="cb147-18"><a href="sample-designs.html#cb147-18" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,sampcluster,<span class="at">by=</span>clustervar)</span>
+<span id="cb147-19"><a href="sample-designs.html#cb147-19" tabindex="-1"></a></span>
+<span id="cb147-20"><a href="sample-designs.html#cb147-20" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
+<span id="cb147-21"><a href="sample-designs.html#cb147-21" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sample-designs.html#cb148-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.s1c</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Territorial Authority, <span class="math inline">\(i\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(M_i\)</span>
+</th>
+<th style="text-align:left;">
+Selected Schools
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Hamilton City
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:left;">
+129;130;131;132;135;136;138;139 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kawerau District
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+651;655;661;1770
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Manawatu District
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+197;199;2333;2338;2341;2354;2356;2360 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ruapehu District
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+169;176;183;1617;1845;1847;1961;1982 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Timaru District
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+352;354;357;358;359;360;361;1611 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wairoa District
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+214;1616;1668;1669;1675;1676;1677;1678 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waitematā Local Board Area
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+48;50;51;53;62;921;1210;1220 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Western Bay of Plenty District
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+117;123;1185;1717;1758;1765;1794;1811 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Whau Local Board Area
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+42;78;83;84;781;941;1206;1212 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ōtorohanga District
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+157;1688;1736;1771;1779;1783;1793;1853 …
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="two-stage-cluster-sampling-s2c" class="section level2 hasAnchor" number="5.8">
 <h2><span class="header-section-number">5.8</span> Two stage cluster sampling (S2C)<a href="sample-designs.html#two-stage-cluster-sampling-s2c" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The obvious drawback of the One Stage cluster design is that we are getting
+a lot of information from clusters which may be very homogeneous. This drives
+the inefficiency of the design: we’re wasting a lot of our sampling effort.</p>
+<p>An obvious solution is to select a set of clusters, and then only take a sample of units
+within those clusters, rather than sampling all of them.</p>
+<p>This breaks the sample design into two stages</p>
+<ul>
+<li><strong>Stage 1</strong> - select a set of clusters, which we refer to as <strong>Primary Sampling Units</strong> (PSUs);</li>
+<li><strong>Stage 2</strong> - select a set of units within the selected clusters. These units are called
+<strong>Secondary Sampling Units</strong> (SSUs).</li>
+</ul>
+<p>Sampling at both stages can be by any method, though SRSWOR or PPSWR are the most common.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:s2c"></span>
-<img src="include-files/fig/SRS2C.png" alt="Two Stage Cluster Sample (STSRS)" width="640" />
+<img src="include-files/fig/SRS2C.png" alt="Two Stage Cluster Sample (S2C)" width="640" />
 <p class="caption">
-Figure 5.6: Two Stage Cluster Sample (STSRS)
+Figure 5.6: Two Stage Cluster Sample (S2C)
 </p>
+</div>
+<p>We use the same notation as in one stage clustering: there are <span class="math inline">\(N\)</span> PSUS of
+which select <span class="math inline">\(n\)</span>, and in PSU <span class="math inline">\(i\)</span> there are <span class="math inline">\(M_i\)</span> PSUs, of which we select <span class="math inline">\(m_i\)</span>.
+The total number of SSUs is in all of the PSUs in the population is
+<span class="math display">\[
+   M = \sum_{i=1}^N M_i
+\]</span>
+whereas the total sample size of SSUs is
+<span class="math display">\[
+   m = \sum_{i\in\text{Sample}} m_i
+\]</span>
+where we just sum over the selected PSUs.</p>
+<p>If we use SRSWOR and select <span class="math inline">\(n\)</span> PSUs from the <span class="math inline">\(N\)</span> available
+then the probability of selection of a PSU is
+<span class="math display">\[
+   \pi^{(1)}_i= \Pr(\text{PSU $i$ is selected}) = \frac{n}{N}
+\]</span>
+leading to the first stage weight of
+<span class="math display">\[
+   w^{(1)}_i = \frac{1}{\pi^{(1)}_i} = \frac{N}{n}
+\]</span>
+If PSU <span class="math inline">\(i\)</span> is selected we then select <span class="math inline">\(m_i\)</span> units (SSUs) out of the <span class="math inline">\(M_i\)</span>
+available. The probability that SSU <span class="math inline">\(j\)</span> is selected given that PSU <span class="math inline">\(i\)</span> has
+been selected is
+<span class="math display">\[
+   \pi^{(2)}_{ij}= \Pr(\text{SSU $j$ is selected given that PSU $i$ was selected}) = \frac{m_i}{M_i}
+\]</span>
+leading to the second stage weight of
+<span class="math display">\[
+   w^{(2)}_{ij} = \frac{1}{\pi^{(2)}_{ij}} = \frac{M_i}{m_i}
+\]</span>
+The overall probability that SSU <span class="math inline">\(j\)</span> in PSU <span class="math inline">\(i\)</span> is selected is the product
+of the first and second stage selection probabilities:
+<span class="math display">\[
+   \pi_{ij} = \pi^{(1)}_i \pi^{(2)}_{ij} = \frac{n}{N}\times\frac{m_i}{M_i}
+\]</span>
+and its overall weight is the product of the first and second stage weights
+<span class="math display">\[
+   w_{ij} = w^{(1)}_i w^{(2)}_{ij} = \frac{N}{n}\times\frac{M_i}{m_i}
+\]</span></p>
+<p>For example I might have <span class="math inline">\(N=100\)</span> small areas covering Wellington, and I select
+<span class="math inline">\(n=10\)</span> of them. Then in one of those selected areas there might be <span class="math inline">\(M_i=120\)</span> houses,
+of which I select <span class="math inline">\(m_i=15\)</span>. The first and second stage probabilities are
+<span class="math display">\[
+   \pi^{(1)}_i = \frac{10}{100} = 0.100
+   \qquad \text{and} \qquad
+   \pi^{(2)}_{ij} = \frac{15}{120} = 0.125
+\]</span>
+So the chances that a house in PSU <span class="math inline">\(i\)</span> is selected is
+<span class="math display">\[
+   \pi_{ij} = (0.100)(0.125) = 0.0125
+\]</span>
+with total weight
+<span class="math display">\[
+   w_{ij} = \frac{100}{10}\times\frac{120}{15} = 10\times 8 = 80
+\]</span></p>
+<p>There are two special cases of two stage clustering which reduce to
+simpler designs</p>
+<ul>
+<li>A first stage census: <span class="math inline">\(n=N\)</span>: we sample from every PSU. This is equivalent
+to <strong>stratified sampling</strong>, where we sample from every stratum.</li>
+<li>A second stage census: <span class="math inline">\(m_i=M_i\)</span>: we take a census of all SSUs in each selected cluster.
+This is equivalent to <strong>one stage clustering</strong>.</li>
+</ul>
+<div id="design-considerations-7" class="section level3 unnumbered hasAnchor">
+<h3>Design considerations<a href="sample-designs.html#design-considerations-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have a lot of decisions to make:</p>
+<ul>
+<li>How many PSUs (clusters) <span class="math inline">\(N\)</span>, and how we define them</li>
+<li>The number of PSUs to select <span class="math inline">\(n\)</span></li>
+<li>The number of SSUs to select within each selected PSU. Rather
+than state the sample size <span class="math inline">\(m_i\)</span> for each cluster, this is
+often specified as the <strong>proportion</strong> of the cluster size we’ll select.
+e.g. we might select 1 in 10 of the SSUs.</li>
+</ul>
+</div>
+<div id="example-7" class="section level3 unnumbered hasAnchor">
+<h3>Example<a href="sample-designs.html#example-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s return to the schools example. We’ll select <span class="math inline">\(n=10\)</span> TAs, but then
+select 20% of the schools in each selected TA - although we’ll also ensure
+we have at least 2 schools in each selected cluster.</p>
+<p>A function to do this selection in R is:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="sample-designs.html#cb149-1" tabindex="-1"></a>select.s2c <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, cfraction, clustervar, </span>
+<span id="cb149-2"><a href="sample-designs.html#cb149-2" tabindex="-1"></a>                       <span class="at">mmin=</span><span class="dv">2</span>, <span class="co"># minimum number of 2nd stage clusters to select</span></span>
+<span id="cb149-3"><a href="sample-designs.html#cb149-3" tabindex="-1"></a>                       <span class="at">method1=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar1=</span><span class="cn">NULL</span>,</span>
+<span id="cb149-4"><a href="sample-designs.html#cb149-4" tabindex="-1"></a>                       <span class="at">method2=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar2=</span><span class="cn">NULL</span>) {</span>
+<span id="cb149-5"><a href="sample-designs.html#cb149-5" tabindex="-1"></a>  bigM <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb149-6"><a href="sample-designs.html#cb149-6" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb149-7"><a href="sample-designs.html#cb149-7" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Cluster ID variable is not present in the data frame&quot;</span>)</span>
+<span id="cb149-8"><a href="sample-designs.html#cb149-8" tabindex="-1"></a>  }</span>
+<span id="cb149-9"><a href="sample-designs.html#cb149-9" tabindex="-1"></a>  clusterproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,clustervar]))</span>
+<span id="cb149-10"><a href="sample-designs.html#cb149-10" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(clusterproperties)</span>
+<span id="cb149-11"><a href="sample-designs.html#cb149-11" tabindex="-1"></a>  <span class="fu">names</span>(clusterproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(clustervar,<span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb149-12"><a href="sample-designs.html#cb149-12" tabindex="-1"></a>  <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb149-13"><a href="sample-designs.html#cb149-13" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span> </span>
+<span id="cb149-14"><a href="sample-designs.html#cb149-14" tabindex="-1"></a>                       <span class="fu">select.srswor</span>(<span class="at">n=</span>n)</span>
+<span id="cb149-15"><a href="sample-designs.html#cb149-15" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb149-16"><a href="sample-designs.html#cb149-16" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span></span>
+<span id="cb149-17"><a href="sample-designs.html#cb149-17" tabindex="-1"></a>                       <span class="fu">select.ppswr</span>(<span class="at">n=</span>n, <span class="at">sizevar=</span><span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb149-18"><a href="sample-designs.html#cb149-18" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb149-19"><a href="sample-designs.html#cb149-19" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;First stage sampling method invalid&quot;</span>)</span>
+<span id="cb149-20"><a href="sample-designs.html#cb149-20" tabindex="-1"></a>  }</span>
+<span id="cb149-21"><a href="sample-designs.html#cb149-21" tabindex="-1"></a>  sampcluster<span class="sc">$</span>mi <span class="ot">&lt;-</span> <span class="fu">pmin</span>(sampcluster<span class="sc">$</span>Mi,<span class="fu">pmax</span>(mmin,<span class="fu">round</span>(cfraction<span class="sc">*</span>sampcluster<span class="sc">$</span>Mi)))</span>
+<span id="cb149-22"><a href="sample-designs.html#cb149-22" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,sampcluster,<span class="at">by=</span>clustervar)</span>
+<span id="cb149-23"><a href="sample-designs.html#cb149-23" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> samp1 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN1=</span>bigN,<span class="at">weight1=</span>weight)</span>
+<span id="cb149-24"><a href="sample-designs.html#cb149-24" tabindex="-1"></a>  samp1<span class="sc">$</span>n1 <span class="ot">&lt;-</span> n</span>
+<span id="cb149-25"><a href="sample-designs.html#cb149-25" tabindex="-1"></a></span>
+<span id="cb149-26"><a href="sample-designs.html#cb149-26" tabindex="-1"></a>  <span class="co"># Second stage selection</span></span>
+<span id="cb149-27"><a href="sample-designs.html#cb149-27" tabindex="-1"></a>  <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb149-28"><a href="sample-designs.html#cb149-28" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
+<span id="cb149-29"><a href="sample-designs.html#cb149-29" tabindex="-1"></a>                     <span class="fu">by</span>(samp1, samp1[,clustervar],</span>
+<span id="cb149-30"><a href="sample-designs.html#cb149-30" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.srswor</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi))</span>
+<span id="cb149-31"><a href="sample-designs.html#cb149-31" tabindex="-1"></a>                               ))</span>
+<span id="cb149-32"><a href="sample-designs.html#cb149-32" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb149-33"><a href="sample-designs.html#cb149-33" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
+<span id="cb149-34"><a href="sample-designs.html#cb149-34" tabindex="-1"></a>                     <span class="fu">by</span>(samp2, samp2[,clustervar],</span>
+<span id="cb149-35"><a href="sample-designs.html#cb149-35" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.ppswr</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi),<span class="at">sizevar=</span>sizevar2)</span>
+<span id="cb149-36"><a href="sample-designs.html#cb149-36" tabindex="-1"></a>                               ))</span>
+<span id="cb149-37"><a href="sample-designs.html#cb149-37" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb149-38"><a href="sample-designs.html#cb149-38" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Second stage sampling method invalid&quot;</span>)</span>
+<span id="cb149-39"><a href="sample-designs.html#cb149-39" tabindex="-1"></a>  }</span>
+<span id="cb149-40"><a href="sample-designs.html#cb149-40" tabindex="-1"></a>  samp2 <span class="ot">&lt;-</span> samp2 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN2=</span>bigN,<span class="at">weight2=</span>weight)</span>
+<span id="cb149-41"><a href="sample-designs.html#cb149-41" tabindex="-1"></a>  samp2<span class="sc">$</span>n2 <span class="ot">&lt;-</span> samp2<span class="sc">$</span>mi</span>
+<span id="cb149-42"><a href="sample-designs.html#cb149-42" tabindex="-1"></a>  samp2<span class="sc">$</span>weight <span class="ot">&lt;-</span> samp2<span class="sc">$</span>weight1<span class="sc">*</span>samp2<span class="sc">$</span>weight2</span>
+<span id="cb149-43"><a href="sample-designs.html#cb149-43" tabindex="-1"></a></span>
+<span id="cb149-44"><a href="sample-designs.html#cb149-44" tabindex="-1"></a>  <span class="fu">return</span>(samp2)</span>
+<span id="cb149-45"><a href="sample-designs.html#cb149-45" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sample-designs.html#cb150-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.s2c</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
+<span id="cb150-2"><a href="sample-designs.html#cb150-2" tabindex="-1"></a>                              <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Territorial Authority, <span class="math inline">\(i\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(N\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(n\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(M_i\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(m_i\)</span>
+</th>
+<th style="text-align:left;">
+<span class="math inline">\(w^{(1)}_i\)</span>
+</th>
+<th style="text-align:left;">
+<span class="math inline">\(w^{(2)}_{ij}\)</span>
+</th>
+<th style="text-align:left;">
+Weight, <span class="math inline">\(w_{ij}\)</span>
+</th>
+<th style="text-align:left;">
+Selected Schools
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Masterton District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.00
+</td>
+<td style="text-align:left;">
+43.50
+</td>
+<td style="text-align:left;">
+241;245;1661;2843
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nelson City
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.50
+</td>
+<td style="text-align:left;">
+47.85
+</td>
+<td style="text-align:left;">
+3189;3221;3224;4121
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Queenstown-Lakes District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.33
+</td>
+<td style="text-align:left;">
+46.40
+</td>
+<td style="text-align:left;">
+746;747;958
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tasman District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.00
+</td>
+<td style="text-align:left;">
+43.50
+</td>
+<td style="text-align:left;">
+297;525;3196;3199 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Timaru District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+4.67
+</td>
+<td style="text-align:left;">
+40.60
+</td>
+<td style="text-align:left;">
+361;3498;3528;3532 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waimate District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+4.50
+</td>
+<td style="text-align:left;">
+39.15
+</td>
+<td style="text-align:left;">
+362;3539
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waitematā Local Board Area
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.25
+</td>
+<td style="text-align:left;">
+45.67
+</td>
+<td style="text-align:left;">
+48;53;1391;1392
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Waitomo District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.67
+</td>
+<td style="text-align:left;">
+49.30
+</td>
+<td style="text-align:left;">
+160;161;1778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Whanganui District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+5.00
+</td>
+<td style="text-align:left;">
+43.50
+</td>
+<td style="text-align:left;">
+189;190;559;1585 …
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Whangarei District
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+8.70
+</td>
+<td style="text-align:left;">
+4.91
+</td>
+<td style="text-align:left;">
+42.71
+</td>
+<td style="text-align:left;">
+12;1028;1029;1030 …
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="complex-multistage-designs" class="section level2 hasAnchor" number="5.9">
 <h2><span class="header-section-number">5.9</span> Complex multistage designs<a href="sample-designs.html#complex-multistage-designs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="introduction-to-the-design-effect" class="section level2 hasAnchor" number="5.10">
-<h2><span class="header-section-number">5.10</span> Introduction to the design effect<a href="sample-designs.html#introduction-to-the-design-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The ideas in two stage cluster sampling can be extended to a third stage of sampling
+(i.e. we may wish to sample within SSUs), and we can also combine cluster sampling
+with stratified sampling.</p>
+<p>For example, the Statistics NZ Household sampling frame is a multistage cluster
+design, where the sample is selected as follows:</p>
+<ol style="list-style-type: decimal">
+<li>NZ is stratified into <span class="math inline">\(H=12\)</span> regions (e.g. Northland, Auckland, Hawke’s
+Bay etc.);</li>
+<li>Each stratum (region) is broken into <span class="math inline">\(N_h\)</span> PSUs: which are amalgamations
+of a few meshblocks. Each PSU contains (on average) 100 households.<br />
+A SRSWOR of <span class="math inline">\(n_h\)</span> PSUs is taken within each stratum <span class="math inline">\(h\)</span>; (First stage sample.)</li>
+<li>Within the <span class="math inline">\(k^{\rm th}\)</span> selected PSU, which is of size <span class="math inline">\(M_{hk}\)</span>, a linear
+systematic random sample is taken of <span class="math inline">\(m_{hk}\)</span> households; (Second stage
+sample.)</li>
+<li>Depending on the survey, <strong>all</strong> <span class="math inline">\(A_{hk\ell}\)</span> eligible members of the
+<span class="math inline">\(\ell^{\rm th}\)</span> selected
+household will be surveyed, or a SRSWOR of <span class="math inline">\(a_{hk\ell}\)</span> members may be taken.
+(Third stage sample.)</li>
+</ol>
+<p>The sample size is therefore
+<span class="math display">\[
+   \text{Sample Size} =
+   \sum_{h=1}^H\sum_{k\in s_I}\sum_{\ell\in s_k} a_{hk\ell}
+\]</span>
+and the sample weights of individual <span class="math inline">\(j\)</span> in household <span class="math inline">\(\ell\)</span> of PSU <span class="math inline">\(k\)</span> in
+stratum <span class="math inline">\(h\)</span> are
+<span class="math display">\[
+   w_{hk\ell j} = \frac{N_h}{n_h}\frac{M_{hk}}{m_{hk}}
+                  \frac{A_{hk\ell}}{a_{hk\ell}}
+\]</span>
+i.e. these are just the product of the weights at each stage of selection.</p>
 
 </div>
 </div>

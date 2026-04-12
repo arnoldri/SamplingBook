@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  11 APR 2026 16:10
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  12 APR 2026 14:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1114,118 +1114,156 @@ File: _main_files/figure-latex/starwarssample-1.pdf Graphic file (type pdf)
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[44] [45] [46] [47] [48] [49] [50] [51] [52]
+[44] [45] [46] [47] [48] [49] [50]
+File: include-files/fig/Weights.png Graphic file (type bmp)
+<include-files/fig/Weights.png>
+
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2491--2492
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 135.56422pt on input line 2496.
+
+
+Underfull \vbox (badness 2012) has occurred while \output is active []
+
+[51] [52] [53] [54]
 Chapter 5.
 File: include-files/fig/Census.png Graphic file (type bmp)
 <include-files/fig/Census.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 2591--2592
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2621--2622
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 111.56422pt on input line 2596.
+LaTeX Warning: Float too large for page by 111.56422pt on input line 2626.
 
-[53
+[55
 
-] [54]
+] [56]
 File: include-files/fig/SRS.png Graphic file (type bmp)
 <include-files/fig/SRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 2687--2688
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2717--2718
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 2692.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 2722.
 
 
-Overfull \hbox (103.16446pt too wide) in paragraph at lines 2713--2738
+Overfull \hbox (103.16446pt too wide) in paragraph at lines 2743--2768
  [][] 
  []
 
-[55] [56]
-Overfull \hbox (272.08447pt too wide) in paragraph at lines 2752--2767
+[57] [58]
+Overfull \hbox (272.08447pt too wide) in paragraph at lines 2782--2797
  [][] 
  []
 
-[57]
-Overfull \hbox (97.25446pt too wide) in paragraph at lines 2841--2856
+[59]
+Overfull \hbox (97.25446pt too wide) in paragraph at lines 2874--2889
  [][] 
  []
 
-[58] [59] [60]
+[60] [61]
 File: include-files/fig/LSRS.png Graphic file (type bmp)
 <include-files/fig/LSRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3030--3031
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3067--3068
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3035.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3072.
 
-[61] [62]
-Overfull \hbox (173.89449pt too wide) in paragraph at lines 3149--3164
+[62] [63] [64]
+Overfull \hbox (141.49449pt too wide) in paragraph at lines 3196--3211
  [][] 
  []
 
-[63]
+[65]
 File: include-files/fig/STSRS.png Graphic file (type bmp)
 <include-files/fig/STSRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3245--3246
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3292--3293
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3250.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3297.
 
-[64] [65] [66] [67]
+[66] [67] [68]
+Overfull \hbox (110.51048pt too wide) in paragraph at lines 3436--3465
+ [][] 
+ []
+
+
+Overfull \hbox (191.6305pt too wide) in paragraph at lines 3479--3508
+ [][] 
+ []
+
+
+Overfull \hbox (38.81749pt too wide) in paragraph at lines 3523--3552
+ [][] 
+ []
+
+[69] [70]
 File: include-files/fig/SRS1C.png Graphic file (type bmp)
 <include-files/fig/SRS1C.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3466--3467
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3600--3601
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3471.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3605.
 
+[71] [72] [73]
 File: include-files/fig/SRS2C.png Graphic file (type bmp)
 <include-files/fig/SRS2C.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3477--3478
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3757--3758
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3482.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3762.
 
-[68] [69] [70]
+[74] [75] [76]
+Overfull \hbox (64.68945pt too wide) in paragraph at lines 3921--3946
+ [][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[77] [78]
 Chapter 6.
-[71
+[79
 
-] [72
+] [80
 
 ]
 Chapter 7.
-[73] [74
+[81] [82
 
-] [75] [76
+] [83] [84
 
 ]
 Appendix A.
-[77] (_main.bbl [78]) [79
+[85] (_main.bbl [86]) [87
 
 ] (_main.aux) ) 
 Here is how much of TeX's memory you used:
- 24716 strings out of 411463
- 441587 string characters out of 5818008
+ 24737 strings out of 411463
+ 442218 string characters out of 5818008
  1876290 words of memory out of 5000000
- 44596 multiletter control sequences out of 15000+600000
+ 44616 multiletter control sequences out of 15000+600000
  518916 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,13n,121p,1004b,570s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _main.pdf (79 pages).
+Output written on _main.pdf (87 pages).

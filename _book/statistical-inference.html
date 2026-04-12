@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-11" />
+<meta name="date" content="2026-04-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -237,7 +237,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="sample-designs.html"><a href="sample-designs.html#linear-systematic-random-sample-lsrs"><i class="fa fa-check"></i><b>5.5</b> Linear Systematic Random Sample (LSRS)</a>
 <ul>
-<li class="chapter" data-level="5.5.1" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-4"><i class="fa fa-check"></i><b>5.5.1</b> Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-4"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-4"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
 <li class="chapter" data-level="5.6" data-path="sample-designs.html"><a href="sample-designs.html#stratified-simple-random-sample-stsrs"><i class="fa fa-check"></i><b>5.6</b> Stratified Simple Random Sample (STSRS)</a>
@@ -245,10 +245,17 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-5"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-5"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a></li>
-<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a></li>
+<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-6"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-6"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-7"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-7"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
 <li class="chapter" data-level="5.9" data-path="sample-designs.html"><a href="sample-designs.html#complex-multistage-designs"><i class="fa fa-check"></i><b>5.9</b> Complex multistage designs</a></li>
-<li class="chapter" data-level="5.10" data-path="sample-designs.html"><a href="sample-designs.html#introduction-to-the-design-effect"><i class="fa fa-check"></i><b>5.10</b> Introduction to the design effect</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
 <li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
@@ -297,7 +304,7 @@ and we’ll come back to it later).</p>
 <span id="cb108-2"><a href="statistical-inference.html#cb108-2" tabindex="-1"></a><span class="fu">data</span>(starwars)</span>
 <span id="cb108-3"><a href="statistical-inference.html#cb108-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(starwars<span class="sc">$</span>height))</span></code></pre></div>
 <pre><code>## [1] 6</code></pre>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="statistical-inference.html#cb110-1" tabindex="-1"></a>starwars <span class="ot">&lt;-</span> starwars <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="statistical-inference.html#cb110-1" tabindex="-1"></a>starwars <span class="ot">&lt;-</span> starwars <span class="sc">|&gt;</span> </span>
 <span id="cb110-2"><a href="statistical-inference.html#cb110-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height=</span><span class="fu">case_when</span>(name<span class="sc">==</span><span class="st">&quot;Arvel Crynyd&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
 <span id="cb110-3"><a href="statistical-inference.html#cb110-3" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Finn&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
 <span id="cb110-4"><a href="statistical-inference.html#cb110-4" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Rey&quot;</span> <span class="sc">~</span> <span class="dv">150</span>,  <span class="co"># same as Leia</span></span>
@@ -321,9 +328,9 @@ Star Wars universe. Let’s draw a random sample of <span class="math inline">\(
 <span id="cb111-2"><a href="statistical-inference.html#cb111-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(starwars)</span>
 <span id="cb111-3"><a href="statistical-inference.html#cb111-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
 <span id="cb111-4"><a href="statistical-inference.html#cb111-4" tabindex="-1"></a>samplemembers <span class="ot">&lt;-</span> starwars[<span class="fu">sample</span>(bigN, n, <span class="at">replace=</span><span class="cn">FALSE</span>),]</span>
-<span id="cb111-5"><a href="statistical-inference.html#cb111-5" tabindex="-1"></a>samplemembers <span class="sc">%&gt;%</span></span>
-<span id="cb111-6"><a href="statistical-inference.html#cb111-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name,height,mass,hair_color,homeworld) <span class="sc">%&gt;%</span></span>
-<span id="cb111-7"><a href="statistical-inference.html#cb111-7" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb111-5"><a href="statistical-inference.html#cb111-5" tabindex="-1"></a>samplemembers <span class="sc">|&gt;</span></span>
+<span id="cb111-6"><a href="statistical-inference.html#cb111-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name,height,mass,hair_color,homeworld) <span class="sc">|&gt;</span></span>
+<span id="cb111-7"><a href="statistical-inference.html#cb111-7" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span></span>
 <span id="cb111-8"><a href="statistical-inference.html#cb111-8" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -1287,6 +1294,29 @@ the population size:
                       &amp;=&amp; \sum_{i=1}^N 1\\
                       &amp;=&amp; N
 \end{eqnarray}\]</span></p>
+<p>Here’s one way to think about sample weights. We have a population of size <span class="math inline">\(N\)</span>
+we want to make estimates about: what we’d really like is a dataset of all <span class="math inline">\(N\)</span> individuals.
+Instead we only have <span class="math inline">\(n&lt;N\)</span> individuals. So we (conceptually) replicate each of the <span class="math inline">\(n\)</span>
+sampled indidividuals by their weight: this makes a new synthetic dataset which does
+have the <span class="math inline">\(N\)</span> entries we’re interested in. Each row is identical to a number of others,
+however in the real population there are many individuals who sometimes very closely
+resemble each other. So the properties of our synthetic population may be good enough
+for estimating the properties of the true population.</p>
+<p>The weight of a sample member indicates how many members of the population that
+sample member represents. If we had a population of size <span class="math inline">\(N=100\)</span> and a simple random
+sample of size <span class="math inline">\(n=20\)</span> then each sample member represents <span class="math inline">\(w=100/20=5\)</span> people in the
+population.</p>
+<p>In many designs the weights differ between individuals:
+high weights mean that the sample member represents many other individuals. A weight
+of 1 means that sample member represents themself alone.</p>
+<p>There’s no problem with weights being fractions - since we only conceptually but
+don’t <strong>actually</strong> replicate the data.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:weights"></span>
+<img src="include-files/fig/Weights.png" alt="How weights work: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse." width="640" />
+<p class="caption">
+Figure 4.2: How weights work: we want to make estimates about a population of size <span class="math inline">\(N\)</span>, but only have a sample of size <span class="math inline">\(n\)</span>: so we replicate each sample member <span class="math inline">\(w=N/n\)</span> times to generate a synthetic population of size <span class="math inline">\(N\)</span> which we can analyse.
+</p>
+</div>
 </div>
 <div id="example" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Example<a href="statistical-inference.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h2>

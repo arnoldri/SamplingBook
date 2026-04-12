@@ -609,7 +609,7 @@ samplemembers
 
 If you like dplyr
 ```{r}
-samplemembers <- frame %>% 
+samplemembers <- frame |> 
   filter(Name%in%samplenames)
 samplemembers
 ```

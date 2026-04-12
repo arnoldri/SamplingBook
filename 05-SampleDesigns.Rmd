@@ -125,8 +125,8 @@ row.names(airports) <- NULL
 
 The top ten rows of the dataset of $N=`r nrow(airports)`$ are shown here:
 ```{r echo=FALSE}
-airports[1:10,c("ID","IATA","Name","City","Country","Latitude","Longitude")] %>%
-  kbl(row.names=FALSE) %>%
+airports[1:10,c("ID","IATA","Name","City","Country","Latitude","Longitude")] |>
+  kbl(row.names=FALSE) |>
   kable_styling()  
 ```
 
@@ -136,8 +136,8 @@ samp <- airports |> select.srswor(n=5)
 ```
 
 ```{r echo=FALSE}
-samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","bigN","weight")] %>%
-  kbl(caption="Sample of airports (SRSWOR)",row.names=FALSE) %>%
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","bigN","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)",row.names=FALSE) |>
   kable_styling()
 ```
 
@@ -152,14 +152,17 @@ at least once is
 \[
     p_i = 1 - \left(1-\frac{1}{N}\right)^n
 \]
-(This is 1 minus the chance that a unit is not selected on each of the $n$ sampling occasions.)
+(This is 1 minus the chance that a unit is not selected on any of the $n$ sampling occasions.)
 
 If $n$ is tiny compared to $N$, $p_i$ is approximately $n/N$ which is the SRSWOR selection 
-probability.  In practice we assign a weight of $N/n$ to each unit as it is selected, so a unit
-that is selected $m$ times ends up with a weight of $mN/n$.   
-
-If we use weights calculated in this way we have what is known as the Hansen-Hurwitz estimator,
-rather than the Horwitz-Thompson estimator.  However this distinction need not concern us. 
+probability.  In practice we assign a weight of $N/n$ to each unit as it is selected, so if unit
+$i$ is selected $m_i$ times then it ends up with a weight of 
+\[
+   w_i = m_\frac{N}{n}
+\]   
+If we use the approximate weights calculated in this way we have what is known as the 
+Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator.  However we think of 
+the weights in the same way and this distinction need not concern us. 
 
 ### Design considerations {-}
 
@@ -175,8 +178,8 @@ bigN <- nrow(airports)
 n <- 5
 samp <- airports[sample(bigN,n,replace=TRUE),]
 samp$weight <- bigN/n
-samp <- samp %>%
-  group_by(ID) %>%
+samp <- samp |>
+  group_by(ID) |>
   summarise(across(-weight, first), nsampled=n(), weight=sum(weight))
 ```
 or as a function
@@ -188,8 +191,8 @@ select.srswr <- function(df, n) {
   samp <- df[sample(bigN,n,replace=TRUE),]
   samp$bigN <- bigN
   samp$weight <- bigN/n
-  samp <- samp %>%
-    group_by(rownames) %>%
+  samp <- samp |>
+    group_by(rownames) |>
     summarise(across(-weight, first), nsampled=n(), weight=sum(weight)) |>
     as.data.frame() |>
     ungroup() |>
@@ -202,8 +205,8 @@ samp <- airports |> select.srswr(n=5)
 
 
 ```{r echo=FALSE}
-samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","nsampled","weight")] %>%
-  kbl(caption="Sample of airports (SRSWOR)") %>%
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","nsampled","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)") |>
   kable_styling()
 ```
 
@@ -249,8 +252,8 @@ For small sampling fractions (i.e. small $n/N$) this is not a significant drawba
 
 ```{r echo=FALSE}
 pop <- read.csv("data/population.csv")
-pop <- pop %>% filter(Year==2023) %>% 
-  rename(Country=Entity, Population=all.years) %>%
+pop <- pop |> filter(Year==2023) |> 
+  rename(Country=Entity, Population=all.years) |>
   arrange(Country) 
 pop <- pop[!grepl("^OWID_",pop$Code),]
 pop <- pop[!grepl("^UN_",pop$Code),]
@@ -262,9 +265,9 @@ bigN <- nrow(pop)
 
 We have a list of $N=`r bigN`$ countries and their 2023 populations: 
 the first 10 are listed below
-```{r}
-pop[1:10,] %>%
-  kbl() %>%
+```{r echo=FALSE}
+pop[1:10,] |>
+  kbl() |>
   kable_styling()
 ```
 
@@ -275,8 +278,8 @@ bigN <- nrow(pop)
 n <- 10
 samp <- pop[sample(bigN,n,prob=pop$Prob,replace=TRUE),]
 samp$weight <- 1/(n*samp$Prob)
-samp <- samp %>%
-  group_by(Country) %>%
+samp <- samp |>
+  group_by(Country) |>
   summarise(across(-weight, first), nsampled=n(), weight=sum(weight))
 ```
 
@@ -289,8 +292,8 @@ select.ppswr <- function(df, n, sizevar) {
   samp <- df[sample(bigN,n,prob=df[,sizevar],replace=TRUE),]
   samp$bigN <- bigN
   samp$weight <- bigN/n
-  samp <- samp %>%
-    group_by(rownames) %>%
+  samp <- samp |>
+    group_by(rownames) |>
     summarise(across(-weight, first), nsampled=n(), weight=sum(weight)) |>
     as.data.frame() |>
     ungroup() |>
@@ -305,7 +308,12 @@ set.seed(111)
 
 ```{r}
 samp <- pop |> select.ppswr(n=10, sizevar="Population")
-samp 
+```
+
+```{r echo=FALSE}
+samp |>
+  kbl() |>
+  kable_styling()
 ```
 
 
@@ -334,8 +342,8 @@ and weights are
 \[
    w_i = \frac{N}{n}
 \]
-Data from this design are often analysed as if they were drawn as a SRSWOR, but in fact this is a special case of 
-a one-stage cluster sample (S1C, see below).
+Data from this design are often analysed as if they were drawn as a SRSWOR,
+but in fact this is a special case of a one-stage cluster sample (S1C, see below).
 
 ```{r lsrs, echo=FALSE}
 #| fig.align='center',
@@ -359,9 +367,10 @@ are both in the same survey), or to prevent collusion between neighbouring selec
 we space the sample out along the street using a LSRS to separate the selected 
 dwellings as much as possible.  
 
-An LSRS is also a convenient way to sample if you have a printed list.  
-After setting your random starts location you can skip down the list at 
-fixed intervals. 
+An LSRS is also a convenient way to sample if you have a printed list.
+After choosing the random start location among the first $k$ units you can
+skip down the list at fixed intervals - something that is conventient 
+and simple to do on a printed list.  
 
 ### Design considerations {-}
 
@@ -379,6 +388,14 @@ systematic issues that occur with the north-west apartments in that case.
 
 Such unknown periodicities are unlikely in most cases, but we should be aware
 that they can occur.
+
+More importantly if the list is ordered in some way, e.g. by size of location, 
+then a LSRS guarantees a spread across the variable that defines the ordering.
+This can be highly desirable since we are sure to be sampling across the full 
+diversity of the ordering variable.  A good example is sampling passengers seated
+in an aircraft - if we take an LSRS using a list of passengers ordered by row and
+seat number we'll be guaranteed to get a spread of business class, premium economy and 
+economy class passengers in our sample. 
 
 ### Example {-}
 
@@ -411,12 +428,13 @@ select.lsrs <- function(df, n) {
   return(samp)
 }
 
-samp <- airports %>% select.lsrs(5)
+samp <- airports |> select.lsrs(5)
 ```
 
 ```{r echo=FALSE}
-samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","weight")] %>%
-  kbl(caption="Sample of airports (SRSWOR)") %>%
+rownames(samp) <- NULL
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)") |>
   kable_styling()
 ```
 
@@ -444,7 +462,7 @@ the proportions of the **population** that belong to the various strata, and the
 For example, we can assign all residential addresses in New Zealand to exactly one of 
 a defined set of non-overlapping regions, such as regional council areas.  Or we might just have
 two strata: North Island, South Island (neglecting any addresses on offshore islands).  There are
-$N=$2.4 million addresses in New Zealand, of which $N_1=1.72$ million in the North Island ($F_1=0.74=74%$)
+$N=2.4$ million addresses in New Zealand, of which $N_1=1.72$ million in the North Island ($F_1=0.74=74%$)
 and $N_2=0.62$ million are in the South Island ($F_2=0.26=26%$). 
 
 We then divide or **allocate** our total sample size $n$ to the strata.  Stratum $h$ is allocated
@@ -471,7 +489,7 @@ Stratified sampling is done for a number of reasons
     get estimates which differ very much between samples.  To protect ourselves 
     against this we stratify by business size (using tax data).  The largest
     businesses are in the top stratum, which is small, but a census is always done
-    of those businesses (the top stratum is called a **full coverage stratum**).  
+    of those businesses (the top stratum is called a **full coverage stratum**).
     The smallest businesses are in the lowest stratum, and 
     they are selected with low probability: since they resemble each other more, and
     one can stand in for another. 
@@ -604,8 +622,16 @@ SRSWOR with Equal allocation
 ```{r}
 samp <- schools |> select.stsrs(n=120,  
                                 stratumvar="Education_Region", allocation="equal")
-as.data.frame(table(samp$Education_Region)) |>
-  rename(Education_Region=Var1, SampleSize=Freq)
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), weight=first(weight),
+            SelectedSchools=paste(School_Id,collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Weight, $w_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
 ```
 
 SRSWOR with proportional allocation 
@@ -613,8 +639,16 @@ SRSWOR with proportional allocation
 samp <- schools |> select.stsrs(n=120, 
                                 stratumvar="Education_Region", 
                                 allocation="proportional", sizevar="Total")
-as.data.frame(table(samp$Education_Region)) |>
-  rename(Education_Region=Var1, SampleSize=Freq)
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), weight=first(weight),
+            SelectedSchools=paste(School_Id,collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Weight, $w_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
 ```
 
 PPSWR with Equal Allocation
@@ -623,17 +657,25 @@ samp <- schools |> select.stsrs(n=120,
                                 stratumvar="Education_Region", 
                                 allocation="equal", 
                                 method="PPSWR", sizevar="Total")
-as.data.frame(table(samp$Education_Region)) |>
-  rename(Education_Region=Var1, SampleSize=Freq)
 ```
 
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), 
+            SelectedSchools=paste(paste0(School_Id,ifelse(nsampled>1,"*","")),collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+(Schools selected multiple times are indicated with a *)
 
 
 ## One stage cluster sampling (S1C)
 
 One stage cluster sampling superficially resembles stratified sampling.
 As in stratified sampling we divide the population into groups, in this
-case called **clusters**, assign each member of the population to one and only one group.  
+case called **clusters**, assign each member of the population to one and only one group.
 However rather than sample members from each cluster, we instead draw a sample
 of clusters (by SRSWOR, or sometimes by PPSWR).  We then take a **census** of
 each selected cluster.
@@ -644,15 +686,17 @@ census of schools in each selected region.
 
 Unlike stratified sampling, which is often **more efficient** than simple
 random sampling (i.e. it has smaller standard errors for the same sample size),
-cluster sampling is **less efficient**: i.e. its standard errors are worse.  
+cluster sampling is **less efficient**: i.e. its standard errors are worse (larger) 
+than we'd get with a SRS with the same size.  
 
-We can see why when we consider **why** we take cluster samples: the reason is
-predominantly one of controlling costs.  If we want to do a household survey
-in a city like Wellington we could list all of the residential addresses, and
-then draw a simple random sample of those dwellings.  That would mean a sample
+We can see why the standard errors are worse when we consider **why** 
+we take cluster samples: the reason is predominantly to controlling costs.
+If we want to do a household survey in a city like Wellington we could list
+all of the residential addresses, and
+then draw a simple random sample of those dwellings.  That would mean having a sample
 that is scattered all over the city - and if we have to visit each dwelling to 
 collect the data, then that means a lot of travelling for the interviewers: especially
-if they have to visit houses multiple times to make contact with the residents.
+if they have to visit some houses multiple times to make contact with the residents.
 So it's more **convenient** to select a set of houses on the same street and survey
 them - we can go from one to the next without much travel time.  
 
@@ -676,6 +720,27 @@ survey, where no travel at all is involved, then clustering doesn't make any sen
 knitr::include_graphics("include-files/fig/SRS1C.png")
 ```
 
+Our notation becomes slightly more complex here: we have $N$ clusters, labelled
+$i=1,\ldots,N$.  Then in cluster $i$ we have $M_i$ units, labelled $j=1,\ldots,M_i$.
+There is a total of 
+\[
+   M = \sum_{i=1}^N M_i
+\]
+units in the population.  
+
+The selection probability of a unit is simply the probability that the cluster
+they are a member of is selected.  So if we select clusters by SRSWOR then unit $j$ 
+in cluster $i$ has selection probability
+\[
+   \pi_{ij} = \frac{n}{N}
+\]
+leading to a weight of
+\[
+   w_{ij} = \frac{N}{n}
+\]
+where again we note that $n$ is the number of **clusters** selected, and $N$
+is the number of **clusters** in the population.
+
 ### Design considerations {-}
 
 * We need to decide how to break our populations into clusters, 
@@ -687,18 +752,13 @@ the number of clusters we select, we can't control the overall
 sample size: we might select by chance a set of very large 
 clusters, or a set of very small clusters.  
 
-The selection probability of a unit is simply the probability that the cluster
-they are a member of is selected.  So if we select clusters by SRSWOR unit $j$ 
-in cluster $i$ has selection probability
-\[
-   \pi_{ij} = \frac{n}{N}
-\]
-if the clusters are selected by SRSWOR, leading to a weight of
-\[
-   w_{ij} = \frac{N}{n}
-\]
-where again note that $n$ is the number of clusters selected, and $N$
-is the number of clusters in the population.
+In stratified sampling we want to make the strata as different from
+one another as possible, and to be as internally homogeneous.  
+In cluster sampling it's the reverse situation: we want our clusters to be internally 
+diverse, and for that diversity to be present as far as possible within 
+every cluster.  This is because we're only selecting a few clusters, and
+they have to stand in for all of the unselected clusters.  So they'd better
+reflect the full population diversity.  
 
 ### Example {-}
 
@@ -743,8 +803,16 @@ select.s1c <- function(df, n, clustervar,
 
 ```{r}
 samp <- schools |> select.s1c(n=10, clustervar="Territorial_Authority")
-as.data.frame(table(samp$Territorial_Authority)) |>
-  rename("Territorial Authority"=Var1, "NSchools"=Freq)
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(Mi=n(), 
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),8)],collapse=";"),ifelse(n()>8,"...",""))) |>
+  kbl(col.names=c("Territorial Authority, $i$","$M_i$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
 ```
 
 
@@ -752,9 +820,18 @@ as.data.frame(table(samp$Territorial_Authority)) |>
 
 The obvious drawback of the One Stage cluster design is that we are getting
 a lot of information from clusters which may be very homogeneous.   This drives
-the inefficiency of the design.  
+the inefficiency of the design: we're wasting a lot of our sampling effort.  
 
-An obvious extension is ...
+An obvious solution is to select a set of clusters, and then only take a sample of units
+within those clusters, rather than sampling all of them.  
+
+This breaks the sample design into two stages
+
+* **Stage 1** - select a set of clusters, which we refer to as **Primary Sampling Units** (PSUs);
+* **Stage 2** - select a set of units within the selected clusters.  These units are called
+  **Secondary Sampling Units** (SSUs).
+  
+Sampling at both stages can be by any method, though SRSWOR or PPSWR are the most common.  
 
 ```{r s2c, echo=FALSE}
 #| fig.align='center',
@@ -763,6 +840,192 @@ An obvious extension is ...
 knitr::include_graphics("include-files/fig/SRS2C.png")
 ```
 
+We use the same notation as in one stage clustering: there are $N$ PSUS of
+which select $n$, and in PSU $i$ there are $M_i$ PSUs, of which we select $m_i$.
+The total number of SSUs is in all of the PSUs in the population is 
+\[
+   M = \sum_{i=1}^N M_i
+\]
+whereas the total sample size of SSUs is 
+\[
+   m = \sum_{i\in\text{Sample}} m_i
+\]
+where we just sum over the selected PSUs.
+
+If we use SRSWOR and select $n$ PSUs from the $N$ available 
+then the probability of selection of a PSU is
+\[
+   \pi^{(1)}_i= \Pr(\text{PSU $i$ is selected}) = \frac{n}{N}
+\]
+leading to the first stage weight of 
+\[
+   w^{(1)}_i = \frac{1}{\pi^{(1)}_i} = \frac{N}{n}
+\]
+If PSU $i$ is selected we then select $m_i$ units (SSUs) out of the $M_i$
+available.  The probability that SSU $j$ is selected given that PSU $i$ has 
+been selected is
+\[
+   \pi^{(2)}_{ij}= \Pr(\text{SSU $j$ is selected given that PSU $i$ was selected}) = \frac{m_i}{M_i}
+\]
+leading to the second stage weight of 
+\[
+   w^{(2)}_{ij} = \frac{1}{\pi^{(2)}_{ij}} = \frac{M_i}{m_i}
+\]
+The overall probability that SSU $j$ in PSU $i$ is selected is the product
+of the first and second stage selection probabilities:
+\[
+   \pi_{ij} = \pi^{(1)}_i \pi^{(2)}_{ij} = \frac{n}{N}\times\frac{m_i}{M_i}
+\]
+and its overall weight is the product of the first and second stage weights
+\[
+   w_{ij} = w^{(1)}_i w^{(2)}_{ij} = \frac{N}{n}\times\frac{M_i}{m_i}
+\]
+
+For example I might have $N=100$ small areas covering Wellington, and I select
+$n=10$ of them.  Then in one of those selected areas there might be $M_i=120$ houses, 
+of which I select $m_i=15$.  The first and second stage probabilities are
+\[
+   \pi^{(1)}_i = \frac{10}{100} = 0.100
+   \qquad \text{and} \qquad
+   \pi^{(2)}_{ij} = \frac{15}{120} = 0.125
+\]
+So the chances that a house in PSU $i$ is selected is
+\[
+   \pi_{ij} = (0.100)(0.125) = 0.0125
+\]
+with total weight
+\[
+   w_{ij} = \frac{100}{10}\times\frac{120}{15} = 10\times 8 = 80
+\]
+
+There are two special cases of two stage clustering which reduce to 
+simpler designs
+
+* A first stage census: $n=N$: we sample from every PSU.  This is equivalent
+  to **stratified sampling**, where we sample from every stratum. 
+* A second stage census: $m_i=M_i$: we take a census of all SSUs in each selected cluster.
+  This is equivalent to **one stage clustering**.
+
+### Design considerations {-}
+
+We have a lot of decisions to make:
+
+* How many PSUs (clusters) $N$, and how we define them
+* The number of PSUs to select $n$
+* The number of SSUs to select within each selected PSU.  Rather 
+  than state the sample size $m_i$ for each cluster, this is 
+  often specified as the **proportion** of the cluster size we'll select.
+  e.g. we might select 1 in 10 of the SSUs.
+
+### Example {-}
+
+Let's return to the schools example.  We'll select $n=10$ TAs, but then 
+select 20% of the schools in each selected TA - although we'll also ensure 
+we have at least 2 schools in each selected cluster.
+
+A function to do this selection in R is:
+```{r}
+select.s2c <- function(df, n, cfraction, clustervar, 
+                       mmin=2, # minimum number of 2nd stage clusters to select
+                       method1="SRSWOR", sizevar1=NULL,
+                       method2="SRSWOR", sizevar2=NULL) {
+  bigM <- nrow(df)
+  if(!clustervar%in%names(df)) {
+    stop("Cluster ID variable is not present in the data frame")
+  }
+  clusterproperties <- as.data.frame(table(df[,clustervar]))
+  bigN <- nrow(clusterproperties)
+  names(clusterproperties) <- c(clustervar,"Mi")
+  if(method1=="SRSWOR") {
+     sampcluster <- clusterproperties |> 
+                       select.srswor(n=n)
+  } else if(method1=="PPSWR") {
+     sampcluster <- clusterproperties |>
+                       select.ppswr(n=n, sizevar="Mi")
+  } else {
+    stop("First stage sampling method invalid")
+  }
+  sampcluster$mi <- pmin(sampcluster$Mi,pmax(mmin,round(cfraction*sampcluster$Mi)))
+  samp1 <- merge(df,sampcluster,by=clustervar)
+  samp1 <- samp1 |> rename(bigN1=bigN,weight1=weight)
+  samp1$n1 <- n
+
+  # Second stage selection
+  if(method2=="SRSWOR") {
+    samp2 <- do.call(rbind, 
+                     by(samp1, samp1[,clustervar],
+                        function(ds) select.srswor(ds,n=first(ds$mi))
+                               ))
+  } else if(method2=="PPSWR") {
+    samp2 <- do.call(rbind, 
+                     by(samp2, samp2[,clustervar],
+                        function(ds) select.ppswr(ds,n=first(ds$mi),sizevar=sizevar2)
+                               ))
+  } else {
+    stop("Second stage sampling method invalid")
+  }
+  samp2 <- samp2 |> rename(bigN2=bigN,weight2=weight)
+  samp2$n2 <- samp2$mi
+  samp2$weight <- samp2$weight1*samp2$weight2
+
+  return(samp2)
+}
+```
+
+```{r}
+samp <- schools |> select.s2c(n=10, cfraction=0.20, mmin=2, 
+                              clustervar="Territorial_Authority")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(N=first(bigN1),n=first(n1),Mi=first(bigN2),mi=n(), 
+            weight1=first(weight1),weight2=first(weight2),weight=first(weight),
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),4)],collapse=";"),ifelse(n()>4,"...",""))) |>
+  ungroup() |>
+  mutate(weight1=sprintf("%.2f",weight1)) |>
+  mutate(weight2=sprintf("%.2f",weight2)) |>
+  mutate(weight=sprintf("%.2f",weight)) |>
+  kbl(col.names=c("Territorial Authority, $i$",
+                  "$N$","$n$","$M_i$","$m_i$",
+                  "$w^{(1)}_i$","$w^{(2)}_{ij}$","Weight, $w_{ij}$",
+                  "Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
 ## Complex multistage designs
 
-## Introduction to the design effect
+The ideas in two stage cluster sampling can be extended to a third stage of sampling 
+(i.e. we may wish to sample within SSUs), and we can also combine cluster sampling
+with stratified sampling.  
+
+For example, the Statistics NZ Household sampling frame is a multistage cluster
+design, where the sample is selected as follows:
+
+ 1. NZ is stratified into $H=12$ regions (e.g. Northland, Auckland, Hawke's
+    Bay etc.);
+ 1. Each stratum (region) is broken into $N_h$ PSUs - small areas that 
+    contain (on average) about 100 households.  
+    A PPSWR of $n_h$ PSUs is taken within each stratum $h$; (First stage sample.)
+ 1. Within the $k^{\rm th}$ selected PSU, which is of size $M_{hk}$, a linear
+    systematic random sample is taken of $m_{hk}$ households; (Second stage
+    sample.)
+ 1. Depending on the survey, **all** $A_{hk\ell}$ eligible members of the
+    $\ell^{\rm th}$ selected
+    household will be surveyed, or a SRSWOR of $a_{hk\ell}$ members may be taken. 
+    (Third stage sample.)
+
+The sample size is therefore
+\[
+   \text{Sample Size} = 
+   \sum_{h=1}^H\sum_{k\in s_I}\sum_{\ell\in s_k} a_{hk\ell}
+\]
+and the sample weights of individual $j$ in household $\ell$ of PSU $k$ in 
+stratum $h$ are
+\[
+   w_{hk\ell j} = \frac{N_h}{n_h}\frac{M_{hk}}{m_{hk}}
+                  \frac{A_{hk\ell}}{a_{hk\ell}}
+\]
+i.e. these are just the product of the weights at each stage of selection.  

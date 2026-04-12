@@ -25,7 +25,7 @@ and we'll come back to it later).
 library(dplyr)
 data(starwars)
 sum(is.na(starwars$height))
-starwars <- starwars %>% 
+starwars <- starwars |> 
   mutate(height=case_when(name=="Arvel Crynyd" ~ 172, # same as Luke
                           name=="Finn" ~ 172, # same as Luke
                           name=="Rey" ~ 150,  # same as Leia
@@ -53,9 +53,9 @@ set.seed(222)
 bigN <- nrow(starwars)
 n <- 20
 samplemembers <- starwars[sample(bigN, n, replace=FALSE),]
-samplemembers %>%
-  dplyr::select(name,height,mass,hair_color,homeworld) %>%
-  kbl() %>%
+samplemembers |>
+  dplyr::select(name,height,mass,hair_color,homeworld) |>
+  kbl() |>
   kable_styling()
 ```
 
@@ -283,11 +283,11 @@ ff <- data.frame(UnitID=c(1, 2, 3, "$\\vdots$", "$i$", "$\\vdots$", "N"),
                  P=c("$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\vdots$","$\\pi_i$","$\\vdots$","$\\pi_N$"),
                  I=c("$I_1$","$I_2$","$I_3$","$\\vdots$","$I_i$","$\\vdots$","$I_N$")
                  )
-ff %>%
+ff |>
   kbl(caption = "Sample Frame ($N$ rows)",
       col.names=c("Unit ID", "Data", "Probability", "Indicator"),
-      escape=FALSE, align = 'cccc') %>%
-  kable_styling() %>%
+      escape=FALSE, align = 'cccc') |>
+  kable_styling() |>
   add_header_above(c(" ","Auxiliary", "Selection", "Selection")) 
 ```
 
@@ -306,11 +306,11 @@ fs <- data.frame(Unit=c(1, 2, 3, "$\\vdots$", "$k$", "$\\vdots$", "$n$"),
                  Y=c("${\\bf y}_1$","${\\bf y}_2$","${\\bf y}_3$",
                      "$\\vdots$","${\\bf y}_k$","$\\vdots$","${\\bf y}_n$")
                  )
-fs %>%
+fs |>
   kbl(caption = "Sample Data ($n$ rows)",
       col.names=c("Unit", "Unit ID", "Data", "Probability", "Weight", "Data"),
-      escape=FALSE, align = 'ccccc') %>%
-  kable_styling() %>%
+      escape=FALSE, align = 'ccccc') |>
+  kable_styling() |>
   add_header_above(c("Sample"," ","Auxiliary", "Selection", "Sample", "Sample")) 
 ```
 
@@ -382,6 +382,34 @@ the population size:
                       &=& N
 \end{eqnarray}
 
+Here's one way to think about sample weights.  We have a population of size $N$
+we want to make estimates about: what we'd really like is a dataset of all $N$ individuals.
+Instead we only have $n<N$ individuals.   So we (conceptually) replicate each of the $n$
+sampled indidividuals by their weight: this makes a new synthetic dataset which does
+have the $N$ entries we're interested in.  Each row is identical to a number of others, 
+however in the real population there are many individuals who sometimes very closely 
+resemble each other.  So the properties of our synthetic population may be good enough 
+for estimating the properties of the true population.  
+
+The weight of a sample member indicates how many members of the population that
+sample member represents.  If we had a population of size $N=100$ and a simple random 
+sample of size $n=20$ then each sample member represents $w=100/20=5$ people in the 
+population.  
+
+In many designs the weights differ between individuals:
+high weights mean that the sample member represents many other individuals.  A weight
+of 1 means that sample member represents themself alone.
+
+There's no problem with weights being fractions - since we only conceptually but 
+don't **actually** replicate the data.
+
+```{r weights, echo=FALSE} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="How weights work in SRSWOR: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse."
+knitr::include_graphics("include-files/fig/Weights.png")
+```
+
 ## Example
 
 We might have a small street of five houses.  Our frame is 
@@ -395,9 +423,9 @@ hframe <- data.frame(
             "3 Chestnut Place","4 Chestnut Place"),
   Value=c(1.201, 0.780, 0.520, 2.530, 0.900)
 )
-hframe %>%
+hframe |>
   kbl(col.names=c("ID","Address","Value ($M)"), 
-      align='clc') %>%
+      align='clc') |>
   kable_styling()
 ```
 
@@ -409,9 +437,9 @@ house number 5 into our sample.
 ```{r echo=FALSE}
 hframe$prob <- rep(0.4,5)
 hframe$selected <- c(0,0,1,0,1)
-hframe %>%
+hframe |>
   kbl(col.names=c("ID","Address","Value (\\$M)","Prob. $\\pi_i$", "Selected, $I_i$"), 
-      align='clccc', escape=FALSE) %>%
+      align='clccc', escape=FALSE) |>
   kable_styling()
 ```
 
@@ -424,9 +452,9 @@ dframe$weight <- 1/dframe$prob
 dframe$y <- c(75, 19)
 dframe$prob <- NULL
 dframe$selected <- NULL
-dframe %>%
+dframe |>
   kbl(col.names=c("ID","Address","Value (\\$M)","Weight $w_k$", "Internet spend, $y_k$"), 
-      align='clccc', escape=FALSE) %>%
+      align='clccc', escape=FALSE) |>
   kable_styling()
 ```
 

@@ -18,12 +18,13 @@ fig:starwarssample
 eq:simplelinearmodel
 tab:sampleframe
 tab:sampledata
+fig:weights
 fig:census
 fig:srswor
 tab:unnamed-chunk-64
 tab:unnamed-chunk-67
 fig:lsrs
-tab:unnamed-chunk-76
+tab:unnamed-chunk-77
 fig:stsrs
 fig:s1c
 fig:s2c
@@ -59,12 +60,10 @@ simple-random-sampling-without-replacement-srswor
 simple-random-sampling-with-replacement-srswr
 probability-proportion-to-size-sampling-ppswr
 linear-systematic-random-sample-lsrs
-design-considerations-4
 stratified-simple-random-sample-stsrs
 one-stage-cluster-sampling-s1c
 two-stage-cluster-sampling-s2c
 complex-multistage-designs
-introduction-to-the-design-effect
 inference-with-r
 missing-data
 computing-the-required-sample-size

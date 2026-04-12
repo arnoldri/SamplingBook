@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-11}
+\date{2026-04-12}
 
 \begin{document}
 \maketitle
@@ -1472,7 +1472,7 @@ If you like dplyr
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ frame }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ frame }\SpecialCharTok{|\textgreater{}} 
   \FunctionTok{filter}\NormalTok{(Name}\SpecialCharTok{\%in\%}\NormalTok{samplenames)}
 \NormalTok{samplemembers}
 \end{Highlighting}
@@ -1970,7 +1970,7 @@ and we'll come back to it later).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{starwars }\OtherTok{\textless{}{-}}\NormalTok{ starwars }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{starwars }\OtherTok{\textless{}{-}}\NormalTok{ starwars }\SpecialCharTok{|\textgreater{}} 
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{height=}\FunctionTok{case\_when}\NormalTok{(name}\SpecialCharTok{==}\StringTok{"Arvel Crynyd"} \SpecialCharTok{\textasciitilde{}} \DecValTok{172}\NormalTok{, }\CommentTok{\# same as Luke}
 \NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Finn"} \SpecialCharTok{\textasciitilde{}} \DecValTok{172}\NormalTok{, }\CommentTok{\# same as Luke}
 \NormalTok{                          name}\SpecialCharTok{==}\StringTok{"Rey"} \SpecialCharTok{\textasciitilde{}} \DecValTok{150}\NormalTok{,  }\CommentTok{\# same as Leia}
@@ -2003,9 +2003,9 @@ Star Wars universe. Let's draw a random sample of \(n=20\) from this population 
 \NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(starwars)}
 \NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{20}
 \NormalTok{samplemembers }\OtherTok{\textless{}{-}}\NormalTok{ starwars[}\FunctionTok{sample}\NormalTok{(bigN, n, }\AttributeTok{replace=}\ConstantTok{FALSE}\NormalTok{),]}
-\NormalTok{samplemembers }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(name,height,mass,hair\_color,homeworld) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{samplemembers }\SpecialCharTok{|\textgreater{}}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(name,height,mass,hair\_color,homeworld) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
   \FunctionTok{kable\_styling}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -2465,6 +2465,36 @@ the population size:
                       &=& N
 \end{eqnarray}
 
+Here's one way to think about sample weights. We have a population of size \(N\)
+we want to make estimates about: what we'd really like is a dataset of all \(N\) individuals.
+Instead we only have \(n<N\) individuals. So we (conceptually) replicate each of the \(n\)
+sampled indidividuals by their weight: this makes a new synthetic dataset which does
+have the \(N\) entries we're interested in. Each row is identical to a number of others,
+however in the real population there are many individuals who sometimes very closely
+resemble each other. So the properties of our synthetic population may be good enough
+for estimating the properties of the true population.
+
+The weight of a sample member indicates how many members of the population that
+sample member represents. If we had a population of size \(N=100\) and a simple random
+sample of size \(n=20\) then each sample member represents \(w=100/20=5\) people in the
+population.
+
+In many designs the weights differ between individuals:
+high weights mean that the sample member represents many other individuals. A weight
+of 1 means that sample member represents themself alone.
+
+There's no problem with weights being fractions - since we only conceptually but
+don't \textbf{actually} replicate the data.
+
+\begin{figure}
+
+{\centering \includegraphics[width=17.78in]{include-files/fig/Weights} 
+
+}
+
+\caption{How weights work: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse.}\label{fig:weights}
+\end{figure}
+
 \section{Example}\label{example}
 
 We might have a small street of five houses. Our frame is
@@ -2777,14 +2807,17 @@ at least once is
 \[
     p_i = 1 - \left(1-\frac{1}{N}\right)^n
 \]
-(This is 1 minus the chance that a unit is not selected on each of the \(n\) sampling occasions.)
+(This is 1 minus the chance that a unit is not selected on any of the \(n\) sampling occasions.)
 
 If \(n\) is tiny compared to \(N\), \(p_i\) is approximately \(n/N\) which is the SRSWOR selection
-probability. In practice we assign a weight of \(N/n\) to each unit as it is selected, so a unit
-that is selected \(m\) times ends up with a weight of \(mN/n\).
-
-If we use weights calculated in this way we have what is known as the Hansen-Hurwitz estimator,
-rather than the Horwitz-Thompson estimator. However this distinction need not concern us.
+probability. In practice we assign a weight of \(N/n\) to each unit as it is selected, so if unit
+\(i\) is selected \(m_i\) times then it ends up with a weight of
+\[
+   w_i = m_\frac{N}{n}
+\]\\
+If we use the approximate weights calculated in this way we have what is known as the
+Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator. However we think of
+the weights in the same way and this distinction need not concern us.
 
 \subsection*{Design considerations}\label{design-considerations-2}
 \addcontentsline{toc}{subsection}{Design considerations}
@@ -2804,8 +2837,8 @@ sample list each unit appears only once no matter how often it was selected.
 \NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{5}
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
 \NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
-\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(ID) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(ID) }\SpecialCharTok{|\textgreater{}}
   \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight))}
 \end{Highlighting}
 \end{Shaded}
@@ -2821,8 +2854,8 @@ or as a function
 \NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ df[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
 \NormalTok{  samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
 \NormalTok{  samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
-\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
-    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight)) }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
@@ -2905,14 +2938,6 @@ For small sampling fractions (i.e.~small \(n/N\)) this is not a significant draw
 We have a list of \(N=236\) countries and their 2023 populations:
 the first 10 are listed below
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{pop[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{,] }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{kable\_styling}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 \centering
 \begin{tabular}[t]{l|l|r|r|r}
@@ -2951,8 +2976,8 @@ Select a PPSWR sample of \(n=10\) countries, with probability proportional to th
 \NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10}
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ pop[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{prob=}\NormalTok{pop}\SpecialCharTok{$}\NormalTok{Prob,}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
 \NormalTok{samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{samp}\SpecialCharTok{$}\NormalTok{Prob)}
-\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Country) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(Country) }\SpecialCharTok{|\textgreater{}}
   \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight))}
 \end{Highlighting}
 \end{Shaded}
@@ -2968,8 +2993,8 @@ or as a function
 \NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ df[}\FunctionTok{sample}\NormalTok{(bigN,n,}\AttributeTok{prob=}\NormalTok{df[,sizevar],}\AttributeTok{replace=}\ConstantTok{TRUE}\NormalTok{),]}
 \NormalTok{  samp}\SpecialCharTok{$}\NormalTok{bigN }\OtherTok{\textless{}{-}}\NormalTok{ bigN}
 \NormalTok{  samp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\NormalTok{n}
-\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{\%\textgreater{}\%}
-    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  samp }\OtherTok{\textless{}{-}}\NormalTok{ samp }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{group\_by}\NormalTok{(rownames) }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{weight, first), }\AttributeTok{nsampled=}\FunctionTok{n}\NormalTok{(), }\AttributeTok{weight=}\FunctionTok{sum}\NormalTok{(weight)) }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{as.data.frame}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
@@ -2982,21 +3007,33 @@ or as a function
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ pop }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Population"}\NormalTok{)}
-\NormalTok{samp }
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##         Country Code Year Population        Prob bigN nsampled weight
-## 1    Bangladesh  BGD 2023  171466986 0.021197666  236        1   23.6
-## 2        Brazil  BRA 2023  211140731 0.026102347  236        1   23.6
-## 3         India  IND 2023 1438069597 0.177781857  236        2   47.2
-## 4     Indonesia  IDN 2023  281190068 0.034762221  236        1   23.6
-## 5         Japan  JPN 2023  124370947 0.015375402  236        1   23.6
-## 6      Pakistan  PAK 2023  247504505 0.030597831  236        1   23.6
-## 7  South Africa  ZAF 2023   63212386 0.007814653  236        1   23.6
-## 8 United States  USA 2023  343477330 0.042462505  236        2   47.2
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r|r|r}
+\hline
+Country & Code & Year & Population & Prob & bigN & nsampled & weight\\
+\hline
+Bangladesh & BGD & 2023 & 171466986 & 0.0211977 & 236 & 1 & 23.6\\
+\hline
+Brazil & BRA & 2023 & 211140731 & 0.0261023 & 236 & 1 & 23.6\\
+\hline
+India & IND & 2023 & 1438069597 & 0.1777819 & 236 & 2 & 47.2\\
+\hline
+Indonesia & IDN & 2023 & 281190068 & 0.0347622 & 236 & 1 & 23.6\\
+\hline
+Japan & JPN & 2023 & 124370947 & 0.0153754 & 236 & 1 & 23.6\\
+\hline
+Pakistan & PAK & 2023 & 247504505 & 0.0305978 & 236 & 1 & 23.6\\
+\hline
+South Africa & ZAF & 2023 & 63212386 & 0.0078147 & 236 & 1 & 23.6\\
+\hline
+United States & USA & 2023 & 343477330 & 0.0424625 & 236 & 2 & 47.2\\
+\hline
+\end{tabular}
+\end{table}
 
 \section{Linear Systematic Random Sample (LSRS)}\label{linear-systematic-random-sample-lsrs}
 
@@ -3022,8 +3059,8 @@ and weights are
 \[
    w_i = \frac{N}{n}
 \]
-Data from this design are often analysed as if they were drawn as a SRSWOR, but in fact this is a special case of
-a one-stage cluster sample (S1C, see below).
+Data from this design are often analysed as if they were drawn as a SRSWOR,
+but in fact this is a special case of a one-stage cluster sample (S1C, see below).
 
 \begin{figure}
 
@@ -3049,11 +3086,13 @@ are both in the same survey), or to prevent collusion between neighbouring selec
 we space the sample out along the street using a LSRS to separate the selected
 dwellings as much as possible.
 
-An LSRS is also a convenient way to sample if you have a printed list.\\
-After setting your random starts location you can skip down the list at
-fixed intervals.
+An LSRS is also a convenient way to sample if you have a printed list.
+After choosing the random start location among the first \(k\) units you can
+skip down the list at fixed intervals - something that is conventient
+and simple to do on a printed list.
 
-\subsection{Design considerations}\label{design-considerations-4}
+\subsection*{Design considerations}\label{design-considerations-4}
+\addcontentsline{toc}{subsection}{Design considerations}
 
 \begin{itemize}
 \tightlist
@@ -3074,6 +3113,14 @@ systematic issues that occur with the north-west apartments in that case.
 
 Such unknown periodicities are unlikely in most cases, but we should be aware
 that they can occur.
+
+More importantly if the list is ordered in some way, e.g.~by size of location,
+then a LSRS guarantees a spread across the variable that defines the ordering.
+This can be highly desirable since we are sure to be sampling across the full
+diversity of the ordering variable. A good example is sampling passengers seated
+in an aircraft - if we take an LSRS using a list of passengers ordered by row and
+seat number we'll be guaranteed to get a spread of business class, premium economy and
+economy class passengers in our sample.
 
 \subsection*{Example}\label{example-4}
 \addcontentsline{toc}{subsection}{Example}
@@ -3138,27 +3185,27 @@ take a LSRS of \(n=5\) units.
   \FunctionTok{return}\NormalTok{(samp)}
 \NormalTok{\}}
 
-\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select.lsrs}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.lsrs}\NormalTok{(}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-76}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-77}Sample of airports (SRSWOR)}
 \centering
-\begin{tabular}[t]{l|r|l|l|l|l|r|r|r}
+\begin{tabular}[t]{r|l|l|l|l|r|r|r}
 \hline
-  & ID & IATA & Name & City & Country & Latitude & Longitude & weight\\
+ID & IATA & Name & City & Country & Latitude & Longitude & weight\\
 \hline
-5304 & 5304 & VAO & Suavanao Airport & Suavanao & Solomon Islands & -7.58556 & 158.73100 & 1214.4\\
+5304 & VAO & Suavanao Airport & Suavanao & Solomon Islands & -7.58556 & 158.73100 & 1214.4\\
 \hline
-4746 & 4746 & STV & Surat Airport & Surat & India & 21.11410 & 72.74180 & 1214.4\\
+4746 & STV & Surat Airport & Surat & India & 21.11410 & 72.74180 & 1214.4\\
 \hline
-1714 & 1714 & GIB & Gibraltar Airport & Gibraltar & Gibraltar & 36.15120 & -5.34966 & 1214.4\\
+1714 & GIB & Gibraltar Airport & Gibraltar & Gibraltar & 36.15120 & -5.34966 & 1214.4\\
 \hline
-1638 & 1638 & FYN & Fuyun Koktokay Airport & Fuyun & China & 46.80417 & 89.51201 & 1214.4\\
+1638 & FYN & Fuyun Koktokay Airport & Fuyun & China & 46.80417 & 89.51201 & 1214.4\\
 \hline
-5277 & 5277 & UTO & Indian Mountain LRRS Airport & Indian Mountains & United States & 65.99280 & -153.70399 & 1214.4\\
+5277 & UTO & Indian Mountain LRRS Airport & Indian Mountains & United States & 65.99280 & -153.70399 & 1214.4\\
 \hline
 \end{tabular}
 \end{table}
@@ -3187,7 +3234,7 @@ the proportions of the \textbf{population} that belong to the various strata, an
 For example, we can assign all residential addresses in New Zealand to exactly one of
 a defined set of non-overlapping regions, such as regional council areas. Or we might just have
 two strata: North Island, South Island (neglecting any addresses on offshore islands). There are
-\$N=\$2.4 million addresses in New Zealand, of which \(N_1=1.72\) million in the North Island (\(F_1=0.74=74%
+\(N=2.4\) million addresses in New Zealand, of which \(N_1=1.72\) million in the North Island (\(F_1=0.74=74%
 \))
 and \(N_2=0.62\) million are in the South Island (\(F_2=0.26=26%
 \)).
@@ -3219,7 +3266,7 @@ Stratified sampling is done for a number of reasons
   get estimates which differ very much between samples. To protect ourselves
   against this we stratify by business size (using tax data). The largest
   businesses are in the top stratum, which is small, but a census is always done
-  of those businesses (the top stratum is called a \textbf{full coverage stratum}).\\
+  of those businesses (the top stratum is called a \textbf{full coverage stratum}).
   The smallest businesses are in the lowest stratum, and
   they are selected with low probability: since they resemble each other more, and
   one can stand in for another.
@@ -3381,26 +3428,41 @@ SRSWOR with Equal allocation
 \begin{Highlighting}[]
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{120}\NormalTok{,  }
                                 \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{)}
-\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki         10
-## 2      Canterbury, Chatham Islands         10
-## 3          Hawke's Bay, Tairāwhiti         10
-## 4  Nelson, Marlborough, West Coast         10
-## 5                 Otago, Southland         10
-## 6                      Tai Tokerau         10
-## 7            Tāmaki Herenga Manawa         10
-## 8           Tāmaki Herenga Tāngata         10
-## 9              Tāmaki Herenga Waka         10
-## 10   Taranaki, Whanganui, Manawatū         10
-## 11                         Waikato         10
-## 12                      Wellington         10
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|l}
+\hline
+Education Region, $h$ & $N_h$ & $n_h$ & Weight, $w_h$ & Selected Schools\\
+\hline
+Bay of Plenty, Waiariki & 10 & 185 & 18.5 & 143;463;719;1170;1762;1811;1820;1821;2057;6940\\
+\hline
+Canterbury, Chatham Islands & 10 & 283 & 28.3 & 357;418;1611;3288;3304;3348;3479;3505;3535;3586\\
+\hline
+Hawke's Bay, Tairāwhiti & 10 & 174 & 17.4 & 208;218;2560;2575;2593;2599;2654;2687;2691;2705\\
+\hline
+Nelson, Marlborough, West Coast & 10 & 127 & 12.7 & 293;295;303;3062;3071;3180;3233;3343;3690;6975\\
+\hline
+Otago, Southland & 10 & 228 & 22.8 & 377;400;3737;3753;3824;3827;3943;3982;4017;4050\\
+\hline
+Tai Tokerau & 10 & 151 & 15.1 & 1011;1013;1019;1038;1047;1058;1059;1094;1129;4552\\
+\hline
+Taranaki, Whanganui, Manawatū & 10 & 234 & 23.4 & 2152;2165;2167;2178;2232;2341;2365;2416;2440;4123\\
+\hline
+Tāmaki Herenga Manawa & 10 & 188 & 18.8 & 48;530;618;1319;1334;1381;1436;1510;1522;1563\\
+\hline
+Tāmaki Herenga Tāngata & 10 & 197 & 19.7 & 32;42;1266;1326;1407;1505;1555;1567;1577;6788\\
+\hline
+Tāmaki Herenga Waka & 10 & 179 & 17.9 & 91;95;553;594;1201;1203;1259;1427;1491;1580\\
+\hline
+Waikato & 10 & 277 & 27.7 & 1682;1706;1835;1941;2008;2033;2074;2090;2215;6941\\
+\hline
+Wellington & 10 & 281 & 28.1 & 246;546;2742;2846;2874;2963;2967;3013;3032;3045\\
+\hline
+\end{tabular}
+\end{table}
 
 SRSWOR with proportional allocation
 
@@ -3409,26 +3471,41 @@ SRSWOR with proportional allocation
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{120}\NormalTok{, }
                                 \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }
                                 \AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Total"}\NormalTok{)}
-\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki          9
-## 2      Canterbury, Chatham Islands         14
-## 3          Hawke's Bay, Tairāwhiti          8
-## 4  Nelson, Marlborough, West Coast          6
-## 5                 Otago, Southland         11
-## 6                      Tai Tokerau          7
-## 7            Tāmaki Herenga Manawa          9
-## 8           Tāmaki Herenga Tāngata          9
-## 9              Tāmaki Herenga Waka          9
-## 10   Taranaki, Whanganui, Manawatū         11
-## 11                         Waikato         13
-## 12                      Wellington         13
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|l}
+\hline
+Education Region, $h$ & $N_h$ & $n_h$ & Weight, $w_h$ & Selected Schools\\
+\hline
+Bay of Plenty, Waiariki & 9 & 185 & 20.55556 & 148;545;558;1698;1711;1788;1852;1933;2068\\
+\hline
+Canterbury, Chatham Islands & 14 & 283 & 20.21429 & 531;738;3275;3301;3336;3381;3384;3412;3418;3549;3554;3580;3581;4135\\
+\hline
+Hawke's Bay, Tairāwhiti & 8 & 174 & 21.75000 & 210;1669;2547;2574;2651;2702;2723;2725\\
+\hline
+Nelson, Marlborough, West Coast & 6 & 127 & 21.16667 & 300;301;2811;3181;3207;3231\\
+\hline
+Otago, Southland & 11 & 228 & 20.72727 & 386;387;391;3716;3731;3772;3812;3826;3830;3836;3957\\
+\hline
+Tai Tokerau & 7 & 151 & 21.57143 & 1024;1028;1084;1096;1111;1138;1667\\
+\hline
+Taranaki, Whanganui, Manawatū & 11 & 234 & 21.27273 & 2157;2160;2175;2265;2336;2357;2389;2412;2442;2475;2481\\
+\hline
+Tāmaki Herenga Manawa & 9 & 188 & 20.88889 & 57;61;1210;1362;1368;1480;1606;4228;6939\\
+\hline
+Tāmaki Herenga Tāngata & 9 & 197 & 21.88889 & 37;39;1221;1296;1331;1557;1592;4146;6937\\
+\hline
+Tāmaki Herenga Waka & 9 & 179 & 19.88889 & 91;97;103;466;1271;1329;1355;1418;6944\\
+\hline
+Waikato & 13 & 277 & 21.30769 & 146;159;160;671;1358;1891;1912;1946;1963;2013;2071;2094;6976\\
+\hline
+Wellington & 13 & 281 & 21.61538 & 244;1651;2669;2818;2847;2859;2876;2911;2916;2991;3015;3022;3035\\
+\hline
+\end{tabular}
+\end{table}
 
 PPSWR with Equal Allocation
 
@@ -3438,28 +3515,85 @@ PPSWR with Equal Allocation
                                 \AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{, }
                                 \AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{, }
                                 \AttributeTok{method=}\StringTok{"PPSWR"}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Total"}\NormalTok{)}
-\FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(samp}\SpecialCharTok{$}\NormalTok{Education\_Region)) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Education\_Region=}\NormalTok{Var1, }\AttributeTok{SampleSize=}\NormalTok{Freq)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##                   Education_Region SampleSize
-## 1          Bay of Plenty, Waiariki          9
-## 2      Canterbury, Chatham Islands         10
-## 3          Hawke's Bay, Tairāwhiti         10
-## 4  Nelson, Marlborough, West Coast          8
-## 5                 Otago, Southland         10
-## 6                      Tai Tokerau          9
-## 7            Tāmaki Herenga Manawa         10
-## 8           Tāmaki Herenga Tāngata          9
-## 9              Tāmaki Herenga Waka         10
-## 10   Taranaki, Whanganui, Manawatū          9
-## 11                         Waikato         10
-## 12                      Wellington         10
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|l}
+\hline
+Education Region, $h$ & $N_h$ & $n_h$ & Selected Schools\\
+\hline
+Bay of Plenty, Waiariki & 9 & 185 & 120;121;143;152;532;1699*;1730;1761;1766\\
+\hline
+Canterbury, Chatham Islands & 10 & 283 & 311;321;325;333;337;686;2113;3372;3521;4212\\
+\hline
+Hawke's Bay, Tairāwhiti & 10 & 174 & 216;217;227;230;2445;2564;2581;2628;2677;2688\\
+\hline
+Nelson, Marlborough, West Coast & 8 & 127 & 289;296*;1148;1587;3189;3206;3208;3229\\
+\hline
+Otago, Southland & 10 & 228 & 374;377;405;533;552;586;747;3864;3967;4054\\
+\hline
+Tai Tokerau & 9 & 151 & 5;8;9;13*;15;21;1032;1050;1648\\
+\hline
+Taranaki, Whanganui, Manawatū & 9 & 234 & 189;203*;204;422;2164;2205;2216;2244;2397\\
+\hline
+Tāmaki Herenga Manawa & 10 & 188 & 65;1190;1319;1370;1383;1402;1462;2085;3630;6760\\
+\hline
+Tāmaki Herenga Tāngata & 9 & 197 & 47;725;767;1223;1320;1341;1396*;1406;1572\\
+\hline
+Tāmaki Herenga Waka & 10 & 179 & 90;91;631;949;1203;1393;1423;1435;1460;1547\\
+\hline
+Waikato & 10 & 277 & 131;158;615;1695;1700;1783;1877;2007;2021;3612\\
+\hline
+Wellington & 10 & 281 & 241;248;253;260;272;498;614;2918;2994;3036\\
+\hline
+\end{tabular}
+\end{table}
+
+(Schools selected multiple times are indicated with a *)
 
 \section{One stage cluster sampling (S1C)}\label{one-stage-cluster-sampling-s1c}
+
+One stage cluster sampling superficially resembles stratified sampling.
+As in stratified sampling we divide the population into groups, in this
+case called \textbf{clusters}, assign each member of the population to one and only one group.
+However rather than sample members from each cluster, we instead draw a sample
+of clusters (by SRSWOR, or sometimes by PPSWR). We then take a \textbf{census} of
+each selected cluster.
+
+In the Schools example this would could define small regions across the
+country, select a random sample of those regions, and then carry out a
+census of schools in each selected region.
+
+Unlike stratified sampling, which is often \textbf{more efficient} than simple
+random sampling (i.e.~it has smaller standard errors for the same sample size),
+cluster sampling is \textbf{less efficient}: i.e.~its standard errors are worse (larger)
+than we'd get with a SRS with the same size.
+
+We can see why the standard errors are worse when we consider \textbf{why}
+we take cluster samples: the reason is predominantly to controlling costs.
+If we want to do a household survey in a city like Wellington we could list
+all of the residential addresses, and
+then draw a simple random sample of those dwellings. That would mean having a sample
+that is scattered all over the city - and if we have to visit each dwelling to
+collect the data, then that means a lot of travelling for the interviewers: especially
+if they have to visit some houses multiple times to make contact with the residents.
+So it's more \textbf{convenient} to select a set of houses on the same street and survey
+them - we can go from one to the next without much travel time.
+
+The trouble is that people who live near each other tend to resemble each other:
+they have similar incomes, jobs, family sizes etc. That means that for each
+additional house you survey in a street you're not really getting as much new
+information as if you were to survey an additional house somewhere else in the
+city.
+
+For that reason cluster samples have to be larger than SRS to achieve the
+same accuracy of their estimates.
+
+Note that it makes no sense to cluster if there is no saving to be made regarding
+cost or some other equivalent operational consideration. If we are doing a phone
+survey, where no travel at all is involved, then clustering doesn't make any sense.
 
 \begin{figure}
 
@@ -3467,10 +3601,156 @@ PPSWR with Equal Allocation
 
 }
 
-\caption{One Stage Cluster Sample (STSRS)}\label{fig:s1c}
+\caption{One Stage Cluster Sample (S1C)}\label{fig:s1c}
 \end{figure}
 
+Our notation becomes slightly more complex here: we have \(N\) clusters, labelled
+\(i=1,\ldots,N\). Then in cluster \(i\) we have \(M_i\) units, labelled \(j=1,\ldots,M_i\).
+There is a total of
+\[
+   M = \sum_{i=1}^N M_i
+\]
+units in the population.
+
+The selection probability of a unit is simply the probability that the cluster
+they are a member of is selected. So if we select clusters by SRSWOR then unit \(j\)
+in cluster \(i\) has selection probability
+\[
+   \pi_{ij} = \frac{n}{N}
+\]
+leading to a weight of
+\[
+   w_{ij} = \frac{N}{n}
+\]
+where again we note that \(n\) is the number of \textbf{clusters} selected, and \(N\)
+is the number of \textbf{clusters} in the population.
+
+\subsection*{Design considerations}\label{design-considerations-6}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+\begin{itemize}
+\tightlist
+\item
+  We need to decide how to break our populations into clusters,
+  and also the sizes of those clusters
+\item
+  We need to choose an overall sample size.
+\end{itemize}
+
+Clusters can vary in size, so we even though we can control
+the number of clusters we select, we can't control the overall
+sample size: we might select by chance a set of very large
+clusters, or a set of very small clusters.
+
+In stratified sampling we want to make the strata as different from
+one another as possible, and to be as internally homogeneous.\\
+In cluster sampling it's the reverse situation: we want our clusters to be internally
+diverse, and for that diversity to be present as far as possible within
+every cluster. This is because we're only selecting a few clusters, and
+they have to stand in for all of the unselected clusters. So they'd better
+reflect the full population diversity.
+
+\subsection*{Example}\label{example-6}
+\addcontentsline{toc}{subsection}{Example}
+
+There are \(N=87\) Territorial Authorities (TAs) in New Zealand (these are
+local government districts). Each TA has \(M_i\) schools, so the total
+number of schools in the population is
+\[
+    M = \sum_{i=1}^N M_i
+\]
+We could select a SRS of \(n=10\) TAs and then do a
+census of the Schools in each selected TA. Here \(n\) is the sample size
+of clusters, not the sample size of schools. If cluster \(i\) contains \(M_i\)
+schools then the total number of schools selected is
+\[
+    m = \sum_{i\in\text{sample}} M_i
+\]
+
+A function to do this selection in R is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.s1c }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, clustervar, }
+                       \AttributeTok{method=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar=}\ConstantTok{NULL}\NormalTok{) \{}
+\NormalTok{  bigM }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Cluster ID variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  clusterproperties }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(df[,clustervar]))}
+  \FunctionTok{names}\NormalTok{(clusterproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(clustervar,}\StringTok{"Mi"}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{(method}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
+\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}} 
+                       \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\NormalTok{n)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
+\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}}
+                       \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, }\AttributeTok{sizevar=}\StringTok{"Mi"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Sampling method invalid"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  samp }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,sampcluster,}\AttributeTok{by=}\NormalTok{clustervar)}
+
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.s1c}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|l}
+\hline
+Territorial Authority, $i$ & $M_i$ & Selected Schools\\
+\hline
+Hamilton City & 59 & 129;130;131;132;135;136;138;139 ...\\
+\hline
+Kawerau District & 4 & 651;655;661;1770\\
+\hline
+Manawatu District & 26 & 197;199;2333;2338;2341;2354;2356;2360 ...\\
+\hline
+Ruapehu District & 22 & 169;176;183;1617;1845;1847;1961;1982 ...\\
+\hline
+Timaru District & 28 & 352;354;357;358;359;360;361;1611 ...\\
+\hline
+Wairoa District & 14 & 214;1616;1668;1669;1675;1676;1677;1678 ...\\
+\hline
+Waitematā Local Board Area & 21 & 48;50;51;53;62;921;1210;1220 ...\\
+\hline
+Western Bay of Plenty District & 25 & 117;123;1185;1717;1758;1765;1794;1811 ...\\
+\hline
+Whau Local Board Area & 24 & 42;78;83;84;781;941;1206;1212 ...\\
+\hline
+Ōtorohanga District & 12 & 157;1688;1736;1771;1779;1783;1793;1853 ...\\
+\hline
+\end{tabular}
+\end{table}
+
 \section{Two stage cluster sampling (S2C)}\label{two-stage-cluster-sampling-s2c}
+
+The obvious drawback of the One Stage cluster design is that we are getting
+a lot of information from clusters which may be very homogeneous. This drives
+the inefficiency of the design: we're wasting a lot of our sampling effort.
+
+An obvious solution is to select a set of clusters, and then only take a sample of units
+within those clusters, rather than sampling all of them.
+
+This breaks the sample design into two stages
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Stage 1} - select a set of clusters, which we refer to as \textbf{Primary Sampling Units} (PSUs);
+\item
+  \textbf{Stage 2} - select a set of units within the selected clusters. These units are called
+  \textbf{Secondary Sampling Units} (SSUs).
+\end{itemize}
+
+Sampling at both stages can be by any method, though SRSWOR or PPSWR are the most common.
 
 \begin{figure}
 
@@ -3478,12 +3758,235 @@ PPSWR with Equal Allocation
 
 }
 
-\caption{Two Stage Cluster Sample (STSRS)}\label{fig:s2c}
+\caption{Two Stage Cluster Sample (S2C)}\label{fig:s2c}
 \end{figure}
+
+We use the same notation as in one stage clustering: there are \(N\) PSUS of
+which select \(n\), and in PSU \(i\) there are \(M_i\) PSUs, of which we select \(m_i\).
+The total number of SSUs is in all of the PSUs in the population is
+\[
+   M = \sum_{i=1}^N M_i
+\]
+whereas the total sample size of SSUs is
+\[
+   m = \sum_{i\in\text{Sample}} m_i
+\]
+where we just sum over the selected PSUs.
+
+If we use SRSWOR and select \(n\) PSUs from the \(N\) available
+then the probability of selection of a PSU is
+\[
+   \pi^{(1)}_i= \Pr(\text{PSU $i$ is selected}) = \frac{n}{N}
+\]
+leading to the first stage weight of
+\[
+   w^{(1)}_i = \frac{1}{\pi^{(1)}_i} = \frac{N}{n}
+\]
+If PSU \(i\) is selected we then select \(m_i\) units (SSUs) out of the \(M_i\)
+available. The probability that SSU \(j\) is selected given that PSU \(i\) has
+been selected is
+\[
+   \pi^{(2)}_{ij}= \Pr(\text{SSU $j$ is selected given that PSU $i$ was selected}) = \frac{m_i}{M_i}
+\]
+leading to the second stage weight of
+\[
+   w^{(2)}_{ij} = \frac{1}{\pi^{(2)}_{ij}} = \frac{M_i}{m_i}
+\]
+The overall probability that SSU \(j\) in PSU \(i\) is selected is the product
+of the first and second stage selection probabilities:
+\[
+   \pi_{ij} = \pi^{(1)}_i \pi^{(2)}_{ij} = \frac{n}{N}\times\frac{m_i}{M_i}
+\]
+and its overall weight is the product of the first and second stage weights
+\[
+   w_{ij} = w^{(1)}_i w^{(2)}_{ij} = \frac{N}{n}\times\frac{M_i}{m_i}
+\]
+
+For example I might have \(N=100\) small areas covering Wellington, and I select
+\(n=10\) of them. Then in one of those selected areas there might be \(M_i=120\) houses,
+of which I select \(m_i=15\). The first and second stage probabilities are
+\[
+   \pi^{(1)}_i = \frac{10}{100} = 0.100
+   \qquad \text{and} \qquad
+   \pi^{(2)}_{ij} = \frac{15}{120} = 0.125
+\]
+So the chances that a house in PSU \(i\) is selected is
+\[
+   \pi_{ij} = (0.100)(0.125) = 0.0125
+\]
+with total weight
+\[
+   w_{ij} = \frac{100}{10}\times\frac{120}{15} = 10\times 8 = 80
+\]
+
+There are two special cases of two stage clustering which reduce to
+simpler designs
+
+\begin{itemize}
+\tightlist
+\item
+  A first stage census: \(n=N\): we sample from every PSU. This is equivalent
+  to \textbf{stratified sampling}, where we sample from every stratum.
+\item
+  A second stage census: \(m_i=M_i\): we take a census of all SSUs in each selected cluster.
+  This is equivalent to \textbf{one stage clustering}.
+\end{itemize}
+
+\subsection*{Design considerations}\label{design-considerations-7}
+\addcontentsline{toc}{subsection}{Design considerations}
+
+We have a lot of decisions to make:
+
+\begin{itemize}
+\tightlist
+\item
+  How many PSUs (clusters) \(N\), and how we define them
+\item
+  The number of PSUs to select \(n\)
+\item
+  The number of SSUs to select within each selected PSU. Rather
+  than state the sample size \(m_i\) for each cluster, this is
+  often specified as the \textbf{proportion} of the cluster size we'll select.
+  e.g.~we might select 1 in 10 of the SSUs.
+\end{itemize}
+
+\subsection*{Example}\label{example-7}
+\addcontentsline{toc}{subsection}{Example}
+
+Let's return to the schools example. We'll select \(n=10\) TAs, but then
+select 20\% of the schools in each selected TA - although we'll also ensure
+we have at least 2 schools in each selected cluster.
+
+A function to do this selection in R is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.s2c }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, cfraction, clustervar, }
+                       \AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 2nd stage clusters to select}
+                       \AttributeTok{method1=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar1=}\ConstantTok{NULL}\NormalTok{,}
+                       \AttributeTok{method2=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar2=}\ConstantTok{NULL}\NormalTok{) \{}
+\NormalTok{  bigM }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Cluster ID variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  clusterproperties }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(df[,clustervar]))}
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(clusterproperties)}
+  \FunctionTok{names}\NormalTok{(clusterproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(clustervar,}\StringTok{"Mi"}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{(method1}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
+\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}} 
+                       \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\NormalTok{n)}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method1}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
+\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}}
+                       \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, }\AttributeTok{sizevar=}\StringTok{"Mi"}\NormalTok{)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"First stage sampling method invalid"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  sampcluster}\SpecialCharTok{$}\NormalTok{mi }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(sampcluster}\SpecialCharTok{$}\NormalTok{Mi,}\FunctionTok{pmax}\NormalTok{(mmin,}\FunctionTok{round}\NormalTok{(cfraction}\SpecialCharTok{*}\NormalTok{sampcluster}\SpecialCharTok{$}\NormalTok{Mi)))}
+\NormalTok{  samp1 }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,sampcluster,}\AttributeTok{by=}\NormalTok{clustervar)}
+\NormalTok{  samp1 }\OtherTok{\textless{}{-}}\NormalTok{ samp1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{rename}\NormalTok{(}\AttributeTok{bigN1=}\NormalTok{bigN,}\AttributeTok{weight1=}\NormalTok{weight)}
+\NormalTok{  samp1}\SpecialCharTok{$}\NormalTok{n1 }\OtherTok{\textless{}{-}}\NormalTok{ n}
+
+  \CommentTok{\# Second stage selection}
+  \ControlFlowTok{if}\NormalTok{(method2}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
+\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }
+                     \FunctionTok{by}\NormalTok{(samp1, samp1[,clustervar],}
+                        \ControlFlowTok{function}\NormalTok{(ds) }\FunctionTok{select.srswor}\NormalTok{(ds,}\AttributeTok{n=}\FunctionTok{first}\NormalTok{(ds}\SpecialCharTok{$}\NormalTok{mi))}
+\NormalTok{                               ))}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method2}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
+\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }
+                     \FunctionTok{by}\NormalTok{(samp2, samp2[,clustervar],}
+                        \ControlFlowTok{function}\NormalTok{(ds) }\FunctionTok{select.ppswr}\NormalTok{(ds,}\AttributeTok{n=}\FunctionTok{first}\NormalTok{(ds}\SpecialCharTok{$}\NormalTok{mi),}\AttributeTok{sizevar=}\NormalTok{sizevar2)}
+\NormalTok{                               ))}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Second stage sampling method invalid"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  samp2 }\OtherTok{\textless{}{-}}\NormalTok{ samp2 }\SpecialCharTok{|\textgreater{}} \FunctionTok{rename}\NormalTok{(}\AttributeTok{bigN2=}\NormalTok{bigN,}\AttributeTok{weight2=}\NormalTok{weight)}
+\NormalTok{  samp2}\SpecialCharTok{$}\NormalTok{n2 }\OtherTok{\textless{}{-}}\NormalTok{ samp2}\SpecialCharTok{$}\NormalTok{mi}
+\NormalTok{  samp2}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ samp2}\SpecialCharTok{$}\NormalTok{weight1}\SpecialCharTok{*}\NormalTok{samp2}\SpecialCharTok{$}\NormalTok{weight2}
+
+  \FunctionTok{return}\NormalTok{(samp2)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.s2c}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+                              \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|l|l|l|l}
+\hline
+Territorial Authority, $i$ & $N$ & $n$ & $M_i$ & $m_i$ & $w^{(1)}_i$ & $w^{(2)}_{ij}$ & Weight, $w_{ij}$ & Selected Schools\\
+\hline
+Masterton District & 87 & 10 & 20 & 4 & 8.70 & 5.00 & 43.50 & 241;245;1661;2843\\
+\hline
+Nelson City & 87 & 10 & 22 & 4 & 8.70 & 5.50 & 47.85 & 3189;3221;3224;4121\\
+\hline
+Queenstown-Lakes District & 87 & 10 & 16 & 3 & 8.70 & 5.33 & 46.40 & 746;747;958\\
+\hline
+Tasman District & 87 & 10 & 35 & 7 & 8.70 & 5.00 & 43.50 & 297;525;3196;3199 ...\\
+\hline
+Timaru District & 87 & 10 & 28 & 6 & 8.70 & 4.67 & 40.60 & 361;3498;3528;3532 ...\\
+\hline
+Waimate District & 87 & 10 & 9 & 2 & 8.70 & 4.50 & 39.15 & 362;3539\\
+\hline
+Waitematā Local Board Area & 87 & 10 & 21 & 4 & 8.70 & 5.25 & 45.67 & 48;53;1391;1392\\
+\hline
+Waitomo District & 87 & 10 & 17 & 3 & 8.70 & 5.67 & 49.30 & 160;161;1778\\
+\hline
+Whanganui District & 87 & 10 & 40 & 8 & 8.70 & 5.00 & 43.50 & 189;190;559;1585 ...\\
+\hline
+Whangarei District & 87 & 10 & 54 & 11 & 8.70 & 4.91 & 42.71 & 12;1028;1029;1030 ...\\
+\hline
+\end{tabular}
+\end{table}
 
 \section{Complex multistage designs}\label{complex-multistage-designs}
 
-\section{Introduction to the design effect}\label{introduction-to-the-design-effect}
+The ideas in two stage cluster sampling can be extended to a third stage of sampling
+(i.e.~we may wish to sample within SSUs), and we can also combine cluster sampling
+with stratified sampling.
+
+For example, the Statistics NZ Household sampling frame is a multistage cluster
+design, where the sample is selected as follows:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  NZ is stratified into \(H=12\) regions (e.g.~Northland, Auckland, Hawke's
+  Bay etc.);
+\item
+  Each stratum (region) is broken into \(N_h\) PSUs: which are amalgamations
+  of a few meshblocks. Each PSU contains (on average) 100 households.\\
+  A SRSWOR of \(n_h\) PSUs is taken within each stratum \(h\); (First stage sample.)
+\item
+  Within the \(k^{\rm th}\) selected PSU, which is of size \(M_{hk}\), a linear
+  systematic random sample is taken of \(m_{hk}\) households; (Second stage
+  sample.)
+\item
+  Depending on the survey, \textbf{all} \(A_{hk\ell}\) eligible members of the
+  \(\ell^{\rm th}\) selected
+  household will be surveyed, or a SRSWOR of \(a_{hk\ell}\) members may be taken.
+  (Third stage sample.)
+\end{enumerate}
+
+The sample size is therefore
+\[
+   \text{Sample Size} = 
+   \sum_{h=1}^H\sum_{k\in s_I}\sum_{\ell\in s_k} a_{hk\ell}
+\]
+and the sample weights of individual \(j\) in household \(\ell\) of PSU \(k\) in
+stratum \(h\) are
+\[
+   w_{hk\ell j} = \frac{N_h}{n_h}\frac{M_{hk}}{m_{hk}}
+                  \frac{A_{hk\ell}}{a_{hk\ell}}
+\]
+i.e.~these are just the product of the weights at each stage of selection.
 
 \chapter{Inference with R}\label{inference-with-r}
 
