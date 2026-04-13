@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | STAT395: Sampling</title>
+  <title>7 Survey Analysis | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | STAT395: Sampling" />
+  <meta property="og:title" content="7 Survey Analysis | STAT395: Sampling" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Sampling notes." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | STAT395: Sampling" />
+  <meta name="twitter:title" content="7 Survey Analysis | STAT395: Sampling" />
   
   <meta name="twitter:description" content="Sampling notes." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="sample-designs-in-r.html"/>
+<link rel="next" href="missing-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -289,19 +289,61 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="survey-analysis" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> Survey Analysis<a href="survey-analysis.html#survey-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
+<p>Key functions</p>
+<p>Survey design
+svydesign()
+and summary()</p>
+<p>Estimation</p>
+<p>Continuous variables
+svymean()
+svytotal()
+svytable()</p>
+<p>confint() for confidence intervals
+cv() for RSE’s</p>
+<p>Categorical variables give proportions
+svymean()
+svytotal()
+svyciprop() for better confidence intervals</p>
+<p>svyby()</p>
+<p>Inference</p>
+<p>svychisq()
+svytest()
+svyranktest()
+svyglm()
+regTermTest()
+svypredmeans()</p>
+<p>Display</p>
+<p>barplot()
+svyhist()
+svyboxplot()
+dotchart()
+svyplot()
+Data display and inference</p>
+<p>Analytic and jackknife methods</p>
+<ul>
+<li>SRSWOR, SRSWR</li>
+<li>Stratified designs</li>
+<li>Cluster designs</li>
+<li>PPSWR</li>
+<li>Complex designs</li>
+</ul>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="sample-designs-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="missing-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

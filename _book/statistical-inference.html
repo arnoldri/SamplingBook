@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-04-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -245,20 +245,27 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-5"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-5"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a>
+<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-1sc"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (1SC)</a>
 <ul>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-6"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-6"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a>
+<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-2sc"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (2SC)</a>
 <ul>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-7"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-7"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
 <li class="chapter" data-level="5.9" data-path="sample-designs.html"><a href="sample-designs.html#complex-multistage-designs"><i class="fa fa-check"></i><b>5.9</b> Complex multistage designs</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
-<li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
+<li class="chapter" data-level="6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html"><i class="fa fa-check"></i><b>6</b> Sample Designs in R</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#census-1"><i class="fa fa-check"></i><b>6.1</b> Census</a></li>
+<li class="chapter" data-level="6.2" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor"><i class="fa fa-check"></i><b>6.2</b> Simple Random Sample WithOut Replacement (SRSWOR)</a></li>
+<li class="chapter" data-level="6.3" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#probability-proportional-to-size-with-replacement-ppswr"><i class="fa fa-check"></i><b>6.3</b> Probability Proportional to Size With Replacement (PPSWR)</a></li>
+<li class="chapter" data-level="6.4" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-sample"><i class="fa fa-check"></i><b>6.4</b> Stratified Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a></li>
+<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
 <li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
@@ -1312,9 +1319,9 @@ of 1 means that sample member represents themself alone.</p>
 <p>There’s no problem with weights being fractions - since we only conceptually but
 don’t <strong>actually</strong> replicate the data.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:weights"></span>
-<img src="include-files/fig/Weights.png" alt="How weights work: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse." width="640" />
+<img src="include-files/fig/Weights.png" alt="How weights work in SRSWOR: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse." width="640" />
 <p class="caption">
-Figure 4.2: How weights work: we want to make estimates about a population of size <span class="math inline">\(N\)</span>, but only have a sample of size <span class="math inline">\(n\)</span>: so we replicate each sample member <span class="math inline">\(w=N/n\)</span> times to generate a synthetic population of size <span class="math inline">\(N\)</span> which we can analyse.
+Figure 4.2: How weights work in SRSWOR: we want to make estimates about a population of size <span class="math inline">\(N\)</span>, but only have a sample of size <span class="math inline">\(n\)</span>: so we replicate each sample member <span class="math inline">\(w=N/n\)</span> times to generate a synthetic population of size <span class="math inline">\(N\)</span> which we can analyse.
 </p>
 </div>
 </div>

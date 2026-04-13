@@ -1,6 +1,14 @@
 # Sample Designs
 
-In this Chapter we will consider the various sample designs in common
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+In this Chapter we consider the various sample designs in common
 use, the reasons for using each one, and methods for selecting from suitable
 frames.  
 
@@ -198,8 +206,10 @@ select.srswr <- function(df, n) {
     ungroup() |>
     select(-rownames)
   return(samp)
-} 
+}
+```
 
+```{r}
 samp <- airports |> select.srswr(n=5)
 ```
 
@@ -343,7 +353,7 @@ and weights are
    w_i = \frac{N}{n}
 \]
 Data from this design are often analysed as if they were drawn as a SRSWOR,
-but in fact this is a special case of a one-stage cluster sample (S1C, see below).
+but in fact this is a special case of a one-stage cluster sample (1SC, see below).
 
 ```{r lsrs, echo=FALSE}
 #| fig.align='center',
@@ -555,16 +565,14 @@ Two common methods for allocating the $n$ sample units across the $H$ strata are
 ### Example {-}
 
 ```{r echo=FALSE}
-schools <- read.csv("data/nzschools-list.csv")
-names(schools)[c(22,28,39)] <- c("Takiwā","Māori_Electorate","Māori")
-schools[schools$Territorial_Authority=="","Territorial_Authority"] <- "Albert-Eden Local Board Area"
-schools <- schools[!is.na(schools$Total) & schools$Total>0,]
+schools <- read.csv("data/nzschools.csv")
 bigN <- nrow(schools)
 ```
 
 The 2026 directory of NZ schools available from https://www.educationcounts.govt.nz/directories/list-of-nz-schools
-lists `r bigN` schools of various types.  Each School is associated with one
-of $H=12$ Education Regions, with counts $N_h$ and stratum fractions $F_h$ listed below.
+lists `r bigN` schools of various types (after removing Schools with zero enrolments or with incomplete data).  
+Each School is associated with one of $H=12$ Education Regions, with counts $N_h$ and stratum fractions $F_h$ 
+listed below.
 
 ```{r echo=FALSE}
 stratumproperties <- schools |> 
@@ -589,6 +597,7 @@ It implements PPSWR sampling within strata as well.
 ```{r}
 select.stsrs <- function(df, n, stratumvar, 
                          allocation="equal",
+                         nmin=2, # minimum number of units to select per stratum 
                          method="SRSWOR", sizevar=NULL) {
   bigN <- nrow(df)
   if(!stratumvar%in%names(df)) {
@@ -597,9 +606,10 @@ select.stsrs <- function(df, n, stratumvar,
   stratumproperties <- as.data.frame(table(df[,stratumvar]))
   names(stratumproperties) <- c(stratumvar,"Nh")
   if(allocation=="equal") {
-    stratumproperties$nh <- round(n/nrow(stratumproperties))
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n/nrow(stratumproperties))))
   } else if(allocation=="proportional") {
-    stratumproperties$nh <- round(n*stratumproperties$Nh/sum(stratumproperties$Nh))
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,                                                                                   round(n*stratumproperties$Nh/sum(stratumproperties$Nh))))
   } else {
     stop("Invalid allocation")
   }
@@ -671,7 +681,7 @@ samp |>
 (Schools selected multiple times are indicated with a *)
 
 
-## One stage cluster sampling (S1C)
+## One stage cluster sampling (1SC)
 
 One stage cluster sampling superficially resembles stratified sampling.
 As in stratified sampling we divide the population into groups, in this
@@ -713,11 +723,11 @@ Note that it makes no sense to cluster if there is no saving to be made regardin
 cost or some other equivalent operational consideration.  If we are doing a phone
 survey, where no travel at all is involved, then clustering doesn't make any sense.  
 
-```{r s1c, echo=FALSE}
+```{r 1SC, echo=FALSE}
 #| fig.align='center',
 #| fig.width=5,
-#| fig.cap="One Stage Cluster Sample (S1C)"
-knitr::include_graphics("include-files/fig/SRS1C.png")
+#| fig.cap="One Stage Cluster Sample (1SC)"
+knitr::include_graphics("include-files/fig/SRS1SC.png")
 ```
 
 Our notation becomes slightly more complex here: we have $N$ clusters, labelled
@@ -778,7 +788,7 @@ schools then the total number of schools selected is
 
 A function to do this selection in R is:
 ```{r}
-select.s1c <- function(df, n, clustervar, 
+select.1sc <- function(df, n, clustervar, 
                        method="SRSWOR", sizevar=NULL) {
   bigM <- nrow(df)
   if(!clustervar%in%names(df)) {
@@ -802,7 +812,7 @@ select.s1c <- function(df, n, clustervar,
 ```
 
 ```{r}
-samp <- schools |> select.s1c(n=10, clustervar="Territorial_Authority")
+samp <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
 ```
 
 ```{r echo=FALSE}
@@ -816,7 +826,7 @@ samp |>
 ```
 
 
-## Two stage cluster sampling (S2C)
+## Two stage cluster sampling (2SC)
 
 The obvious drawback of the One Stage cluster design is that we are getting
 a lot of information from clusters which may be very homogeneous.   This drives
@@ -833,11 +843,11 @@ This breaks the sample design into two stages
   
 Sampling at both stages can be by any method, though SRSWOR or PPSWR are the most common.  
 
-```{r s2c, echo=FALSE}
+```{r 2SC, echo=FALSE}
 #| fig.align='center',
 #| fig.width=5,
-#| fig.cap="Two Stage Cluster Sample (S2C)"
-knitr::include_graphics("include-files/fig/SRS2C.png")
+#| fig.cap="Two Stage Cluster Sample (2SC)"
+knitr::include_graphics("include-files/fig/SRS2SC.png")
 ```
 
 We use the same notation as in one stage clustering: there are $N$ PSUS of
@@ -925,7 +935,8 @@ we have at least 2 schools in each selected cluster.
 
 A function to do this selection in R is:
 ```{r}
-select.s2c <- function(df, n, cfraction, clustervar, 
+select.2sc <- function(df, n,  # number of first stage clusters to select 
+                       cfraction, clustervar, 
                        mmin=2, # minimum number of 2nd stage clusters to select
                        method1="SRSWOR", sizevar1=NULL,
                        method2="SRSWOR", sizevar2=NULL) {
@@ -973,7 +984,7 @@ select.s2c <- function(df, n, cfraction, clustervar,
 ```
 
 ```{r}
-samp <- schools |> select.s2c(n=10, cfraction=0.20, mmin=2, 
+samp <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
                               clustervar="Territorial_Authority")
 ```
 
@@ -1029,3 +1040,77 @@ stratum $h$ are
                   \frac{A_{hk\ell}}{a_{hk\ell}}
 \]
 i.e. these are just the product of the weights at each stage of selection.  
+
+Function to draw a stratified two stage cluster sample
+```{r}
+select.st2sc <- function(df, 
+                         n,      # total number of 1st stage clusters to select over all strata
+                         stratumvar, allocation="equal",
+                         nmin=2, # minimum number of 1st stage clusters to select per stratum
+                         cfraction, clustervar, 
+                         mmin=2, # minimum number of 2nd stage clusters to select
+                         method1="SRSWOR", sizevar1=NULL,
+                         method2="SRSWOR", sizevar2=NULL) {
+
+  # stratum selection  
+  bigN <- nrow(df)
+  if(!stratumvar%in%names(df)) {
+    stop("Stratum variable is not present in the data frame")
+  }
+  if(!clustervar%in%names(df)) {
+    stop("Clustring variable is not present in the data frame")
+  }
+  xx <- tapply(df[,clustervar], df[,stratumvar], function(x) length(unique(x)))
+  stratumproperties <- data.frame(Var1=names(xx),Freq=xx)
+  names(stratumproperties) <- c(stratumvar,"Nh")
+  rownames(stratumproperties) <- NULL
+  if(allocation=="equal") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n/nrow(stratumproperties))))
+  } else if(allocation=="proportional") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n*stratumproperties$Nh/sum(stratumproperties$Nh))))
+  } else {
+    stop("Invalid allocation")
+  }
+  df <- merge(df,stratumproperties,by=stratumvar)
+  
+  samp <- do.call(rbind, by(df, df[,stratumvar], 
+                            function(dfx) {
+                               select.2sc(dfx, n=first(dfx$nh), 
+                                          cfraction=cfraction, 
+                                          clustervar=clustervar, 
+                                          mmin=mmin, 
+                                          method1=method1, sizevar1=sizevar1,
+                                          method2=method2, sizevar2=sizevar2)
+                            }))
+  return(samp)
+}
+```
+
+```{r}
+samp <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+First 10 of the selected first stage clusters:
+```{r echo=FALSE}
+samp |>
+  group_by(Region,Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(N=first(bigN1),n=first(n1),Mi=first(bigN2),mi=n(), 
+            weight1=first(weight1),weight2=first(weight2),weight=first(weight),
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),4)],collapse=";"),ifelse(n()>4,"...",""))) |>
+  ungroup() |>
+  slice_head(n=10) |>
+  mutate(weight1=sprintf("%.2f",weight1)) |>
+  mutate(weight2=sprintf("%.2f",weight2)) |>
+  mutate(weight=sprintf("%.2f",weight)) |>
+  kbl(col.names=c("Region, $h$","Territorial Authority, $i$",
+                  "$N_h$","$n_h$","$M_{hi}$","$m_{hi}$",
+                  "$w^{(1)}_i$","$w^{(2)}_{ij}$","Weight, $w_{ij}$",
+                  "Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+

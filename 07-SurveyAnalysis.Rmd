@@ -1,0 +1,58 @@
+# Survey Analysis
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+Key functions
+
+Survey design
+svydesign()
+and summary()
+
+Estimation
+
+Continuous variables
+svymean()
+svytotal()
+svytable()
+
+confint() for confidence intervals
+cv() for RSE's
+
+Categorical variables give proportions
+svymean()
+svytotal()
+svyciprop() for better confidence intervals
+
+svyby()
+
+Inference
+
+svychisq()
+svytest()
+svyranktest()
+svyglm()
+regTermTest()
+svypredmeans()
+
+Display
+
+barplot()
+svyhist()
+svyboxplot()
+dotchart()
+svyplot()
+Data display and inference
+
+Analytic and jackknife methods
+
+* SRSWOR, SRSWR
+* Stratified designs
+* Cluster designs
+* PPSWR
+* Complex designs

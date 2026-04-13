@@ -1,0 +1,425 @@
+# Sample Designs in R
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+The method of anlalysis of survey data depends crucially on its sample 
+design.  Simple methods of analysis which neglect the sample design can
+lead to estimates which are severely biased, and standard errors that
+are incorrect. 
+
+In the this and the following Chapter we'll use the `survey` package in R to carry out analyses.
+We'll use the `schools` data set as our primary example, but also use
+data on populations and Gross Domestic Product for each country in 2023
+from the 'Our World in Data' website.
+
+```{r echo=FALSE}
+#schools <- read.csv("data/nzschools-list.csv")
+#names(schools)[c(22,28,39)] <- c("Takiwā","Māori_Electorate","Māori")
+#  schools[schools$Regional_Council=="Area Outside Region",]
+#schools <- schools[schools$Territorial_Authority!="",]
+#schools <- schools[!is.na(schools$Total) & schools$Total>0,]
+#schools <- schools |> 
+#             mutate(Region=case_when(Territorial_Authority=="Chatham Islands Territory" ~ "Chatham Islands",
+#                                 Territorial_Authority=="Rotorua District" ~ "Bay of Plenty Region",
+#                                 Territorial_Authority=="Stratford District" ~ "Taranaki Region",
+#                                 Territorial_Authority=="Taupo District" ~ "Waikato Region",
+#                                 Territorial_Authority=="Waitaki District" ~ "Otago Region",
+#                                 .default=Regional_Council))
+#write.csv(schools,"data/nzschools.csv",row.names=FALSE)
+#is.nested(schools, "Territorial_Authority", "Regional_Council")
+#is.nested(schools, "Territorial_Authority", "Region")
+```
+
+
+```{r echo=FALSE}
+pop <- read.csv("data/population.csv")
+pop <- pop |> filter(Year==2023) |> 
+  rename(Country=Entity, Population=all.years) |>
+  arrange(Country) 
+pop <- pop[!grepl("^OWID_",pop$Code),]
+pop <- pop[!grepl("^UN_",pop$Code),]
+pop <- pop[pop$Code!="",]
+pop$Prob <- pop$Population/sum(pop$Population)
+row.names(pop) <- NULL
+
+gdp <- read.csv("data/government-expenditure-vs-gdp.csv")
+gdp <- gdp |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(GovtSpend="Government.expenditure") |>
+  arrange(Country) 
+gdp <- gdp[!grepl("^OWID_",pop$Code),]
+gdp <- gdp[!grepl("^UN_",pop$Code),]
+gdp <- gdp[gdp$Code!="",]
+row.names(gdp) <- NULL
+
+gdp <- merge(gdp,pop)
+gdp$Prob <- gdp$Population/sum(gdp$Population)
+gdp$GDPPerCapita <- gdp$GDP/gdp$Population
+
+mil <- read.csv("data/military-spending-sipri.csv")
+#mil <- read.csv("data/military-expenditure-as-a-share-of-government-spending.csv")
+mil <- mil |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(MilSpend=Military.expenditure) |>
+  select(-Region) |>
+  arrange(Country) 
+mil <- mil[!grepl("^OWID_",pop$Code),]
+mil <- mil[!grepl("^UN_",pop$Code),]
+mil <- mil[pop$Code!="",]
+row.names(mil) <- NULL
+
+mil <- merge(gdp,mil)
+```
+
+```{r echo=FALSE}
+schools <- read.csv("data/nzschools.csv")
+```
+
+```{r}
+# Census
+schools.census <- schools |> select.srswor(n=nrow(schools))
+# SRSWOR
+schools.srswor <- schools |> select.srswor(n=20)
+# PPSWR
+schools.ppswr <- schools |> select.ppswr(n=20, sizevar="Total")
+# STSRS
+schools.stsrs <- schools |> select.stsrs(n=60, stratumvar="Education_Region")
+# 1SC
+schools.1sc <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
+# 2SC
+schools.2sc <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+# ST2SC
+schools.st2sc <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+In order to make estimates from sampled data using the `survey` package
+we need to specify the sample design we're using. 
+We'll do this for the various sample designs covered in the 
+previous chapter.  
+
+> Note that in the `survey` package we identify variables with their names without
+> quotes and with a `~` symbol in front.  (If you're interested you can 
+> use the `survyr` package which is a `dplyr`-like wrapper for `survey` 
+> with functions defined so that the `~` isn't necessary.)
+
+We'll define each design, and then use it to estimate the mean 
+size of school rolls in the population (stored in the variable `Total` in
+the `schools` data frame.  (One exception will be the PPSWR example
+where we'll select a sample of countries using their population size
+as the size variable.)
+
+The true mean school size is
+```{r}
+ybar <- mean(schools$Total)
+ybar
+```
+
+## Census
+
+The analysis of a census is trivial (at least, if there is no non-response).
+We can create a census dataset by taking an SRSWOR of size $n=N$.
+```{r}
+schools.census <- schools |> select.srswor(n=nrow(schools))
+```
+This function adds the column `bigN` to the dataset, which contains 
+population size $N$ repeated on every row.
+
+Now we can specify the design.
+```{r}
+schools.census.des <- svydesign(id=~1, data=schools.census, fpc=~bigN)
+```
+Note that we tell R which column contains the population size using the `fpc` argument. 
+Our data aren't clustered, so the `id` variable (which identifies clusters) is set to 1.
+
+```{r}
+svymean(~Total, design=schools.census.des, deff=TRUE)
+```
+The estimated mean is `r sprintf("%.2f", ybar)`, which is of course
+exactly equal to the population mean - and note that the standard error is zero:
+censuses have no sampling error.  We've measured everything there is to measure
+so we have no uncertainty.  
+
+We've requested `Deff=TRUE`, and have got a Deff value of NaN, which means
+not able to be calculated.  We'll discuss what this means later on.  
+
+If we had left out the `fpc` command 
+```{r}
+schools.census.des <- svydesign(id=~1, data=schools.census)
+```
+we get a warning that we can interpret as R assuming an SRSWR from an infinite population.
+
+The estimated mean is the same, but the standard error are now what'd we'd have learned 
+from first year statistics.
+```{r}
+svymean(~Total, design=schools.census.des, deff=TRUE)
+```
+```{r}
+sy <- sd(schools.census$Total)
+n <- nrow(schools.census)
+se <- sy/sqrt(n)
+```
+
+i.e. the standard error is
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+
+Also notice that the `Deff` value has changed to `Inf` (meaning infinity) -
+again we'll come back to what this means this shortly.  
+
+## Simple Random Sample WithOut Replacement (SRSWOR)
+
+```{r echo=FALSE}
+set.seed(111)
+```
+
+Let's draw a sample of $n=60$ schools from the population by SRSWOR.
+```{r}
+schools.srswor <- schools |> select.srswor(n=60)
+```
+
+To specify the design we use the same syntax as above:
+```{r}
+schools.srswor.des <- svydesign(id=~1, data=schools.srswor, fpc=~bigN)
+```
+
+Estimating the mean school size is also just the same:
+```{r}
+svymean(~Total, design=schools.srswor.des, deff=TRUE)
+```
+
+This is the mean of a genuine sample now, so we have an estimated mean value that
+differs from the truth, and the standard error is gauge of its accuracy.
+
+The standard error comes from the finite population corrected formula:
+```{r}
+bigN <- first(schools.srswor$bigN) # take the entry in the first row: they're all the same
+sy <- sd(schools.srswor$Total)
+n <- nrow(schools.srswor)
+se <- sqrt(1-n/bigN)*sy/sqrt(n)
+```
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \sqrt{1-\frac{n}{N}}\frac{s_y}{\sqrt{n}} 
+   = \sqrt{1-\frac{`r n`}{`r bigN`}}
+     \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+
+Compare this to the simple SE, which is just slightly bigger
+```{r}
+se <- sy/sqrt(n)
+```
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+This is what we get if we omit the `fpc`
+```{r}
+schools.srswor.des <- svydesign(id=~1, data=schools.srswor)
+svymean(~Total, design=schools.srswor.des, deff=TRUE)
+```
+
+## Probability Proportional to Size With Replacement (PPSWR)
+
+We have a dataset from 'Our World in Data' giving population sizes, 
+Gross Domestic Product and military expenditure in 2023 (all in US dollars).
+The first 10 rows are below:
+```{r echo=FALSE}
+mil |>
+  slice_head(n=10) |>
+  select(-Year) |>
+  select(-Prob) |>
+  kbl() |>
+  kable_styling()
+```
+
+We can select a PPSWR using population as the size variable
+```{r}
+mil.ppswr <- mil |> select.ppswr(n=30, sizevar="Population")
+```
+
+The `weight` column here combines the weight over the number of times a unit is selected
+```{r}
+mil.ppswr.des <- svydesign(id=~1, data=mil.ppswr, weight=~weight)
+```
+
+The mean military expenditure per country is
+```{r}
+svymean(~MilSpend, design=mil.ppswr.des, deff=TRUE)
+```
+though more interesting is the **total** of this variable, to see
+how much the world is spending.
+```{r}
+svytotal(~MilSpend, design=mil.ppswr.des, deff=TRUE)
+```
+
+Note again that in a with replacement design we can't apply the finite
+population correction.  
+
+## Stratified Sample
+
+```{r echo=FALSE}
+set.seed(112)
+```
+
+Recall that in this design we specify a set of groups called strata, and
+each population unit belongs to one of these strata.
+
+Selecting a sample of $n=60$ schools by equal allocation across the 12 
+Education Regions:
+```{r}
+schools.stsrs <- schools |> select.stsrs(n=60, stratumvar="Education_Region")
+```
+
+Specify this design
+```{r}
+schools.stsrs.des <- svydesign(id=~1, strata=~Education_Region, fpc=~Nh,
+                               data=schools.stsrs,
+                               survey.lonely.psu="remove")
+```
+Note that we've included the option `survey.lonely.psu="remove"` to mean
+that the estimation of standard errors doesn't fail if a stratum only has a single
+PSU.  
+
+We can now return to estimating the mean school size
+```{r}
+svymean(~Total, design=schools.stsrs.des, deff=TRUE)
+```
+
+Now it's finally time to talk about the **Design Effect**, or the Deff for short.
+
+The Deff of an estimator $\widehat{T}$ of a population characteristic $T$ in
+a particular sample design is defined to be
+\[
+   \bfa{Deff}{\widehat{T}_{\text{design}}}
+   = 
+   \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{
+         \bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}
+   = 
+   \left(\frac{\bfa{SE}{\widehat{T}_{\text{design}}}}{
+               \bfa{SE}{\widehat{T}_{\text{SRSWOR}}}}\right)^2
+\]
+where both estimators are based on samples of the same size.
+
+It tells us how the standard error differs between our design of 
+interest and a SRSWOR of the same sample size.
+
+Note that
+
+* We have a different Deff for every estimate we make from a survey.
+* A Deff$<$1 means that the Standard Errors are smaller than what
+  we'd get in SRSWOR.  A small Deff indicates a **more efficient** design.
+* A Deff of 1 means the design is no better than SRSWOR - and of course
+  (look back above) the Deffs of all estimates in SRSWOR are 1 by definition.
+* If we're dealing with a census, then the Standard Error is zero, 
+  and in any case there's no difference between designs, so the Deff
+  isn't defined.
+* **Stratified designs** can achieve Deffs much much less than 1 if their strata
+  are well defined to be informative about the estimates of interest.  e.g.
+  in business surveys where the strata are defined by business size we 
+  can get very good Deffs.
+* **Cluster designs** often have Deffs greater than 1, which show them to be 
+  significantly less efficient than SRSWOR.
+  
+The Deff values we get from R are approximations, and aren't very reliable
+when sample sizes are small.  But do notice that we have a Deff<1 here
+for the stratified sample of $n=60$ units, and the SE is lower than
+that achieved in the SRSWOR of $n=60$ units above.
+  
+```{r echo=FALSE}
+#(SE(svymean(~Total, design=schools.stsrs.des, deff=TRUE))/
+#  SE(svymean(~Total, design=schools.srswor.des, deff=TRUE)))^2
+```
+
+## One stage cluster design (1SC)
+
+```{r echo=FALSE}
+set.seed(221)
+```
+
+A one stage cluster design takes $n=10$ Territorial Authority areas (TAs) at random
+and selects all schools in each selected TA.
+```{r}
+schools.1sc <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
+```
+We need a column `bigN` which gives the number of TAs in the population.  
+
+```{r}
+schools.1sc.des <- svydesign(id=~Territorial_Authority, data=schools.1sc, 
+                             fpc=~bigN)
+```
+
+```{r}
+svymean(~Total, design=schools.1sc.des, deff=TRUE)
+```
+The Deff of this one stage cluster sample is bad (much larger than 1) - this is due to 
+strong differences between TAs in the mean school size.  The more the clusters differ from
+each other on the characteristic of interest, the worse the Deff gets.
+
+## Two stage cluster design (2SC)
+
+```{r echo=FALSE}
+set.seed(222)
+```
+
+A two stage cluster design takes $n=10$ Territorial Authority areas (TAs) at random
+and selects 20% of the schools in each selected TA.
+```{r}
+schools.2sc <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+```
+We need a column `bigN1` which gives the number of TAs in the population, and
+`bigN2` which is the number of schools in each TA.  We also need to specify names
+of unique identifiers of the first stage units (the PSUs: these are Territorial Authorities)
+and the second stage units (the SSUs: these are Schools).
+
+```{r}
+schools.2sc.des <- svydesign(id=~Territorial_Authority+School_Id, data=schools.2sc, 
+                             fpc=~bigN1+bigN2,
+                             survey.lonely.psu="remove")
+```
+
+```{r}
+svymean(~Total, design=schools.2sc.des, deff=TRUE)
+```
+
+## Stratified two stage cluster design
+
+```{r echo=FALSE}
+set.seed(223)
+```
+
+Finally here is a stratified two stage sample of schools within TA's with Regions.
+The Regions are strata, the TAs are clusters within the Regions, and then 20% of 
+schools are sampled in the selected TAs.
+```{r}
+schools.st2sc <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                         cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+The design is the same as the two stage cluster sample, except we add the stratum specification.
+```{r}
+schools.st2sc.des <- svydesign(id=~Territorial_Authority+School_Id, strata=~Region, data=schools.st2sc, 
+                               fpc=~bigN1+bigN2,
+                               survey.lonely.psu="remove")
+```
+
+```{r}
+svymean(~Total, design=schools.st2sc.des, deff=TRUE)
+```
+
+
+
+
+

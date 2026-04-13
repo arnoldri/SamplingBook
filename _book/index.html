@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-04-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -245,20 +245,27 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-5"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-5"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-s1c"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (S1C)</a>
+<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-1sc"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (1SC)</a>
 <ul>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-6"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-6"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-s2c"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (S2C)</a>
+<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-2sc"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (2SC)</a>
 <ul>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-7"><i class="fa fa-check"></i>Design considerations</a></li>
 <li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-7"><i class="fa fa-check"></i>Example</a></li>
 </ul></li>
 <li class="chapter" data-level="5.9" data-path="sample-designs.html"><a href="sample-designs.html#complex-multistage-designs"><i class="fa fa-check"></i><b>5.9</b> Complex multistage designs</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="inference-with-r.html"><a href="inference-with-r.html"><i class="fa fa-check"></i><b>6</b> Inference with R</a></li>
-<li class="chapter" data-level="7" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>7</b> Missing data</a></li>
+<li class="chapter" data-level="6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html"><i class="fa fa-check"></i><b>6</b> Sample Designs in R</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#census-1"><i class="fa fa-check"></i><b>6.1</b> Census</a></li>
+<li class="chapter" data-level="6.2" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor"><i class="fa fa-check"></i><b>6.2</b> Simple Random Sample WithOut Replacement (SRSWOR)</a></li>
+<li class="chapter" data-level="6.3" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#probability-proportional-to-size-with-replacement-ppswr"><i class="fa fa-check"></i><b>6.3</b> Probability Proportional to Size With Replacement (PPSWR)</a></li>
+<li class="chapter" data-level="6.4" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-sample"><i class="fa fa-check"></i><b>6.4</b> Stratified Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a></li>
+<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
 <li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
@@ -285,7 +292,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">STAT395: Sampling</h1>
 <p class="author"><em>Richard Arnold et al.</em></p>
-<p class="date"><em>2026-04-12</em></p>
+<p class="date"><em>2026-04-13</em></p>
 </div>
 <div id="introductory-remarks" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Introductory Remarks<a href="index.html#introductory-remarks" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -387,7 +394,8 @@ and accompanies the <code>survey</code> package (<span class="citation">T. Lumle
 <p>And also</p>
 <ul>
 <li>CRAN site on R resources for Official Statistics <a href="https://cran.r-project.org/web/views/OfficialStatistics.html" class="uri">https://cran.r-project.org/web/views/OfficialStatistics.html</a></li>
-<li>Online book on using R for survey analysis: <a href="https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/" class="uri">https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/</a></li>
+<li>Online book on using R for survey analysis:
+<a href="https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/" class="uri">https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/</a></li>
 <li>This gallery of R graphs <a href="https://r-graph-gallery.com/" class="uri">https://r-graph-gallery.com/</a></li>
 </ul>
 <p>Some simple lectures on Sample Surveys</p>
@@ -406,18 +414,18 @@ and accompanies the <code>survey</code> package (<span class="citation">T. Lumle
 <ul>
 <li>Airline dataset from Kaggle:
 <a href="https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics" class="uri">https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics</a>
-<ul>
-<li>distributed under the Creative Commons Licence 4.0: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="uri">https://creativecommons.org/licenses/by-nc-sa/4.0/</a></li>
-</ul></li>
+[distributed under the Creative Commons Licence 4.0: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="uri">https://creativecommons.org/licenses/by-nc-sa/4.0/</a>]</li>
 </ul></li>
 <li>Address file from LINZ: <a href="https://data.linz.govt.nz/layer/123113-nz-addresses/" class="uri">https://data.linz.govt.nz/layer/123113-nz-addresses/</a></li>
 <li>List of NZ schools <a href="https://www.educationcounts.govt.nz/directories/list-of-nz-schools" class="uri">https://www.educationcounts.govt.nz/directories/list-of-nz-schools</a></li>
+<li>Data on Population, GDP and Military Expenditure from ‘Our World in Data’ <a href="https://ourworldindata.org/" class="uri">https://ourworldindata.org/</a></li>
 </ul>
 </div>
 <div id="r-packages" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> R Packages<a href="index.html#r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>) with this handy summary of command uses <a href="https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/" class="uri">https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/</a></li>
+<li><code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>) with this handy summary of command uses
+<a href="https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/" class="uri">https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/</a></li>
 <li><code>srvyr</code> a dplyr wrapper for the <code>survey</code> package</li>
 <li><code>gtsummary</code> creates outputs ready for publication (difficult to build/load)</li>
 <li><code>sampling</code> package for drawing samples according to various designs</li>

@@ -1,4 +1,13 @@
-# Computing the Required Sample Size
+# Designing Surveys
+
+## Design variables
+
+To a rough approximation the variance of an estimator reduces with a factor
+of $1/n$ where $n$ is the sample size.
+
+That means the ratio of variances ...
+
+## Computing the Required Sample Size
 
   1. Identify your **design estimate** -- this is the estimate that will
      underlie a headline you could imagine being written about your survey.

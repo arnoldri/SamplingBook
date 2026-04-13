@@ -141,7 +141,8 @@ There are lots of books on sample surveys.
 And also
  
  * CRAN site on R resources for Official Statistics https://cran.r-project.org/web/views/OfficialStatistics.html
- * Online book on using R for survey analysis: https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
+ * Online book on using R for survey analysis:
+   https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
  * This gallery of R graphs https://r-graph-gallery.com/
  
 Some simple lectures on Sample Surveys
@@ -159,13 +160,15 @@ Data
  * Kaggle data repository: https://www.kaggle.com/
    * Airline dataset from Kaggle:
      https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics
-     - distributed under the Creative Commons Licence 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/
+     [distributed under the Creative Commons Licence 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/]
  * Address file from LINZ: https://data.linz.govt.nz/layer/123113-nz-addresses/
  * List of NZ schools https://www.educationcounts.govt.nz/directories/list-of-nz-schools
+ * Data on Population, GDP and Military Expenditure from 'Our World in Data' https://ourworldindata.org/
  
 ## R Packages
 
-* `survey` package (@survey2004) with this handy summary of command uses https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
+* `survey` package (@survey2004) with this handy summary of command uses
+   https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
 * `srvyr` a dplyr wrapper for the `survey` package
 * `gtsummary` creates outputs ready for publication (difficult to build/load)
 * `sampling` package for drawing samples according to various designs

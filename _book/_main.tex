@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-12}
+\date{2026-04-13}
 
 \begin{document}
 \maketitle
@@ -481,7 +481,8 @@ And also
 \item
   CRAN site on R resources for Official Statistics \url{https://cran.r-project.org/web/views/OfficialStatistics.html}
 \item
-  Online book on using R for survey analysis: \url{https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/}
+  Online book on using R for survey analysis:
+  \url{https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/}
 \item
   This gallery of R graphs \url{https://r-graph-gallery.com/}
 \end{itemize}
@@ -518,17 +519,14 @@ Data
   \item
     Airline dataset from Kaggle:
     \url{https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics}
-
-    \begin{itemize}
-    \tightlist
-    \item
-      distributed under the Creative Commons Licence 4.0: \url{https://creativecommons.org/licenses/by-nc-sa/4.0/}
-    \end{itemize}
+    {[}distributed under the Creative Commons Licence 4.0: \url{https://creativecommons.org/licenses/by-nc-sa/4.0/}{]}
   \end{itemize}
 \item
   Address file from LINZ: \url{https://data.linz.govt.nz/layer/123113-nz-addresses/}
 \item
   List of NZ schools \url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools}
+\item
+  Data on Population, GDP and Military Expenditure from `Our World in Data' \url{https://ourworldindata.org/}
 \end{itemize}
 
 \section{R Packages}\label{r-packages}
@@ -536,7 +534,8 @@ Data
 \begin{itemize}
 \tightlist
 \item
-  \texttt{survey} package (\citet{survey2004}) with this handy summary of command uses \url{https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/}
+  \texttt{survey} package (\citet{survey2004}) with this handy summary of command uses
+  \url{https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/}
 \item
   \texttt{srvyr} a dplyr wrapper for the \texttt{survey} package
 \item
@@ -2492,7 +2491,7 @@ don't \textbf{actually} replicate the data.
 
 }
 
-\caption{How weights work: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse.}\label{fig:weights}
+\caption{How weights work in SRSWOR: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse.}\label{fig:weights}
 \end{figure}
 
 \section{Example}\label{example}
@@ -2596,7 +2595,7 @@ and we can scale the confidence interval up in the same way
 
 \chapter{Sample Designs}\label{sample-designs}
 
-In this Chapter we will consider the various sample designs in common
+In this Chapter we consider the various sample designs in common
 use, the reasons for using each one, and methods for selecting from suitable
 frames.
 
@@ -2861,15 +2860,19 @@ or as a function
     \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
     \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{rownames)}
   \FunctionTok{return}\NormalTok{(samp)}
-\NormalTok{\} }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ airports }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-67}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-68}Sample of airports (SRSWOR)}
 \centering
 \begin{tabular}[t]{r|l|l|l|l|r|r|r|r}
 \hline
@@ -3060,7 +3063,7 @@ and weights are
    w_i = \frac{N}{n}
 \]
 Data from this design are often analysed as if they were drawn as a SRSWOR,
-but in fact this is a special case of a one-stage cluster sample (S1C, see below).
+but in fact this is a special case of a one-stage cluster sample (1SC, see below).
 
 \begin{figure}
 
@@ -3191,7 +3194,7 @@ take a LSRS of \(n=5\) units.
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-77}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-78}Sample of airports (SRSWOR)}
 \centering
 \begin{tabular}[t]{r|l|l|l|l|r|r|r}
 \hline
@@ -3346,8 +3349,9 @@ Two common methods for allocating the \(n\) sample units across the \(H\) strata
 \addcontentsline{toc}{subsection}{Example}
 
 The 2026 directory of NZ schools available from \url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools}
-lists 2504 schools of various types. Each School is associated with one
-of \(H=12\) Education Regions, with counts \(N_h\) and stratum fractions \(F_h\) listed below.
+lists 2503 schools of various types (after removing Schools with zero enrolments or with incomplete data).\\
+Each School is associated with one of \(H=12\) Education Regions, with counts \(N_h\) and stratum fractions \(F_h\)
+listed below.
 
 \begin{table}
 \centering
@@ -3357,7 +3361,7 @@ $h$ & Education Region & $N_h$ & $F_h$\\
 \hline
 1 & Bay of Plenty, Waiariki & 185 & 0.0739\\
 \hline
-2 & Canterbury, Chatham Islands & 283 & 0.1130\\
+2 & Canterbury, Chatham Islands & 283 & 0.1131\\
 \hline
 3 & Hawke's Bay, Tairāwhiti & 174 & 0.0695\\
 \hline
@@ -3369,15 +3373,15 @@ $h$ & Education Region & $N_h$ & $F_h$\\
 \hline
 7 & Taranaki, Whanganui, Manawatū & 234 & 0.0935\\
 \hline
-8 & Tāmaki Herenga Manawa & 188 & 0.0751\\
+8 & Tāmaki Herenga Manawa & 187 & 0.0747\\
 \hline
 9 & Tāmaki Herenga Tāngata & 197 & 0.0787\\
 \hline
 10 & Tāmaki Herenga Waka & 179 & 0.0715\\
 \hline
-11 & Waikato & 277 & 0.1106\\
+11 & Waikato & 277 & 0.1107\\
 \hline
-12 & Wellington & 281 & 0.1122\\
+12 & Wellington & 281 & 0.1123\\
 \hline
 \end{tabular}
 \end{table}
@@ -3392,6 +3396,7 @@ It implements PPSWR sampling within strata as well.
 \begin{Highlighting}[]
 \NormalTok{select.stsrs }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, stratumvar, }
                          \AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{,}
+                         \AttributeTok{nmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of units to select per stratum }
                          \AttributeTok{method=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar=}\ConstantTok{NULL}\NormalTok{) \{}
 \NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
   \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{stratumvar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
@@ -3400,9 +3405,10 @@ It implements PPSWR sampling within strata as well.
 \NormalTok{  stratumproperties }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(df[,stratumvar]))}
   \FunctionTok{names}\NormalTok{(stratumproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(stratumvar,}\StringTok{"Nh"}\NormalTok{)}
   \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"equal"}\NormalTok{) \{}
-\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,}
+                                 \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))))}
 \NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"proportional"}\NormalTok{) \{}
-\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,                                                                                   }\FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))))}
 \NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"Invalid allocation"}\NormalTok{)}
 \NormalTok{  \}}
@@ -3437,29 +3443,29 @@ SRSWOR with Equal allocation
 \hline
 Education Region, $h$ & $N_h$ & $n_h$ & Weight, $w_h$ & Selected Schools\\
 \hline
-Bay of Plenty, Waiariki & 10 & 185 & 18.5 & 143;463;719;1170;1762;1811;1820;1821;2057;6940\\
+Bay of Plenty, Waiariki & 10 & 185 & 18.5 & 482;1170;1711;1758;1787;1796;1808;1904;1929;1984\\
 \hline
-Canterbury, Chatham Islands & 10 & 283 & 28.3 & 357;418;1611;3288;3304;3348;3479;3505;3535;3586\\
+Canterbury, Chatham Islands & 10 & 283 & 28.3 & 354;3304;3329;3348;3357;3389;3450;3553;3572;3586\\
 \hline
-Hawke's Bay, Tairāwhiti & 10 & 174 & 17.4 & 208;218;2560;2575;2593;2599;2654;2687;2691;2705\\
+Hawke's Bay, Tairāwhiti & 10 & 174 & 17.4 & 209;1668;1678;2566;2575;2578;2593;2657;2698;2705\\
 \hline
-Nelson, Marlborough, West Coast & 10 & 127 & 12.7 & 293;295;303;3062;3071;3180;3233;3343;3690;6975\\
+Nelson, Marlborough, West Coast & 10 & 127 & 12.7 & 292;294;301;3062;3071;3180;3233;3343;3690;6975\\
 \hline
-Otago, Southland & 10 & 228 & 22.8 & 377;400;3737;3753;3824;3827;3943;3982;4017;4050\\
+Otago, Southland & 10 & 228 & 22.8 & 376;399;3737;3753;3824;3827;3943;3982;4017;4050\\
 \hline
-Tai Tokerau & 10 & 151 & 15.1 & 1011;1013;1019;1038;1047;1058;1059;1094;1129;4552\\
+Tai Tokerau & 10 & 151 & 15.1 & 1000;1014;1020;1039;1059;1060;1095;1104;1130;1667\\
 \hline
-Taranaki, Whanganui, Manawatū & 10 & 234 & 23.4 & 2152;2165;2167;2178;2232;2341;2365;2416;2440;4123\\
+Taranaki, Whanganui, Manawatū & 10 & 234 & 23.4 & 2165;2167;2341;2365;2382;2416;2440;2451;2462;4123\\
 \hline
-Tāmaki Herenga Manawa & 10 & 188 & 18.8 & 48;530;618;1319;1334;1381;1436;1510;1522;1563\\
+Tāmaki Herenga Manawa & 10 & 187 & 18.7 & 48;69;460;1210;1370;1376;1382;1385;1484;4133\\
 \hline
-Tāmaki Herenga Tāngata & 10 & 197 & 19.7 & 32;42;1266;1326;1407;1505;1555;1567;1577;6788\\
+Tāmaki Herenga Tāngata & 10 & 197 & 19.7 & 32;571;767;1106;1223;1309;1394;1432;1492;6977\\
 \hline
-Tāmaki Herenga Waka & 10 & 179 & 17.9 & 91;95;553;594;1201;1203;1259;1427;1491;1580\\
+Tāmaki Herenga Waka & 10 & 179 & 17.9 & 96;452;1201;1271;1275;1329;1339;1442;1455;4229\\
 \hline
-Waikato & 10 & 277 & 27.7 & 1682;1706;1835;1941;2008;2033;2074;2090;2215;6941\\
+Waikato & 10 & 277 & 27.7 & 1744;1753;1777;1790;1835;1844;2001;2008;2033;6941\\
 \hline
-Wellington & 10 & 281 & 28.1 & 246;546;2742;2846;2874;2963;2967;3013;3032;3045\\
+Wellington & 10 & 281 & 28.1 & 133;546;2742;2874;2941;2963;2967;3032;3045;3048\\
 \hline
 \end{tabular}
 \end{table}
@@ -3480,29 +3486,29 @@ SRSWOR with proportional allocation
 \hline
 Education Region, $h$ & $N_h$ & $n_h$ & Weight, $w_h$ & Selected Schools\\
 \hline
-Bay of Plenty, Waiariki & 9 & 185 & 20.55556 & 148;545;558;1698;1711;1788;1852;1933;2068\\
+Bay of Plenty, Waiariki & 9 & 185 & 20.55556 & 145;545;558;707;1645;1745;1879;1921;1934\\
 \hline
-Canterbury, Chatham Islands & 14 & 283 & 20.21429 & 531;738;3275;3301;3336;3381;3384;3412;3418;3549;3554;3580;3581;4135\\
+Canterbury, Chatham Islands & 14 & 283 & 20.21429 & 328;346;531;3275;3276;3285;3412;3462;3463;3507;3540;3554;3581;4135\\
 \hline
-Hawke's Bay, Tairāwhiti & 8 & 174 & 21.75000 & 210;1669;2547;2574;2651;2702;2723;2725\\
+Hawke's Bay, Tairāwhiti & 8 & 174 & 21.75000 & 1669;2547;2574;2588;2590;2685;2702;2723\\
 \hline
-Nelson, Marlborough, West Coast & 6 & 127 & 21.16667 & 300;301;2811;3181;3207;3231\\
+Nelson, Marlborough, West Coast & 6 & 127 & 21.16667 & 300;2811;3181;3207;3231;3530\\
 \hline
-Otago, Southland & 11 & 228 & 20.72727 & 386;387;391;3716;3731;3772;3812;3826;3830;3836;3957\\
+Otago, Southland & 11 & 228 & 20.72727 & 384;390;3716;3719;3731;3772;3812;3826;3830;3836;3957\\
 \hline
-Tai Tokerau & 7 & 151 & 21.57143 & 1024;1028;1084;1096;1111;1138;1667\\
+Tai Tokerau & 7 & 151 & 21.57143 & 1029;1030;1075;1085;1116;1666;2104\\
 \hline
-Taranaki, Whanganui, Manawatū & 11 & 234 & 21.27273 & 2157;2160;2175;2265;2336;2357;2389;2412;2442;2475;2481\\
+Taranaki, Whanganui, Manawatū & 11 & 234 & 21.27273 & 454;2157;2160;2175;2265;2336;2366;2442;2452;2475;2480\\
 \hline
-Tāmaki Herenga Manawa & 9 & 188 & 20.88889 & 57;61;1210;1362;1368;1480;1606;4228;6939\\
+Tāmaki Herenga Manawa & 9 & 187 & 20.77778 & 78;1190;1224;1240;1282;1411;1416;1515;1549\\
 \hline
-Tāmaki Herenga Tāngata & 9 & 197 & 21.88889 & 37;39;1221;1296;1331;1557;1592;4146;6937\\
+Tāmaki Herenga Tāngata & 9 & 197 & 21.88889 & 45;1107;1200;1254;1311;1316;1407;1500;6759\\
 \hline
-Tāmaki Herenga Waka & 9 & 179 & 19.88889 & 91;97;103;466;1271;1329;1355;1418;6944\\
+Tāmaki Herenga Waka & 9 & 179 & 19.88889 & 748;1248;1277;1332;1369;1418;1472;1559;4229\\
 \hline
-Waikato & 13 & 277 & 21.30769 & 146;159;160;671;1358;1891;1912;1946;1963;2013;2071;2094;6976\\
+Waikato & 13 & 277 & 21.30769 & 130;135;146;158;159;671;1344;1771;1891;1912;1963;2002;2013\\
 \hline
-Wellington & 13 & 281 & 21.61538 & 244;1651;2669;2818;2847;2859;2876;2911;2916;2991;3015;3022;3035\\
+Wellington & 13 & 281 & 21.61538 & 237;258;1189;1651;2669;2818;2876;2911;3015;3022;3035;3070;3101\\
 \hline
 \end{tabular}
 \end{table}
@@ -3526,34 +3532,34 @@ Education Region, $h$ & $N_h$ & $n_h$ & Selected Schools\\
 \hline
 Bay of Plenty, Waiariki & 9 & 185 & 120;121;143;152;532;1699*;1730;1761;1766\\
 \hline
-Canterbury, Chatham Islands & 10 & 283 & 311;321;325;333;337;686;2113;3372;3521;4212\\
+Canterbury, Chatham Islands & 10 & 283 & 310;312;327;333;335;348;3289;3407;3517;3570\\
 \hline
 Hawke's Bay, Tairāwhiti & 10 & 174 & 216;217;227;230;2445;2564;2581;2628;2677;2688\\
 \hline
-Nelson, Marlborough, West Coast & 8 & 127 & 289;296*;1148;1587;3189;3206;3208;3229\\
+Nelson, Marlborough, West Coast & 8 & 127 & 289;296*;1148;1587;3189;3208;3229;3472\\
 \hline
-Otago, Southland & 10 & 228 & 374;377;405;533;552;586;747;3864;3967;4054\\
+Otago, Southland & 9 & 228 & 369;374;376;400;533;548;586;3967*;4054\\
 \hline
-Tai Tokerau & 9 & 151 & 5;8;9;13*;15;21;1032;1050;1648\\
+Tai Tokerau & 9 & 151 & 5;8;13*;15;21;1032;1050;1113;1648\\
 \hline
-Taranaki, Whanganui, Manawatū & 9 & 234 & 189;203*;204;422;2164;2205;2216;2244;2397\\
+Taranaki, Whanganui, Manawatū & 10 & 234 & 202;203;961;2164;2205;2346;2389;2397;2465;2477\\
 \hline
-Tāmaki Herenga Manawa & 10 & 188 & 65;1190;1319;1370;1383;1402;1462;2085;3630;6760\\
+Tāmaki Herenga Manawa & 10 & 187 & 65;1190;1319;1370;1383;1402;1462;2085;3630;6760\\
 \hline
-Tāmaki Herenga Tāngata & 9 & 197 & 47;725;767;1223;1320;1341;1396*;1406;1572\\
+Tāmaki Herenga Tāngata & 9 & 197 & 46;725;767;1223;1304;1341;1396*;1406;1572\\
 \hline
-Tāmaki Herenga Waka & 10 & 179 & 90;91;631;949;1203;1393;1423;1435;1460;1547\\
+Tāmaki Herenga Waka & 10 & 179 & 90;91;631;949;1203;1247;1423;1435;1460;1547\\
 \hline
-Waikato & 10 & 277 & 131;158;615;1695;1700;1783;1877;2007;2021;3612\\
+Waikato & 9 & 277 & 126;132*;451;577;615;1693;1946;2021;3612\\
 \hline
-Wellington & 10 & 281 & 241;248;253;260;272;498;614;2918;2994;3036\\
+Wellington & 10 & 281 & 240;253;255;275;276;478;498;2832;2878;3036\\
 \hline
 \end{tabular}
 \end{table}
 
 (Schools selected multiple times are indicated with a *)
 
-\section{One stage cluster sampling (S1C)}\label{one-stage-cluster-sampling-s1c}
+\section{One stage cluster sampling (1SC)}\label{one-stage-cluster-sampling-1sc}
 
 One stage cluster sampling superficially resembles stratified sampling.
 As in stratified sampling we divide the population into groups, in this
@@ -3597,11 +3603,11 @@ survey, where no travel at all is involved, then clustering doesn't make any sen
 
 \begin{figure}
 
-{\centering \includegraphics[width=17.78in]{include-files/fig/SRS1C} 
+{\centering \includegraphics[width=17.78in]{include-files/fig/SRS1SC} 
 
 }
 
-\caption{One Stage Cluster Sample (S1C)}\label{fig:s1c}
+\caption{One Stage Cluster Sample (1SC)}\label{fig:1SC}
 \end{figure}
 
 Our notation becomes slightly more complex here: we have \(N\) clusters, labelled
@@ -3671,7 +3677,7 @@ A function to do this selection in R is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{select.s1c }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, clustervar, }
+\NormalTok{select}\FloatTok{.1}\NormalTok{sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, clustervar, }
                        \AttributeTok{method=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar=}\ConstantTok{NULL}\NormalTok{) \{}
 \NormalTok{  bigM }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
   \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
@@ -3697,7 +3703,7 @@ A function to do this selection in R is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.s1c}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.1sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3730,7 +3736,7 @@ Whau Local Board Area & 24 & 42;78;83;84;781;941;1206;1212 ...\\
 \end{tabular}
 \end{table}
 
-\section{Two stage cluster sampling (S2C)}\label{two-stage-cluster-sampling-s2c}
+\section{Two stage cluster sampling (2SC)}\label{two-stage-cluster-sampling-2sc}
 
 The obvious drawback of the One Stage cluster design is that we are getting
 a lot of information from clusters which may be very homogeneous. This drives
@@ -3754,11 +3760,11 @@ Sampling at both stages can be by any method, though SRSWOR or PPSWR are the mos
 
 \begin{figure}
 
-{\centering \includegraphics[width=17.78in]{include-files/fig/SRS2C} 
+{\centering \includegraphics[width=17.78in]{include-files/fig/SRS2SC} 
 
 }
 
-\caption{Two Stage Cluster Sample (S2C)}\label{fig:s2c}
+\caption{Two Stage Cluster Sample (2SC)}\label{fig:2SC}
 \end{figure}
 
 We use the same notation as in one stage clustering: there are \(N\) PSUS of
@@ -3861,7 +3867,8 @@ A function to do this selection in R is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{select.s2c }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, cfraction, clustervar, }
+\NormalTok{select}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n,  }\CommentTok{\# number of first stage clusters to select }
+\NormalTok{                       cfraction, clustervar, }
                        \AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 2nd stage clusters to select}
                        \AttributeTok{method1=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar1=}\ConstantTok{NULL}\NormalTok{,}
                        \AttributeTok{method2=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar2=}\ConstantTok{NULL}\NormalTok{) \{}
@@ -3911,7 +3918,7 @@ A function to do this selection in R is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.s2c}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
                               \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -3922,25 +3929,25 @@ A function to do this selection in R is:
 \hline
 Territorial Authority, $i$ & $N$ & $n$ & $M_i$ & $m_i$ & $w^{(1)}_i$ & $w^{(2)}_{ij}$ & Weight, $w_{ij}$ & Selected Schools\\
 \hline
-Masterton District & 87 & 10 & 20 & 4 & 8.70 & 5.00 & 43.50 & 241;245;1661;2843\\
+Masterton District & 87 & 10 & 20 & 4 & 8.70 & 5.00 & 43.50 & 244;1660;2843;2909\\
 \hline
-Nelson City & 87 & 10 & 22 & 4 & 8.70 & 5.50 & 47.85 & 3189;3221;3224;4121\\
+Nelson City & 87 & 10 & 22 & 4 & 8.70 & 5.50 & 47.85 & 293;294;3221;4121\\
 \hline
 Queenstown-Lakes District & 87 & 10 & 16 & 3 & 8.70 & 5.33 & 46.40 & 746;747;958\\
 \hline
-Tasman District & 87 & 10 & 35 & 7 & 8.70 & 5.00 & 43.50 & 297;525;3196;3199 ...\\
+Tasman District & 87 & 10 & 35 & 7 & 8.70 & 5.00 & 43.50 & 292;296;3180;3203 ...\\
 \hline
-Timaru District & 87 & 10 & 28 & 6 & 8.70 & 4.67 & 40.60 & 361;3498;3528;3532 ...\\
+Timaru District & 87 & 10 & 28 & 6 & 8.70 & 4.67 & 40.60 & 2109;3498;3528;3533 ...\\
 \hline
-Waimate District & 87 & 10 & 9 & 2 & 8.70 & 4.50 & 39.15 & 362;3539\\
+Waimate District & 87 & 10 & 9 & 2 & 8.70 & 4.50 & 39.15 & 3519;3574\\
 \hline
-Waitematā Local Board Area & 87 & 10 & 21 & 4 & 8.70 & 5.25 & 45.67 & 48;53;1391;1392\\
+Waitematā Local Board Area & 87 & 10 & 21 & 4 & 8.70 & 5.25 & 45.67 & 48;921;1392;2085\\
 \hline
-Waitomo District & 87 & 10 & 17 & 3 & 8.70 & 5.67 & 49.30 & 160;161;1778\\
+Waitomo District & 87 & 10 & 17 & 3 & 8.70 & 5.67 & 49.30 & 1778;2073;2267\\
 \hline
-Whanganui District & 87 & 10 & 40 & 8 & 8.70 & 5.00 & 43.50 & 189;190;559;1585 ...\\
+Whanganui District & 87 & 10 & 40 & 8 & 8.70 & 5.00 & 43.50 & 422;1585;2361;2412 ...\\
 \hline
-Whangarei District & 87 & 10 & 54 & 11 & 8.70 & 4.91 & 42.71 & 12;1028;1029;1030 ...\\
+Whangarei District & 87 & 10 & 54 & 11 & 8.70 & 4.91 & 42.71 & 13;620;1015;1017 ...\\
 \hline
 \end{tabular}
 \end{table}
@@ -3961,9 +3968,9 @@ design, where the sample is selected as follows:
   NZ is stratified into \(H=12\) regions (e.g.~Northland, Auckland, Hawke's
   Bay etc.);
 \item
-  Each stratum (region) is broken into \(N_h\) PSUs: which are amalgamations
-  of a few meshblocks. Each PSU contains (on average) 100 households.\\
-  A SRSWOR of \(n_h\) PSUs is taken within each stratum \(h\); (First stage sample.)
+  Each stratum (region) is broken into \(N_h\) PSUs - small areas that
+  contain (on average) about 100 households.\\
+  A PPSWR of \(n_h\) PSUs is taken within each stratum \(h\); (First stage sample.)
 \item
   Within the \(k^{\rm th}\) selected PSU, which is of size \(M_{hk}\), a linear
   systematic random sample is taken of \(m_{hk}\) households; (Second stage
@@ -3988,8 +3995,563 @@ stratum \(h\) are
 \]
 i.e.~these are just the product of the weights at each stage of selection.
 
-\chapter{Inference with R}\label{inference-with-r}
+Function to draw a stratified two stage cluster sample
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{select.st2sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, }
+\NormalTok{                         n,      }\CommentTok{\# total number of 1st stage clusters to select over all strata}
+\NormalTok{                         stratumvar, }\AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{,}
+                         \AttributeTok{nmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 1st stage clusters to select per stratum}
+\NormalTok{                         cfraction, clustervar, }
+                         \AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 2nd stage clusters to select}
+                         \AttributeTok{method1=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar1=}\ConstantTok{NULL}\NormalTok{,}
+                         \AttributeTok{method2=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar2=}\ConstantTok{NULL}\NormalTok{) \{}
+
+  \CommentTok{\# stratum selection  }
+\NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{stratumvar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Stratum variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Clustring variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  xx }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(df[,clustervar], df[,stratumvar], }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{length}\NormalTok{(}\FunctionTok{unique}\NormalTok{(x)))}
+\NormalTok{  stratumproperties }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Var1=}\FunctionTok{names}\NormalTok{(xx),}\AttributeTok{Freq=}\NormalTok{xx)}
+  \FunctionTok{names}\NormalTok{(stratumproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(stratumvar,}\StringTok{"Nh"}\NormalTok{)}
+  \FunctionTok{rownames}\NormalTok{(stratumproperties) }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+  \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"equal"}\NormalTok{) \{}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,}
+                                 \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))))}
+\NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"proportional"}\NormalTok{) \{}
+\NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,}
+                                 \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))))}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Invalid allocation"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,stratumproperties,}\AttributeTok{by=}\NormalTok{stratumvar)}
+  
+\NormalTok{  samp }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }\FunctionTok{by}\NormalTok{(df, df[,stratumvar], }
+                            \ControlFlowTok{function}\NormalTok{(dfx) \{}
+                               \FunctionTok{select.2sc}\NormalTok{(dfx, }\AttributeTok{n=}\FunctionTok{first}\NormalTok{(dfx}\SpecialCharTok{$}\NormalTok{nh), }
+                                          \AttributeTok{cfraction=}\NormalTok{cfraction, }
+                                          \AttributeTok{clustervar=}\NormalTok{clustervar, }
+                                          \AttributeTok{mmin=}\NormalTok{mmin, }
+                                          \AttributeTok{method1=}\NormalTok{method1, }\AttributeTok{sizevar1=}\NormalTok{sizevar1,}
+                                          \AttributeTok{method2=}\NormalTok{method2, }\AttributeTok{sizevar2=}\NormalTok{sizevar2)}
+\NormalTok{                            \}))}
+  \FunctionTok{return}\NormalTok{(samp)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.st2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{,}
+                                \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+First 10 of the selected first stage clusters:
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Region'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r|l|l|l|l}
+\hline
+Region, $h$ & Territorial Authority, $i$ & $N_h$ & $n_h$ & $M_{hi}$ & $m_{hi}$ & $w^{(1)}_i$ & $w^{(2)}_{ij}$ & Weight, $w_{ij}$ & Selected Schools\\
+\hline
+Auckland Region & Aotea/Great Barrier Local Board Area & 21 & 7 & 3 & 2 & 3.00 & 1.50 & 4.50 & 1385;1398\\
+\hline
+Auckland Region & Devonport-Takapuna Local Board Area & 21 & 7 & 24 & 5 & 3.00 & 4.80 & 14.40 & 36;1221;1242;1498 ...\\
+\hline
+Auckland Region & Kaipātiki Local Board Area & 21 & 7 & 25 & 5 & 3.00 & 5.00 & 15.00 & 1222;1230;1395;1400 ...\\
+\hline
+Auckland Region & Maungakiekie-Tāmaki Local Board Area & 21 & 7 & 29 & 6 & 3.00 & 4.83 & 14.50 & 86;604;1351;1420 ...\\
+\hline
+Auckland Region & Māngere-Ōtāhuhu Local Board Area & 21 & 7 & 35 & 7 & 3.00 & 5.00 & 15.00 & 90;544;630;1215 ...\\
+\hline
+Auckland Region & Puketāpapa Local Board Area & 21 & 7 & 21 & 4 & 3.00 & 5.25 & 15.75 & 63;1302;1305;1548\\
+\hline
+Auckland Region & Waitākere Ranges Local Board Area & 21 & 7 & 14 & 3 & 3.00 & 4.67 & 14.00 & 279;1285;1311\\
+\hline
+Bay of Plenty Region & Whakatane District & 6 & 2 & 32 & 6 & 3.00 & 5.33 & 16.00 & 144;221;1755;1854 ...\\
+\hline
+Bay of Plenty Region & Ōpōtiki District & 6 & 2 & 13 & 3 & 3.00 & 4.33 & 13.00 & 1806;1861;2084\\
+\hline
+Canterbury Region & Ashburton District & 9 & 3 & 23 & 5 & 3.00 & 4.60 & 13.80 & 3274;3282;3283;3336 ...\\
+\hline
+\end{tabular}
+\end{table}
+
+\chapter{Sample Designs in R}\label{sample-designs-in-r}
+
+The method of anlalysis of survey data depends crucially on its sample
+design. Simple methods of analysis which neglect the sample design can
+lead to estimates which are severely biased, and standard errors that
+are incorrect.
+
+In the this and the following Chapter we'll use the \texttt{survey} package in R to carry out analyses.
+We'll use the \texttt{schools} data set as our primary example, but also use
+data on populations and Gross Domestic Product for each country in 2023
+from the `Our World in Data' website.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Census}
+\NormalTok{schools.census }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\FunctionTok{nrow}\NormalTok{(schools))}
+\CommentTok{\# SRSWOR}
+\NormalTok{schools.srswor }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\DecValTok{20}\NormalTok{)}
+\CommentTok{\# PPSWR}
+\NormalTok{schools.ppswr }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{20}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Total"}\NormalTok{)}
+\CommentTok{\# STSRS}
+\NormalTok{schools.stsrs }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{60}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{)}
+\CommentTok{\# 1SC}
+\NormalTok{schools}\FloatTok{.1}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.1sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\CommentTok{\# 2SC}
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+                                     \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\CommentTok{\# ST2SC}
+\NormalTok{schools.st2sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.st2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{,}
+                                \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+In order to make estimates from sampled data using the \texttt{survey} package
+we need to specify the sample design we're using.
+We'll do this for the various sample designs covered in the
+previous chapter.
+
+\begin{quote}
+Note that in the \texttt{survey} package we identify variables with their names without
+quotes and with a \texttt{\textasciitilde{}} symbol in front. (If you're interested you can
+use the \texttt{survyr} package which is a \texttt{dplyr}-like wrapper for \texttt{survey}
+with functions defined so that the \texttt{\textasciitilde{}} isn't necessary.)
+\end{quote}
+
+We'll define each design, and then use it to estimate the mean
+size of school rolls in the population (stored in the variable \texttt{Total} in
+the \texttt{schools} data frame. (One exception will be the PPSWR example
+where we'll select a sample of countries using their population size
+as the size variable.)
+
+The true mean school size is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ybar }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(schools}\SpecialCharTok{$}\NormalTok{Total)}
+\NormalTok{ybar}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 334.481
+\end{verbatim}
+
+\section{Census}\label{census-1}
+
+The analysis of a census is trivial (at least, if there is no non-response).
+We can create a census dataset by taking an SRSWOR of size \(n=N\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.census }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\FunctionTok{nrow}\NormalTok{(schools))}
+\end{Highlighting}
+\end{Shaded}
+
+This function adds the column \texttt{bigN} to the dataset, which contains
+population size \(N\) repeated on every row.
+
+Now we can specify the design.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.census.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{schools.census, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that we tell R which column contains the population size using the \texttt{fpc} argument.
+Our data aren't clustered, so the \texttt{id} variable (which identifies clusters) is set to 1.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.census.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         mean     SE DEff
+## Total 334.48   0.00  NaN
+\end{verbatim}
+
+The estimated mean is 334.48, which is of course
+exactly equal to the population mean - and note that the standard error is zero:
+censuses have no sampling error. We've measured everything there is to measure
+so we have no uncertainty.
+
+We've requested \texttt{Deff=TRUE}, and have got a Deff value of NaN, which means
+not able to be calculated. We'll discuss what this means later on.
+
+If we had left out the \texttt{fpc} command
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.census.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{schools.census)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in svydesign.default(id = ~1, data = schools.census): No weights or
+## probabilities supplied, assuming equal probability
+\end{verbatim}
+
+we get a warning that we can interpret as R assuming an SRSWR from an infinite population.
+
+The estimated mean is the same, but the standard error are now what'd we'd have learned
+from first year statistics.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.census.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           mean       SE DEff
+## Total 334.4810   8.4582  Inf
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sy }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(schools.census}\SpecialCharTok{$}\NormalTok{Total)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(schools.census)}
+\NormalTok{se }\OtherTok{\textless{}{-}}\NormalTok{ sy}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(n)}
+\end{Highlighting}
+\end{Shaded}
+
+i.e.~the standard error is
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{423.162}{\sqrt{2503}} = 8.458
+\]
+
+Also notice that the \texttt{Deff} value has changed to \texttt{Inf} (meaning infinity) -
+again we'll come back to what this means this shortly.
+
+\section{Simple Random Sample WithOut Replacement (SRSWOR)}\label{simple-random-sample-without-replacement-srswor}
+
+Let's draw a sample of \(n=60\) schools from the population by SRSWOR.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.srswor }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\DecValTok{60}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+To specify the design we use the same syntax as above:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.srswor.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{schools.srswor, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN)}
+\end{Highlighting}
+\end{Shaded}
+
+Estimating the mean school size is also just the same:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.srswor.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE DEff
+## Total 347.367  49.582    1
+\end{verbatim}
+
+This is the mean of a genuine sample now, so we have an estimated mean value that
+differs from the truth, and the standard error is gauge of its accuracy.
+
+The standard error comes from the finite population corrected formula:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bigN }\OtherTok{\textless{}{-}} \FunctionTok{first}\NormalTok{(schools.srswor}\SpecialCharTok{$}\NormalTok{bigN) }\CommentTok{\# take the entry in the first row: they\textquotesingle{}re all the same}
+\NormalTok{sy }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(schools.srswor}\SpecialCharTok{$}\NormalTok{Total)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(schools.srswor)}
+\NormalTok{se }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{n}\SpecialCharTok{/}\NormalTok{bigN)}\SpecialCharTok{*}\NormalTok{sy}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(n)}
+\end{Highlighting}
+\end{Shaded}
+
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \sqrt{1-\frac{n}{N}}\frac{s_y}{\sqrt{n}} 
+   = \sqrt{1-\frac{60}{2503}}
+     \frac{388.745}{\sqrt{60}} = 49.582
+\]
+
+Compare this to the simple SE, which is just slightly bigger
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{se }\OtherTok{\textless{}{-}}\NormalTok{ sy}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(n)}
+\end{Highlighting}
+\end{Shaded}
+
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{388.745}{\sqrt{60}} = 50.187
+\]
+This is what we get if we omit the \texttt{fpc}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.srswor.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{schools.srswor)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in svydesign.default(id = ~1, data = schools.srswor): No weights or
+## probabilities supplied, assuming equal probability
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.srswor.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE DEff
+## Total 347.367  50.187  Inf
+\end{verbatim}
+
+\section{Probability Proportional to Size With Replacement (PPSWR)}\label{probability-proportional-to-size-with-replacement-ppswr}
+
+We have a dataset from `Our World in Data' giving population sizes,
+Gross Domestic Product and military expenditure in 2023 (all in US dollars).
+The first 10 rows are below:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|l|r|r|r}
+\hline
+Country & Code & GovtSpend & GDP & Region & Population & GDPPerCapita & MilSpend\\
+\hline
+Albania & ALB & 1863822443 & 1.496298e+10 & Europe & 2811660 & 5321.759 & 397617600\\
+\hline
+Algeria & DZA & 44321604142 & 2.151440e+11 & Africa & 46164222 & 4660.405 & 18263968000\\
+\hline
+Angola & AGO & 15741572839 & 1.032363e+11 & Africa & 36749909 & 2809.157 & 1247846300\\
+\hline
+Argentina & ARG & 111098899281 & 5.916847e+11 & South America & 45538402 & 12993.093 & 4882353000\\
+\hline
+Armenia & ARM & 1598415044 & 1.540616e+10 & Asia & 2943398 & 5234.142 & 1326245800\\
+\hline
+Australia & AUS & 385802798739 & 1.649425e+12 & Oceania & 26451126 & 62357.456 & 32387990000\\
+\hline
+Austria & AUT & 84758230499 & 4.246078e+11 & Europe & 9130434 & 46504.669 & 4452228000\\
+\hline
+Azerbaijan & AZE & NA & 5.755883e+10 & Asia & 10318209 & 5578.374 & 3561670700\\
+\hline
+Bahrain & BHR & 6908975351 & 3.996681e+10 & Asia & 1569674 & 25461.855 & 1622393700\\
+\hline
+Bangladesh & BGD & 18377804014 & 3.232800e+11 & Asia & 171466986 & 1885.377 & 3782793000\\
+\hline
+\end{tabular}
+\end{table}
+
+We can select a PPSWR using population as the size variable
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mil.ppswr }\OtherTok{\textless{}{-}}\NormalTok{ mil }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{sizevar=}\StringTok{"Population"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{weight} column here combines the weight over the number of times a unit is selected
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mil.ppswr.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{mil.ppswr, }\AttributeTok{weight=}\SpecialCharTok{\textasciitilde{}}\NormalTok{weight)}
+\end{Highlighting}
+\end{Shaded}
+
+The mean military expenditure per country is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{MilSpend, }\AttributeTok{design=}\NormalTok{mil.ppswr.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                mean         SE   DEff
+## MilSpend 7.4657e+10 3.4650e+10 1.0362
+\end{verbatim}
+
+though more interesting is the \textbf{total} of this variable, to see
+how much the world is spending.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svytotal}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{MilSpend, }\AttributeTok{design=}\NormalTok{mil.ppswr.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               total         SE  DEff
+## MilSpend 1.1199e+13 5.3452e+12 1.096
+\end{verbatim}
+
+Note again that in a with replacement design we can't apply the finite
+population correction.
+
+\section{Stratified Sample}\label{stratified-sample}
+
+Recall that in this design we specify a set of groups called strata, and
+each population unit belongs to one of these strata.
+
+Selecting a sample of \(n=60\) schools by equal allocation across the 12
+Education Regions:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.stsrs }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.stsrs}\NormalTok{(}\AttributeTok{n=}\DecValTok{60}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Education\_Region"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Specify this design
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.stsrs.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Education\_Region, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Nh,}
+                               \AttributeTok{data=}\NormalTok{schools.stsrs)}
+\end{Highlighting}
+\end{Shaded}
+
+We can now return to estimating the mean school size
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.stsrs.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE   DEff
+## Total 337.235  39.972 0.6816
+\end{verbatim}
+
+Now it's finally time to talk about the \textbf{Design Effect}, or the Deff for short.
+
+The Deff of an estimator \(\widehat{T}\) of a population characteristic \(T\) in
+a particular sample design is defined to be
+\[
+   \bfa{Deff}{\widehat{T}_{\text{design}}}
+   = 
+   \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{
+         \bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}
+   = 
+   \left(\frac{\bfa{SE}{\widehat{T}_{\text{design}}}}{
+               \bfa{SE}{\widehat{T}_{\text{SRSWOR}}}}\right)^2
+\]
+where both estimators are based on samples of the same size.
+
+It tells us how the standard error differs between our design of
+interest and a SRSWOR of the same sample size.
+
+Note that
+
+\begin{itemize}
+\tightlist
+\item
+  We have a different Deff for every estimate we make from a survey.
+\item
+  A Deff\$\textless\$1 means that the Standard Errors are smaller than what
+  we'd get in SRSWOR. A small Deff indicates a \textbf{more efficient} design.
+\item
+  A Deff of 1 means the design is no better than SRSWOR - and of course
+  (look back above) the Deffs of all estimates in SRSWOR are 1 by definition.
+\item
+  If we're dealing with a census, then the Standard Error is zero,
+  and in any case there's no difference between designs, so the Deff
+  isn't defined.
+\item
+  \textbf{Stratified designs} can achieve Deffs much much less than 1 if their strata
+  are well defined to be informative about the estimates of interest. e.g.
+  in business surveys where the strata are defined by business size we
+  can get very good Deffs.
+\item
+  \textbf{Cluster designs} often have Deffs greater than 1, which show them to be
+  significantly less efficient than SRSWOR.
+\end{itemize}
+
+The Deff values we get from R are approximations, and aren't very reliable
+when sample sizes are small. But do notice that we have a Deff\textless1 here
+for the stratified sample of \(n=60\) units, and the SE is lower than
+that achieved in the SRSWOR of \(n=60\) units above.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1SC}
+\NormalTok{schools}\FloatTok{.1}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.1sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\CommentTok{\# 2SC}
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+                                     \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\CommentTok{\# ST2SC}
+\NormalTok{schools.st2sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.st2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{,}
+                                \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\chapter{Survey Analysis}\label{survey-analysis}
+
+Key functions
+
+Survey design
+svydesign()
+and summary()
+
+Estimation
+
+Continuous variables
+svymean()
+svytotal()
+svytable()
+
+confint() for confidence intervals
+cv() for RSE's
+
+Categorical variables give proportions
+svymean()
+svytotal()
+svyciprop() for better confidence intervals
+
+svyby()
+
+Inference
+
+svychisq()
+svytest()
+svyranktest()
+svyglm()
+regTermTest()
+svypredmeans()
+
+Display
+
+barplot()
+svyhist()
+svyboxplot()
+dotchart()
+svyplot()
 Data display and inference
 
 Analytic and jackknife methods
