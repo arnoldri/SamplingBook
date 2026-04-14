@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-13" />
+<meta name="date" content="2026-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -263,12 +263,35 @@ div.csl-indent {
 <li class="chapter" data-level="6.2" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor"><i class="fa fa-check"></i><b>6.2</b> Simple Random Sample WithOut Replacement (SRSWOR)</a></li>
 <li class="chapter" data-level="6.3" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#probability-proportional-to-size-with-replacement-ppswr"><i class="fa fa-check"></i><b>6.3</b> Probability Proportional to Size With Replacement (PPSWR)</a></li>
 <li class="chapter" data-level="6.4" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-sample"><i class="fa fa-check"></i><b>6.4</b> Stratified Sample</a></li>
+<li class="chapter" data-level="6.5" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#one-stage-cluster-design-1sc"><i class="fa fa-check"></i><b>6.5</b> One stage cluster design (1SC)</a></li>
+<li class="chapter" data-level="6.6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#two-stage-cluster-design-2sc"><i class="fa fa-check"></i><b>6.6</b> Two stage cluster design (2SC)</a></li>
+<li class="chapter" data-level="6.7" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-two-stage-cluster-design"><i class="fa fa-check"></i><b>6.7</b> Stratified two stage cluster design</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a></li>
-<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a></li>
+<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="survey-analysis.html"><a href="survey-analysis.html#continous-variables"><i class="fa fa-check"></i><b>7.1</b> Continous variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#display"><i class="fa fa-check"></i>Display</a></li>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#estimation"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="survey-analysis.html"><a href="survey-analysis.html#categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Categorical Variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#display-1"><i class="fa fa-check"></i>Display</a></li>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#estimation-1"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="missing-data.html"><a href="missing-data.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>9</b> Designing Surveys</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>9.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="9.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>9.2</b> Computing the Required Sample Size</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
-<li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
+<li class="chapter" data-level="A" data-path="placeholder-appendix.html"><a href="placeholder-appendix.html"><i class="fa fa-check"></i><b>A</b> Placeholder Appendix</a></li>
 <li class="divider"></li>
 <li>Lecture notes</li>
 
@@ -307,18 +330,18 @@ are data on 87 characters, including their heights in centimetres.<br />
 Six heights are missing, but let’s just guess them so we have no missing data
 (this process of inventing data has a respectable name: <strong>‘imputation’</strong>,
 and we’ll come back to it later).</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="statistical-inference.html#cb108-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb108-2"><a href="statistical-inference.html#cb108-2" tabindex="-1"></a><span class="fu">data</span>(starwars)</span>
-<span id="cb108-3"><a href="statistical-inference.html#cb108-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(starwars<span class="sc">$</span>height))</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="statistical-inference.html#cb101-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb101-2"><a href="statistical-inference.html#cb101-2" tabindex="-1"></a><span class="fu">data</span>(starwars)</span>
+<span id="cb101-3"><a href="statistical-inference.html#cb101-3" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(starwars<span class="sc">$</span>height))</span></code></pre></div>
 <pre><code>## [1] 6</code></pre>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="statistical-inference.html#cb110-1" tabindex="-1"></a>starwars <span class="ot">&lt;-</span> starwars <span class="sc">|&gt;</span> </span>
-<span id="cb110-2"><a href="statistical-inference.html#cb110-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height=</span><span class="fu">case_when</span>(name<span class="sc">==</span><span class="st">&quot;Arvel Crynyd&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
-<span id="cb110-3"><a href="statistical-inference.html#cb110-3" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Finn&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
-<span id="cb110-4"><a href="statistical-inference.html#cb110-4" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Rey&quot;</span> <span class="sc">~</span> <span class="dv">150</span>,  <span class="co"># same as Leia</span></span>
-<span id="cb110-5"><a href="statistical-inference.html#cb110-5" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Poe Dameron&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
-<span id="cb110-6"><a href="statistical-inference.html#cb110-6" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;BB8&quot;</span> <span class="sc">~</span> <span class="dv">96</span>, <span class="co"># same as R2D2</span></span>
-<span id="cb110-7"><a href="statistical-inference.html#cb110-7" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Captain Phasma&quot;</span> <span class="sc">~</span> <span class="dv">167</span>, <span class="co"># same as C3P0</span></span>
-<span id="cb110-8"><a href="statistical-inference.html#cb110-8" tabindex="-1"></a>                          <span class="at">.default=</span>height))</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="statistical-inference.html#cb103-1" tabindex="-1"></a>starwars <span class="ot">&lt;-</span> starwars <span class="sc">|&gt;</span> </span>
+<span id="cb103-2"><a href="statistical-inference.html#cb103-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height=</span><span class="fu">case_when</span>(name<span class="sc">==</span><span class="st">&quot;Arvel Crynyd&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
+<span id="cb103-3"><a href="statistical-inference.html#cb103-3" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Finn&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
+<span id="cb103-4"><a href="statistical-inference.html#cb103-4" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Rey&quot;</span> <span class="sc">~</span> <span class="dv">150</span>,  <span class="co"># same as Leia</span></span>
+<span id="cb103-5"><a href="statistical-inference.html#cb103-5" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Poe Dameron&quot;</span> <span class="sc">~</span> <span class="dv">172</span>, <span class="co"># same as Luke</span></span>
+<span id="cb103-6"><a href="statistical-inference.html#cb103-6" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;BB8&quot;</span> <span class="sc">~</span> <span class="dv">96</span>, <span class="co"># same as R2D2</span></span>
+<span id="cb103-7"><a href="statistical-inference.html#cb103-7" tabindex="-1"></a>                          name<span class="sc">==</span><span class="st">&quot;Captain Phasma&quot;</span> <span class="sc">~</span> <span class="dv">167</span>, <span class="co"># same as C3P0</span></span>
+<span id="cb103-8"><a href="statistical-inference.html#cb103-8" tabindex="-1"></a>                          <span class="at">.default=</span>height))</span></code></pre></div>
 <p>The mean height <span class="math inline">\(\bar{Y}\)</span> of characters in the Star Wars universe is a <strong>population parameter</strong>.
 We can <strong>estimate</strong> it from a sample of characters.</p>
 <blockquote>
@@ -331,14 +354,14 @@ for sample statistics.</p>
 </blockquote>
 <p>For the purposes of this exercise let’s imagine there are only <span class="math inline">\(N=87\)</span> individuals in the entire
 Star Wars universe. Let’s draw a random sample of <span class="math inline">\(n=20\)</span> from this population of <span class="math inline">\(N=87\)</span>:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="statistical-inference.html#cb111-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
-<span id="cb111-2"><a href="statistical-inference.html#cb111-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(starwars)</span>
-<span id="cb111-3"><a href="statistical-inference.html#cb111-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb111-4"><a href="statistical-inference.html#cb111-4" tabindex="-1"></a>samplemembers <span class="ot">&lt;-</span> starwars[<span class="fu">sample</span>(bigN, n, <span class="at">replace=</span><span class="cn">FALSE</span>),]</span>
-<span id="cb111-5"><a href="statistical-inference.html#cb111-5" tabindex="-1"></a>samplemembers <span class="sc">|&gt;</span></span>
-<span id="cb111-6"><a href="statistical-inference.html#cb111-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name,height,mass,hair_color,homeworld) <span class="sc">|&gt;</span></span>
-<span id="cb111-7"><a href="statistical-inference.html#cb111-7" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span></span>
-<span id="cb111-8"><a href="statistical-inference.html#cb111-8" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="statistical-inference.html#cb104-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb104-2"><a href="statistical-inference.html#cb104-2" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(starwars)</span>
+<span id="cb104-3"><a href="statistical-inference.html#cb104-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb104-4"><a href="statistical-inference.html#cb104-4" tabindex="-1"></a>samplemembers <span class="ot">&lt;-</span> starwars[<span class="fu">sample</span>(bigN, n, <span class="at">replace=</span><span class="cn">FALSE</span>),]</span>
+<span id="cb104-5"><a href="statistical-inference.html#cb104-5" tabindex="-1"></a>samplemembers <span class="sc">|&gt;</span></span>
+<span id="cb104-6"><a href="statistical-inference.html#cb104-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(name,height,mass,hair_color,homeworld) <span class="sc">|&gt;</span></span>
+<span id="cb104-7"><a href="statistical-inference.html#cb104-7" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|&gt;</span></span>
+<span id="cb104-8"><a href="statistical-inference.html#cb104-8" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -709,11 +732,11 @@ Figure 4.1: Histogram of heights of a sample of Star Wars characters (vertical l
 </p>
 </div>
 <p>Compute the sample mean <span class="math inline">\(\bar{y}\)</span> and standard deviation <span class="math inline">\(s_y\)</span>:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="statistical-inference.html#cb112-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(samplemembers<span class="sc">$</span>height)</span>
-<span id="cb112-2"><a href="statistical-inference.html#cb112-2" tabindex="-1"></a>ybar</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="statistical-inference.html#cb105-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(samplemembers<span class="sc">$</span>height)</span>
+<span id="cb105-2"><a href="statistical-inference.html#cb105-2" tabindex="-1"></a>ybar</span></code></pre></div>
 <pre><code>## [1] 180.3</code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="statistical-inference.html#cb114-1" tabindex="-1"></a>sdy <span class="ot">&lt;-</span> <span class="fu">sd</span>(samplemembers<span class="sc">$</span>height)</span>
-<span id="cb114-2"><a href="statistical-inference.html#cb114-2" tabindex="-1"></a>sdy</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="statistical-inference.html#cb107-1" tabindex="-1"></a>sdy <span class="ot">&lt;-</span> <span class="fu">sd</span>(samplemembers<span class="sc">$</span>height)</span>
+<span id="cb107-2"><a href="statistical-inference.html#cb107-2" tabindex="-1"></a>sdy</span></code></pre></div>
 <pre><code>## [1] 31.13147</code></pre>
 <p>We know how to make a point estimate <span class="math inline">\(\widehat{\bar{Y}}\)</span> for the population
 mean <span class="math inline">\(\bar{Y}\)</span> (remember that a hat <span class="math inline">\(\widehat{.}\)</span> over a symbol indicates
@@ -755,8 +778,8 @@ There are just two parameters here: the population mean <span class="math inline
 standard deviation <span class="math inline">\(\sigma\)</span>.</p>
 <p>We can fit this simplest of all linear regression models using the <code>lm()</code> function and
 get the same results:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="statistical-inference.html#cb116-1" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(height <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>samplemembers)</span>
-<span id="cb116-2"><a href="statistical-inference.html#cb116-2" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="statistical-inference.html#cb109-1" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(height <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>samplemembers)</span>
+<span id="cb109-2"><a href="statistical-inference.html#cb109-2" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = height ~ 1, data = samplemembers)
@@ -772,7 +795,7 @@ get the same results:</p>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 31.13 on 19 degrees of freedom</code></pre>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="statistical-inference.html#cb118-1" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="statistical-inference.html#cb111-1" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div>
 <pre><code>##              2.5 % 97.5 %
 ## (Intercept) 165.73 194.87</code></pre>
 <p>Here <code>(Intercept)</code> is the estimate for <span class="math inline">\(\mu\)</span>, the population mean.<br />
@@ -863,12 +886,12 @@ designs which arise in sample surveys.</p>
 mean we can use the theory without having to derive it.</p>
 <p>For example here’s a call to some <code>survey</code> package functions which
 gives us the effect of the fpc in our example:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="statistical-inference.html#cb120-1" tabindex="-1"></a>samplemembers<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
-<span id="cb120-2"><a href="statistical-inference.html#cb120-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(height<span class="sc">~</span><span class="dv">1</span>, <span class="at">design=</span><span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>samplemembers))</span>
-<span id="cb120-3"><a href="statistical-inference.html#cb120-3" tabindex="-1"></a>ss</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="statistical-inference.html#cb113-1" tabindex="-1"></a>samplemembers<span class="sc">$</span>bigN <span class="ot">&lt;-</span> bigN</span>
+<span id="cb113-2"><a href="statistical-inference.html#cb113-2" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(height<span class="sc">~</span><span class="dv">1</span>, <span class="at">design=</span><span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>samplemembers))</span>
+<span id="cb113-3"><a href="statistical-inference.html#cb113-3" tabindex="-1"></a>ss</span></code></pre></div>
 <pre><code>##         mean     SE
 ## height 180.3 6.1089</code></pre>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="statistical-inference.html#cb122-1" tabindex="-1"></a><span class="fu">confint</span>(ss)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="statistical-inference.html#cb115-1" tabindex="-1"></a><span class="fu">confint</span>(ss)</span></code></pre></div>
 <pre><code>##           2.5 %   97.5 %
 ## height 168.3268 192.2732</code></pre>
 <p>If you’re interested in the theory take a look at a text like <span class="citation">Cochran (<a href="#ref-cochran">1977</a>)</span> or <span class="citation">Särndal, Swensson, and Wretmann (<a href="#ref-ssw">1992</a>)</span>.</p>

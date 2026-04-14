@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-13" />
+<meta name="date" content="2026-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -263,12 +263,35 @@ div.csl-indent {
 <li class="chapter" data-level="6.2" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor"><i class="fa fa-check"></i><b>6.2</b> Simple Random Sample WithOut Replacement (SRSWOR)</a></li>
 <li class="chapter" data-level="6.3" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#probability-proportional-to-size-with-replacement-ppswr"><i class="fa fa-check"></i><b>6.3</b> Probability Proportional to Size With Replacement (PPSWR)</a></li>
 <li class="chapter" data-level="6.4" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-sample"><i class="fa fa-check"></i><b>6.4</b> Stratified Sample</a></li>
+<li class="chapter" data-level="6.5" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#one-stage-cluster-design-1sc"><i class="fa fa-check"></i><b>6.5</b> One stage cluster design (1SC)</a></li>
+<li class="chapter" data-level="6.6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#two-stage-cluster-design-2sc"><i class="fa fa-check"></i><b>6.6</b> Two stage cluster design (2SC)</a></li>
+<li class="chapter" data-level="6.7" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-two-stage-cluster-design"><i class="fa fa-check"></i><b>6.7</b> Stratified two stage cluster design</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a></li>
-<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a></li>
+<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="survey-analysis.html"><a href="survey-analysis.html#continous-variables"><i class="fa fa-check"></i><b>7.1</b> Continous variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#display"><i class="fa fa-check"></i>Display</a></li>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#estimation"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="survey-analysis.html"><a href="survey-analysis.html#categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Categorical Variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#display-1"><i class="fa fa-check"></i>Display</a></li>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#estimation-1"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="missing-data.html"><a href="missing-data.html"><i class="fa fa-check"></i><b>8</b> Missing data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="missing-data.html"><a href="missing-data.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>9</b> Designing Surveys</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>9.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="9.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>9.2</b> Computing the Required Sample Size</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
-<li class="chapter" data-level="A" data-path="computing-the-required-sample-size.html"><a href="computing-the-required-sample-size.html"><i class="fa fa-check"></i><b>A</b> Computing the Required Sample Size</a></li>
+<li class="chapter" data-level="A" data-path="placeholder-appendix.html"><a href="placeholder-appendix.html"><i class="fa fa-check"></i><b>A</b> Placeholder Appendix</a></li>
 <li class="divider"></li>
 <li>Lecture notes</li>
 
@@ -305,22 +328,22 @@ are incorrect.</p>
 We’ll use the <code>schools</code> data set as our primary example, but also use
 data on populations and Gross Domestic Product for each country in 2023
 from the ‘Our World in Data’ website.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sample-designs-in-r.html#cb155-1" tabindex="-1"></a><span class="co"># Census</span></span>
-<span id="cb155-2"><a href="sample-designs-in-r.html#cb155-2" tabindex="-1"></a>schools.census <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="fu">nrow</span>(schools))</span>
-<span id="cb155-3"><a href="sample-designs-in-r.html#cb155-3" tabindex="-1"></a><span class="co"># SRSWOR</span></span>
-<span id="cb155-4"><a href="sample-designs-in-r.html#cb155-4" tabindex="-1"></a>schools.srswor <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="dv">20</span>)</span>
-<span id="cb155-5"><a href="sample-designs-in-r.html#cb155-5" tabindex="-1"></a><span class="co"># PPSWR</span></span>
-<span id="cb155-6"><a href="sample-designs-in-r.html#cb155-6" tabindex="-1"></a>schools.ppswr <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">20</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span>
-<span id="cb155-7"><a href="sample-designs-in-r.html#cb155-7" tabindex="-1"></a><span class="co"># STSRS</span></span>
-<span id="cb155-8"><a href="sample-designs-in-r.html#cb155-8" tabindex="-1"></a>schools.stsrs <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">60</span>, <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>)</span>
-<span id="cb155-9"><a href="sample-designs-in-r.html#cb155-9" tabindex="-1"></a><span class="co"># 1SC</span></span>
-<span id="cb155-10"><a href="sample-designs-in-r.html#cb155-10" tabindex="-1"></a>schools<span class="fl">.1</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.1sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
-<span id="cb155-11"><a href="sample-designs-in-r.html#cb155-11" tabindex="-1"></a><span class="co"># 2SC</span></span>
-<span id="cb155-12"><a href="sample-designs-in-r.html#cb155-12" tabindex="-1"></a>schools<span class="fl">.2</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
-<span id="cb155-13"><a href="sample-designs-in-r.html#cb155-13" tabindex="-1"></a>                                     <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
-<span id="cb155-14"><a href="sample-designs-in-r.html#cb155-14" tabindex="-1"></a><span class="co"># ST2SC</span></span>
-<span id="cb155-15"><a href="sample-designs-in-r.html#cb155-15" tabindex="-1"></a>schools.st2sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
-<span id="cb155-16"><a href="sample-designs-in-r.html#cb155-16" tabindex="-1"></a>                                <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sample-designs-in-r.html#cb148-1" tabindex="-1"></a><span class="co"># Census</span></span>
+<span id="cb148-2"><a href="sample-designs-in-r.html#cb148-2" tabindex="-1"></a>schools.census <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="fu">nrow</span>(schools))</span>
+<span id="cb148-3"><a href="sample-designs-in-r.html#cb148-3" tabindex="-1"></a><span class="co"># SRSWOR</span></span>
+<span id="cb148-4"><a href="sample-designs-in-r.html#cb148-4" tabindex="-1"></a>schools.srswor <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="dv">20</span>)</span>
+<span id="cb148-5"><a href="sample-designs-in-r.html#cb148-5" tabindex="-1"></a><span class="co"># PPSWR</span></span>
+<span id="cb148-6"><a href="sample-designs-in-r.html#cb148-6" tabindex="-1"></a>schools.ppswr <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">20</span>, <span class="at">sizevar=</span><span class="st">&quot;Total&quot;</span>)</span>
+<span id="cb148-7"><a href="sample-designs-in-r.html#cb148-7" tabindex="-1"></a><span class="co"># STSRS</span></span>
+<span id="cb148-8"><a href="sample-designs-in-r.html#cb148-8" tabindex="-1"></a>schools.stsrs <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">60</span>, <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>)</span>
+<span id="cb148-9"><a href="sample-designs-in-r.html#cb148-9" tabindex="-1"></a><span class="co"># 1SC</span></span>
+<span id="cb148-10"><a href="sample-designs-in-r.html#cb148-10" tabindex="-1"></a>schools<span class="fl">.1</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.1sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
+<span id="cb148-11"><a href="sample-designs-in-r.html#cb148-11" tabindex="-1"></a><span class="co"># 2SC</span></span>
+<span id="cb148-12"><a href="sample-designs-in-r.html#cb148-12" tabindex="-1"></a>schools<span class="fl">.2</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
+<span id="cb148-13"><a href="sample-designs-in-r.html#cb148-13" tabindex="-1"></a>                                     <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
+<span id="cb148-14"><a href="sample-designs-in-r.html#cb148-14" tabindex="-1"></a><span class="co"># ST2SC</span></span>
+<span id="cb148-15"><a href="sample-designs-in-r.html#cb148-15" tabindex="-1"></a>schools.st2sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
+<span id="cb148-16"><a href="sample-designs-in-r.html#cb148-16" tabindex="-1"></a>                                <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
 <p>In order to make estimates from sampled data using the <code>survey</code> package
 we need to specify the sample design we’re using.
 We’ll do this for the various sample designs covered in the
@@ -337,21 +360,21 @@ the <code>schools</code> data frame. (One exception will be the PPSWR example
 where we’ll select a sample of countries using their population size
 as the size variable.)</p>
 <p>The true mean school size is</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sample-designs-in-r.html#cb156-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(schools<span class="sc">$</span>Total)</span>
-<span id="cb156-2"><a href="sample-designs-in-r.html#cb156-2" tabindex="-1"></a>ybar</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="sample-designs-in-r.html#cb149-1" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(schools<span class="sc">$</span>Total)</span>
+<span id="cb149-2"><a href="sample-designs-in-r.html#cb149-2" tabindex="-1"></a>ybar</span></code></pre></div>
 <pre><code>## [1] 334.481</code></pre>
 <div id="census-1" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Census<a href="sample-designs-in-r.html#census-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The analysis of a census is trivial (at least, if there is no non-response).
 We can create a census dataset by taking an SRSWOR of size <span class="math inline">\(n=N\)</span>.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="sample-designs-in-r.html#cb158-1" tabindex="-1"></a>schools.census <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="fu">nrow</span>(schools))</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="sample-designs-in-r.html#cb151-1" tabindex="-1"></a>schools.census <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="fu">nrow</span>(schools))</span></code></pre></div>
 <p>This function adds the column <code>bigN</code> to the dataset, which contains
 population size <span class="math inline">\(N\)</span> repeated on every row.</p>
 <p>Now we can specify the design.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sample-designs-in-r.html#cb159-1" tabindex="-1"></a>schools.census.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.census, <span class="at">fpc=</span><span class="sc">~</span>bigN)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sample-designs-in-r.html#cb152-1" tabindex="-1"></a>schools.census.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.census, <span class="at">fpc=</span><span class="sc">~</span>bigN)</span></code></pre></div>
 <p>Note that we tell R which column contains the population size using the <code>fpc</code> argument.
 Our data aren’t clustered, so the <code>id</code> variable (which identifies clusters) is set to 1.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="sample-designs-in-r.html#cb160-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.census.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="sample-designs-in-r.html#cb153-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.census.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##         mean     SE DEff
 ## Total 334.48   0.00  NaN</code></pre>
 <p>The estimated mean is 334.48, which is of course
@@ -361,18 +384,18 @@ so we have no uncertainty.</p>
 <p>We’ve requested <code>Deff=TRUE</code>, and have got a Deff value of NaN, which means
 not able to be calculated. We’ll discuss what this means later on.</p>
 <p>If we had left out the <code>fpc</code> command</p>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="sample-designs-in-r.html#cb162-1" tabindex="-1"></a>schools.census.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.census)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sample-designs-in-r.html#cb155-1" tabindex="-1"></a>schools.census.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.census)</span></code></pre></div>
 <pre><code>## Warning in svydesign.default(id = ~1, data = schools.census): No weights or
 ## probabilities supplied, assuming equal probability</code></pre>
 <p>we get a warning that we can interpret as R assuming an SRSWR from an infinite population.</p>
 <p>The estimated mean is the same, but the standard error are now what’d we’d have learned
 from first year statistics.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="sample-designs-in-r.html#cb164-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.census.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sample-designs-in-r.html#cb157-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.census.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##           mean       SE DEff
 ## Total 334.4810   8.4582  Inf</code></pre>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sample-designs-in-r.html#cb166-1" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">sd</span>(schools.census<span class="sc">$</span>Total)</span>
-<span id="cb166-2"><a href="sample-designs-in-r.html#cb166-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools.census)</span>
-<span id="cb166-3"><a href="sample-designs-in-r.html#cb166-3" tabindex="-1"></a>se <span class="ot">&lt;-</span> sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sample-designs-in-r.html#cb159-1" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">sd</span>(schools.census<span class="sc">$</span>Total)</span>
+<span id="cb159-2"><a href="sample-designs-in-r.html#cb159-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools.census)</span>
+<span id="cb159-3"><a href="sample-designs-in-r.html#cb159-3" tabindex="-1"></a>se <span class="ot">&lt;-</span> sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
 <p>i.e. the standard error is
 <span class="math display">\[
    \bfa{SE}{\widehat{\bar{Y}}}
@@ -385,20 +408,20 @@ again we’ll come back to what this means this shortly.</p>
 <div id="simple-random-sample-without-replacement-srswor" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Simple Random Sample WithOut Replacement (SRSWOR)<a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s draw a sample of <span class="math inline">\(n=60\)</span> schools from the population by SRSWOR.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="sample-designs-in-r.html#cb167-1" tabindex="-1"></a>schools.srswor <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="dv">60</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="sample-designs-in-r.html#cb160-1" tabindex="-1"></a>schools.srswor <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.srswor</span>(<span class="at">n=</span><span class="dv">60</span>)</span></code></pre></div>
 <p>To specify the design we use the same syntax as above:</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sample-designs-in-r.html#cb168-1" tabindex="-1"></a>schools.srswor.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.srswor, <span class="at">fpc=</span><span class="sc">~</span>bigN)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sample-designs-in-r.html#cb161-1" tabindex="-1"></a>schools.srswor.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.srswor, <span class="at">fpc=</span><span class="sc">~</span>bigN)</span></code></pre></div>
 <p>Estimating the mean school size is also just the same:</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="sample-designs-in-r.html#cb169-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.srswor.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="sample-designs-in-r.html#cb162-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.srswor.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##          mean      SE DEff
 ## Total 347.367  49.582    1</code></pre>
 <p>This is the mean of a genuine sample now, so we have an estimated mean value that
 differs from the truth, and the standard error is gauge of its accuracy.</p>
 <p>The standard error comes from the finite population corrected formula:</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="sample-designs-in-r.html#cb171-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">first</span>(schools.srswor<span class="sc">$</span>bigN) <span class="co"># take the entry in the first row: they&#39;re all the same</span></span>
-<span id="cb171-2"><a href="sample-designs-in-r.html#cb171-2" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">sd</span>(schools.srswor<span class="sc">$</span>Total)</span>
-<span id="cb171-3"><a href="sample-designs-in-r.html#cb171-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools.srswor)</span>
-<span id="cb171-4"><a href="sample-designs-in-r.html#cb171-4" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>n<span class="sc">/</span>bigN)<span class="sc">*</span>sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="sample-designs-in-r.html#cb164-1" tabindex="-1"></a>bigN <span class="ot">&lt;-</span> <span class="fu">first</span>(schools.srswor<span class="sc">$</span>bigN) <span class="co"># take the entry in the first row: they&#39;re all the same</span></span>
+<span id="cb164-2"><a href="sample-designs-in-r.html#cb164-2" tabindex="-1"></a>sy <span class="ot">&lt;-</span> <span class="fu">sd</span>(schools.srswor<span class="sc">$</span>Total)</span>
+<span id="cb164-3"><a href="sample-designs-in-r.html#cb164-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools.srswor)</span>
+<span id="cb164-4"><a href="sample-designs-in-r.html#cb164-4" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>n<span class="sc">/</span>bigN)<span class="sc">*</span>sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
 <p><span class="math display">\[
    \bfa{SE}{\widehat{\bar{Y}}}
    = \sqrt{1-\frac{n}{N}}\frac{s_y}{\sqrt{n}}
@@ -406,17 +429,17 @@ differs from the truth, and the standard error is gauge of its accuracy.</p>
      \frac{388.745}{\sqrt{60}} = 49.582
 \]</span></p>
 <p>Compare this to the simple SE, which is just slightly bigger</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="sample-designs-in-r.html#cb172-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="sample-designs-in-r.html#cb165-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> sy<span class="sc">/</span><span class="fu">sqrt</span>(n)</span></code></pre></div>
 <p><span class="math display">\[
    \bfa{SE}{\widehat{\bar{Y}}}
    = \frac{s_y}{\sqrt{n}}
    = \frac{388.745}{\sqrt{60}} = 50.187
 \]</span>
 This is what we get if we omit the <code>fpc</code></p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="sample-designs-in-r.html#cb173-1" tabindex="-1"></a>schools.srswor.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.srswor)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sample-designs-in-r.html#cb166-1" tabindex="-1"></a>schools.srswor.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>schools.srswor)</span></code></pre></div>
 <pre><code>## Warning in svydesign.default(id = ~1, data = schools.srswor): No weights or
 ## probabilities supplied, assuming equal probability</code></pre>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="sample-designs-in-r.html#cb175-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.srswor.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sample-designs-in-r.html#cb168-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.srswor.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##          mean      SE DEff
 ## Total 347.367  50.187  Inf</code></pre>
 </div>
@@ -718,18 +741,26 @@ Asia
 </tbody>
 </table>
 <p>We can select a PPSWR using population as the size variable</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="sample-designs-in-r.html#cb177-1" tabindex="-1"></a>mil.ppswr <span class="ot">&lt;-</span> mil <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">sizevar=</span><span class="st">&quot;Population&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="sample-designs-in-r.html#cb170-1" tabindex="-1"></a>mil.ppswr <span class="ot">&lt;-</span> mil <span class="sc">|&gt;</span> <span class="fu">select.ppswr</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">sizevar=</span><span class="st">&quot;Population&quot;</span>)</span></code></pre></div>
 <p>The <code>weight</code> column here combines the weight over the number of times a unit is selected</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="sample-designs-in-r.html#cb178-1" tabindex="-1"></a>mil.ppswr.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>mil.ppswr, <span class="at">weight=</span><span class="sc">~</span>weight)</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="sample-designs-in-r.html#cb171-1" tabindex="-1"></a>mil.ppswr.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>mil.ppswr, <span class="at">weight=</span><span class="sc">~</span>weight)</span></code></pre></div>
 <p>The mean military expenditure per country is</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="sample-designs-in-r.html#cb179-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>MilSpend, <span class="at">design=</span>mil.ppswr.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="sample-designs-in-r.html#cb172-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>MilSpend, <span class="at">design=</span>mil.ppswr.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##                mean         SE   DEff
 ## MilSpend 7.4657e+10 3.4650e+10 1.0362</code></pre>
 <p>though more interesting is the <strong>total</strong> of this variable, to see
 how much the world is spending.</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="sample-designs-in-r.html#cb181-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>MilSpend, <span class="at">design=</span>mil.ppswr.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="sample-designs-in-r.html#cb174-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>MilSpend, <span class="at">design=</span>mil.ppswr.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##               total         SE  DEff
 ## MilSpend 1.1199e+13 5.3452e+12 1.096</code></pre>
+<blockquote>
+<p>The estimation of the <strong>total</strong> of a variable is only something
+that makes sense in a finite population, and is a type of estimate
+that is rarely found anywhere outside sample survey analysis.</p>
+<p>It is frequently of interest in Official (i.e. government) statistics
+that we want to estimate the total number of people with a certain characteristic,
+or the total amount of a commodity being exported, or total export earnings.</p>
+</blockquote>
 <p>Note again that in a with replacement design we can’t apply the finite
 population correction.</p>
 </div>
@@ -739,12 +770,16 @@ population correction.</p>
 each population unit belongs to one of these strata.</p>
 <p>Selecting a sample of <span class="math inline">\(n=60\)</span> schools by equal allocation across the 12
 Education Regions:</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="sample-designs-in-r.html#cb183-1" tabindex="-1"></a>schools.stsrs <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">60</span>, <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="sample-designs-in-r.html#cb176-1" tabindex="-1"></a>schools.stsrs <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.stsrs</span>(<span class="at">n=</span><span class="dv">60</span>, <span class="at">stratumvar=</span><span class="st">&quot;Education_Region&quot;</span>)</span></code></pre></div>
 <p>Specify this design</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="sample-designs-in-r.html#cb184-1" tabindex="-1"></a>schools.stsrs.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">strata=</span><span class="sc">~</span>Education_Region, <span class="at">fpc=</span><span class="sc">~</span>Nh,</span>
-<span id="cb184-2"><a href="sample-designs-in-r.html#cb184-2" tabindex="-1"></a>                               <span class="at">data=</span>schools.stsrs)</span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="sample-designs-in-r.html#cb177-1" tabindex="-1"></a>schools.stsrs.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">strata=</span><span class="sc">~</span>Education_Region, <span class="at">fpc=</span><span class="sc">~</span>Nh,</span>
+<span id="cb177-2"><a href="sample-designs-in-r.html#cb177-2" tabindex="-1"></a>                               <span class="at">data=</span>schools.stsrs,</span>
+<span id="cb177-3"><a href="sample-designs-in-r.html#cb177-3" tabindex="-1"></a>                               <span class="at">survey.lonely.psu=</span><span class="st">&quot;remove&quot;</span>)</span></code></pre></div>
+<p>Note that we’ve included the option <code>survey.lonely.psu="remove"</code> to mean
+that the estimation of standard errors doesn’t fail if a stratum only has a single
+PSU.</p>
 <p>We can now return to estimating the mean school size</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sample-designs-in-r.html#cb185-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.stsrs.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="sample-designs-in-r.html#cb178-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.stsrs.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##          mean      SE   DEff
 ## Total 337.235  39.972 0.6816</code></pre>
 <p>Now it’s finally time to talk about the <strong>Design Effect</strong>, or the Deff for short.</p>
@@ -783,14 +818,53 @@ significantly less efficient than SRSWOR.</li>
 when sample sizes are small. But do notice that we have a Deff&lt;1 here
 for the stratified sample of <span class="math inline">\(n=60\)</span> units, and the SE is lower than
 that achieved in the SRSWOR of <span class="math inline">\(n=60\)</span> units above.</p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="sample-designs-in-r.html#cb187-1" tabindex="-1"></a><span class="co"># 1SC</span></span>
-<span id="cb187-2"><a href="sample-designs-in-r.html#cb187-2" tabindex="-1"></a>schools<span class="fl">.1</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.1sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
-<span id="cb187-3"><a href="sample-designs-in-r.html#cb187-3" tabindex="-1"></a><span class="co"># 2SC</span></span>
-<span id="cb187-4"><a href="sample-designs-in-r.html#cb187-4" tabindex="-1"></a>schools<span class="fl">.2</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
-<span id="cb187-5"><a href="sample-designs-in-r.html#cb187-5" tabindex="-1"></a>                                     <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span>
-<span id="cb187-6"><a href="sample-designs-in-r.html#cb187-6" tabindex="-1"></a><span class="co"># ST2SC</span></span>
-<span id="cb187-7"><a href="sample-designs-in-r.html#cb187-7" tabindex="-1"></a>schools.st2sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
-<span id="cb187-8"><a href="sample-designs-in-r.html#cb187-8" tabindex="-1"></a>                                <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+</div>
+<div id="one-stage-cluster-design-1sc" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> One stage cluster design (1SC)<a href="sample-designs-in-r.html#one-stage-cluster-design-1sc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A one stage cluster design takes <span class="math inline">\(n=10\)</span> Territorial Authority areas (TAs) at random
+and selects all schools in each selected TA.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="sample-designs-in-r.html#cb180-1" tabindex="-1"></a>schools<span class="fl">.1</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.1sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<p>We need a column <code>bigN</code> which gives the number of TAs in the population.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="sample-designs-in-r.html#cb181-1" tabindex="-1"></a>schools<span class="fl">.1</span>sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>Territorial_Authority, <span class="at">data=</span>schools<span class="fl">.1</span>sc, </span>
+<span id="cb181-2"><a href="sample-designs-in-r.html#cb181-2" tabindex="-1"></a>                             <span class="at">fpc=</span><span class="sc">~</span>bigN)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="sample-designs-in-r.html#cb182-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools<span class="fl">.1</span>sc.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##          mean      SE   DEff
+## Total 287.197  43.829 5.7634</code></pre>
+<p>The Deff of this one stage cluster sample is bad (much larger than 1) - this is due to
+strong differences between TAs in the mean school size. The more the clusters differ from
+each other on the characteristic of interest, the worse the Deff gets.</p>
+</div>
+<div id="two-stage-cluster-design-2sc" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Two stage cluster design (2SC)<a href="sample-designs-in-r.html#two-stage-cluster-design-2sc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A two stage cluster design takes <span class="math inline">\(n=10\)</span> Territorial Authority areas (TAs) at random
+and selects 20% of the schools in each selected TA.</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="sample-designs-in-r.html#cb184-1" tabindex="-1"></a>schools<span class="fl">.2</span>sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
+<span id="cb184-2"><a href="sample-designs-in-r.html#cb184-2" tabindex="-1"></a>                                     <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<p>We need a column <code>bigN1</code> which gives the number of TAs in the population, and
+<code>bigN2</code> which is the number of schools in each TA. We also need to specify names
+of unique identifiers of the first stage units (the PSUs: these are Territorial Authorities)
+and the second stage units (the SSUs: these are Schools).</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sample-designs-in-r.html#cb185-1" tabindex="-1"></a>schools<span class="fl">.2</span>sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>Territorial_Authority<span class="sc">+</span>School_Id, <span class="at">data=</span>schools<span class="fl">.2</span>sc, </span>
+<span id="cb185-2"><a href="sample-designs-in-r.html#cb185-2" tabindex="-1"></a>                             <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2,</span>
+<span id="cb185-3"><a href="sample-designs-in-r.html#cb185-3" tabindex="-1"></a>                             <span class="at">survey.lonely.psu=</span><span class="st">&quot;remove&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="sample-designs-in-r.html#cb186-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools<span class="fl">.2</span>sc.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##          mean      SE   DEff
+## Total 486.981  84.261 2.1739</code></pre>
+</div>
+<div id="stratified-two-stage-cluster-design" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Stratified two stage cluster design<a href="sample-designs-in-r.html#stratified-two-stage-cluster-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Finally here is a stratified two stage sample of schools within TA’s with Regions.
+The Regions are strata, the TAs are clusters within the Regions, and then 20% of
+schools are sampled in the selected TAs.</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="sample-designs-in-r.html#cb188-1" tabindex="-1"></a>schools.st2sc <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
+<span id="cb188-2"><a href="sample-designs-in-r.html#cb188-2" tabindex="-1"></a>                                         <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
+<p>The design is the same as the two stage cluster sample, except we add the stratum specification.</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="sample-designs-in-r.html#cb189-1" tabindex="-1"></a>schools.st2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>Territorial_Authority<span class="sc">+</span>School_Id, <span class="at">strata=</span><span class="sc">~</span>Region, <span class="at">data=</span>schools.st2sc, </span>
+<span id="cb189-2"><a href="sample-designs-in-r.html#cb189-2" tabindex="-1"></a>                               <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2,</span>
+<span id="cb189-3"><a href="sample-designs-in-r.html#cb189-3" tabindex="-1"></a>                               <span class="at">survey.lonely.psu=</span><span class="st">&quot;remove&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="sample-designs-in-r.html#cb190-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Total, <span class="at">design=</span>schools.st2sc.des, <span class="at">deff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##          mean      SE  DEff
+## Total 295.326  25.898 1.248</code></pre>
 
 </div>
 </div>

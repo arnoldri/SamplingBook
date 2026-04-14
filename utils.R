@@ -163,3 +163,47 @@ select.2sc <- function(df, n, # number of first stage clusters to select
   return(samp2)
 }
 
+select.st2sc <- function(df, 
+                         n,      # total number of 1st stage clusters to select over all strata
+                         stratumvar, allocation="equal",
+                         nmin=2, # minimum number of 1st stage clusters to select per stratum
+                         cfraction, clustervar, 
+                         mmin=2, # minimum number of 2nd stage clusters to select
+                         method1="SRSWOR", sizevar1=NULL,
+                         method2="SRSWOR", sizevar2=NULL) {
+  
+  # stratum selection  
+  bigN <- nrow(df)
+  if(!stratumvar%in%names(df)) {
+    stop("Stratum variable is not present in the data frame")
+  }
+  if(!clustervar%in%names(df)) {
+    stop("Clustring variable is not present in the data frame")
+  }
+  xx <- tapply(df[,clustervar], df[,stratumvar], function(x) length(unique(x)))
+  stratumproperties <- data.frame(Var1=names(xx),Freq=xx)
+  names(stratumproperties) <- c(stratumvar,"Nh")
+  rownames(stratumproperties) <- NULL
+  if(allocation=="equal") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                                           round(n/nrow(stratumproperties))))
+  } else if(allocation=="proportional") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                                           round(n*stratumproperties$Nh/sum(stratumproperties$Nh))))
+  } else {
+    stop("Invalid allocation")
+  }
+  df <- merge(df,stratumproperties,by=stratumvar)
+  
+  samp <- do.call(rbind, by(df, df[,stratumvar], 
+                            function(dfx) {
+                              select.2sc(dfx, n=first(dfx$nh), 
+                                         cfraction=cfraction, 
+                                         clustervar=clustervar, 
+                                         mmin=mmin, 
+                                         method1=method1, sizevar1=sizevar1,
+                                         method2=method2, sizevar2=sizevar2)
+                            }))
+  return(samp)
+}
+

@@ -35,7 +35,7 @@ $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
 knitr::opts_chunk$set(echo = TRUE, out.align="center")
 ```
 
-```{r warning=FALSE, error=FALSE}
+```{r echo=FALSE, warning=FALSE, error=FALSE}
 library(haven)
 library(dplyr)
 library(ggplot2)

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>8 Missing data | STAT395: Sampling</title>
+  <title>9 Designing Surveys | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
   <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="8 Missing data | STAT395: Sampling" />
+  <meta property="og:title" content="9 Designing Surveys | STAT395: Sampling" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Sampling notes." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="8 Missing data | STAT395: Sampling" />
+  <meta name="twitter:title" content="9 Designing Surveys | STAT395: Sampling" />
   
   <meta name="twitter:description" content="Sampling notes." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="survey-analysis.html"/>
-<link rel="next" href="designing-surveys.html"/>
+<link rel="prev" href="missing-data.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -312,33 +312,96 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="missing-data" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">8</span> Missing data<a href="missing-data.html#missing-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="designing-surveys" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Designing Surveys<a href="designing-surveys.html#designing-surveys" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
 <p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
 <span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
 <span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
 <span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
 <span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
-<p>Origin of missing data</p>
-<p>Calibration for unit non-response</p>
-<ul>
-<li>Poststratification</li>
-</ul>
-<p>Imputation for item non-response</p>
-<div id="replicate-weights" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Replicate weights<a href="missing-data.html#replicate-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Later in the course we’ll see situations where non-response means that the
-weights from our sample design have to be adjusted (e.g. by poststratification).
-When this happens the estimation methods associated with the sample designs above
-no longer work, and we have to resort to approximations.</p>
-<p>In such circumstances we often create multiple sets of weights in addition to the
-adjusted weights. These <strong>replicate weights</strong> are what are used to estimate the
-standard errors, and they have the advantage that they can create standard errors
-for a wider range of estimators than the usual means and totals.</p>
-<p><strong>Jacknife</strong> weights are calculated by systematically deleting PSUs at the first
-stage of selection, and then scaling the weights on the remaining rows so that they
-still add up to the same total.</p>
+<p>The design of surveys is a massive topic, and we can’t cover much here.
+The key principle is that everything that is done in the design of a survey
+should be done to meet the Objectives (the research goals) of the survey. Nothing
+else matters.</p>
+<p>For our purposes calculation of the sample size required when designing
+a survey is the most significant single decision to make since it determines
+the standard errors for the survey estimates. In real life the decision
+about sample size is often severely constrained by available resources.</p>
+<div id="another-interpretation-of-the-deff" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Another interpretation of the Deff<a href="designing-surveys.html#another-interpretation-of-the-deff" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Assume that for sample size <span class="math inline">\(n\)</span> the variance of an estimator
+in a specific design has the approximate formula
+<span class="math display">\[
+    \bfa{Var}{\widehat{T}_\text{design}} = \frac{c_\text{design}}{n}
+\]</span>
+then using the definition of the Deff, the ratio of the variance with respect to
+SRSWOR, then
+<span class="math display">\[\begin{eqnarray}
+   \bfa{Deff}{\widehat{T}_{\text{design}}}
+       &amp;=&amp; \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{\bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}\\
+       &amp;=&amp; \frac{c_\text{design}/n}{c_\text{SRSWOR}/n}\\
+       &amp;=&amp; \frac{c_\text{design}}{c_\text{SRSWOR}}
+\end{eqnarray}\]</span>
+So if we want to find the sample sizes at which the variances
+in the design of interest and SRSWOR are equal, then we set
+<span class="math display">\[\begin{eqnarray}
+   V_\text{design} &amp;=&amp; V_\text{SRSWOR}\\
+   \frac{c_\text{design}}{n_\text{design}} &amp;=&amp; \frac{c_\text{SRSWOR}}{n_\text{SRSWOR}}\\
+   n_\text{design} &amp;=&amp; \frac{c_\text{design}}{c_\text{SRSWOR}}n_\text{SRSWOR}\\
+                   &amp;=&amp; \bfa{Deff}{\widehat{T}_\text{design}} n_\text{SRSWOR}
+\end{eqnarray}\]</span>
+This means that a rough way to compute the sample size required in a complex design
+is to first calculate the sample size we’d need in SRSWOR, and then scale it by
+the Deff for the complex design.</p>
+<p>If the Deff is 2 (as it may be in a cluster design for example), then we need twice
+the sample size an SRSWOR would need in order to achieve the same standard error.</p>
+</div>
+<div id="computing-the-required-sample-size" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Computing the Required Sample Size<a href="designing-surveys.html#computing-the-required-sample-size" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Identify your <strong>design estimate</strong> – this is the estimate that will
+underlie a headline you could imagine being written about your survey.</p></li>
+<li><p>Identify the desired MOE, <span class="math inline">\(m\)</span>, for this design estimate, noting whether
+you want this MOE to apply to the overall estimate, or for that estimate in
+each of, say, <span class="math inline">\(H\)</span> subgroups/strata.</p></li>
+<li><p>Compute the sample size required, <span class="math inline">\(n_1\)</span>, assuming that you’re going to select a
+Simple Random Sample and ignoring the fpc.</p>
+<p>For estimation of a mean <span class="math inline">\(\bar{Y}\)</span> of some characteristic <span class="math inline">\(y\)</span>:
+<span class="math display">\[
+n_1 = \left(\frac{Z}{MOE}\right)^2 s^2
+\]</span>
+where <span class="math inline">\(Z\)</span> is appropriate for the desired level of confidence and <span class="math inline">\(s\)</span> is the
+estimated population standard deviation of the characteristic <span class="math inline">\(y\)</span>.</p>
+<p>For estimation of a proportion <span class="math inline">\(P\)</span>:
+<span class="math display">\[
+n_1 = \left(\frac{Z}{MOE}\right)^2 p(1-p)
+\]</span>
+where <span class="math inline">\(p\)</span> is the estimated proportion, or 0.5 if really unknown.</p></li>
+<li><p>If the sample size is a substantial proportion of the population or
+subgroup size <span class="math inline">\(N\)</span>, then apply the fpc adjustment:
+<span class="math display">\[
+   n_2 = \frac{n_1}{1+\frac{n_1}{N}}
+\]</span></p></li>
+<li><p>If you have <span class="math inline">\(H\)</span> subgroups and are using equal allocation then multiply by <span class="math inline">\(H\)</span>
+<span class="math display">\[
+   n_3 = Hn_2
+\]</span>
+or alternatively sum over the <span class="math inline">\(n_2\)</span> values in each of the strata you’ve
+defined.</p></li>
+<li><p>Apply the design effect (Deff) appropriate for the actual design you’ll
+be using.
+<span class="math display">\[
+   n_4 = \text{Deff}\times n_3
+\]</span></p></li>
+<li><p>Adjust for anticipated non-response: if response rate <span class="math inline">\(\phi\)</span> is expected
+then
+<span class="math display">\[
+   n_5 = \frac{n_4}{\phi}
+\]</span>
+(If non-response is likely to vary between strata, then apply this correction
+to <span class="math inline">\(n_2\)</span>, within each stratum.)</p></li>
+</ol>
 
 </div>
 </div>
@@ -347,8 +410,8 @@ still add up to the same total.</p>
           </div>
         </div>
       </div>
-<a href="survey-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="designing-surveys.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="missing-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -264,6 +264,14 @@ how much the world is spending.
 svytotal(~MilSpend, design=mil.ppswr.des, deff=TRUE)
 ```
 
+> The estimation of the **total** of a variable is only something
+> that makes sense in a finite population, and is a type of estimate
+> that is rarely found anywhere outside sample survey analysis.  
+> 
+> It is frequently of interest in Official (i.e. government) statistics
+> that we want to estimate the total number of people with a certain characteristic,
+> or the total amount of a commodity being exported, or total export earnings.
+
 Note again that in a with replacement design we can't apply the finite
 population correction.  
 
@@ -418,6 +426,8 @@ schools.st2sc.des <- svydesign(id=~Territorial_Authority+School_Id, strata=~Regi
 ```{r}
 svymean(~Total, design=schools.st2sc.des, deff=TRUE)
 ```
+
+
 
 
 

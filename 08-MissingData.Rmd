@@ -1,5 +1,14 @@
 # Missing data
 
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+
 Origin of missing data
 
 Calibration for unit non-response
@@ -7,3 +16,19 @@ Calibration for unit non-response
 * Poststratification
 
 Imputation for item non-response
+
+## Replicate weights
+
+Later in the course we'll see situations where non-response means that the 
+weights from our sample design have to be adjusted (e.g. by poststratification).
+When this happens the estimation methods associated with the sample designs above
+no longer work, and we have to resort to approximations.
+
+In such circumstances we often create multiple sets of weights in addition to the
+adjusted weights.  These **replicate weights** are what are used to estimate the
+standard errors, and they have the advantage that they can create standard errors
+for a wider range of estimators than the usual means and totals.  
+
+**Jacknife** weights are calculated by systematically deleting PSUs at the first
+stage of selection, and then scaling the weights on the remaining rows so that they 
+still add up to the same total.

@@ -1,11 +1,52 @@
 # Designing Surveys
 
-## Design variables
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
 
-To a rough approximation the variance of an estimator reduces with a factor
-of $1/n$ where $n$ is the sample size.
+The design of surveys is a massive topic, and we can't cover much here.
+The key principle is that everything that is done in the design of a survey
+should be done to meet the Objectives (the research goals) of the survey. Nothing
+else matters.
 
-That means the ratio of variances ...
+For our purposes calculation of the sample size required when designing 
+a survey is the most significant single decision to make since it determines
+the standard errors for the survey estimates.  In real life the decision
+about sample size is often severely constrained by available resources.  
+
+## Another interpretation of the Deff
+
+Assume that for sample size $n$ the variance of an estimator 
+in a specific design has the approximate formula 
+\[
+    \bfa{Var}{\widehat{T}_\text{design}} = \frac{c_\text{design}}{n}
+\]
+then using the definition of the Deff, the ratio of the variance with respect to
+SRSWOR, then
+\begin{eqnarray}
+   \bfa{Deff}{\widehat{T}_{\text{design}}} 
+       &=& \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{\bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}\\
+       &=& \frac{c_\text{design}/n}{c_\text{SRSWOR}/n}\\ 
+       &=& \frac{c_\text{design}}{c_\text{SRSWOR}}
+\end{eqnarray}
+So if we want to find the sample sizes at which the variances
+in the design of interest and SRSWOR are equal, then we set
+\begin{eqnarray}
+   V_\text{design} &=& V_\text{SRSWOR}\\
+   \frac{c_\text{design}}{n_\text{design}} &=& \frac{c_\text{SRSWOR}}{n_\text{SRSWOR}}\\
+   n_\text{design} &=& \frac{c_\text{design}}{c_\text{SRSWOR}}n_\text{SRSWOR}\\
+                   &=& \bfa{Deff}{\widehat{T}_\text{design}} n_\text{SRSWOR}
+\end{eqnarray}
+This means that a rough way to compute the sample size required in a complex design
+is to first calculate the sample size we'd need in SRSWOR, and then scale it by
+the Deff for the complex design.
+
+If the Deff is 2 (as it may be in a cluster design for example), then we need twice
+the sample size an SRSWOR would need in order to achieve the same standard error.
 
 ## Computing the Required Sample Size
 

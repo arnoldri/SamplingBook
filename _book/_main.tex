@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-13}
+\date{2026-04-14}
 
 \begin{document}
 \maketitle
@@ -169,13 +169,6 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(haven)}
-\FunctionTok{library}\NormalTok{(dplyr)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## 
 ## Attaching package: 'dplyr'
@@ -193,13 +186,6 @@
 ##     intersect, setdiff, setequal, union
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(ggplot2)}
-\FunctionTok{library}\NormalTok{(kableExtra)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## 
 ## Attaching package: 'kableExtra'
@@ -210,12 +196,6 @@
 ## 
 ##     group_rows
 \end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(survey)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{verbatim}
 ## Loading required package: grid
@@ -240,12 +220,6 @@
 ##     dotchart
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(srvyr)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## 
 ## Attaching package: 'srvyr'
@@ -263,12 +237,6 @@
 ##     filter
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(sampling)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ## 
 ## Attaching package: 'sampling'
@@ -279,13 +247,6 @@
 ## 
 ##     cluster, strata
 \end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#library(gtsummary) \# error installing/loading this}
-\FunctionTok{library}\NormalTok{(mice)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{verbatim}
 ## 
@@ -303,14 +264,6 @@
 ## 
 ##     cbind, rbind
 \end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\#library(simputation) \# error installing/loading this}
-\FunctionTok{library}\NormalTok{(scales)}
-\FunctionTok{source}\NormalTok{(}\StringTok{"utils.R"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \chapter{Introductory Remarks}\label{introductory-remarks}
 
@@ -4410,6 +4363,16 @@ how much the world is spending.
 ## MilSpend 1.1199e+13 5.3452e+12 1.096
 \end{verbatim}
 
+\begin{quote}
+The estimation of the \textbf{total} of a variable is only something
+that makes sense in a finite population, and is a type of estimate
+that is rarely found anywhere outside sample survey analysis.
+
+It is frequently of interest in Official (i.e.~government) statistics
+that we want to estimate the total number of people with a certain characteristic,
+or the total amount of a commodity being exported, or total export earnings.
+\end{quote}
+
 Note again that in a with replacement design we can't apply the finite
 population correction.
 
@@ -4432,9 +4395,14 @@ Specify this design
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{schools.stsrs.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Education\_Region, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Nh,}
-                               \AttributeTok{data=}\NormalTok{schools.stsrs)}
+                               \AttributeTok{data=}\NormalTok{schools.stsrs,}
+                               \AttributeTok{survey.lonely.psu=}\StringTok{"remove"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+Note that we've included the option \texttt{survey.lonely.psu="remove"} to mean
+that the estimation of standard errors doesn't fail if a stratum only has a single
+PSU.
 
 We can now return to estimating the mean school size
 
@@ -4498,43 +4466,692 @@ when sample sizes are small. But do notice that we have a Deff\textless1 here
 for the stratified sample of \(n=60\) units, and the SE is lower than
 that achieved in the SRSWOR of \(n=60\) units above.
 
+\section{One stage cluster design (1SC)}\label{one-stage-cluster-design-1sc}
+
+A one stage cluster design takes \(n=10\) Territorial Authority areas (TAs) at random
+and selects all schools in each selected TA.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# 1SC}
 \NormalTok{schools}\FloatTok{.1}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.1sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
-\CommentTok{\# 2SC}
-\NormalTok{schools}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
-                                     \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
-\CommentTok{\# ST2SC}
-\NormalTok{schools.st2sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.st2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{,}
-                                \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
+We need a column \texttt{bigN} which gives the number of TAs in the population.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools}\FloatTok{.1}\NormalTok{sc.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority, }\AttributeTok{data=}\NormalTok{schools}\FloatTok{.1}\NormalTok{sc, }
+                             \AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools}\FloatTok{.1}\NormalTok{sc.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE   DEff
+## Total 287.197  43.829 5.7634
+\end{verbatim}
+
+The Deff of this one stage cluster sample is bad (much larger than 1) - this is due to
+strong differences between TAs in the mean school size. The more the clusters differ from
+each other on the characteristic of interest, the worse the Deff gets.
+
+\section{Two stage cluster design (2SC)}\label{two-stage-cluster-design-2sc}
+
+A two stage cluster design takes \(n=10\) Territorial Authority areas (TAs) at random
+and selects 20\% of the schools in each selected TA.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+                                     \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We need a column \texttt{bigN1} which gives the number of TAs in the population, and
+\texttt{bigN2} which is the number of schools in each TA. We also need to specify names
+of unique identifiers of the first stage units (the PSUs: these are Territorial Authorities)
+and the second stage units (the SSUs: these are Schools).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority}\SpecialCharTok{+}\NormalTok{School\_Id, }\AttributeTok{data=}\NormalTok{schools}\FloatTok{.2}\NormalTok{sc, }
+                             \AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN1}\SpecialCharTok{+}\NormalTok{bigN2,}
+                             \AttributeTok{survey.lonely.psu=}\StringTok{"remove"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE   DEff
+## Total 486.981  84.261 2.1739
+\end{verbatim}
+
+\section{Stratified two stage cluster design}\label{stratified-two-stage-cluster-design}
+
+Finally here is a stratified two stage sample of schools within TA's with Regions.
+The Regions are strata, the TAs are clusters within the Regions, and then 20\% of
+schools are sampled in the selected TAs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.st2sc }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.st2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{30}\NormalTok{, }\AttributeTok{stratumvar=}\StringTok{"Region"}\NormalTok{, }\AttributeTok{allocation=}\StringTok{"proportional"}\NormalTok{,}
+                                         \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The design is the same as the two stage cluster sample, except we add the stratum specification.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools.st2sc.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority}\SpecialCharTok{+}\NormalTok{School\_Id, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Region, }\AttributeTok{data=}\NormalTok{schools.st2sc, }
+                               \AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN1}\SpecialCharTok{+}\NormalTok{bigN2,}
+                               \AttributeTok{survey.lonely.psu=}\StringTok{"remove"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools.st2sc.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE  DEff
+## Total 295.326  25.898 1.248
+\end{verbatim}
+
 \chapter{Survey Analysis}\label{survey-analysis}
 
-Key functions
+With the ability to load a survey dataset and specify its survey design
+we're now ready to do some analysis.
 
-Survey design
-svydesign()
-and summary()
+We'll use the \texttt{api} dataset which comes with the survey package: it's a
+set of observations of the Academic Performance Index (API) on all
+California Schools with at least 100 students in the years 1999 and 2000.
 
-Estimation
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(api)}
+\end{Highlighting}
+\end{Shaded}
 
-Continuous variables
-svymean()
-svytotal()
-svytable()
+In particular we'll use the \texttt{apiclus2} dataset, which is a two stage
+cluster sample of 126 schools drawn from the population of 6194.
+The top 10 rows of the data set and some of the key variables are shown below.
 
-confint() for confidence intervals
-cv() for RSE's
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apiclus2}\SpecialCharTok{$}\NormalTok{stype }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype, }\AttributeTok{levels=}\FunctionTok{c}\NormalTok{(}\StringTok{"E"}\NormalTok{,}\StringTok{"M"}\NormalTok{,}\StringTok{"H"}\NormalTok{))}
+\FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Elementary"}\NormalTok{,}\StringTok{"Middle"}\NormalTok{,}\StringTok{"High"}\NormalTok{)}
+
+\NormalTok{apiclus2 }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(cds, stype, name, dnum, cnum, api99, api00) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kable\_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|l|r|r|r|r}
+\hline
+cds & stype & name & dnum & cnum & api99 & api00\\
+\hline
+31667796031017 & Elementary & Alta-Dutch Flat & 15 & 30 & 785 & 821\\
+\hline
+55751846054837 & Elementary & Tenaya Elementa & 63 & 54 & 718 & 773\\
+\hline
+41688746043517 & Elementary & Panorama Elemen & 83 & 40 & 632 & 600\\
+\hline
+41688746043509 & Middle & Lipman Middle & 83 & 40 & 740 & 740\\
+\hline
+41688746043491 & Elementary & Brisbane Elemen & 83 & 40 & 711 & 716\\
+\hline
+40687266042998 & Elementary & Cayucos Element & 117 & 39 & 779 & 811\\
+\hline
+20651936023881 & Elementary & Fuller (Merle L & 132 & 19 & 432 & 472\\
+\hline
+20651936023931 & Elementary & Fairmead Elemen & 132 & 19 & 494 & 520\\
+\hline
+20651936023907 & Middle & Wilson Elementa & 132 & 19 & 589 & 568\\
+\hline
+06615980631259 & High & Colusa High & 152 & 5 & 585 & 591\\
+\hline
+\end{tabular}
+\end{table}
+
+The full set of variables in the dataset is:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Variable & Description\\
+\hline
+cds & Unique identifier\\
+\hline
+stype & Elementary/Middle/High School\\
+\hline
+name & School name (15 characters)\\
+\hline
+sname & School name (40 characters)\\
+\hline
+snum & School number\\
+\hline
+dname & District name\\
+\hline
+dnum & District number\\
+\hline
+cname & County name\\
+\hline
+cnum & County number\\
+\hline
+flag & reason for missing data\\
+\hline
+pcttest & percentage of students tested\\
+\hline
+api00 & API in 2000\\
+\hline
+api99 & API in 1999\\
+\hline
+target & target for change in API\\
+\hline
+growth & Change in API\\
+\hline
+sch.wide & Met school-wide growth target?\\
+\hline
+comp.imp & Met Comparable Improvement target\\
+\hline
+both & Met both targets\\
+\hline
+awards & Eligible for awards program\\
+\hline
+meals & Percentage of students eligible for subsidized meals\\
+\hline
+ell & ‘English Language Learners’ (percent)\\
+\hline
+yr.rnd & Year-round school\\
+\hline
+mobility & percentage of students for whom this is the first year at the school\\
+\hline
+acs.k3 & average class size years K-3\\
+\hline
+acs.46 & average class size years 4-6\\
+\hline
+acs.core & Number of core academic courses\\
+\hline
+pct.resp & percent where parental education level is known\\
+\hline
+not.hsg & percent parents not high-school graduates\\
+\hline
+hsg & percent parents who are high-school graduates\\
+\hline
+some.col & percent parents with some college\\
+\hline
+col.grad & percent parents with college degree\\
+\hline
+grad.sch & percent parents with postgraduate education\\
+\hline
+avg.ed & average parental education level\\
+\hline
+full & percent fully qualified teachers\\
+\hline
+emer & percent teachers with emergency qualifications\\
+\hline
+enroll & number of students enrolled\\
+\hline
+api.stu & number of students tested.\\
+\hline
+\end{tabular}
+\end{table}
+
+The \texttt{apiclus2} dataset was drawn by taking a sample of districts (labelled by district number \texttt{dnum}),
+and then a sample of schools within districts (schools are labelled by their school number \texttt{snum}).\\
+The column \texttt{fpc1} contains the number of districts (757), and the column \texttt{fpc2} contains the
+number of schools in each district (which varies by district).
+
+We can specify this two stage cluster design using
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apiclus2.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{ids=}\SpecialCharTok{\textasciitilde{}}\NormalTok{dnum}\SpecialCharTok{+}\NormalTok{snum, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{fpc1}\SpecialCharTok{+}\NormalTok{fpc2, }\AttributeTok{data=}\NormalTok{apiclus2)}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{summary()} function tells us the basics of the design we've just specified:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 2 - level Cluster Sampling design
+## With (40, 126) clusters.
+## svydesign(ids = ~dnum + snum, fpc = ~fpc1 + fpc2, data = apiclus2)
+## Probabilities:
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.003669 0.037743 0.052840 0.042390 0.052840 0.052840 
+## Population size (PSUs): 757 
+## Data variables:
+##  [1] "cds"      "stype"    "name"     "sname"    "snum"     "dname"   
+##  [7] "dnum"     "cname"    "cnum"     "flag"     "pcttest"  "api00"   
+## [13] "api99"    "target"   "growth"   "sch.wide" "comp.imp" "both"    
+## [19] "awards"   "meals"    "ell"      "yr.rnd"   "mobility" "acs.k3"  
+## [25] "acs.46"   "acs.core" "pct.resp" "not.hsg"  "hsg"      "some.col"
+## [31] "col.grad" "grad.sch" "avg.ed"   "full"     "emer"     "enroll"  
+## [37] "api.stu"  "pw"       "fpc1"     "fpc2"
+\end{verbatim}
+
+We can see that from the summary that \(n=40\) districts were sampled (out of \(N=757\)).
+Let's count the number of schools sampled per district. We'll just display the top 15 largest
+districts:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{apiclus2 }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(dnum,dname) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{Mi=}\FunctionTok{first}\NormalTok{(fpc2),}\AttributeTok{mi=}\FunctionTok{n}\NormalTok{()) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Mi)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n=}\DecValTok{15}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"dnum"}\NormalTok{,}\StringTok{"District Name"}\NormalTok{,}\StringTok{"$M\_i$"}\NormalTok{,}\StringTok{"$m\_i$"}\NormalTok{),}\AttributeTok{escape=}\ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l|r|r}
+\hline
+dnum & District Name & $M_i$ & $m_i$\\
+\hline
+620 & Sacramento City Unified & 72 & 5\\
+\hline
+570 & Pomona Unified & 36 & 5\\
+\hline
+575 & Poway Unified & 28 & 5\\
+\hline
+638 & San Lorenzo Unified & 14 & 5\\
+\hline
+200 & El Centro Elementary & 11 & 5\\
+\hline
+731 & Sylvan Union Elementary & 9 & 5\\
+\hline
+596 & Rincon Valley Union Elem & 7 & 5\\
+\hline
+639 & San Lorenzo Valley Unif & 7 & 5\\
+\hline
+781 & Walnut Creek Elementary & 6 & 5\\
+\hline
+295 & Healdsburg Unified & 5 & 5\\
+\hline
+403 & Los Gatos Union Elem & 5 & 5\\
+\hline
+480 & Natomas Unified & 5 & 5\\
+\hline
+534 & Palo Verde Unified & 5 & 5\\
+\hline
+549 & Piedmont City Unified & 5 & 5\\
+\hline
+173 & Del Mar Union Elementary & 4 & 4\\
+\hline
+\end{tabular}
+\end{table}
+
+After the 10 largest districts a census of schools is taken in each selected
+district \(m_i=M_i\)
+
+\section{Continous variables}\label{continous-variables}
+
+Consider the key outcome variable `api00``, the API score in the year
+2000 for each school.
+
+\subsection*{Display}\label{display}
+\addcontentsline{toc}{subsection}{Display}
+
+The basic workhorse for the display of numerical variables is the histogram
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyhist}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des, }\AttributeTok{prob=}\ConstantTok{FALSE}\NormalTok{,}
+        \AttributeTok{xlab=}\StringTok{"API Score (Year 2000)"}\NormalTok{, }
+        \AttributeTok{main=}\StringTok{"Weighted distribution of API (2000) scores"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-144-1} 
+
+}
+
+\caption{Weighted histogram of API (2000) scores}\label{fig:unnamed-chunk-144}
+\end{figure}
+
+Note that this histogram differs strongly from the simple histogram
+of the sample values:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{api00, }
+        \AttributeTok{xlab=}\StringTok{"API Score (Year 2000)"}\NormalTok{, }
+        \AttributeTok{main=}\StringTok{"Unweighted distribution of API (2000) scores"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-145-1} 
+
+}
+
+\caption{Unweighted histogram of API (2000) sample data}\label{fig:unnamed-chunk-145}
+\end{figure}
+
+a warning to us that with survey data we can go badly astray if we ignore
+the sample design.
+
+Boxplots are an alternative to histograms:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyboxplot}\NormalTok{(api00}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{design=}\NormalTok{apiclus2.des, }
+           \AttributeTok{ylab=}\StringTok{"API (2000)"}\NormalTok{, }\AttributeTok{main=}\StringTok{"API (2000) Scores"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-146-1} 
+
+}
+
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-146}
+\end{figure}
+
+\ldots{} especially if we want to display variables divided by a category:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyboxplot}\NormalTok{(api00}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des, }
+           \AttributeTok{xlab=}\StringTok{"School Type"}\NormalTok{,}
+           \AttributeTok{ylab=}\StringTok{"API (2000)"}\NormalTok{, }\AttributeTok{main=}\StringTok{"API (2000) Scores"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-147-1} 
+
+}
+
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-147}
+\end{figure}
+
+If we have two continuous variables we can plot them as a scatterplot, showing
+the weights of each observation:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyplot}\NormalTok{(api00}\SpecialCharTok{\textasciitilde{}}\NormalTok{api99, }\AttributeTok{design=}\NormalTok{apiclus2.des, }\AttributeTok{style=}\StringTok{"bubble"}\NormalTok{,}
+        \AttributeTok{xlab=}\StringTok{"API (1999)"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"API (2000)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-148-1} 
+
+}
+
+\caption{Distribution of API scores in 1999 and 2000}\label{fig:unnamed-chunk-148}
+\end{figure}
+
+\subsection*{Estimation}\label{estimation}
+\addcontentsline{toc}{subsection}{Estimation}
+
+We've already seen that we can estimate means using the \texttt{svymean()} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         mean     SE
+## api00 670.81 30.099
+\end{verbatim}
+
+We can do this for a set of separate variables, using a perhaps uninintuitive notation:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api99}\SpecialCharTok{+}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         mean     SE
+## api99 645.03 29.711
+## api00 670.81 30.099
+\end{verbatim}
+
+or for a variable split by categories by wrapping \texttt{svymean()} up inside a call to \texttt{svyby()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 stype    api00       se
+## Elementary Elementary 692.8104 29.92660
+## Middle         Middle 642.3520 45.09132
+## High             High 598.3407 17.69417
+\end{verbatim}
+
+If we want to test hypotheses about differences between groups one way is to use the regression
+framework
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{svyglm}\NormalTok{(api00}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## svyglm(formula = api00 ~ stype, design = apiclus2.des)
+## 
+## Survey design:
+## svydesign(ids = ~dnum + snum, fpc = ~fpc1 + fpc2, data = apiclus2)
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   692.81      29.93  23.150  < 2e-16 ***
+## stypeMiddle   -50.46      25.30  -1.994  0.05354 .  
+## stypeHigh     -94.47      28.21  -3.348  0.00188 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 17528.44)
+## 
+## Number of Fisher Scoring iterations: 2
+\end{verbatim}
+
+Here we can see that with Elementary as the reference level we
+get the same estimate of the mean API reported as the \texttt{(Intercept)}.
+We further see that there is no significant difference between Middle
+and Elementary Schools in mean API, but the mean API is significantly lower
+at High Schools compared to Elementary Schools.
+
+Regressions take of course take lots of variables into account, and
+we can apply familiar regression techniques to investigating
+conditional associations between predictors and a continuous outcome.
+
+A \textbf{dotchart} is a nice way of showing the estimated means and their confidence intervals:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\NormalTok{sc }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss)}
+\NormalTok{ns }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(sc)}
+\FunctionTok{dotchart}\NormalTok{(ss, }\AttributeTok{xlim=}\FunctionTok{range}\NormalTok{(sc), }\AttributeTok{xlab=}\StringTok{"Mean API (2000) Score"}\NormalTok{)}
+\FunctionTok{arrows}\NormalTok{(sc[,}\DecValTok{1}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, sc[,}\DecValTok{2}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, }\AttributeTok{angle=}\DecValTok{90}\NormalTok{, }\AttributeTok{code=}\DecValTok{3}\NormalTok{, }\AttributeTok{length=}\FloatTok{0.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
+
+}
+
+\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-153}
+\end{figure}
+
+We can estimate totals using the \texttt{svytotal()} function - for example
+we can estimate the total number of students enrolled at all schools in
+California:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svytotal}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, }\AttributeTok{design=}\NormalTok{apiclus2.des, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          total     SE
+## enroll 2639273 799638
+\end{verbatim}
+
+Although note that we have had to remove some schools with unknown
+\texttt{enroll} values by stating \texttt{na.rm=TRUE}, and these forced removals likely mean
+that our estimate of the total is an underestimate.
+
+Confidence intervals can be calculated using the \texttt{confint()} function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api99}\SpecialCharTok{+}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des), }\AttributeTok{level=}\FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          2.5 %   97.5 %
+## api99 586.8009 703.2670
+## api00 611.8188 729.8048
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(}\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               2.5 %   97.5 %
+## Elementary 634.1553 751.4655
+## Middle     553.9746 730.7294
+## High       563.6607 633.0206
+\end{verbatim}
+
+The standard errors can be directly extracted using \texttt{SE()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{SE}\NormalTok{(}\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 29.92660 45.09132 17.69417
+\end{verbatim}
+
+The \textbf{relative standard errors}, also known as \textbf{relative sampling errors}
+(RSEs) can be extracted by \texttt{cv()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cv}\NormalTok{(}\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Elementary     Middle       High 
+## 0.04319595 0.07019721 0.02957206
+\end{verbatim}
+
+RSEs are a useful measure of quality of estimates of quantities that are
+strictly positive, such as the API score.
+
+If we learned that the SE of an estimate (e.g.~the mean of \texttt{api00}) was
+30.1 we wouldn't be able to assess whether it
+was a good estimate or not without knowing that the value of the estimate
+was 670.81. A good way to assess the quality of
+an estimate is the SE of an estimate \(\widehat{T}\) as a proportion of
+the estimate \(\widehat{T}\):
+\[
+   \bfa{RSE}{\widehat{T}} = \frac{\bfa{SE}{\widehat{T}}}{\widehat{T}}
+\]
+For overall mean \texttt{api00} the RSE is
+\[
+   \bfa{RSE}{\widehat{\bar{Y}}} 
+   = \frac{30.1}{670.81} 
+   = 0.04
+\]
+This is a highly precise estimate: the SE is only 4.5\%
+of the value of the estimate.
+
+Good RSEs are only a few percent at most. Poor RSEs are larger than 10\%, and anything bigger
+than 20\% isn't really publishable.
+
+In general a standard deviation divided by a mean goes by the term
+\textbf{coefficient of variation} (CV), which is why the R function is
+called \texttt{cv()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cv}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            api00
+## api00 0.04486956
+\end{verbatim}
+
+\section{Categorical Variables}\label{categorical-variables}
+
+\subsection*{Display}\label{display-1}
+\addcontentsline{toc}{subsection}{Display}
+
+The most fundamental
+
+\subsection*{Estimation}\label{estimation-1}
+\addcontentsline{toc}{subsection}{Estimation}
 
 Categorical variables give proportions
 svymean()
 svytotal()
 svyciprop() for better confidence intervals
-
-svyby()
 
 Inference
 
@@ -4548,10 +5165,7 @@ svypredmeans()
 Display
 
 barplot()
-svyhist()
-svyboxplot()
-dotchart()
-svyplot()
+
 Data display and inference
 
 Analytic and jackknife methods
@@ -4584,13 +5198,65 @@ Calibration for unit non-response
 
 Imputation for item non-response
 
-\chapter*{References}\label{references}
-\addcontentsline{toc}{chapter}{References}
+\section{Replicate weights}\label{replicate-weights}
 
-\appendix
+Later in the course we'll see situations where non-response means that the
+weights from our sample design have to be adjusted (e.g.~by poststratification).
+When this happens the estimation methods associated with the sample designs above
+no longer work, and we have to resort to approximations.
 
+In such circumstances we often create multiple sets of weights in addition to the
+adjusted weights. These \textbf{replicate weights} are what are used to estimate the
+standard errors, and they have the advantage that they can create standard errors
+for a wider range of estimators than the usual means and totals.
 
-\chapter{Computing the Required Sample Size}\label{computing-the-required-sample-size}
+\textbf{Jacknife} weights are calculated by systematically deleting PSUs at the first
+stage of selection, and then scaling the weights on the remaining rows so that they
+still add up to the same total.
+
+\chapter{Designing Surveys}\label{designing-surveys}
+
+The design of surveys is a massive topic, and we can't cover much here.
+The key principle is that everything that is done in the design of a survey
+should be done to meet the Objectives (the research goals) of the survey. Nothing
+else matters.
+
+For our purposes calculation of the sample size required when designing
+a survey is the most significant single decision to make since it determines
+the standard errors for the survey estimates. In real life the decision
+about sample size is often severely constrained by available resources.
+
+\section{Another interpretation of the Deff}\label{another-interpretation-of-the-deff}
+
+Assume that for sample size \(n\) the variance of an estimator
+in a specific design has the approximate formula
+\[
+    \bfa{Var}{\widehat{T}_\text{design}} = \frac{c_\text{design}}{n}
+\]
+then using the definition of the Deff, the ratio of the variance with respect to
+SRSWOR, then
+\begin{eqnarray}
+   \bfa{Deff}{\widehat{T}_{\text{design}}} 
+       &=& \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{\bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}\\
+       &=& \frac{c_\text{design}/n}{c_\text{SRSWOR}/n}\\ 
+       &=& \frac{c_\text{design}}{c_\text{SRSWOR}}
+\end{eqnarray}
+So if we want to find the sample sizes at which the variances
+in the design of interest and SRSWOR are equal, then we set
+\begin{eqnarray}
+   V_\text{design} &=& V_\text{SRSWOR}\\
+   \frac{c_\text{design}}{n_\text{design}} &=& \frac{c_\text{SRSWOR}}{n_\text{SRSWOR}}\\
+   n_\text{design} &=& \frac{c_\text{design}}{c_\text{SRSWOR}}n_\text{SRSWOR}\\
+                   &=& \bfa{Deff}{\widehat{T}_\text{design}} n_\text{SRSWOR}
+\end{eqnarray}
+This means that a rough way to compute the sample size required in a complex design
+is to first calculate the sample size we'd need in SRSWOR, and then scale it by
+the Deff for the complex design.
+
+If the Deff is 2 (as it may be in a cluster design for example), then we need twice
+the sample size an SRSWOR would need in order to achieve the same standard error.
+
+\section{Computing the Required Sample Size}\label{computing-the-required-sample-size}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -4645,6 +5311,16 @@ Imputation for item non-response
   (If non-response is likely to vary between strata, then apply this correction
   to \(n_2\), within each stratum.)
 \end{enumerate}
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\appendix
+
+
+\chapter{Placeholder Appendix}\label{placeholder-appendix}
+
+Nothing to see here.
 
 \bibliography{book.bib,packages.bib}
 

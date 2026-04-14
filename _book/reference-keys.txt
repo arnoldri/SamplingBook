@@ -28,6 +28,12 @@ tab:unnamed-chunk-78
 fig:stsrs
 fig:1SC
 fig:2SC
+fig:unnamed-chunk-144
+fig:unnamed-chunk-145
+fig:unnamed-chunk-146
+fig:unnamed-chunk-147
+fig:unnamed-chunk-148
+fig:unnamed-chunk-153
 introductory-remarks
 lecture-plan
 recommended-reading
@@ -73,7 +79,11 @@ one-stage-cluster-design-1sc
 two-stage-cluster-design-2sc
 stratified-two-stage-cluster-design
 survey-analysis
+continous-variables
+categorical-variables
 missing-data
+replicate-weights
 designing-surveys
-design-variables
+another-interpretation-of-the-deff
 computing-the-required-sample-size
+placeholder-appendix

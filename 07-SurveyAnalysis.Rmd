@@ -8,28 +8,249 @@ $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
 $\\newcommand{\\estm}{\\widehat}$'`
 
-Key functions
+With the ability to load a survey dataset and specify its survey design
+we're now ready to do some analysis.  
 
-Survey design
-svydesign()
-and summary()
+We'll use the `api` dataset which comes with the survey package: it's a
+set of observations of the Academic Performance Index (API) on all 
+California Schools with at least 100 students in the years 1999 and 2000.  
+```{r}
+data(api)
+```
 
-Estimation
+```{r echo=FALSE}
+apivarnames <- read.csv("data/apivarnames.csv")
+```
 
-Continuous variables
-svymean()
-svytotal()
-svytable()
+In particular we'll use the `apiclus2` dataset, which is a two stage
+cluster sample of 126 schools drawn from the population of 6194.
+The top 10 rows of the data set and some of the key variables are shown below.
+```{r}
+apiclus2$stype <- factor(apiclus2$stype, levels=c("E","M","H"))
+levels(apiclus2$stype) <- c("Elementary","Middle","High")
 
-confint() for confidence intervals
-cv() for RSE's
+apiclus2 |>
+  slice_head(n=10) |>
+  select(cds, stype, name, dnum, cnum, api99, api00) |>
+  kbl() |>
+  kable_styling()
+```
+
+The full set of variables in the dataset is:
+```{r echo=FALSE}
+apivarnames |>
+  kbl(col.names=c("Variable","Description")) |>
+  kable_styling(full_width=FALSE)
+```
+
+The `apiclus2` dataset was drawn by taking a sample of districts (labelled by district number `dnum`),
+and then a sample of schools within districts (schools are labelled by their school number `snum`).  
+The column `fpc1` contains the number of districts (757), and the column `fpc2` contains the
+number of schools in each district (which varies by district).
+
+We can specify this two stage cluster design using
+```{r}
+apiclus2.des <- svydesign(ids=~dnum+snum, fpc=~fpc1+fpc2, data=apiclus2)
+```
+
+The `summary()` function tells us the basics of the design we've just specified:
+```{r}
+summary(apiclus2.des)
+```
+
+We can see that from the summary that $n=40$ districts were sampled (out of $N=757$).
+Let's count the number of schools sampled per district.  We'll just display the top 15 largest 
+districts:
+```{r message=FALSE}
+apiclus2 |>
+  group_by(dnum,dname) |>
+  summarise(Mi=first(fpc2),mi=n()) |>
+  ungroup() |>
+  arrange(desc(Mi)) |>
+  slice_head(n=15) |>
+  kbl(col.names=c("dnum","District Name","$M_i$","$m_i$"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+After the 10 largest districts a census of schools is taken in each selected
+district $m_i=M_i$
+
+## Continous variables
+
+Consider the key outcome variable `api00``, the API score in the year
+2000 for each school.  
+
+### Display {-}
+
+The basic workhorse for the display of numerical variables is the histogram
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Weighted histogram of API (2000) scores"
+svyhist(~api00, design=apiclus2.des, prob=FALSE,
+        xlab="API Score (Year 2000)", 
+        main="Weighted distribution of API (2000) scores")
+```
+
+Note that this histogram differs strongly from the simple histogram
+of the sample values:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Unweighted histogram of API (2000) sample data"
+hist(apiclus2$api00, 
+        xlab="API Score (Year 2000)", 
+        main="Unweighted distribution of API (2000) scores")
+```
+a warning to us that with survey data we can go badly astray if we ignore 
+the sample design.
+
+Boxplots are an alternative to histograms:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API (2000) sample data"
+svyboxplot(api00~1, design=apiclus2.des, 
+           ylab="API (2000)", main="API (2000) Scores")
+```
+
+... especially if we want to display variables divided by a category: 
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API (2000) sample data"
+svyboxplot(api00~stype, design=apiclus2.des, 
+           xlab="School Type",
+           ylab="API (2000)", main="API (2000) Scores")
+```
+
+If we have two continuous variables we can plot them as a scatterplot, showing
+the weights of each observation:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API scores in 1999 and 2000"
+svyplot(api00~api99, design=apiclus2.des, style="bubble",
+        xlab="API (1999)", ylab="API (2000)")
+```
+
+### Estimation {-}
+
+We've already seen that we can estimate means using the `svymean()` function.
+```{r}
+svymean(~api00, design=apiclus2.des)
+```
+We can do this for a set of separate variables, using a perhaps uninintuitive notation:
+```{r}
+svymean(~api99+api00, design=apiclus2.des)
+```
+or for a variable split by categories by wrapping `svymean()` up inside a call to `svyby()`
+```{r}
+svyby(~api00, by=~stype, svymean, design=apiclus2.des)
+```
+
+If we want to test hypotheses about differences between groups one way is to use the regression
+framework
+```{r}
+summary(svyglm(api00~stype, design=apiclus2.des))
+```
+Here we can see that with Elementary as the reference level we 
+get the same estimate of the mean API reported as the `(Intercept)`.
+We further see that there is no significant difference between Middle
+and Elementary Schools in mean API, but the mean API is significantly lower
+at High Schools compared to Elementary Schools.
+
+Regressions take of course take lots of variables into account, and
+we can apply familiar regression techniques to investigating 
+conditional associations between predictors and a continuous outcome. 
+
+A **dotchart** is a nice way of showing the estimated means and their confidence intervals:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Mean API (2000) scores by School Type"
+ss <- svyby(~api00, by=~stype, svymean, design=apiclus2.des)
+sc <- confint(ss)
+ns <- nrow(sc)
+dotchart(ss, xlim=range(sc), xlab="Mean API (2000) Score")
+arrows(sc[,1], 1:ns, sc[,2], 1:ns, angle=90, code=3, length=0.1)
+```
+
+We can estimate totals using the `svytotal()` function - for example
+we can estimate the total number of students enrolled at all schools in 
+California:
+```{r}
+svytotal(~enroll, design=apiclus2.des, na.rm=TRUE)
+```
+Although note that we have had to remove some schools with unknown
+`enroll` values by stating `na.rm=TRUE`, and these forced removals likely mean 
+that our estimate of the total is an underestimate.
+
+Confidence intervals can be calculated using the `confint()` function
+```{r}
+confint(svymean(~api99+api00, design=apiclus2.des), level=0.95)
+```
+
+```{r}
+confint(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+
+The standard errors can be directly extracted using `SE()`
+```{r}
+SE(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+The **relative standard errors**, also known as **relative sampling errors** 
+(RSEs) can be extracted by `cv()`:
+```{r}
+cv(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+RSEs are a useful measure of quality of estimates of quantities that are 
+strictly positive, such as the API score.
+
+```{r echo=FALSE}
+ss <- svymean(~api00, design=apiclus2.des)
+cc <- cv(ss)
+```
+
+If we learned that the SE of an estimate (e.g. the mean of `api00`) was 
+`r round(as.numeric(SE(ss)),2)` we wouldn't be able to assess whether it 
+was a good estimate or not without knowing that the value of the estimate
+was `r round(as.numeric(ss),2)`.  A good way to assess the quality of 
+an estimate is the SE of an estimate $\widehat{T}$ as a proportion of 
+the estimate $\widehat{T}$:
+\[
+   \bfa{RSE}{\widehat{T}} = \frac{\bfa{SE}{\widehat{T}}}{\widehat{T}}
+\]
+For overall mean `api00` the RSE is
+\[
+   \bfa{RSE}{\widehat{\bar{Y}}} 
+   = \frac{`r round(as.numeric(SE(ss)),2)`}{`r round(as.numeric(ss),2)`} 
+   = `r round(as.numeric(cc),3)`
+\]
+This is a highly precise estimate: the SE is only `r round(100*as.numeric(cc),1)`%
+of the value of the estimate.
+
+Good RSEs are only a few percent at most. Poor RSEs are larger than 10%, and anything bigger
+than 20% isn't really publishable.
+
+In general a standard deviation divided by a mean goes by the term
+**coefficient of variation** (CV), which is why the R function is 
+called `cv()`.
+```{r}
+cv(svymean(~api00, design=apiclus2.des))
+```
+
+## Categorical Variables
+
+### Display {-}
+
+The most fundamental
+
+### Estimation {-}
 
 Categorical variables give proportions
 svymean()
 svytotal()
 svyciprop() for better confidence intervals
-
-svyby()
 
 Inference
 
@@ -43,10 +264,7 @@ svypredmeans()
 Display
 
 barplot()
-svyhist()
-svyboxplot()
-dotchart()
-svyplot()
+
 Data display and inference
 
 Analytic and jackknife methods
