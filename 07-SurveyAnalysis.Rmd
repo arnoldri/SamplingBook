@@ -139,7 +139,16 @@ We've already seen that we can estimate means using the `svymean()` function.
 ```{r}
 svymean(~api00, design=apiclus2.des)
 ```
-We can do this for a set of separate variables, using a perhaps uninintuitive notation:
+The `jtools` package allows us to estimate the population standard deviation too
+```{r}
+library(jtools)
+svysd(~api00, design=apiclus2.des)
+
+```
+(Pause a minute and remind yourself of the difference between a standard deviation and
+a standard error.)
+
+We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:
 ```{r}
 svymean(~api99+api00, design=apiclus2.des)
 ```
@@ -147,21 +156,6 @@ or for a variable split by categories by wrapping `svymean()` up inside a call t
 ```{r}
 svyby(~api00, by=~stype, svymean, design=apiclus2.des)
 ```
-
-If we want to test hypotheses about differences between groups one way is to use the regression
-framework
-```{r}
-summary(svyglm(api00~stype, design=apiclus2.des))
-```
-Here we can see that with Elementary as the reference level we 
-get the same estimate of the mean API reported as the `(Intercept)`.
-We further see that there is no significant difference between Middle
-and Elementary Schools in mean API, but the mean API is significantly lower
-at High Schools compared to Elementary Schools.
-
-Regressions take of course take lots of variables into account, and
-we can apply familiar regression techniques to investigating 
-conditional associations between predictors and a continuous outcome. 
 
 A **dotchart** is a nice way of showing the estimated means and their confidence intervals:
 ```{r}
@@ -175,7 +169,31 @@ dotchart(ss, xlim=range(sc), xlab="Mean API (2000) Score")
 arrows(sc[,1], 1:ns, sc[,2], 1:ns, angle=90, code=3, length=0.1)
 ```
 
-We can estimate totals using the `svytotal()` function - for example
+If we want to test statistical hypotheses about differences between groups
+one way is to use the regression framework
+```{r}
+summary(svyglm(api00~stype, design=apiclus2.des))
+```
+Here we can see that with Elementary as the reference level we 
+get the same estimate of the mean API reported as the `(Intercept)`.
+We further see that there is no significant difference between Middle
+and Elementary Schools in mean API, but the mean API is significantly lower
+at High Schools compared to Elementary Schools.
+
+Regressions take of course take lots of variables into account, and
+we can apply familiar regression techniques to investigating 
+conditional associations between predictors and a continuous outcome. 
+
+For example we can test whether the percentage of children at a school
+who have free school meals (i.e. the `meals` variable) associates with the 
+API score:
+```{r}
+summary(svyglm(api00~stype+meals, design=apiclus2.des))
+```
+... and there is indeed a strong negative association: the higher the
+`meals` value the lower the API score.
+
+We can estimate **totals** using the `svytotal()` function - for example
 we can estimate the total number of students enrolled at all schools in 
 California:
 ```{r}
@@ -241,36 +259,144 @@ cv(svymean(~api00, design=apiclus2.des))
 
 ## Categorical Variables
 
-### Display {-}
+The workhorse display for categorical variables is the barplot, 
+showing **proportions** in categories.  Proportions are first calculated
+using the `svymean()` function:
+```{r}
+#| fig.cap="Estimates of the proportions of Schools of each type",
+#| fig.align="center",
+#| fig.width=5
+barplot(svymean(~stype, design=apiclus2.des),
+        names=levels(apiclus2$stype),
+        xlab="School Type", ylab="Proportion")
+```
 
-The most fundamental
+```{r}
+svymean(~stype, design=apiclus2.des)
+```
 
-### Estimation {-}
+It's worth pausing to recognise that a proportion is a mean of a special
+type of variable called an **indicator variable**: it takes the value 1 if
+the observation is a member of specific category and 0 if not.  Add up all the ones 
+and zeroes and you get the number of observations in the category, and divide
+by the number of observations you get a proportion.
+\[
+    p = \frac{1 + 0 + 1 + 1 + 0 + 0 + ....}{n} = \frac{1}{n}\sum_{i=1}^n Y_i
+\]
+where $Y_i$ is an indicator variable.
 
-Categorical variables give proportions
-svymean()
-svytotal()
-svyciprop() for better confidence intervals
+With sample data we calculate **weighted sums** though:
+\[
+   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i} = \frac{\widehat{Y}}{\widehat{N}}
+\]
+where the top line of this fraction is $\widehat{Y}$, our estimate of the
+number of individuals (in a finite population) who belong to the category of
+interest.  The bottom line is $\widehat{N}$, the estimated size of the population.
+$\widehat{N}$ is exact in some designs (e.g. SRSWOR, or Stratified SRSWOR), but
+is approximate in other designs (especially cluster designs).  
 
-Inference
+These total estimates within categories can be estimated using the `svytotal()`
+function.  
+```{r}
+svytotal(~stype, design=apiclus2.des)
+```
 
-svychisq()
-svytest()
-svyranktest()
-svyglm()
-regTermTest()
-svypredmeans()
+When creating barplots of estimated proportions and/or totals 
+we really should indicate the uncertainties in our
+estimates, and show confidence intervals on the bars.  We can use the standard
+errors provided by `svymean()` and `svytotal()`: the function `confint()` 
+will provide these:
+```{r}
+confint(svytotal(~stype, design=apiclus2.des))
+```
+These confidence intervals are symmetric about the point estimates:
+```{r}
+#| fig.cap="Estimated proportions of schools by school type - with symmetric confidence intervals",
+#| fig.width=5,
+#| fig.align="center"
+ss <- svymean(~stype, design=apiclus2.des)
+ci <- confint(ss)
+bp <- barplot(ss, xlab="School Type", ylab="Estimated Size",
+              names=levels(apiclus2$stype),
+              ylim=c(0,max(ci)))
+arrows(bp, ci[,1], bp, ci[,2], angle=90, length=0.2, code=3)
+```
 
-Display
+```{r tabci.symmetric}
+names(ss) <- levels(apiclus2$stype)
+cbind(as.numeric(ss),ci) |>
+  kbl(col.names=c("Estimate","2.5%","97.5%"), 
+      digits=3,
+      caption="Symmetric confidence interval estimates") |>
+  kable_styling(full_width=FALSE)
+```
 
-barplot()
+These symmetric intervals are actually somewhat unrealistic, because 
+`confint()` doesn't know it's dealing with indicator variables, and
+doesn't take into account the fact that proportions and totals can't go 
+negative.  
 
-Data display and inference
+A better method of constructing confidence intervals is the special
+function `svyciprop()`: 
+```{r}
+svyciprop(~I(stype=="Elementary"), design=apiclus2.des)
+```
+Note that we've had to create an indicator variable here using the `I()`
+function for just one level in order to calculate its confidence interval.
 
-Analytic and jackknife methods
+To get a confidence interval proportion for every level of a factor 
+it's somewhat fiddly with the raw `survey` package:
+```{r}
+#| fig.cap="Estimated proportions of schools by school type - with asymmetric confidence intervals",
+#| fig.width=5,
+#| fig.align="center"
+ss <- svymean(~stype, design=apiclus2.des)
+ci <- t(sapply(levels(apiclus2$stype),
+       function(stypelevel) {
+          form <- eval(parse(text=paste0("formula(~I(stype==\"",stypelevel,"\"))")))
+          confint(svyciprop(form, design=apiclus2.des))    
+       }))
+bp <- barplot(ss, xlab="School Type", ylab="Estimated Size",
+              names=levels(apiclus2$stype),
+              ylim=c(0,max(ci)))
+arrows(bp, ci[,1], bp, ci[,2], angle=90, length=0.2, code=3)
+```
+```{r tabci.asymmetric}
+names(ss) <- levels(apiclus2$stype)
+cbind(as.numeric(ss),ci) |>
+  kbl(col.names=c("Estimate","2.5%","97.5%"), 
+      digits=3,
+      caption="Asymmetric confidence interval estimates") |>
+  kable_styling(full_width=FALSE)
+```
 
-* SRSWOR, SRSWR
-* Stratified designs
-* Cluster designs
-* PPSWR
-* Complex designs
+The biggest thing to notice is that the confidence interval for "High"
+is now asymmetric: it's longer on the high side that the low side, and
+more correctly represents our uncertainty.  The estimates for "Elementary"
+and "Middle" are essentially unchanged.
+
+For **crosstabulations** we can use `svytable()`, which gives weighted
+counts in categories - e.g. of whether School Wide growth targest had been met
+```{r}
+svytable(~stype+sch.wide, design=apiclus2.des)
+```
+A test of association is given by the weighted Chi-Square test
+```{r}
+svychisq(~stype+sch.wide, design=apiclus2.des)
+```
+We can carry out a logistic regression to make a similar test of association.  
+We have `sch.wide` as the binary outcome variable and `stype` as the predictor:
+```{r}
+summary(svyglm(I(sch.wide=="Yes")~stype, family=quasibinomial(link="logit"), 
+               design=apiclus2.des))
+```
+
+With regular `lm()` and `glm()` regression fits we can use F tests to determine
+whether specific terms in the model should be included.  A similar test
+can be done to test for the inclusion of specific terms using `regTermTest` 
+```{r}
+sr <- svyglm(I(sch.wide=="Yes")~stype, family=quasibinomial(link="logit"), 
+               design=apiclus2.des)
+regTermTest(sr, ~stype)
+```
+Here we can see that `stype` is contributing significantly to the fit of the model. 

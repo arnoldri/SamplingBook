@@ -50,7 +50,7 @@ library(scales)
 source("utils.R")
 ```
 
-# Introductory Remarks
+# Introduction
 
 These are notes for the Sampling section of STAT395/455.  The course
 overlaps to some extent with STAT392/439, but there is a greater 
@@ -137,6 +137,11 @@ There are lots of books on sample surveys.
  * Little and Rubin have a great book on missing data (@littlerubin)
  * More recent are the books by @lohr and @scheaffer.mendenhall.ott
  * And in 1994 StatsNZ published 'A Guide to Good Survey Design' (@statsnz)
+ * Notes from the STAT392 course on Sample Surveys 
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html
+ * A crash guide to using iNZight for sample surveys
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/iNZightManual/_book/index.html
+   (iNZight is free software, using the `survey` package in the back end.)
 
 And also
  

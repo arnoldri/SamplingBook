@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-14}
+\date{2026-04-17}
 
 \begin{document}
 \maketitle
@@ -265,7 +265,7 @@
 ##     cbind, rbind
 \end{verbatim}
 
-\chapter{Introductory Remarks}\label{introductory-remarks}
+\chapter{Introduction}\label{introduction}
 
 These are notes for the Sampling section of STAT395/455. The course
 overlaps to some extent with STAT392/439, but there is a greater
@@ -425,6 +425,13 @@ There are lots of books on sample surveys.
   More recent are the books by \citet{lohr} and \citet{scheaffer.mendenhall.ott}
 \item
   And in 1994 StatsNZ published `A Guide to Good Survey Design' (\citet{statsnz})
+\item
+  Notes from the STAT392 course on Sample Surveys
+  \url{https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html}
+\item
+  A crash guide to using iNZight for sample surveys
+  \url{https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/iNZightManual/_book/index.html}
+  (iNZight is free software, using the \texttt{survey} package in the back end.)
 \end{itemize}
 
 And also
@@ -4966,8 +4973,29 @@ or for a variable split by categories by wrapping \texttt{svymean()} up inside a
 ## High             High 598.3407 17.69417
 \end{verbatim}
 
-If we want to test hypotheses about differences between groups one way is to use the regression
-framework
+A \textbf{dotchart} is a nice way of showing the estimated means and their confidence intervals:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\NormalTok{sc }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss)}
+\NormalTok{ns }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(sc)}
+\FunctionTok{dotchart}\NormalTok{(ss, }\AttributeTok{xlim=}\FunctionTok{range}\NormalTok{(sc), }\AttributeTok{xlab=}\StringTok{"Mean API (2000) Score"}\NormalTok{)}
+\FunctionTok{arrows}\NormalTok{(sc[,}\DecValTok{1}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, sc[,}\DecValTok{2}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, }\AttributeTok{angle=}\DecValTok{90}\NormalTok{, }\AttributeTok{code=}\DecValTok{3}\NormalTok{, }\AttributeTok{length=}\FloatTok{0.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-152-1} 
+
+}
+
+\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-152}
+\end{figure}
+
+If we want to test statistical hypotheses about differences between groups
+one way is to use the regression framework
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5006,28 +5034,42 @@ Regressions take of course take lots of variables into account, and
 we can apply familiar regression techniques to investigating
 conditional associations between predictors and a continuous outcome.
 
-A \textbf{dotchart} is a nice way of showing the estimated means and their confidence intervals:
+For example we can test whether the percentage of children at a school
+who have free school meals (i.e.~the \texttt{meals} variable) associates with the
+API score:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, svymean, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
-\NormalTok{sc }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss)}
-\NormalTok{ns }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(sc)}
-\FunctionTok{dotchart}\NormalTok{(ss, }\AttributeTok{xlim=}\FunctionTok{range}\NormalTok{(sc), }\AttributeTok{xlab=}\StringTok{"Mean API (2000) Score"}\NormalTok{)}
-\FunctionTok{arrows}\NormalTok{(sc[,}\DecValTok{1}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, sc[,}\DecValTok{2}\NormalTok{], }\DecValTok{1}\SpecialCharTok{:}\NormalTok{ns, }\AttributeTok{angle=}\DecValTok{90}\NormalTok{, }\AttributeTok{code=}\DecValTok{3}\NormalTok{, }\AttributeTok{length=}\FloatTok{0.1}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{svyglm}\NormalTok{(api00}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype}\SpecialCharTok{+}\NormalTok{meals, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
+\begin{verbatim}
+## 
+## Call:
+## svyglm(formula = api00 ~ stype + meals, design = apiclus2.des)
+## 
+## Survey design:
+## svydesign(ids = ~dnum + snum, fpc = ~fpc1 + fpc2, data = apiclus2)
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  874.8638    16.4677  53.126  < 2e-16 ***
+## stypeMiddle  -60.9517    20.6964  -2.945  0.00563 ** 
+## stypeHigh   -169.2128    20.2618  -8.351 6.06e-10 ***
+## meals         -3.2367     0.2888 -11.209 2.70e-13 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 5560.106)
+## 
+## Number of Fisher Scoring iterations: 2
+\end{verbatim}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
+\ldots{} and there is indeed a strong negative association: the higher the
+\texttt{meals} value the lower the API score.
 
-}
-
-\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-153}
-\end{figure}
-
-We can estimate totals using the \texttt{svytotal()} function - for example
+We can estimate \textbf{totals} using the \texttt{svytotal()} function - for example
 we can estimate the total number of students enrolled at all schools in
 California:
 
@@ -5115,7 +5157,7 @@ For overall mean \texttt{api00} the RSE is
 \[
    \bfa{RSE}{\widehat{\bar{Y}}} 
    = \frac{30.1}{670.81} 
-   = 0.04
+   = 0.045
 \]
 This is a highly precise estimate: the SE is only 4.5\%
 of the value of the estimate.
@@ -5140,51 +5182,312 @@ called \texttt{cv()}.
 
 \section{Categorical Variables}\label{categorical-variables}
 
-\subsection*{Display}\label{display-1}
-\addcontentsline{toc}{subsection}{Display}
+The workhorse display for categorical variables is the barplot,
+showing \textbf{proportions} in categories. Proportions are first calculated
+using the \texttt{svymean()} function:
 
-The most fundamental
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{barplot}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des),}
+        \AttributeTok{names=}\FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype),}
+        \AttributeTok{xlab=}\StringTok{"School Type"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Proportion"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-\subsection*{Estimation}\label{estimation-1}
-\addcontentsline{toc}{subsection}{Estimation}
+\begin{figure}
 
-Categorical variables give proportions
-svymean()
-svytotal()
-svyciprop() for better confidence intervals
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-162-1} 
 
-Inference
+}
 
-svychisq()
-svytest()
-svyranktest()
-svyglm()
-regTermTest()
-svypredmeans()
+\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-162}
+\end{figure}
 
-Display
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
 
-barplot()
+\begin{verbatim}
+##                    mean     SE
+## stypeElementary 0.68118 0.0556
+## stypeMiddle     0.18450 0.0222
+## stypeHigh       0.13432 0.0567
+\end{verbatim}
 
-Data display and inference
+It's worth pausing to recognise that a proportion is a mean of a special
+type of variable called an \textbf{indicator variable}: it takes the value 1 if
+the observation is a member of specific category and 0 if not. Add up all the ones
+and zeroes and you get the number of observations in the category, and divide
+by the number of observations you get a proportion.
+\[
+    p = \frac{1 + 0 + 1 + 1 + 0 + 0 + ....}{n} = \frac{1}{n}\sum_{i=1}^n Y_i
+\]
+where \(Y_i\) is an indicator variable.
 
-Analytic and jackknife methods
+With sample data we calculate \textbf{weighted sums} though:
+\[
+   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i}
+\]
+where the top line of this fraction is \(\widehat{Y}\), our estimate of the
+number of individuals (in a finite population) who belong to the category of
+interest.
 
-\begin{itemize}
-\tightlist
-\item
-  SRSWOR, SRSWR
-\item
-  Stratified designs
-\item
-  Cluster designs
-\item
-  PPSWR
-\item
-  Complex designs
-\end{itemize}
+These total estimates within categories can be estimated using the \texttt{svytotal()}
+function.
 
-\chapter{Missing data}\label{missing-data}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svytotal}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   total      SE
+## stypeElementary 3493.56 1119.75
+## stypeMiddle      946.25  311.81
+## stypeHigh        688.87  289.35
+\end{verbatim}
+
+When creating barplots of estimated proportions and/or totals
+we really should indicate the uncertainties in our
+estimates, and show confidence intervals on the bars. We can use the standard
+errors provided by \texttt{svymean()} and \texttt{svytotal()}: the function \texttt{confint()}
+will provide these:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(}\FunctionTok{svytotal}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     2.5 %   97.5 %
+## stypeElementary 1298.8892 5688.221
+## stypeMiddle      335.1077 1557.392
+## stypeHigh        121.7472 1255.993
+\end{verbatim}
+
+These confidence intervals are symmetric about the point estimates:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\NormalTok{ci }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss)}
+\NormalTok{bp }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(ss, }\AttributeTok{xlab=}\StringTok{"School Type"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Estimated Size"}\NormalTok{,}
+              \AttributeTok{names=}\FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype),}
+              \AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FunctionTok{max}\NormalTok{(ci)))}
+\FunctionTok{arrows}\NormalTok{(bp, ci[,}\DecValTok{1}\NormalTok{], bp, ci[,}\DecValTok{2}\NormalTok{], }\AttributeTok{angle=}\DecValTok{90}\NormalTok{, }\AttributeTok{length=}\FloatTok{0.2}\NormalTok{, }\AttributeTok{code=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-166-1} 
+
+}
+
+\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-166}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(ss) }\OtherTok{\textless{}{-}} \FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype)}
+\FunctionTok{cbind}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(ss),ci) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Estimate"}\NormalTok{,}\StringTok{"2.5\%"}\NormalTok{,}\StringTok{"97.5\%"}\NormalTok{), }
+      \AttributeTok{digits=}\DecValTok{3}\NormalTok{,}
+      \AttributeTok{caption=}\StringTok{"Symmetric confidence interval estimates"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{(\#tab:tabci.symmetric)Symmetric confidence interval estimates}
+\centering
+\begin{tabular}[t]{l|r|r|r}
+\hline
+  & Estimate & 2.5\% & 97.5\%\\
+\hline
+stypeElementary & 0.681 & 0.572 & 0.790\\
+\hline
+stypeMiddle & 0.185 & 0.141 & 0.228\\
+\hline
+stypeHigh & 0.134 & 0.023 & 0.246\\
+\hline
+\end{tabular}
+\end{table}
+
+These symmetric intervals are actually somewhat unrealistic, because
+\texttt{confint()} doesn't know it's dealing with indicator variables, and
+doesn't take into account the fact that proportions and totals can't go
+negative.
+
+A better method of constructing confidence intervals is the special
+function \texttt{svyciprop()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyciprop}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\FunctionTok{I}\NormalTok{(stype}\SpecialCharTok{==}\StringTok{"Elementary"}\NormalTok{), }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                 2.5% 97.5%
+## I(stype == "Elementary") 0.681 0.560 0.782
+\end{verbatim}
+
+Note that we've had to create an indicator variable here using the \texttt{I()}
+function for just one level in order to calculate its confidence interval.
+
+To get a confidence interval proportion for every level of a factor
+it's somewhat fiddly with the raw \texttt{survey} package:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\NormalTok{ci }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(}\FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype),}
+       \ControlFlowTok{function}\NormalTok{(stypelevel) \{}
+\NormalTok{          form }\OtherTok{\textless{}{-}} \FunctionTok{eval}\NormalTok{(}\FunctionTok{parse}\NormalTok{(}\AttributeTok{text=}\FunctionTok{paste0}\NormalTok{(}\StringTok{"formula(\textasciitilde{}I(stype==}\SpecialCharTok{\textbackslash{}"}\StringTok{"}\NormalTok{,stypelevel,}\StringTok{"}\SpecialCharTok{\textbackslash{}"}\StringTok{))"}\NormalTok{)))}
+          \FunctionTok{confint}\NormalTok{(}\FunctionTok{svyciprop}\NormalTok{(form, }\AttributeTok{design=}\NormalTok{apiclus2.des))    }
+\NormalTok{       \}))}
+\NormalTok{bp }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(ss, }\AttributeTok{xlab=}\StringTok{"School Type"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Estimated Size"}\NormalTok{,}
+              \AttributeTok{names=}\FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype),}
+              \AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FunctionTok{max}\NormalTok{(ci)))}
+\FunctionTok{arrows}\NormalTok{(bp, ci[,}\DecValTok{1}\NormalTok{], bp, ci[,}\DecValTok{2}\NormalTok{], }\AttributeTok{angle=}\DecValTok{90}\NormalTok{, }\AttributeTok{length=}\FloatTok{0.2}\NormalTok{, }\AttributeTok{code=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-168-1} 
+
+}
+
+\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-168}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(ss) }\OtherTok{\textless{}{-}} \FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype)}
+\FunctionTok{cbind}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(ss),ci) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Estimate"}\NormalTok{,}\StringTok{"2.5\%"}\NormalTok{,}\StringTok{"97.5\%"}\NormalTok{), }
+      \AttributeTok{digits=}\DecValTok{3}\NormalTok{,}
+      \AttributeTok{caption=}\StringTok{"Asymmetric confidence interval estimates"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\caption{(\#tab:tabci.asymmetric)Asymmetric confidence interval estimates}
+\centering
+\begin{tabular}[t]{l|r|r|r}
+\hline
+  & Estimate & 2.5\% & 97.5\%\\
+\hline
+Elementary & 0.681 & 0.560 & 0.782\\
+\hline
+Middle & 0.185 & 0.144 & 0.234\\
+\hline
+High & 0.134 & 0.055 & 0.294\\
+\hline
+\end{tabular}
+\end{table}
+
+The biggest thing to notice is that the confidence interval for ``High''
+is now asymmetric: it's longer on the high side that the low side, and
+more correctly represents our uncertainty. The estimates for ``Elementary''
+and ``Middle'' are essentially unchanged.
+
+For \textbf{crosstabulations} we can use \texttt{svytable()}, which gives weighted
+counts in categories - e.g.~of whether School Wide growth targest had been met
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svytable}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype}\SpecialCharTok{+}\NormalTok{sch.wide, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             sch.wide
+## stype              No      Yes
+##   Elementary  242.240 3251.315
+##   Middle      446.630  499.620
+##   High        586.675  102.195
+\end{verbatim}
+
+A test of association is given by the weighted Chi-Square test
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svychisq}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype}\SpecialCharTok{+}\NormalTok{sch.wide, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's X^2: Rao & Scott adjustment
+## 
+## data:  svychisq(~stype + sch.wide, design = apiclus2.des)
+## F = 11.873, ndf = 1.3825, ddf = 53.9175, p-value = 0.0003221
+\end{verbatim}
+
+We can carry out a logistic regression to make a similar test of association.\\
+We have \texttt{sch.wide} as the binary outcome variable and \texttt{stype} as the predictor:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{svyglm}\NormalTok{(}\FunctionTok{I}\NormalTok{(sch.wide}\SpecialCharTok{==}\StringTok{"Yes"}\NormalTok{)}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{family=}\FunctionTok{quasibinomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }
+               \AttributeTok{design=}\NormalTok{apiclus2.des))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## svyglm(formula = I(sch.wide == "Yes") ~ stype, design = apiclus2.des, 
+##     family = quasibinomial(link = "logit"))
+## 
+## Survey design:
+## svydesign(ids = ~dnum + snum, fpc = ~fpc1 + fpc2, data = apiclus2)
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   2.5969     0.5997   4.331 0.000109 ***
+## stypeMiddle  -2.4848     1.1565  -2.148 0.038292 *  
+## stypeHigh    -4.3445     0.8757  -4.961 1.59e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for quasibinomial family taken to be 1.008)
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+With regular \texttt{lm()} and \texttt{glm()} regression fits we can use F tests to determine
+whether specific terms in the model should be included. A similar test
+can be done to test for the inclusion of specific terms using \texttt{regTermTest}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sr }\OtherTok{\textless{}{-}} \FunctionTok{svyglm}\NormalTok{(}\FunctionTok{I}\NormalTok{(sch.wide}\SpecialCharTok{==}\StringTok{"Yes"}\NormalTok{)}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{family=}\FunctionTok{quasibinomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }
+               \AttributeTok{design=}\NormalTok{apiclus2.des)}
+\FunctionTok{regTermTest}\NormalTok{(sr, }\SpecialCharTok{\textasciitilde{}}\NormalTok{stype)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Wald test for stype
+##  in svyglm(formula = I(sch.wide == "Yes") ~ stype, design = apiclus2.des, 
+##     family = quasibinomial(link = "logit"))
+## F =  13.61363  on  2  and  37  df: p= 3.7061e-05
+\end{verbatim}
+
+Here we can see that \texttt{stype} is contributing significantly to the fit of the model.
+
+\chapter{Post-stratification}\label{post-stratification}
 
 Origin of missing data
 
