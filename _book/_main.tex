@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-17}
+\date{2026-04-18}
 
 \begin{document}
 \maketitle
@@ -497,7 +497,7 @@ Data
   \texttt{survey} package (\citet{survey2004}) with this handy summary of command uses
   \url{https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/}
 \item
-  \texttt{srvyr} a dplyr wrapper for the \texttt{survey} package
+  \texttt{srvyr} a dplyr wrapper for the \texttt{survey} package and \texttt{jtools} which also provides some extensions
 \item
   \texttt{gtsummary} creates outputs ready for publication (difficult to build/load)
 \item
@@ -4015,8 +4015,12 @@ Function to draw a stratified two stage cluster sample
 First 10 of the selected first stage clusters:
 
 \begin{verbatim}
-## `summarise()` has grouped output by 'Region'. You can override using the
-## `.groups` argument.
+## `summarise()` has regrouped the output.
+## i Summaries were computed grouped by Region and Territorial_Authority.
+## i Output is grouped by Region.
+## i Use `summarise(.groups = "drop_last")` to silence this message.
+## i Use `summarise(.by = c(Region, Territorial_Authority))` for per-operation
+##   grouping (`?dplyr::dplyr_by`) instead.
 \end{verbatim}
 
 \begin{table}
@@ -4944,7 +4948,24 @@ We've already seen that we can estimate means using the \texttt{svymean()} funct
 ## api00 670.81 30.099
 \end{verbatim}
 
-We can do this for a set of separate variables, using a perhaps uninintuitive notation:
+The \texttt{jtools} package allows us to estimate the population standard deviation too
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(jtools)}
+\FunctionTok{svysd}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       std. dev.
+## api00    136.83
+\end{verbatim}
+
+(Pause a minute and remind yourself of the difference between a standard deviation and
+a standard error.)
+
+We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4987,11 +5008,11 @@ A \textbf{dotchart} is a nice way of showing the estimated means and their confi
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-152-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
 
 }
 
-\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-152}
+\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-153}
 \end{figure}
 
 If we want to test statistical hypotheses about differences between groups
@@ -5196,11 +5217,11 @@ using the \texttt{svymean()} function:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-162-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-163-1} 
 
 }
 
-\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-162}
+\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-163}
 \end{figure}
 
 \begin{Shaded}
@@ -5228,11 +5249,13 @@ where \(Y_i\) is an indicator variable.
 
 With sample data we calculate \textbf{weighted sums} though:
 \[
-   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i}
+   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i} = \frac{\widehat{Y}}{\widehat{N}}
 \]
 where the top line of this fraction is \(\widehat{Y}\), our estimate of the
 number of individuals (in a finite population) who belong to the category of
-interest.
+interest. The bottom line is \(\widehat{N}\), the estimated size of the population.
+\(\widehat{N}\) is exact in some designs (e.g.~SRSWOR, or Stratified SRSWOR), but
+is approximate in other designs (especially cluster designs).
 
 These total estimates within categories can be estimated using the \texttt{svytotal()}
 function.
@@ -5284,11 +5307,11 @@ These confidence intervals are symmetric about the point estimates:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-166-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-167-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-166}
+\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-167}
 \end{figure}
 
 \begin{Shaded}
@@ -5361,11 +5384,11 @@ it's somewhat fiddly with the raw \texttt{survey} package:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-168-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-169-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-168}
+\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-169}
 \end{figure}
 
 \begin{Shaded}
@@ -5417,6 +5440,26 @@ counts in categories - e.g.~of whether School Wide growth targest had been met
 ##   Middle      446.630  499.620
 ##   High        586.675  102.195
 \end{verbatim}
+
+Which can be displayed with a side-by-side barplot
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{st }\OtherTok{\textless{}{-}} \FunctionTok{svytable}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{sch.wide}\SpecialCharTok{+}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{apiclus2.des)}
+\NormalTok{bp }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(st, }\AttributeTok{beside=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"light blue"}\NormalTok{,}\StringTok{"dark red"}\NormalTok{),}
+              \AttributeTok{legend=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{args.legend=}\FunctionTok{list}\NormalTok{(}\AttributeTok{title=}\StringTok{"Met targets"}\NormalTok{), }
+              \AttributeTok{xlab=}\StringTok{"School Type"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Frequency"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-171-1} 
+
+}
+
+\caption{Counts of schools meeting targets, by school type}\label{fig:unnamed-chunk-171}
+\end{figure}
 
 A test of association is given by the weighted Chi-Square test
 
@@ -5487,7 +5530,7 @@ can be done to test for the inclusion of specific terms using \texttt{regTermTes
 
 Here we can see that \texttt{stype} is contributing significantly to the fit of the model.
 
-\chapter{Post-stratification}\label{post-stratification}
+\chapter{Calibration}\label{calibration}
 
 Origin of missing data
 

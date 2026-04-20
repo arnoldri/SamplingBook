@@ -33,10 +33,11 @@ fig:unnamed-chunk-145
 fig:unnamed-chunk-146
 fig:unnamed-chunk-147
 fig:unnamed-chunk-148
-fig:unnamed-chunk-152
-fig:unnamed-chunk-162
-fig:unnamed-chunk-166
-fig:unnamed-chunk-168
+fig:unnamed-chunk-153
+fig:unnamed-chunk-163
+fig:unnamed-chunk-167
+fig:unnamed-chunk-169
+fig:unnamed-chunk-171
 introduction
 lecture-plan
 recommended-reading
@@ -84,7 +85,7 @@ stratified-two-stage-cluster-design
 survey-analysis
 continous-variables
 categorical-variables
-post-stratification
+calibration
 replicate-weights
 designing-surveys
 another-interpretation-of-the-deff

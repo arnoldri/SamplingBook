@@ -1,4 +1,4 @@
-# Post-stratification
+# Weight adjustments
 
 <!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
 `r if (!knitr:::is_latex_output()) '
@@ -7,6 +7,146 @@ $\\newcommand{\\var}{\\mathrm{Var}}$
 $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
 $\\newcommand{\\estm}{\\widehat}$'`
+
+## Calibration
+
+```{r}
+apipopc <- apipop[!is.na(apipop$enroll),]
+apipopc$stype <- factor(as.character(apipopc$stype),levels=c("E","M","H"))
+levels(apipopc$stype) <- c("Elementary","Middle","High")
+apipopc$yr.rnd[is.na(apipopc$yr.rnd)] <- "Yes"
+```
+
+
+```{r}
+mean(apipopc$enroll)
+tapply(apipopc$enroll, apipopc$stype, mean)
+table(apipopc$stype)
+table(apipopc$stype)/nrow(apipopc)
+```
+
+
+```{r}
+stype.benchmarks <- as.data.frame(table(apipopc$stype))
+names(stype.benchmarks) <- c("stype","Freq")
+stype.benchmarks
+sum(stype.benchmarks$Freq) # 6157
+
+yr.rnd.benchmarks <- as.data.frame(table(apipopc$yr.rnd))
+names(yr.rnd.benchmarks) <- c("yr.rnd","Freq")
+yr.rnd.benchmarks
+sum(yr.rnd.benchmarks$Freq) # 6157
+```
+
+```{r}
+set.seed(111)
+api2sc <- apipopc |> 
+  select.2sc(n=40, cfraction=0.30, mmin=2, clustervar="dnum") 
+api2sc.des <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=api2sc) 
+table(api2sc$stype)/nrow(api2sc)
+svytable(~stype, design=api2sc.des)
+svytable(~stype, design=api2sc.des)/sum(api2sc$weight)
+svymean(~enroll, design=api2sc.des)
+svyby(~enroll, by=~stype, api2sc.des, svymean)
+```
+
+```{r}
+api2sc.des.ps <- postStratify(api2sc.des, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, api2sc.des.ps)
+```
+
+```{r}
+api2sc.des.rake <- rake(api2sc.des, 
+                        sample=list(~stype, ~yr.rnd), 
+                        population=list(stype.benchmarks, yr.rnd.benchmarks))
+svymean(~enroll, api2sc.des.rake)
+```
+
+
+With replacement: use weights only - gets SE badly wrong
+```{r}
+api2sc.des.wr <- svydesign(ids=~1, data=api2sc, weight=~weight) 
+svytable(~stype, design=api2sc.des.wr)
+svytable(~stype, design=api2sc.des.wr)/sum(api2sc$weight)
+svymean(~enroll, design=api2sc.des.wr)
+svyby(~enroll, ~stype, design=api2sc.des.wr, svymean)
+```
+
+```{r}
+api2sc.des.wr.ps <- postStratify(api2sc.des.wr, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, api2sc.des.wr.ps)
+```
+
+So we need replicate weights
+
+api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JKn")
+```{r}
+api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
+```
+Informative warning here: no fpc can apply at second stage or deeper
+
+```{r}
+names(api2sc.jkdes)
+api2sc.jkdes$repweights$weights  # and n x n matrix of weights: each column is a replicate
+```
+Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one `dnum` out for each replicate.
+These need to be multiplied by the original sampling weight to get the actual weights.
+
+```{r}
+api2sc.jkdes$pweights
+api2sc$weight
+```
+
+JK1 for unstratified designs, JKn for stratified designs
+
+```{r}
+svymean(~enroll, design=api2sc.jkdes)
+```
+
+We might have been **supplied** these weights, someone else might have
+created them.  In which case our dataset would look like this
+```{r}
+fwmat <- api2sc.jkdes$repweights$weights[api2sc.jkdes$repweights$index,]
+colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
+pweight <- api2sc.jkdes$pweights
+fwmat <- diag(pweight)%*%fwmat
+sum(pweight)
+apply(fwmat,2,sum)
+api2sc.withrep <- cbind(api2sc, pweight, fwmat)
+```
+We create the design using the probability weights `pweight`
+and the set of replicate weights `repweight001-repweight040`.
+
+```{r}
+pweightcol <- match("pweight",names(api2sc.withrep)) # which column name is exactly equal to pweight
+repweightcols <- grep("^repweight",names(api2sc.withrep)) # which columnnames start with repweight?
+varcols <- (1:ncol(api2sc.withrep))
+varcols <- varcols[!(varcols%in%c(pweightcol,repweightcols))]
+n <- length(unique(api2sc$dnum))
+api2sc.repdes <- svrepdesign(variables=api2sc.withrep[,varcols],
+                             weights=api2sc.withrep[,pweightcol],
+                             repweights=api2sc.withrep[,repweightcols],
+                             combined.weights=TRUE,
+                             scale=(n-1)/n,
+                             type="JK1")
+svymean(~enroll, api2sc.repdes)
+```
+
+
+```{r}
+set.seed(222)
+apipop |> 
+  select.2sc(n=40, cfraction=0.30, mmin=2, clustervar="dnum") |> 
+  svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=_) |> 
+  svymean(~enroll, design=_)
+```
+
+
+```{r}
+table(api2sc$stype)
+```
+
+
 
 Origin of missing data
 

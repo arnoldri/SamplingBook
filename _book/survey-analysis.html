@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Survey Analysis | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Survey Analysis | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-17" />
+<meta name="date" content="2026-04-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="sample-designs-in-r.html"/>
-<link rel="next" href="post-stratification.html"/>
+<link rel="next" href="calibration.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -276,9 +276,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="survey-analysis.html"><a href="survey-analysis.html#categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Categorical Variables</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="post-stratification.html"><a href="post-stratification.html"><i class="fa fa-check"></i><b>8</b> Post-stratification</a>
+<li class="chapter" data-level="8" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>8</b> Calibration</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="post-stratification.html"><a href="post-stratification.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
+<li class="chapter" data-level="8.1" data-path="calibration.html"><a href="calibration.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>9</b> Designing Surveys</a>
 <ul>
@@ -1234,32 +1234,39 @@ Figure 7.5: Distribution of API scores in 1999 and 2000
 <div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="survey-analysis.html#cb203-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>api00, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##         mean     SE
 ## api00 670.81 30.099</code></pre>
-<p>We can do this for a set of separate variables, using a perhaps uninintuitive notation:</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="survey-analysis.html#cb205-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>api99<span class="sc">+</span>api00, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<p>The <code>jtools</code> package allows us to estimate the population standard deviation too</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="survey-analysis.html#cb205-1" tabindex="-1"></a><span class="fu">library</span>(jtools)</span>
+<span id="cb205-2"><a href="survey-analysis.html#cb205-2" tabindex="-1"></a><span class="fu">svysd</span>(<span class="sc">~</span>api00, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<pre><code>##       std. dev.
+## api00    136.83</code></pre>
+<p>(Pause a minute and remind yourself of the difference between a standard deviation and
+a standard error.)</p>
+<p>We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:</p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="survey-analysis.html#cb207-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>api99<span class="sc">+</span>api00, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##         mean     SE
 ## api99 645.03 29.711
 ## api00 670.81 30.099</code></pre>
 <p>or for a variable split by categories by wrapping <code>svymean()</code> up inside a call to <code>svyby()</code></p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="survey-analysis.html#cb207-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="survey-analysis.html#cb209-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##                 stype    api00       se
 ## Elementary Elementary 692.8104 29.92660
 ## Middle         Middle 642.3520 45.09132
 ## High             High 598.3407 17.69417</code></pre>
 <p>A <strong>dotchart</strong> is a nice way of showing the estimated means and their confidence intervals:</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="survey-analysis.html#cb209-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des)</span>
-<span id="cb209-2"><a href="survey-analysis.html#cb209-2" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">confint</span>(ss)</span>
-<span id="cb209-3"><a href="survey-analysis.html#cb209-3" tabindex="-1"></a>ns <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sc)</span>
-<span id="cb209-4"><a href="survey-analysis.html#cb209-4" tabindex="-1"></a><span class="fu">dotchart</span>(ss, <span class="at">xlim=</span><span class="fu">range</span>(sc), <span class="at">xlab=</span><span class="st">&quot;Mean API (2000) Score&quot;</span>)</span>
-<span id="cb209-5"><a href="survey-analysis.html#cb209-5" tabindex="-1"></a><span class="fu">arrows</span>(sc[,<span class="dv">1</span>], <span class="dv">1</span><span class="sc">:</span>ns, sc[,<span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span>ns, <span class="at">angle=</span><span class="dv">90</span>, <span class="at">code=</span><span class="dv">3</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-152"></span>
-<img src="_main_files/figure-html/unnamed-chunk-152-1.png" alt="Mean API (2000) scores by School Type" width="480" />
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="survey-analysis.html#cb211-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des)</span>
+<span id="cb211-2"><a href="survey-analysis.html#cb211-2" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">confint</span>(ss)</span>
+<span id="cb211-3"><a href="survey-analysis.html#cb211-3" tabindex="-1"></a>ns <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sc)</span>
+<span id="cb211-4"><a href="survey-analysis.html#cb211-4" tabindex="-1"></a><span class="fu">dotchart</span>(ss, <span class="at">xlim=</span><span class="fu">range</span>(sc), <span class="at">xlab=</span><span class="st">&quot;Mean API (2000) Score&quot;</span>)</span>
+<span id="cb211-5"><a href="survey-analysis.html#cb211-5" tabindex="-1"></a><span class="fu">arrows</span>(sc[,<span class="dv">1</span>], <span class="dv">1</span><span class="sc">:</span>ns, sc[,<span class="dv">2</span>], <span class="dv">1</span><span class="sc">:</span>ns, <span class="at">angle=</span><span class="dv">90</span>, <span class="at">code=</span><span class="dv">3</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-153"></span>
+<img src="_main_files/figure-html/unnamed-chunk-153-1.png" alt="Mean API (2000) scores by School Type" width="480" />
 <p class="caption">
 Figure 7.6: Mean API (2000) scores by School Type
 </p>
 </div>
 <p>If we want to test statistical hypotheses about differences between groups
 one way is to use the regression framework</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="survey-analysis.html#cb210-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(api00<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="survey-analysis.html#cb212-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(api00<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## svyglm(formula = api00 ~ stype, design = apiclus2.des)
@@ -1289,7 +1296,7 @@ conditional associations between predictors and a continuous outcome.</p>
 <p>For example we can test whether the percentage of children at a school
 who have free school meals (i.e. the <code>meals</code> variable) associates with the
 API score:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="survey-analysis.html#cb212-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(api00<span class="sc">~</span>stype<span class="sc">+</span>meals, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="survey-analysis.html#cb214-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(api00<span class="sc">~</span>stype<span class="sc">+</span>meals, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## svyglm(formula = api00 ~ stype + meals, design = apiclus2.des)
@@ -1314,28 +1321,28 @@ API score:</p>
 <p>We can estimate <strong>totals</strong> using the <code>svytotal()</code> function - for example
 we can estimate the total number of students enrolled at all schools in
 California:</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="survey-analysis.html#cb214-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apiclus2.des, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="survey-analysis.html#cb216-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apiclus2.des, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##          total     SE
 ## enroll 2639273 799638</code></pre>
 <p>Although note that we have had to remove some schools with unknown
 <code>enroll</code> values by stating <code>na.rm=TRUE</code>, and these forced removals likely mean
 that our estimate of the total is an underestimate.</p>
 <p>Confidence intervals can be calculated using the <code>confint()</code> function</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="survey-analysis.html#cb216-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svymean</span>(<span class="sc">~</span>api99<span class="sc">+</span>api00, <span class="at">design=</span>apiclus2.des), <span class="at">level=</span><span class="fl">0.95</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="survey-analysis.html#cb218-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svymean</span>(<span class="sc">~</span>api99<span class="sc">+</span>api00, <span class="at">design=</span>apiclus2.des), <span class="at">level=</span><span class="fl">0.95</span>)</span></code></pre></div>
 <pre><code>##          2.5 %   97.5 %
 ## api99 586.8009 703.2670
 ## api00 611.8188 729.8048</code></pre>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="survey-analysis.html#cb218-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="survey-analysis.html#cb220-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>##               2.5 %   97.5 %
 ## Elementary 634.1553 751.4655
 ## Middle     553.9746 730.7294
 ## High       563.6607 633.0206</code></pre>
 <p>The standard errors can be directly extracted using <code>SE()</code></p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="survey-analysis.html#cb220-1" tabindex="-1"></a><span class="fu">SE</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="survey-analysis.html#cb222-1" tabindex="-1"></a><span class="fu">SE</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>## [1] 29.92660 45.09132 17.69417</code></pre>
 <p>The <strong>relative standard errors</strong>, also known as <strong>relative sampling errors</strong>
 (RSEs) can be extracted by <code>cv()</code>:</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="survey-analysis.html#cb222-1" tabindex="-1"></a><span class="fu">cv</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="survey-analysis.html#cb224-1" tabindex="-1"></a><span class="fu">cv</span>(<span class="fu">svyby</span>(<span class="sc">~</span>api00, <span class="at">by=</span><span class="sc">~</span>stype, svymean, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>## Elementary     Middle       High 
 ## 0.04319595 0.07019721 0.02957206</code></pre>
 <p>RSEs are a useful measure of quality of estimates of quantities that are
@@ -1362,7 +1369,7 @@ than 20% isn’t really publishable.</p>
 <p>In general a standard deviation divided by a mean goes by the term
 <strong>coefficient of variation</strong> (CV), which is why the R function is
 called <code>cv()</code>.</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="survey-analysis.html#cb224-1" tabindex="-1"></a><span class="fu">cv</span>(<span class="fu">svymean</span>(<span class="sc">~</span>api00, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="survey-analysis.html#cb226-1" tabindex="-1"></a><span class="fu">cv</span>(<span class="fu">svymean</span>(<span class="sc">~</span>api00, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>##            api00
 ## api00 0.04486956</code></pre>
 </div>
@@ -1372,16 +1379,16 @@ called <code>cv()</code>.</p>
 <p>The workhorse display for categorical variables is the barplot,
 showing <strong>proportions</strong> in categories. Proportions are first calculated
 using the <code>svymean()</code> function:</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="survey-analysis.html#cb226-1" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des),</span>
-<span id="cb226-2"><a href="survey-analysis.html#cb226-2" tabindex="-1"></a>        <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
-<span id="cb226-3"><a href="survey-analysis.html#cb226-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Proportion&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-162"></span>
-<img src="_main_files/figure-html/unnamed-chunk-162-1.png" alt="Estimates of the proportions of Schools of each type" width="480" />
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="survey-analysis.html#cb228-1" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des),</span>
+<span id="cb228-2"><a href="survey-analysis.html#cb228-2" tabindex="-1"></a>        <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
+<span id="cb228-3"><a href="survey-analysis.html#cb228-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Proportion&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-163"></span>
+<img src="_main_files/figure-html/unnamed-chunk-163-1.png" alt="Estimates of the proportions of Schools of each type" width="480" />
 <p class="caption">
 Figure 7.7: Estimates of the proportions of Schools of each type
 </p>
 </div>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="survey-analysis.html#cb227-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="survey-analysis.html#cb229-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##                    mean     SE
 ## stypeElementary 0.68118 0.0556
 ## stypeMiddle     0.18450 0.0222
@@ -1397,14 +1404,16 @@ by the number of observations you get a proportion.
 where <span class="math inline">\(Y_i\)</span> is an indicator variable.</p>
 <p>With sample data we calculate <strong>weighted sums</strong> though:
 <span class="math display">\[
-   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i}
+   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i} = \frac{\widehat{Y}}{\widehat{N}}
 \]</span>
 where the top line of this fraction is <span class="math inline">\(\widehat{Y}\)</span>, our estimate of the
 number of individuals (in a finite population) who belong to the category of
-interest.</p>
+interest. The bottom line is <span class="math inline">\(\widehat{N}\)</span>, the estimated size of the population.
+<span class="math inline">\(\widehat{N}\)</span> is exact in some designs (e.g. SRSWOR, or Stratified SRSWOR), but
+is approximate in other designs (especially cluster designs).</p>
 <p>These total estimates within categories can be estimated using the <code>svytotal()</code>
 function.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="survey-analysis.html#cb229-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="survey-analysis.html#cb231-1" tabindex="-1"></a><span class="fu">svytotal</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##                   total      SE
 ## stypeElementary 3493.56 1119.75
 ## stypeMiddle      946.25  311.81
@@ -1414,30 +1423,30 @@ we really should indicate the uncertainties in our
 estimates, and show confidence intervals on the bars. We can use the standard
 errors provided by <code>svymean()</code> and <code>svytotal()</code>: the function <code>confint()</code>
 will provide these:</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="survey-analysis.html#cb231-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svytotal</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="survey-analysis.html#cb233-1" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">svytotal</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>##                     2.5 %   97.5 %
 ## stypeElementary 1298.8892 5688.221
 ## stypeMiddle      335.1077 1557.392
 ## stypeHigh        121.7472 1255.993</code></pre>
 <p>These confidence intervals are symmetric about the point estimates:</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="survey-analysis.html#cb233-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span>
-<span id="cb233-2"><a href="survey-analysis.html#cb233-2" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(ss)</span>
-<span id="cb233-3"><a href="survey-analysis.html#cb233-3" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(ss, <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Estimated Size&quot;</span>,</span>
-<span id="cb233-4"><a href="survey-analysis.html#cb233-4" tabindex="-1"></a>              <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
-<span id="cb233-5"><a href="survey-analysis.html#cb233-5" tabindex="-1"></a>              <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(ci)))</span>
-<span id="cb233-6"><a href="survey-analysis.html#cb233-6" tabindex="-1"></a><span class="fu">arrows</span>(bp, ci[,<span class="dv">1</span>], bp, ci[,<span class="dv">2</span>], <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.2</span>, <span class="at">code=</span><span class="dv">3</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-166"></span>
-<img src="_main_files/figure-html/unnamed-chunk-166-1.png" alt="Estimated proportions of schools by school type - with symmetric confidence intervals" width="480" />
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="survey-analysis.html#cb235-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span>
+<span id="cb235-2"><a href="survey-analysis.html#cb235-2" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(ss)</span>
+<span id="cb235-3"><a href="survey-analysis.html#cb235-3" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(ss, <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Estimated Size&quot;</span>,</span>
+<span id="cb235-4"><a href="survey-analysis.html#cb235-4" tabindex="-1"></a>              <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
+<span id="cb235-5"><a href="survey-analysis.html#cb235-5" tabindex="-1"></a>              <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(ci)))</span>
+<span id="cb235-6"><a href="survey-analysis.html#cb235-6" tabindex="-1"></a><span class="fu">arrows</span>(bp, ci[,<span class="dv">1</span>], bp, ci[,<span class="dv">2</span>], <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.2</span>, <span class="at">code=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-167"></span>
+<img src="_main_files/figure-html/unnamed-chunk-167-1.png" alt="Estimated proportions of schools by school type - with symmetric confidence intervals" width="480" />
 <p class="caption">
 Figure 7.8: Estimated proportions of schools by school type - with symmetric confidence intervals
 </p>
 </div>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="survey-analysis.html#cb234-1" tabindex="-1"></a><span class="fu">names</span>(ss) <span class="ot">&lt;-</span> <span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype)</span>
-<span id="cb234-2"><a href="survey-analysis.html#cb234-2" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">as.numeric</span>(ss),ci) <span class="sc">|&gt;</span></span>
-<span id="cb234-3"><a href="survey-analysis.html#cb234-3" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;2.5%&quot;</span>,<span class="st">&quot;97.5%&quot;</span>), </span>
-<span id="cb234-4"><a href="survey-analysis.html#cb234-4" tabindex="-1"></a>      <span class="at">digits=</span><span class="dv">3</span>,</span>
-<span id="cb234-5"><a href="survey-analysis.html#cb234-5" tabindex="-1"></a>      <span class="at">caption=</span><span class="st">&quot;Symmetric confidence interval estimates&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb234-6"><a href="survey-analysis.html#cb234-6" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="survey-analysis.html#cb236-1" tabindex="-1"></a><span class="fu">names</span>(ss) <span class="ot">&lt;-</span> <span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype)</span>
+<span id="cb236-2"><a href="survey-analysis.html#cb236-2" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">as.numeric</span>(ss),ci) <span class="sc">|&gt;</span></span>
+<span id="cb236-3"><a href="survey-analysis.html#cb236-3" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;2.5%&quot;</span>,<span class="st">&quot;97.5%&quot;</span>), </span>
+<span id="cb236-4"><a href="survey-analysis.html#cb236-4" tabindex="-1"></a>      <span class="at">digits=</span><span class="dv">3</span>,</span>
+<span id="cb236-5"><a href="survey-analysis.html#cb236-5" tabindex="-1"></a>      <span class="at">caption=</span><span class="st">&quot;Symmetric confidence interval estimates&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb236-6"><a href="survey-analysis.html#cb236-6" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:tabci.symmetric)Symmetric confidence interval estimates
@@ -1508,35 +1517,35 @@ doesn’t take into account the fact that proportions and totals can’t go
 negative.</p>
 <p>A better method of constructing confidence intervals is the special
 function <code>svyciprop()</code>:</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="survey-analysis.html#cb235-1" tabindex="-1"></a><span class="fu">svyciprop</span>(<span class="sc">~</span><span class="fu">I</span>(stype<span class="sc">==</span><span class="st">&quot;Elementary&quot;</span>), <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="survey-analysis.html#cb237-1" tabindex="-1"></a><span class="fu">svyciprop</span>(<span class="sc">~</span><span class="fu">I</span>(stype<span class="sc">==</span><span class="st">&quot;Elementary&quot;</span>), <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##                                 2.5% 97.5%
 ## I(stype == &quot;Elementary&quot;) 0.681 0.560 0.782</code></pre>
 <p>Note that we’ve had to create an indicator variable here using the <code>I()</code>
 function for just one level in order to calculate its confidence interval.</p>
 <p>To get a confidence interval proportion for every level of a factor
 it’s somewhat fiddly with the raw <code>survey</code> package:</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="survey-analysis.html#cb237-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span>
-<span id="cb237-2"><a href="survey-analysis.html#cb237-2" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
-<span id="cb237-3"><a href="survey-analysis.html#cb237-3" tabindex="-1"></a>       <span class="cf">function</span>(stypelevel) {</span>
-<span id="cb237-4"><a href="survey-analysis.html#cb237-4" tabindex="-1"></a>          form <span class="ot">&lt;-</span> <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text=</span><span class="fu">paste0</span>(<span class="st">&quot;formula(~I(stype==</span><span class="sc">\&quot;</span><span class="st">&quot;</span>,stypelevel,<span class="st">&quot;</span><span class="sc">\&quot;</span><span class="st">))&quot;</span>)))</span>
-<span id="cb237-5"><a href="survey-analysis.html#cb237-5" tabindex="-1"></a>          <span class="fu">confint</span>(<span class="fu">svyciprop</span>(form, <span class="at">design=</span>apiclus2.des))    </span>
-<span id="cb237-6"><a href="survey-analysis.html#cb237-6" tabindex="-1"></a>       }))</span>
-<span id="cb237-7"><a href="survey-analysis.html#cb237-7" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(ss, <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Estimated Size&quot;</span>,</span>
-<span id="cb237-8"><a href="survey-analysis.html#cb237-8" tabindex="-1"></a>              <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
-<span id="cb237-9"><a href="survey-analysis.html#cb237-9" tabindex="-1"></a>              <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(ci)))</span>
-<span id="cb237-10"><a href="survey-analysis.html#cb237-10" tabindex="-1"></a><span class="fu">arrows</span>(bp, ci[,<span class="dv">1</span>], bp, ci[,<span class="dv">2</span>], <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.2</span>, <span class="at">code=</span><span class="dv">3</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-168"></span>
-<img src="_main_files/figure-html/unnamed-chunk-168-1.png" alt="Estimated proportions of schools by school type - with asymmetric confidence intervals" width="480" />
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="survey-analysis.html#cb239-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">svymean</span>(<span class="sc">~</span>stype, <span class="at">design=</span>apiclus2.des)</span>
+<span id="cb239-2"><a href="survey-analysis.html#cb239-2" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
+<span id="cb239-3"><a href="survey-analysis.html#cb239-3" tabindex="-1"></a>       <span class="cf">function</span>(stypelevel) {</span>
+<span id="cb239-4"><a href="survey-analysis.html#cb239-4" tabindex="-1"></a>          form <span class="ot">&lt;-</span> <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text=</span><span class="fu">paste0</span>(<span class="st">&quot;formula(~I(stype==</span><span class="sc">\&quot;</span><span class="st">&quot;</span>,stypelevel,<span class="st">&quot;</span><span class="sc">\&quot;</span><span class="st">))&quot;</span>)))</span>
+<span id="cb239-5"><a href="survey-analysis.html#cb239-5" tabindex="-1"></a>          <span class="fu">confint</span>(<span class="fu">svyciprop</span>(form, <span class="at">design=</span>apiclus2.des))    </span>
+<span id="cb239-6"><a href="survey-analysis.html#cb239-6" tabindex="-1"></a>       }))</span>
+<span id="cb239-7"><a href="survey-analysis.html#cb239-7" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(ss, <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Estimated Size&quot;</span>,</span>
+<span id="cb239-8"><a href="survey-analysis.html#cb239-8" tabindex="-1"></a>              <span class="at">names=</span><span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype),</span>
+<span id="cb239-9"><a href="survey-analysis.html#cb239-9" tabindex="-1"></a>              <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(ci)))</span>
+<span id="cb239-10"><a href="survey-analysis.html#cb239-10" tabindex="-1"></a><span class="fu">arrows</span>(bp, ci[,<span class="dv">1</span>], bp, ci[,<span class="dv">2</span>], <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.2</span>, <span class="at">code=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-169"></span>
+<img src="_main_files/figure-html/unnamed-chunk-169-1.png" alt="Estimated proportions of schools by school type - with asymmetric confidence intervals" width="480" />
 <p class="caption">
 Figure 7.9: Estimated proportions of schools by school type - with asymmetric confidence intervals
 </p>
 </div>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="survey-analysis.html#cb238-1" tabindex="-1"></a><span class="fu">names</span>(ss) <span class="ot">&lt;-</span> <span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype)</span>
-<span id="cb238-2"><a href="survey-analysis.html#cb238-2" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">as.numeric</span>(ss),ci) <span class="sc">|&gt;</span></span>
-<span id="cb238-3"><a href="survey-analysis.html#cb238-3" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;2.5%&quot;</span>,<span class="st">&quot;97.5%&quot;</span>), </span>
-<span id="cb238-4"><a href="survey-analysis.html#cb238-4" tabindex="-1"></a>      <span class="at">digits=</span><span class="dv">3</span>,</span>
-<span id="cb238-5"><a href="survey-analysis.html#cb238-5" tabindex="-1"></a>      <span class="at">caption=</span><span class="st">&quot;Asymmetric confidence interval estimates&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb238-6"><a href="survey-analysis.html#cb238-6" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="survey-analysis.html#cb240-1" tabindex="-1"></a><span class="fu">names</span>(ss) <span class="ot">&lt;-</span> <span class="fu">levels</span>(apiclus2<span class="sc">$</span>stype)</span>
+<span id="cb240-2"><a href="survey-analysis.html#cb240-2" tabindex="-1"></a><span class="fu">cbind</span>(<span class="fu">as.numeric</span>(ss),ci) <span class="sc">|&gt;</span></span>
+<span id="cb240-3"><a href="survey-analysis.html#cb240-3" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">col.names=</span><span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;2.5%&quot;</span>,<span class="st">&quot;97.5%&quot;</span>), </span>
+<span id="cb240-4"><a href="survey-analysis.html#cb240-4" tabindex="-1"></a>      <span class="at">digits=</span><span class="dv">3</span>,</span>
+<span id="cb240-5"><a href="survey-analysis.html#cb240-5" tabindex="-1"></a>      <span class="at">caption=</span><span class="st">&quot;Asymmetric confidence interval estimates&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb240-6"><a href="survey-analysis.html#cb240-6" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:tabci.asymmetric)Asymmetric confidence interval estimates
@@ -1607,14 +1616,25 @@ more correctly represents our uncertainty. The estimates for “Elementary”
 and “Middle” are essentially unchanged.</p>
 <p>For <strong>crosstabulations</strong> we can use <code>svytable()</code>, which gives weighted
 counts in categories - e.g. of whether School Wide growth targest had been met</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="survey-analysis.html#cb239-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype<span class="sc">+</span>sch.wide, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="survey-analysis.html#cb241-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype<span class="sc">+</span>sch.wide, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>##             sch.wide
 ## stype              No      Yes
 ##   Elementary  242.240 3251.315
 ##   Middle      446.630  499.620
 ##   High        586.675  102.195</code></pre>
+<p>Which can be displayed with a side-by-side barplot</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="survey-analysis.html#cb243-1" tabindex="-1"></a>st <span class="ot">&lt;-</span> <span class="fu">svytable</span>(<span class="sc">~</span>sch.wide<span class="sc">+</span>stype, <span class="at">design=</span>apiclus2.des)</span>
+<span id="cb243-2"><a href="survey-analysis.html#cb243-2" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(st, <span class="at">beside=</span><span class="cn">TRUE</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;light blue&quot;</span>,<span class="st">&quot;dark red&quot;</span>),</span>
+<span id="cb243-3"><a href="survey-analysis.html#cb243-3" tabindex="-1"></a>              <span class="at">legend=</span><span class="cn">TRUE</span>, <span class="at">args.legend=</span><span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;Met targets&quot;</span>), </span>
+<span id="cb243-4"><a href="survey-analysis.html#cb243-4" tabindex="-1"></a>              <span class="at">xlab=</span><span class="st">&quot;School Type&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-171"></span>
+<img src="_main_files/figure-html/unnamed-chunk-171-1.png" alt="Counts of schools meeting targets, by school type" width="480" />
+<p class="caption">
+Figure 7.10: Counts of schools meeting targets, by school type
+</p>
+</div>
 <p>A test of association is given by the weighted Chi-Square test</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="survey-analysis.html#cb241-1" tabindex="-1"></a><span class="fu">svychisq</span>(<span class="sc">~</span>stype<span class="sc">+</span>sch.wide, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="survey-analysis.html#cb244-1" tabindex="-1"></a><span class="fu">svychisq</span>(<span class="sc">~</span>stype<span class="sc">+</span>sch.wide, <span class="at">design=</span>apiclus2.des)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s X^2: Rao &amp; Scott adjustment
 ## 
@@ -1622,8 +1642,8 @@ counts in categories - e.g. of whether School Wide growth targest had been met<
 ## F = 11.873, ndf = 1.3825, ddf = 53.9175, p-value = 0.0003221</code></pre>
 <p>We can carry out a logistic regression to make a similar test of association.<br />
 We have <code>sch.wide</code> as the binary outcome variable and <code>stype</code> as the predictor:</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="survey-analysis.html#cb243-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(<span class="fu">I</span>(sch.wide<span class="sc">==</span><span class="st">&quot;Yes&quot;</span>)<span class="sc">~</span>stype, <span class="at">family=</span><span class="fu">quasibinomial</span>(<span class="at">link=</span><span class="st">&quot;logit&quot;</span>), </span>
-<span id="cb243-2"><a href="survey-analysis.html#cb243-2" tabindex="-1"></a>               <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="survey-analysis.html#cb246-1" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">svyglm</span>(<span class="fu">I</span>(sch.wide<span class="sc">==</span><span class="st">&quot;Yes&quot;</span>)<span class="sc">~</span>stype, <span class="at">family=</span><span class="fu">quasibinomial</span>(<span class="at">link=</span><span class="st">&quot;logit&quot;</span>), </span>
+<span id="cb246-2"><a href="survey-analysis.html#cb246-2" tabindex="-1"></a>               <span class="at">design=</span>apiclus2.des))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## svyglm(formula = I(sch.wide == &quot;Yes&quot;) ~ stype, design = apiclus2.des, 
@@ -1646,9 +1666,9 @@ We have <code>sch.wide</code> as the binary outcome variable and <code>stype</co
 <p>With regular <code>lm()</code> and <code>glm()</code> regression fits we can use F tests to determine
 whether specific terms in the model should be included. A similar test
 can be done to test for the inclusion of specific terms using <code>regTermTest</code></p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="survey-analysis.html#cb245-1" tabindex="-1"></a>sr <span class="ot">&lt;-</span> <span class="fu">svyglm</span>(<span class="fu">I</span>(sch.wide<span class="sc">==</span><span class="st">&quot;Yes&quot;</span>)<span class="sc">~</span>stype, <span class="at">family=</span><span class="fu">quasibinomial</span>(<span class="at">link=</span><span class="st">&quot;logit&quot;</span>), </span>
-<span id="cb245-2"><a href="survey-analysis.html#cb245-2" tabindex="-1"></a>               <span class="at">design=</span>apiclus2.des)</span>
-<span id="cb245-3"><a href="survey-analysis.html#cb245-3" tabindex="-1"></a><span class="fu">regTermTest</span>(sr, <span class="sc">~</span>stype)</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="survey-analysis.html#cb248-1" tabindex="-1"></a>sr <span class="ot">&lt;-</span> <span class="fu">svyglm</span>(<span class="fu">I</span>(sch.wide<span class="sc">==</span><span class="st">&quot;Yes&quot;</span>)<span class="sc">~</span>stype, <span class="at">family=</span><span class="fu">quasibinomial</span>(<span class="at">link=</span><span class="st">&quot;logit&quot;</span>), </span>
+<span id="cb248-2"><a href="survey-analysis.html#cb248-2" tabindex="-1"></a>               <span class="at">design=</span>apiclus2.des)</span>
+<span id="cb248-3"><a href="survey-analysis.html#cb248-3" tabindex="-1"></a><span class="fu">regTermTest</span>(sr, <span class="sc">~</span>stype)</span></code></pre></div>
 <pre><code>## Wald test for stype
 ##  in svyglm(formula = I(sch.wide == &quot;Yes&quot;) ~ stype, design = apiclus2.des, 
 ##     family = quasibinomial(link = &quot;logit&quot;))
@@ -1663,7 +1683,7 @@ can be done to test for the inclusion of specific terms using <code>regTermTest<
         </div>
       </div>
 <a href="sample-designs-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="post-stratification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="calibration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

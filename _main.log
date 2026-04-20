@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  17 APR 2026 16:33
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  18 APR 2026 14:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1238,7 +1238,13 @@ Overfull \hbox (69.68945pt too wide) in paragraph at lines 3888--3913
  []
 
 [77] [78]
-Overfull \hbox (238.56145pt too wide) in paragraph at lines 4024--4049
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4024--4024
+[]\TU/lmtt/m/n/10 ## i Use `summarise(.by = c(Region, Territorial_Authority))` 
+for per-operation[] 
+ []
+
+
+Overfull \hbox (238.56145pt too wide) in paragraph at lines 4028--4053
  [][] 
  []
 
@@ -1247,19 +1253,19 @@ Overfull \hbox (238.56145pt too wide) in paragraph at lines 4024--4049
 ]
 Chapter 6.
 [81]
-Overfull \hbox (7.5945pt too wide) in paragraph at lines 4170--4170
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4174--4174
 []\TU/lmtt/m/n/10 ## Warning in svydesign.default(id = ~1, data = schools.censu
 s): No weights or[] 
  []
 
 [82]
-Overfull \hbox (7.5945pt too wide) in paragraph at lines 4282--4282
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4286--4286
 []\TU/lmtt/m/n/10 ## Warning in svydesign.default(id = ~1, data = schools.srswo
 r): No weights or[] 
  []
 
 
-Overfull \hbox (125.45447pt too wide) in paragraph at lines 4303--4328
+Overfull \hbox (125.45447pt too wide) in paragraph at lines 4307--4332
  [][] 
  []
 
@@ -1280,18 +1286,21 @@ File: _main_files/figure-latex/unnamed-chunk-147-1.pdf Graphic file (type pdf)
 File: _main_files/figure-latex/unnamed-chunk-148-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-148-1.pdf>
 [91] [92] [93] [94]
-File: _main_files/figure-latex/unnamed-chunk-152-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-152-1.pdf>
-[95] [96] [97]
-File: _main_files/figure-latex/unnamed-chunk-162-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-162-1.pdf>
-[98] [99]
-File: _main_files/figure-latex/unnamed-chunk-166-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-166-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-153-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-153-1.pdf>
+[95] [96] [97] [98]
+File: _main_files/figure-latex/unnamed-chunk-163-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-163-1.pdf>
+[99]
+File: _main_files/figure-latex/unnamed-chunk-167-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-167-1.pdf>
 [100] [101]
-File: _main_files/figure-latex/unnamed-chunk-168-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-168-1.pdf>
-[102] [103] [104] [105] [106
+File: _main_files/figure-latex/unnamed-chunk-169-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-169-1.pdf>
+[102] [103]
+File: _main_files/figure-latex/unnamed-chunk-171-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-171-1.pdf>
+[104] [105] [106
 
 ]
 Chapter 8.
@@ -1309,12 +1318,12 @@ Appendix A.
 
 ]) [115] (_main.aux) ) 
 Here is how much of TeX's memory you used:
- 24866 strings out of 411463
- 447547 string characters out of 5818008
+ 24877 strings out of 411463
+ 448072 string characters out of 5818008
  1882290 words of memory out of 5000000
- 44736 multiletter control sequences out of 15000+600000
+ 44746 multiletter control sequences out of 15000+600000
  518916 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,13n,121p,1004b,518s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,13n,121p,1004b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on _main.pdf (115 pages).

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Placeholder Appendix | STAT395: Sampling</title>
+  <title>8 Calibration | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Placeholder Appendix | STAT395: Sampling" />
+  <meta property="og:title" content="8 Calibration | STAT395: Sampling" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Sampling notes." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Placeholder Appendix | STAT395: Sampling" />
+  <meta name="twitter:title" content="8 Calibration | STAT395: Sampling" />
   
   <meta name="twitter:description" content="Sampling notes." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="references.html"/>
-
+<link rel="prev" href="survey-analysis.html"/>
+<link rel="next" href="designing-surveys.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -308,18 +308,44 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="placeholder-appendix" class="section level1 hasAnchor" number="10">
-<h1><span class="header-section-number">A</span> Placeholder Appendix<a href="placeholder-appendix.html#placeholder-appendix" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Nothing to see here.</p>
+<div id="calibration" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Calibration<a href="calibration.html#calibration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
+<p>Origin of missing data</p>
+<p>Calibration for unit non-response</p>
+<ul>
+<li>Poststratification</li>
+</ul>
+<p>Imputation for item non-response</p>
+<div id="replicate-weights" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Replicate weights<a href="calibration.html#replicate-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Later in the course we’ll see situations where non-response means that the
+weights from our sample design have to be adjusted (e.g. by poststratification).
+When this happens the estimation methods associated with the sample designs above
+no longer work, and we have to resort to approximations.</p>
+<p>In such circumstances we often create multiple sets of weights in addition to the
+adjusted weights. These <strong>replicate weights</strong> are what are used to estimate the
+standard errors, and they have the advantage that they can create standard errors
+for a wider range of estimators than the usual means and totals.</p>
+<p><strong>Jacknife</strong> weights are calculated by systematically deleting PSUs at the first
+stage of selection, and then scaling the weights on the remaining rows so that they
+still add up to the same total.</p>
 
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="references.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="survey-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="designing-surveys.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

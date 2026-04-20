@@ -380,6 +380,18 @@ counts in categories - e.g. of whether School Wide growth targest had been met
 ```{r}
 svytable(~stype+sch.wide, design=apiclus2.des)
 ```
+Which can be displayed with a side-by-side barplot
+
+```{r}
+#| fig.width=5,
+#| fig.align='center',
+#| fig.cap='Counts of schools meeting targets, by school type'
+st <- svytable(~sch.wide+stype, design=apiclus2.des)
+bp <- barplot(st, beside=TRUE, col=c("light blue","dark red"),
+              legend=TRUE, args.legend=list(title="Met targets"), 
+              xlab="School Type", ylab="Frequency")
+```
+
 A test of association is given by the weighted Chi-Square test
 ```{r}
 svychisq(~stype+sch.wide, design=apiclus2.des)

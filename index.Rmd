@@ -43,6 +43,7 @@ library(kableExtra)
 library(survey)
 library(srvyr)
 library(sampling)
+library(jtools)
 #library(gtsummary) # error installing/loading this
 library(mice)
 #library(simputation) # error installing/loading this
@@ -174,7 +175,7 @@ Data
 
 * `survey` package (@survey2004) with this handy summary of command uses
    https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
-* `srvyr` a dplyr wrapper for the `survey` package
+* `srvyr` a dplyr wrapper for the `survey` package and `jtools` which also provides some extensions
 * `gtsummary` creates outputs ready for publication (difficult to build/load)
 * `sampling` package for drawing samples according to various designs
 * `mice` package for imputation

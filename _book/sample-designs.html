@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 Sample Designs | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.44 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 Sample Designs | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-17" />
+<meta name="date" content="2026-04-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -276,9 +276,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="survey-analysis.html"><a href="survey-analysis.html#categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Categorical Variables</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="post-stratification.html"><a href="post-stratification.html"><i class="fa fa-check"></i><b>8</b> Post-stratification</a>
+<li class="chapter" data-level="8" data-path="calibration.html"><a href="calibration.html"><i class="fa fa-check"></i><b>8</b> Calibration</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="post-stratification.html"><a href="post-stratification.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
+<li class="chapter" data-level="8.1" data-path="calibration.html"><a href="calibration.html#replicate-weights"><i class="fa fa-check"></i><b>8.1</b> Replicate weights</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>9</b> Designing Surveys</a>
 <ul>
@@ -3655,8 +3655,12 @@ i.e. these are just the product of the weights at each stage of selection.</p>
 <div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="sample-designs.html#cb146-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
 <span id="cb146-2"><a href="sample-designs.html#cb146-2" tabindex="-1"></a>                                <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
 <p>First 10 of the selected first stage clusters:</p>
-<pre><code>## `summarise()` has grouped output by &#39;Region&#39;. You can override using the
-## `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has regrouped the output.
+## ℹ Summaries were computed grouped by Region and Territorial_Authority.
+## ℹ Output is grouped by Region.
+## ℹ Use `summarise(.groups = &quot;drop_last&quot;)` to silence this message.
+## ℹ Use `summarise(.by = c(Region, Territorial_Authority))` for per-operation
+##   grouping (`?dplyr::dplyr_by`) instead.</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
