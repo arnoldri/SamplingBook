@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 Weight adjustments | STAT395: Sampling</title>
+  <meta name="description" content="Sampling notes." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 Weight adjustments | STAT395: Sampling" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Sampling notes." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 Weight adjustments | STAT395: Sampling" />
+  
+  <meta name="twitter:description" content="Sampling notes." />
+  
+
+<meta name="author" content="Richard Arnold et al." />
+
+
+<meta name="date" content="2026-04-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="survey-analysis.html"/>
+<link rel="next" href="designing-surveys.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">STAT395: Sampling</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lecture-plan"><i class="fa fa-check"></i><b>1.1</b> Lecture Plan</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-1-the-survey-process"><i class="fa fa-check"></i>Week 1 – The Survey Process</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-2-sampling"><i class="fa fa-check"></i>Week 2 – Sampling</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-3---inference-with-the-r-survey-package"><i class="fa fa-check"></i>Week 3 - Inference with the R survey package</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#week-4-non-response-and-complex-designs"><i class="fa fa-check"></i>Week 4 – Non-response and complex designs</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11"><i class="fa fa-check"></i>Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11]</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#test-2-30-assessment-period-1.5-hours-closed-book"><i class="fa fa-check"></i>Test 2 (30%) [assessment period] [1.5 hours, closed book]</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#recommended-reading"><i class="fa fa-check"></i><b>1.2</b> Recommended reading</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R Packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sampling.html"><a href="sampling.html"><i class="fa fa-check"></i><b>2</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sampling.html"><a href="sampling.html#random-numbers"><i class="fa fa-check"></i><b>2.1</b> Random numbers</a></li>
+<li class="chapter" data-level="2.2" data-path="sampling.html"><a href="sampling.html#sampling-from-categorical-random-variables"><i class="fa fa-check"></i><b>2.2</b> Sampling from categorical random variables</a></li>
+<li class="chapter" data-level="2.3" data-path="sampling.html"><a href="sampling.html#sampling-from-discrete-numerical-random-variables"><i class="fa fa-check"></i><b>2.3</b> Sampling from discrete numerical random variables</a></li>
+<li class="chapter" data-level="2.4" data-path="sampling.html"><a href="sampling.html#sampling-from-continuous-random-variables"><i class="fa fa-check"></i><b>2.4</b> Sampling from continuous random variables</a></li>
+<li class="chapter" data-level="2.5" data-path="sampling.html"><a href="sampling.html#sampling-from-a-finite-collection"><i class="fa fa-check"></i><b>2.5</b> Sampling from a finite collection</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="sampling.html"><a href="sampling.html#sampling-without-replacement"><i class="fa fa-check"></i><b>2.5.1</b> Sampling without replacement</a></li>
+<li class="chapter" data-level="2.5.2" data-path="sampling.html"><a href="sampling.html#sampling-with-replacement"><i class="fa fa-check"></i><b>2.5.2</b> Sampling with replacement</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sample-surveys.html"><a href="sample-surveys.html"><i class="fa fa-check"></i><b>3</b> Sample Surveys</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sample-surveys.html"><a href="sample-surveys.html#the-survey-process"><i class="fa fa-check"></i><b>3.1</b> The Survey Process</a></li>
+<li class="chapter" data-level="3.2" data-path="sample-surveys.html"><a href="sample-surveys.html#populations-and-frames"><i class="fa fa-check"></i><b>3.2</b> Populations and Frames</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-sampling-frame"><i class="fa fa-check"></i><b>3.2.1</b> What is a sampling frame?</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sample-surveys.html"><a href="sample-surveys.html#what-is-a-good-sampling-frame"><i class="fa fa-check"></i><b>3.2.2</b> What is a <em>good</em> sampling frame?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sample-surveys.html"><a href="sample-surveys.html#approaches-to-sampling"><i class="fa fa-check"></i><b>3.3</b> Approaches to sampling</a></li>
+<li class="chapter" data-level="3.4" data-path="sample-surveys.html"><a href="sample-surveys.html#example-datasets"><i class="fa fa-check"></i><b>3.4</b> Example datasets</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sample-surveys.html"><a href="sample-surveys.html#api"><i class="fa fa-check"></i><b>3.4.1</b> API</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.2</b> From the dplyr package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="statistical-inference.html"><a href="statistical-inference.html"><i class="fa fa-check"></i><b>4</b> Statistical Inference</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="statistical-inference.html"><a href="statistical-inference.html#inference-in-infinite-populations"><i class="fa fa-check"></i><b>4.1</b> Inference in infinite populations</a></li>
+<li class="chapter" data-level="4.2" data-path="statistical-inference.html"><a href="statistical-inference.html#inference-in-finite-populations"><i class="fa fa-check"></i><b>4.2</b> Inference in finite populations</a></li>
+<li class="chapter" data-level="4.3" data-path="statistical-inference.html"><a href="statistical-inference.html#the-survey-inference-process"><i class="fa fa-check"></i><b>4.3</b> The survey inference process</a></li>
+<li class="chapter" data-level="4.4" data-path="statistical-inference.html"><a href="statistical-inference.html#example"><i class="fa fa-check"></i><b>4.4</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sample-designs.html"><a href="sample-designs.html"><i class="fa fa-check"></i><b>5</b> Sample Designs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sample-designs.html"><a href="sample-designs.html#census"><i class="fa fa-check"></i><b>5.1</b> Census</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations"><i class="fa fa-check"></i>Design considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sample-designs.html"><a href="sample-designs.html#simple-random-sampling-without-replacement-srswor"><i class="fa fa-check"></i><b>5.2</b> Simple Random Sampling Without Replacement (SRSWOR)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-1"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-1"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sample-designs.html"><a href="sample-designs.html#simple-random-sampling-with-replacement-srswr"><i class="fa fa-check"></i><b>5.3</b> Simple Random Sampling With Replacement (SRSWR)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-2"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-2"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="sample-designs.html"><a href="sample-designs.html#probability-proportion-to-size-sampling-ppswr"><i class="fa fa-check"></i><b>5.4</b> Probability proportion to size Sampling (PPSWR)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-3"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-3"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="sample-designs.html"><a href="sample-designs.html#linear-systematic-random-sample-lsrs"><i class="fa fa-check"></i><b>5.5</b> Linear Systematic Random Sample (LSRS)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-4"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-4"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="sample-designs.html"><a href="sample-designs.html#stratified-simple-random-sample-stsrs"><i class="fa fa-check"></i><b>5.6</b> Stratified Simple Random Sample (STSRS)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-5"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-5"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="sample-designs.html"><a href="sample-designs.html#one-stage-cluster-sampling-1sc"><i class="fa fa-check"></i><b>5.7</b> One stage cluster sampling (1SC)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-6"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-6"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="sample-designs.html"><a href="sample-designs.html#two-stage-cluster-sampling-2sc"><i class="fa fa-check"></i><b>5.8</b> Two stage cluster sampling (2SC)</a>
+<ul>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#design-considerations-7"><i class="fa fa-check"></i>Design considerations</a></li>
+<li class="chapter" data-level="" data-path="sample-designs.html"><a href="sample-designs.html#example-7"><i class="fa fa-check"></i>Example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="sample-designs.html"><a href="sample-designs.html#complex-multistage-designs"><i class="fa fa-check"></i><b>5.9</b> Complex multistage designs</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html"><i class="fa fa-check"></i><b>6</b> Sample Designs in R</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#census-1"><i class="fa fa-check"></i><b>6.1</b> Census</a></li>
+<li class="chapter" data-level="6.2" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#simple-random-sample-without-replacement-srswor"><i class="fa fa-check"></i><b>6.2</b> Simple Random Sample WithOut Replacement (SRSWOR)</a></li>
+<li class="chapter" data-level="6.3" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#probability-proportional-to-size-with-replacement-ppswr"><i class="fa fa-check"></i><b>6.3</b> Probability Proportional to Size With Replacement (PPSWR)</a></li>
+<li class="chapter" data-level="6.4" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-sample"><i class="fa fa-check"></i><b>6.4</b> Stratified Sample</a></li>
+<li class="chapter" data-level="6.5" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#one-stage-cluster-design-1sc"><i class="fa fa-check"></i><b>6.5</b> One stage cluster design (1SC)</a></li>
+<li class="chapter" data-level="6.6" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#two-stage-cluster-design-2sc"><i class="fa fa-check"></i><b>6.6</b> Two stage cluster design (2SC)</a></li>
+<li class="chapter" data-level="6.7" data-path="sample-designs-in-r.html"><a href="sample-designs-in-r.html#stratified-two-stage-cluster-design"><i class="fa fa-check"></i><b>6.7</b> Stratified two stage cluster design</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="survey-analysis.html"><a href="survey-analysis.html"><i class="fa fa-check"></i><b>7</b> Survey Analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="survey-analysis.html"><a href="survey-analysis.html#continous-variables"><i class="fa fa-check"></i><b>7.1</b> Continous variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#display"><i class="fa fa-check"></i>Display</a></li>
+<li class="chapter" data-level="" data-path="survey-analysis.html"><a href="survey-analysis.html#estimation"><i class="fa fa-check"></i>Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="survey-analysis.html"><a href="survey-analysis.html#categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Categorical Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="weight-adjustments.html"><a href="weight-adjustments.html"><i class="fa fa-check"></i><b>8</b> Weight adjustments</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="weight-adjustments.html"><a href="weight-adjustments.html#calibration"><i class="fa fa-check"></i><b>8.1</b> Calibration</a></li>
+<li class="chapter" data-level="8.2" data-path="weight-adjustments.html"><a href="weight-adjustments.html#replicate-weights"><i class="fa fa-check"></i><b>8.2</b> Replicate weights</a></li>
+<li class="chapter" data-level="8.3" data-path="weight-adjustments.html"><a href="weight-adjustments.html#replicate-weights-1"><i class="fa fa-check"></i><b>8.3</b> Replicate weights</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>9</b> Designing Surveys</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>9.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="9.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>9.2</b> Computing the Required Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="appendix"><span><b> </b></span></li>
+<li class="chapter" data-level="A" data-path="placeholder-appendix.html"><a href="placeholder-appendix.html"><i class="fa fa-check"></i><b>A</b> Placeholder Appendix</a></li>
+<li class="divider"></li>
+<li>Lecture notes</li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT395: Sampling</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="weight-adjustments" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Weight adjustments<a href="weight-adjustments.html#weight-adjustments" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+<p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
+<span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
+<span class="math inline">\(\newcommand{\bfa}[2]{{\rm\bf #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\rma}[2]{{\rm     #1}[#2]}\)</span>
+<span class="math inline">\(\newcommand{\estm}{\widehat}\)</span></p>
+<div id="calibration" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Calibration<a href="weight-adjustments.html#calibration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="weight-adjustments.html#cb250-1" tabindex="-1"></a>apipopc <span class="ot">&lt;-</span> apipop[<span class="sc">!</span><span class="fu">is.na</span>(apipop<span class="sc">$</span>enroll),]</span>
+<span id="cb250-2"><a href="weight-adjustments.html#cb250-2" tabindex="-1"></a>apipopc<span class="sc">$</span>stype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(apipopc<span class="sc">$</span>stype),<span class="at">levels=</span><span class="fu">c</span>(<span class="st">&quot;E&quot;</span>,<span class="st">&quot;M&quot;</span>,<span class="st">&quot;H&quot;</span>))</span>
+<span id="cb250-3"><a href="weight-adjustments.html#cb250-3" tabindex="-1"></a><span class="fu">levels</span>(apipopc<span class="sc">$</span>stype) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Elementary&quot;</span>,<span class="st">&quot;Middle&quot;</span>,<span class="st">&quot;High&quot;</span>)</span>
+<span id="cb250-4"><a href="weight-adjustments.html#cb250-4" tabindex="-1"></a>apipopc<span class="sc">$</span>yr.rnd[<span class="fu">is.na</span>(apipopc<span class="sc">$</span>yr.rnd)] <span class="ot">&lt;-</span> <span class="st">&quot;Yes&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="weight-adjustments.html#cb251-1" tabindex="-1"></a><span class="fu">mean</span>(apipopc<span class="sc">$</span>enroll)</span></code></pre></div>
+<pre><code>## [1] 619.0469</code></pre>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="weight-adjustments.html#cb253-1" tabindex="-1"></a><span class="fu">tapply</span>(apipopc<span class="sc">$</span>enroll, apipopc<span class="sc">$</span>stype, mean)</span></code></pre></div>
+<pre><code>## Elementary     Middle       High 
+##   426.9616   912.0892  1349.9654</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="weight-adjustments.html#cb255-1" tabindex="-1"></a><span class="fu">table</span>(apipopc<span class="sc">$</span>stype)</span></code></pre></div>
+<pre><code>## 
+## Elementary     Middle       High 
+##       4397       1009        751</code></pre>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="weight-adjustments.html#cb257-1" tabindex="-1"></a><span class="fu">table</span>(apipopc<span class="sc">$</span>stype)<span class="sc">/</span><span class="fu">nrow</span>(apipopc)</span></code></pre></div>
+<pre><code>## 
+## Elementary     Middle       High 
+##  0.7141465  0.1638785  0.1219750</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="weight-adjustments.html#cb259-1" tabindex="-1"></a>stype.benchmarks <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(apipopc<span class="sc">$</span>stype))</span>
+<span id="cb259-2"><a href="weight-adjustments.html#cb259-2" tabindex="-1"></a><span class="fu">names</span>(stype.benchmarks) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stype&quot;</span>,<span class="st">&quot;Freq&quot;</span>)</span>
+<span id="cb259-3"><a href="weight-adjustments.html#cb259-3" tabindex="-1"></a>stype.benchmarks</span></code></pre></div>
+<pre><code>##        stype Freq
+## 1 Elementary 4397
+## 2     Middle 1009
+## 3       High  751</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="weight-adjustments.html#cb261-1" tabindex="-1"></a><span class="fu">sum</span>(stype.benchmarks<span class="sc">$</span>Freq) <span class="co"># 6157</span></span></code></pre></div>
+<pre><code>## [1] 6157</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="weight-adjustments.html#cb263-1" tabindex="-1"></a>yr.rnd.benchmarks <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(apipopc<span class="sc">$</span>yr.rnd))</span>
+<span id="cb263-2"><a href="weight-adjustments.html#cb263-2" tabindex="-1"></a><span class="fu">names</span>(yr.rnd.benchmarks) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;yr.rnd&quot;</span>,<span class="st">&quot;Freq&quot;</span>)</span>
+<span id="cb263-3"><a href="weight-adjustments.html#cb263-3" tabindex="-1"></a>yr.rnd.benchmarks</span></code></pre></div>
+<pre><code>##   yr.rnd Freq
+## 1     No  874
+## 2    Yes 5283</code></pre>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="weight-adjustments.html#cb265-1" tabindex="-1"></a><span class="fu">sum</span>(yr.rnd.benchmarks<span class="sc">$</span>Freq) <span class="co"># 6157</span></span></code></pre></div>
+<pre><code>## [1] 6157</code></pre>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="weight-adjustments.html#cb267-1" tabindex="-1"></a>stype.yr.rnd.benchmarks <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(apipopc<span class="sc">$</span>stype, apipopc<span class="sc">$</span>yr.rnd))</span>
+<span id="cb267-2"><a href="weight-adjustments.html#cb267-2" tabindex="-1"></a><span class="fu">names</span>(stype.yr.rnd.benchmarks) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;stype&quot;</span>,<span class="st">&quot;yr.rnd&quot;</span>,<span class="st">&quot;Freq&quot;</span>)</span>
+<span id="cb267-3"><a href="weight-adjustments.html#cb267-3" tabindex="-1"></a>stype.yr.rnd.benchmarks</span></code></pre></div>
+<pre><code>##        stype yr.rnd Freq
+## 1 Elementary     No  791
+## 2     Middle     No   60
+## 3       High     No   23
+## 4 Elementary    Yes 3606
+## 5     Middle    Yes  949
+## 6       High    Yes  728</code></pre>
+<p>Select a two stage cluster sample - make estimates</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="weight-adjustments.html#cb269-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb269-2"><a href="weight-adjustments.html#cb269-2" tabindex="-1"></a>api2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span> </span>
+<span id="cb269-3"><a href="weight-adjustments.html#cb269-3" tabindex="-1"></a>  <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">cfraction=</span><span class="fl">0.30</span>, <span class="at">mmin=</span><span class="dv">2</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>) </span>
+<span id="cb269-4"><a href="weight-adjustments.html#cb269-4" tabindex="-1"></a>api2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, <span class="at">data=</span>api2sc) </span>
+<span id="cb269-5"><a href="weight-adjustments.html#cb269-5" tabindex="-1"></a><span class="fu">table</span>(api2sc<span class="sc">$</span>stype)<span class="sc">/</span><span class="fu">nrow</span>(api2sc)</span></code></pre></div>
+<pre><code>## 
+## Elementary     Middle       High 
+##  0.6224490  0.1428571  0.2346939</code></pre>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="weight-adjustments.html#cb271-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
+<pre><code>## stype
+## Elementary     Middle       High 
+##  2972.2159   589.3841   946.0500</code></pre>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="weight-adjustments.html#cb273-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)<span class="sc">/</span><span class="fu">sum</span>(api2sc<span class="sc">$</span>weight)</span></code></pre></div>
+<pre><code>## stype
+## Elementary     Middle       High 
+##  0.6593715  0.1307520  0.2098765</code></pre>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="weight-adjustments.html#cb275-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 711.45 81.057</code></pre>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="weight-adjustments.html#cb277-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>enroll, <span class="at">by=</span><span class="sc">~</span>stype, api2sc.des, svymean)</span></code></pre></div>
+<pre><code>##                 stype    enroll        se
+## Elementary Elementary  415.6678  46.44827
+## Middle         Middle  834.1254 113.51448
+## High             High 1564.3007 190.86274</code></pre>
+<p>Poststratify by stype and reestimate</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="weight-adjustments.html#cb279-1" tabindex="-1"></a>api2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb279-2"><a href="weight-adjustments.html#cb279-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 624.35 53.142</code></pre>
+<p>Postratify by stype x yr.rnd and reestimate</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="weight-adjustments.html#cb281-1" tabindex="-1"></a>api2sc.des.ps2 <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype<span class="sc">+</span>yr.rnd, <span class="at">population=</span>stype.yr.rnd.benchmarks)</span>
+<span id="cb281-2"><a href="weight-adjustments.html#cb281-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 629.45 40.239</code></pre>
+<p>Poststratify by stype + yr.rnd (i.e. we only have the marginals) and reestimate</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="weight-adjustments.html#cb283-1" tabindex="-1"></a>api2sc.des.rake <span class="ot">&lt;-</span> <span class="fu">rake</span>(api2sc.des, </span>
+<span id="cb283-2"><a href="weight-adjustments.html#cb283-2" tabindex="-1"></a>                        <span class="at">sample=</span><span class="fu">list</span>(<span class="sc">~</span>stype, <span class="sc">~</span>yr.rnd), </span>
+<span id="cb283-3"><a href="weight-adjustments.html#cb283-3" tabindex="-1"></a>                        <span class="at">population=</span><span class="fu">list</span>(stype.benchmarks, yr.rnd.benchmarks))</span>
+<span id="cb283-4"><a href="weight-adjustments.html#cb283-4" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 632.04 46.705</code></pre>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="weight-adjustments.html#cb285-1" tabindex="-1"></a>ff <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="fu">as.numeric</span>(x), <span class="fu">SE</span>(x))</span></code></pre></div>
+<p>Compare</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="weight-adjustments.html#cb286-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb286-2"><a href="weight-adjustments.html#cb286-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">mean</span>(apipopc<span class="sc">$</span>enroll), <span class="dv">0</span>),</span>
+<span id="cb286-3"><a href="weight-adjustments.html#cb286-3" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des)), </span>
+<span id="cb286-4"><a href="weight-adjustments.html#cb286-4" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)), </span>
+<span id="cb286-5"><a href="weight-adjustments.html#cb286-5" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)), </span>
+<span id="cb286-6"><a href="weight-adjustments.html#cb286-6" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake))) </span>
+<span id="cb286-7"><a href="weight-adjustments.html#cb286-7" tabindex="-1"></a><span class="fu">dimnames</span>(ss) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Cenus&quot;</span>,<span class="st">&quot;2SC&quot;</span>,<span class="st">&quot;2SC+PS(stype)&quot;</span>,<span class="st">&quot;2SC+PS(stype x yr.rnd)&quot;</span>,<span class="st">&quot;2SC+Rake(stype+yr.rnd)&quot;</span>),</span>
+<span id="cb286-8"><a href="weight-adjustments.html#cb286-8" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;SE&quot;</span>))</span>
+<span id="cb286-9"><a href="weight-adjustments.html#cb286-9" tabindex="-1"></a>ss</span></code></pre></div>
+<pre><code>##                        Estimate       SE
+## Cenus                  619.0469  0.00000
+## 2SC                    711.4530 81.05714
+## 2SC+PS(stype)          624.3485 53.14154
+## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
+## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502</code></pre>
+<p>With replacement: specify weights only - same as 2SC estimate, but it gets SE wrong</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="weight-adjustments.html#cb288-1" tabindex="-1"></a>api2sc.des.wr <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>api2sc, <span class="at">weight=</span><span class="sc">~</span>weight) </span>
+<span id="cb288-2"><a href="weight-adjustments.html#cb288-2" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des.wr)</span></code></pre></div>
+<pre><code>## stype
+## Elementary     Middle       High 
+##  2972.2159   589.3841   946.0500</code></pre>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="weight-adjustments.html#cb290-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des.wr)<span class="sc">/</span><span class="fu">sum</span>(api2sc<span class="sc">$</span>weight)</span></code></pre></div>
+<pre><code>## stype
+## Elementary     Middle       High 
+##  0.6593715  0.1307520  0.2098765</code></pre>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="weight-adjustments.html#cb292-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.des.wr)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 711.45 70.509</code></pre>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="weight-adjustments.html#cb294-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>enroll, <span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des.wr, svymean)</span></code></pre></div>
+<pre><code>##                 stype    enroll        se
+## Elementary Elementary  415.6678  25.89762
+## Middle         Middle  834.1254 113.93267
+## High             High 1564.3007 171.61203</code></pre>
+</div>
+<div id="replicate-weights" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Replicate weights<a href="weight-adjustments.html#replicate-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So we need replicate weights - generate these</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="weight-adjustments.html#cb296-1" tabindex="-1"></a>api2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(api2sc.des, <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in as.svrepdesign.default(api2sc.des, type = &quot;JK1&quot;): Finite population
+## corrections after first stage have been dropped</code></pre>
+<p>Informative warning here: no fpc can apply at second stage or deeper</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="weight-adjustments.html#cb298-1" tabindex="-1"></a><span class="fu">names</span>(api2sc.jkdes)</span></code></pre></div>
+<pre><code>##  [1] &quot;repweights&quot;       &quot;pweights&quot;         &quot;type&quot;             &quot;rho&quot;             
+##  [5] &quot;scale&quot;            &quot;rscales&quot;          &quot;call&quot;             &quot;combined.weights&quot;
+##  [9] &quot;selfrep&quot;          &quot;mse&quot;              &quot;variables&quot;        &quot;degf&quot;</code></pre>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="weight-adjustments.html#cb300-1" tabindex="-1"></a>api2sc.jkdes<span class="sc">$</span>repweights<span class="sc">$</span>weights  <span class="co"># and n x n matrix of weights: each column is a replicate, each row is a first stage unit</span></span></code></pre></div>
+<pre><code>##           [,1]     [,2]     [,3]     [,4]     [,5]     [,6]     [,7]     [,8]
+##  [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+##  [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
+##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
+##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
+##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000
+##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##           [,9]    [,10]    [,11]    [,12]    [,13]    [,14]    [,15]    [,16]
+##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [9,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [10,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [11,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+## [12,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+## [13,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
+## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
+## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
+## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000
+## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##          [,17]    [,18]    [,19]    [,20]    [,21]    [,22]    [,23]    [,24]
+##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [17,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [18,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [19,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+## [20,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+## [21,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
+## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
+## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
+## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000
+## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##          [,25]    [,26]    [,27]    [,28]    [,29]    [,30]    [,31]    [,32]
+##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [25,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [26,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [27,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+## [28,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+## [29,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
+## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
+## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
+## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000
+## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##          [,33]    [,34]    [,35]    [,36]    [,37]    [,38]    [,39]    [,40]
+##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [33,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [34,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
+## [35,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+## [36,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+## [37,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
+## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
+## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
+## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 0.000000</code></pre>
+<p>Replicate Weights are <span class="math inline">\(n/(n-1)=40/39=1.025641\)</span> - drops one <code>dnum</code> out for each replicate.
+These need to be multiplied by the original sampling weight to get the actual weights.</p>
+<p>Use JK1 for unstratified designs, JKn for stratified designs</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="weight-adjustments.html#cb302-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 711.45 82.848</code></pre>
+<p>Better estimate of the SE.</p>
+<p>We can poststratify these weights by the way: we poststratify each
+replicate weight set in addition to the probability weights themselves.</p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="weight-adjustments.html#cb304-1" tabindex="-1"></a>api2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb304-2"><a href="weight-adjustments.html#cb304-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes.ps)</span></code></pre></div>
+<pre><code>##          mean    SE
+## enroll 624.35 60.61</code></pre>
+<p>We get immediate reduction of the standard errors</p>
+<p>Comparison</p>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="weight-adjustments.html#cb306-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb306-2"><a href="weight-adjustments.html#cb306-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">mean</span>(apipopc<span class="sc">$</span>enroll), <span class="dv">0</span>),</span>
+<span id="cb306-3"><a href="weight-adjustments.html#cb306-3" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des)), </span>
+<span id="cb306-4"><a href="weight-adjustments.html#cb306-4" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)), </span>
+<span id="cb306-5"><a href="weight-adjustments.html#cb306-5" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)), </span>
+<span id="cb306-6"><a href="weight-adjustments.html#cb306-6" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)),</span>
+<span id="cb306-7"><a href="weight-adjustments.html#cb306-7" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes)),</span>
+<span id="cb306-8"><a href="weight-adjustments.html#cb306-8" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes.ps))</span>
+<span id="cb306-9"><a href="weight-adjustments.html#cb306-9" tabindex="-1"></a>  ) </span>
+<span id="cb306-10"><a href="weight-adjustments.html#cb306-10" tabindex="-1"></a><span class="fu">dimnames</span>(ss) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Cenus&quot;</span>,<span class="st">&quot;2SC&quot;</span>,<span class="st">&quot;2SC+PS(stype)&quot;</span>,<span class="st">&quot;2SC+PS(stype x yr.rnd)&quot;</span>,<span class="st">&quot;2SC+Rake(stype+yr.rnd)&quot;</span>,</span>
+<span id="cb306-11"><a href="weight-adjustments.html#cb306-11" tabindex="-1"></a>                       <span class="st">&quot;JK1&quot;</span>,<span class="st">&quot;JK1+PS(stype)&quot;</span>),</span>
+<span id="cb306-12"><a href="weight-adjustments.html#cb306-12" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;SE&quot;</span>))</span>
+<span id="cb306-13"><a href="weight-adjustments.html#cb306-13" tabindex="-1"></a>ss</span></code></pre></div>
+<pre><code>##                        Estimate       SE
+## Cenus                  619.0469  0.00000
+## 2SC                    711.4530 81.05714
+## 2SC+PS(stype)          624.3485 53.14154
+## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
+## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502
+## JK1                    711.4530 82.84780
+## JK1+PS(stype)          624.3485 60.60973</code></pre>
+<p>Take a look at the replicate weights after post-stratification</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="weight-adjustments.html#cb308-1" tabindex="-1"></a>api2sc.jkdes.ps<span class="sc">$</span>repweights</span></code></pre></div>
+<pre><code>## $weights
+##      [,1]    [,2]     [,3]     [,4]     [,5] [,6]    [,7]     [,8]     [,9]
+## 1 0.00000 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 0.00000 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 0.00000 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 0.000000 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 0.000000 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 0.000000 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 0.000000 1.00 1.00000 1.067176 1.000000
+## 2 1.00000 1.00000 1.077465 1.000000 0.000000 1.02 1.00000 1.000000 1.030303
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 0.00 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 0.00000 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 0.000000 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 0.000000 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 0.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 0.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
+## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
+## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
+##      [,10]    [,11]  [,12]    [,13]   [,14]    [,15]  [,16]    [,17]    [,18]
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 0.000000 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 0.000000 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 2 1.062500 0.000000 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 2 1.062500 1.243902 0.0000 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 0.000000 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 0.000000 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 0.00000 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 0.000000 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 0.000000 1.0000 1.000000 1.032496
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 0.0000 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 0.000000 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 0.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 0.000000
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
+## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
+## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
+##      [,19]    [,20]    [,21]    [,22]   [,23] [,24]    [,25]    [,26]   [,27]
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 0.000000 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 0.000000 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 0.000000 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 0.000000 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 0.000000 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 0.000000 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 0.00000  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  0.00 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 0.000000 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 0.000000 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 0.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 0.00000
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
+## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
+## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
+##      [,28]    [,29]    [,30]   [,31]   [,32] [,33]    [,34]   [,35]   [,36]
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 0.000000 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 0.000000 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 0.000000 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 1 1.047964 1.059513 0.000000 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 0.000000 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 3 1.130458 1.000000 0.000000 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 0.00000 1.00628  1.00 1.006280 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 0.00000 1.00000  1.00 1.032496 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 0.00000  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  0.00 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 0.000000 1.00945 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 0.000000 1.04955 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 0.00000 1.00628
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 0.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 0.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
+## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
+## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
+##     [,37]    [,38]    [,39]    [,40]
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 2 1.02000 1.108696 1.085106 1.000000
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 2 1.02000 1.108696 1.085106 1.000000
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 1.02000 1.108696 1.085106 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 3 1.00000 1.000000 1.144026 1.000000
+## 1 1.00628 1.000000 1.000000 1.019081
+## 2 0.00000 1.108696 1.085106 1.000000
+## 1 0.00000 1.000000 1.000000 1.019081
+## 2 1.02000 0.000000 1.085106 1.000000
+## 3 1.00000 1.000000 0.000000 1.000000
+## 2 1.02000 1.108696 0.000000 1.000000
+## 1 1.00628 1.000000 1.000000 0.000000
+## 
+## $index
+##  [1]  1  2  3  4  5  4  6  6  7  8  9 10 11 12 13 14 15 15 15 16 17 17 17 18 18
+## [26] 19 19 19 19 19 19 19 20 19 19 19 21 22 23 24 24 25 25 26 27 28 28 29 29 30
+## [51] 29 31 32 33 33 33 34 35 36 36 37 38 37 37 37 37 37 38 39 40 41 41 42 42 42
+## [76] 43 44 43 45 43 43 46 47 48 49 50 51 52 53 54 55 56 57 57 58 59 60 60
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;repweights_compressed&quot; &quot;repweights&quot;</code></pre>
+<p>We might have been <strong>supplied</strong> these weights, someone else might have
+created them. In which case our dataset would look like this</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="weight-adjustments.html#cb310-1" tabindex="-1"></a>fwmat <span class="ot">&lt;-</span> api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>weights[api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>index,]</span>
+<span id="cb310-2"><a href="weight-adjustments.html#cb310-2" tabindex="-1"></a><span class="fu">colnames</span>(fwmat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;repweight&quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%0.3d&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(fwmat)))</span>
+<span id="cb310-3"><a href="weight-adjustments.html#cb310-3" tabindex="-1"></a>pweight <span class="ot">&lt;-</span> api2sc.jkdes.ps<span class="sc">$</span>pweights</span>
+<span id="cb310-4"><a href="weight-adjustments.html#cb310-4" tabindex="-1"></a>fwmat <span class="ot">&lt;-</span> <span class="fu">diag</span>(pweight)<span class="sc">%*%</span>fwmat</span>
+<span id="cb310-5"><a href="weight-adjustments.html#cb310-5" tabindex="-1"></a><span class="fu">sum</span>(pweight)</span></code></pre></div>
+<pre><code>## [1] 6157</code></pre>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="weight-adjustments.html#cb312-1" tabindex="-1"></a><span class="fu">apply</span>(fwmat,<span class="dv">2</span>,sum)</span></code></pre></div>
+<pre><code>## repweight001 repweight002 repweight003 repweight004 repweight005 repweight006 
+##         6157         6157         6157         6157         6157         6157 
+## repweight007 repweight008 repweight009 repweight010 repweight011 repweight012 
+##         6157         6157         6157         6157         6157         6157 
+## repweight013 repweight014 repweight015 repweight016 repweight017 repweight018 
+##         6157         6157         6157         6157         6157         6157 
+## repweight019 repweight020 repweight021 repweight022 repweight023 repweight024 
+##         6157         6157         6157         6157         6157         6157 
+## repweight025 repweight026 repweight027 repweight028 repweight029 repweight030 
+##         6157         6157         6157         6157         6157         6157 
+## repweight031 repweight032 repweight033 repweight034 repweight035 repweight036 
+##         6157         6157         6157         6157         6157         6157 
+## repweight037 repweight038 repweight039 repweight040 
+##         6157         6157         6157         6157</code></pre>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="weight-adjustments.html#cb314-1" tabindex="-1"></a>api2sc.withrep.ps <span class="ot">&lt;-</span> <span class="fu">cbind</span>(api2sc, pweight, fwmat)</span></code></pre></div>
+<p>We create the design using the probability weights <code>pweight</code>
+and the set of replicate weights <code>repweight001-repweight040</code>.</p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="weight-adjustments.html#cb315-1" tabindex="-1"></a>pweightcol <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="st">&quot;pweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which column name is exactly equal to pweight</span></span>
+<span id="cb315-2"><a href="weight-adjustments.html#cb315-2" tabindex="-1"></a>repweightcols <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;^repweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which columnnames start with repweight?</span></span>
+<span id="cb315-3"><a href="weight-adjustments.html#cb315-3" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(api2sc.withrep.ps))</span>
+<span id="cb315-4"><a href="weight-adjustments.html#cb315-4" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> varcols[<span class="sc">!</span>(varcols<span class="sc">%in%</span><span class="fu">c</span>(pweightcol,repweightcols))]</span>
+<span id="cb315-5"><a href="weight-adjustments.html#cb315-5" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(api2sc<span class="sc">$</span>dnum))</span>
+<span id="cb315-6"><a href="weight-adjustments.html#cb315-6" tabindex="-1"></a>api2sc.repdes.ps <span class="ot">&lt;-</span> <span class="fu">svrepdesign</span>(<span class="at">variables=</span>api2sc.withrep.ps[,varcols],</span>
+<span id="cb315-7"><a href="weight-adjustments.html#cb315-7" tabindex="-1"></a>                                <span class="at">weights=</span>api2sc.withrep.ps[,pweightcol],</span>
+<span id="cb315-8"><a href="weight-adjustments.html#cb315-8" tabindex="-1"></a>                                <span class="at">repweights=</span>api2sc.withrep.ps[,repweightcols],</span>
+<span id="cb315-9"><a href="weight-adjustments.html#cb315-9" tabindex="-1"></a>                                <span class="at">combined.weights=</span><span class="cn">TRUE</span>,</span>
+<span id="cb315-10"><a href="weight-adjustments.html#cb315-10" tabindex="-1"></a>                                <span class="at">scale=</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,</span>
+<span id="cb315-11"><a href="weight-adjustments.html#cb315-11" tabindex="-1"></a>                                <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span>
+<span id="cb315-12"><a href="weight-adjustments.html#cb315-12" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.repdes.ps)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 624.35 62.313</code></pre>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="weight-adjustments.html#cb317-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb317-2"><a href="weight-adjustments.html#cb317-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">mean</span>(apipopc<span class="sc">$</span>enroll), <span class="dv">0</span>),</span>
+<span id="cb317-3"><a href="weight-adjustments.html#cb317-3" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des)), </span>
+<span id="cb317-4"><a href="weight-adjustments.html#cb317-4" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)), </span>
+<span id="cb317-5"><a href="weight-adjustments.html#cb317-5" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)), </span>
+<span id="cb317-6"><a href="weight-adjustments.html#cb317-6" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)),</span>
+<span id="cb317-7"><a href="weight-adjustments.html#cb317-7" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes)),</span>
+<span id="cb317-8"><a href="weight-adjustments.html#cb317-8" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes.ps)),</span>
+<span id="cb317-9"><a href="weight-adjustments.html#cb317-9" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.repdes.ps))</span>
+<span id="cb317-10"><a href="weight-adjustments.html#cb317-10" tabindex="-1"></a>  ) </span>
+<span id="cb317-11"><a href="weight-adjustments.html#cb317-11" tabindex="-1"></a><span class="fu">dimnames</span>(ss) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Cenus&quot;</span>,<span class="st">&quot;2SC&quot;</span>,<span class="st">&quot;2SC+PS(stype)&quot;</span>,<span class="st">&quot;2SC+PS(stype x yr.rnd)&quot;</span>,<span class="st">&quot;2SC+Rake(stype+yr.rnd)&quot;</span>,</span>
+<span id="cb317-12"><a href="weight-adjustments.html#cb317-12" tabindex="-1"></a>                       <span class="st">&quot;JK1&quot;</span>,<span class="st">&quot;JK1+PS(stype)&quot;</span>,<span class="st">&quot;JK1+PS(stype)&quot;</span>),</span>
+<span id="cb317-13"><a href="weight-adjustments.html#cb317-13" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;SE&quot;</span>))</span>
+<span id="cb317-14"><a href="weight-adjustments.html#cb317-14" tabindex="-1"></a>ss</span></code></pre></div>
+<pre><code>##                        Estimate       SE
+## Cenus                  619.0469  0.00000
+## 2SC                    711.4530 81.05714
+## 2SC+PS(stype)          624.3485 53.14154
+## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
+## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502
+## JK1                    711.4530 82.84780
+## JK1+PS(stype)          624.3485 60.60973
+## JK1+PS(stype)          624.3485 62.31259</code></pre>
+<p>JKn is used with stratified designs</p>
+<p>E.g. draw a two stage cluster sample within two strata: schools which are or are
+not eligible for an awards programme:</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="weight-adjustments.html#cb319-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
+<span id="cb319-2"><a href="weight-adjustments.html#cb319-2" tabindex="-1"></a>apist2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span></span>
+<span id="cb319-3"><a href="weight-adjustments.html#cb319-3" tabindex="-1"></a>  <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">stratumvar=</span><span class="st">&quot;awards&quot;</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>)</span>
+<span id="cb319-4"><a href="weight-adjustments.html#cb319-4" tabindex="-1"></a>apist2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">strata=</span><span class="sc">~</span>awards, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, </span>
+<span id="cb319-5"><a href="weight-adjustments.html#cb319-5" tabindex="-1"></a>                          <span class="at">data=</span>apist2sc, <span class="at">nest=</span><span class="cn">TRUE</span>)</span>
+<span id="cb319-6"><a href="weight-adjustments.html#cb319-6" tabindex="-1"></a>apist2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span></code></pre></div>
+<p>Note: we need <code>nest=TRUE</code> here because districts <code>dnum</code> do not nest within strata.
+I.e. it is the <strong>combination</strong> of <code>awards</code> and <code>dnum</code> that actually defines the clusters here.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="weight-adjustments.html#cb320-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 497.75 64.645</code></pre>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="weight-adjustments.html#cb322-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des.ps)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 523.97 63.001</code></pre>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="weight-adjustments.html#cb324-1" tabindex="-1"></a>apist2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(apist2sc.des, <span class="at">type=</span><span class="st">&quot;JKn&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in as.svrepdesign.default(apist2sc.des, type = &quot;JKn&quot;): Finite
+## population corrections after first stage have been dropped</code></pre>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="weight-adjustments.html#cb326-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 497.75 84.997</code></pre>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="weight-adjustments.html#cb328-1" tabindex="-1"></a>apist2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb328-2"><a href="weight-adjustments.html#cb328-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes.ps)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 523.97 82.125</code></pre>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="weight-adjustments.html#cb330-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb330-2"><a href="weight-adjustments.html#cb330-2" tabindex="-1"></a>apipop <span class="sc">|&gt;</span> </span>
+<span id="cb330-3"><a href="weight-adjustments.html#cb330-3" tabindex="-1"></a>  <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">cfraction=</span><span class="fl">0.30</span>, <span class="at">mmin=</span><span class="dv">2</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb330-4"><a href="weight-adjustments.html#cb330-4" tabindex="-1"></a>  <span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, <span class="at">data=</span>_) <span class="sc">|&gt;</span> </span>
+<span id="cb330-5"><a href="weight-adjustments.html#cb330-5" tabindex="-1"></a>  <span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>_)</span></code></pre></div>
+<pre><code>##         mean     SE
+## enroll 826.5 58.607</code></pre>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="weight-adjustments.html#cb332-1" tabindex="-1"></a><span class="fu">table</span>(api2sc<span class="sc">$</span>stype)</span></code></pre></div>
+<pre><code>## 
+## Elementary     Middle       High 
+##         61         14         23</code></pre>
+<p>Origin of missing data</p>
+<p>Calibration for unit non-response</p>
+<ul>
+<li>Poststratification</li>
+</ul>
+<p>Imputation for item non-response</p>
+</div>
+<div id="replicate-weights-1" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Replicate weights<a href="weight-adjustments.html#replicate-weights-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Later in the course we’ll see situations where non-response means that the
+weights from our sample design have to be adjusted (e.g. by poststratification).
+When this happens the estimation methods associated with the sample designs above
+no longer work, and we have to resort to approximations.</p>
+<p>In such circumstances we often create multiple sets of weights in addition to the
+adjusted weights. These <strong>replicate weights</strong> are what are used to estimate the
+standard errors, and they have the advantage that they can create standard errors
+for a wider range of estimators than the usual means and totals.</p>
+<p><strong>Jacknife</strong> weights are calculated by systematically deleting PSUs at the first
+stage of selection, and then scaling the weights on the remaining rows so that they
+still add up to the same total.</p>
+
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="survey-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="designing-surveys.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

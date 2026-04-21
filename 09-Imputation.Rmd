@@ -1,0 +1,223 @@
+# Imputation
+
+Dealing with item non-response
+
+Can do complete case analysis, but that risks both bias and
+loss of precision due to reduced sample size.
+
+Another option is imputation: fill in the data using a model.
+All such models involve untestable assumptions.
+
+```{r}
+surf <- read.csv("data/surf.csv")[,1:8]
+```
+
+Remove some data: marital status and income
+```{r}
+set.seed(111)
+msurf <- surf
+msurf$Marital[sample(nrow(surf),10)] <- NA
+msurf$Income[sample(nrow(surf),10)] <- NA
+table(msurf$Marital,exclude=NULL)
+sum(is.na(msurf$Income))
+```
+
+```{r message=FALSE, warning=FALSE}
+library(mice)
+library(lattice)
+```
+
+Mean imputation/cell mean imputation: method = 'mean'
+Median imputation/cell median imputation: 
+Hot deck cell imputation: method = 'sample' within cells
+Regression imputation
+
+Don't impute a column by setting the method="" for that column
+
+'blocks' are sets of variables, treated similarly
+```{r}
+mice(msurf, m=5, 
+     method=,
+     blocks=)
+```
+
+Example dataset supplied with mice is `nhanes` - note all variables are numeric
+```{r}
+mnhanes <- mice::nhanes
+mnhanes$age <- factor(mnhanes$age)
+mnhanes <- data.frame(id=factor(1:nrow(mnhanes)),mnhanes)
+dim(mnhanes) # 25 x 5
+summary(mnhanes)
+```
+
+Surf data is a mixture of numeric and categorical variables
+```{r}
+summary(msurf)
+```
+
+
+Inspect missing pattern
+```{r}
+md.pattern(mnhanes)
+md.pattern(msurf)
+```
+
+Overall mean imputation
+```{r}
+mnhanes.mfit1 <- mnhanes |> mice(method="mean", m=1, maxit=1)
+mnhanes.m1 <- complete(mnhanes.mfit1)
+md.pattern(mnhanes.m1) # no missing data left
+```
+
+Overall mean imputation
+```{r}
+mnhanes.grandmean <- mnhanes |>
+  mice(method="mean", m=1) |>
+  complete() 
+```
+
+Cell mean imputation
+```{r}
+mnhanes.cellmean <- do.call(rbind, 
+                            by(mnhanes, mnhanes$age,
+                               function(dsub) complete(mice(dsub, method="mean", m=1)))) 
+mnhanes.cellmean <- arrange(mnhanes.cellmean, id)
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+```
+
+Repeat cell mean imputation using the regression formulation
+
+```{r}
+allvarnames <- names(mnhanes)
+
+blocks <- as.list(allvarnames) # each variable in its own block
+names(blocks) <- allvarnames
+method <- rep("",length(allvarnames)) # method for each block: start with no imputation
+names(method) <- allvarnames
+formulas <- as.list(rep("~1", length(allvarnames)))
+names(formulas) <- allvarnames
+formulas <- lapply(formulas, formula)
+
+method["bmi"] <- "norm.predict" # we're only going to impute bmi, by regression imputation
+formulas[["bmi"]] <- formula(~age)
+
+mnhanes.cellmeanregf <- mnhanes |> 
+  mice(m=1, method=method, blocks=blocks, formulas=formulas) |>
+  complete()
+
+mnhanes.cellmeanregf
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+mnhanes.cellmeanregf[is.na(mnhanes$bmi),]
+```
+
+
+Means of numeric and modes of categorical variables
+```{r}
+getmeanmode <- function(df) {
+  as.data.frame(lapply(df, 
+       function(x) {
+         if(is.factor(x) || is.character(x)) {
+           xt <- table(x)
+           mval <- names(xt)[which.max(xt)]
+         } else if(is.numeric(x)) {
+           mval <- mean(x, na.rm=TRUE)
+         } else {
+           mval <- NA
+         }
+         return(mval)
+       }))
+}
+```
+
+
+```{r}
+getmeanmode(mnhanes)
+```
+
+```{r}
+sapply(names(mnhanes.m1), function(varname) mnhanes.m1[is.na(mnhanes[,varname]),varname])
+```
+
+Just do the numerical variables (gives a warning because Marital is categorical)
+```{r}
+msurf.mfit1 <- msurf |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # still has missing Marital data
+```
+
+Avoid the error
+```{r}
+msurf.mfit1 <- msurf[,sapply(msurf,is.numeric)] |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # this deletes the Marital column of course
+```
+
+
+
+Hot deck imputation
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+Hot deck within cells [*** not yet done ***]
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, blocks=, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+
+Regression imputation
+
+Use regressions on all available observations?
+```{r}
+mnhanes.mfit2 <- mice(mnhanes, method="norm.predict", m=1, maxit=1)
+mnhanes.m2 <- complete(mnhanes.mfit2)
+mnhanes.m1[is.na(mnhanes$bmi),]
+mnhanes.m2[is.na(mnhanes$bmi),]
+```
+
+Multiple imputation
+
+Instead of imputing a **single** value for each missing observation, we impute
+several possible imputed values - we end up with multiple completed data sets.
+The variability among estimates from these separate completed data sets gives
+us additional insight into the effect of our imputations, and the uncertainty
+we have associated with having missing data.
+
+The confidence we can have regarding the true scale of the uncertainty depends
+on how strongly we believe in the model we've used to impute.  
+
+Hot deck multiple imputation
+```{r}
+mnhanes.multfit1 <- mice(mnhanes, method="sample", m=5, seed=123)
+mnhanes.mult1 <- complete(mnhanes.multfit1)
+mnhanes.mult1[is.na(mnhanes$bmi),]
+```
+
+Regression mean imputation
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+
+Stochastic regression imputation: we sample from the fitted distribution
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+

@@ -85,8 +85,10 @@ stratified-two-stage-cluster-design
 survey-analysis
 continous-variables
 categorical-variables
+weight-adjustments
 calibration
 replicate-weights
+replicate-weights-1
 designing-surveys
 another-interpretation-of-the-deff
 computing-the-required-sample-size

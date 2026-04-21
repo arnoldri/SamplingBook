@@ -36,8 +36,13 @@ yr.rnd.benchmarks <- as.data.frame(table(apipopc$yr.rnd))
 names(yr.rnd.benchmarks) <- c("yr.rnd","Freq")
 yr.rnd.benchmarks
 sum(yr.rnd.benchmarks$Freq) # 6157
+
+stype.yr.rnd.benchmarks <- as.data.frame(table(apipopc$stype, apipopc$yr.rnd))
+names(stype.yr.rnd.benchmarks) <- c("stype","yr.rnd","Freq")
+stype.yr.rnd.benchmarks
 ```
 
+Select a two stage cluster sample - make estimates
 ```{r}
 set.seed(111)
 api2sc <- apipopc |> 
@@ -50,11 +55,19 @@ svymean(~enroll, design=api2sc.des)
 svyby(~enroll, by=~stype, api2sc.des, svymean)
 ```
 
+Poststratify by stype and reestimate
 ```{r}
 api2sc.des.ps <- postStratify(api2sc.des, strata=~stype, population=stype.benchmarks)
 svymean(~enroll, api2sc.des.ps)
 ```
 
+Postratify by stype x yr.rnd and reestimate
+```{r}
+api2sc.des.ps2 <- postStratify(api2sc.des, strata=~stype+yr.rnd, population=stype.yr.rnd.benchmarks)
+svymean(~enroll, api2sc.des.ps2)
+```
+
+Poststratify by stype + yr.rnd (i.e. we only have the marginals) and reestimate
 ```{r}
 api2sc.des.rake <- rake(api2sc.des, 
                         sample=list(~stype, ~yr.rnd), 
@@ -62,8 +75,25 @@ api2sc.des.rake <- rake(api2sc.des,
 svymean(~enroll, api2sc.des.rake)
 ```
 
+```{r}
+ff <- function(x) c(as.numeric(x), SE(x))
+```
 
-With replacement: use weights only - gets SE badly wrong
+
+Compare
+```{r}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake))) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)"),
+                     c("Estimate","SE"))
+ss
+```
+
+With replacement: specify weights only - same as 2SC estimate, but it gets SE wrong
 ```{r}
 api2sc.des.wr <- svydesign(ids=~1, data=api2sc, weight=~weight) 
 svytable(~stype, design=api2sc.des.wr)
@@ -72,96 +102,9 @@ svymean(~enroll, design=api2sc.des.wr)
 svyby(~enroll, ~stype, design=api2sc.des.wr, svymean)
 ```
 
-```{r}
-api2sc.des.wr.ps <- postStratify(api2sc.des.wr, strata=~stype, population=stype.benchmarks)
-svymean(~enroll, api2sc.des.wr.ps)
-```
-
-So we need replicate weights
-
-api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JKn")
-```{r}
-api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
-```
-Informative warning here: no fpc can apply at second stage or deeper
-
-```{r}
-names(api2sc.jkdes)
-api2sc.jkdes$repweights$weights  # and n x n matrix of weights: each column is a replicate
-```
-Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one `dnum` out for each replicate.
-These need to be multiplied by the original sampling weight to get the actual weights.
-
-```{r}
-api2sc.jkdes$pweights
-api2sc$weight
-```
-
-JK1 for unstratified designs, JKn for stratified designs
-
-```{r}
-svymean(~enroll, design=api2sc.jkdes)
-```
-
-We might have been **supplied** these weights, someone else might have
-created them.  In which case our dataset would look like this
-```{r}
-fwmat <- api2sc.jkdes$repweights$weights[api2sc.jkdes$repweights$index,]
-colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
-pweight <- api2sc.jkdes$pweights
-fwmat <- diag(pweight)%*%fwmat
-sum(pweight)
-apply(fwmat,2,sum)
-api2sc.withrep <- cbind(api2sc, pweight, fwmat)
-```
-We create the design using the probability weights `pweight`
-and the set of replicate weights `repweight001-repweight040`.
-
-```{r}
-pweightcol <- match("pweight",names(api2sc.withrep)) # which column name is exactly equal to pweight
-repweightcols <- grep("^repweight",names(api2sc.withrep)) # which columnnames start with repweight?
-varcols <- (1:ncol(api2sc.withrep))
-varcols <- varcols[!(varcols%in%c(pweightcol,repweightcols))]
-n <- length(unique(api2sc$dnum))
-api2sc.repdes <- svrepdesign(variables=api2sc.withrep[,varcols],
-                             weights=api2sc.withrep[,pweightcol],
-                             repweights=api2sc.withrep[,repweightcols],
-                             combined.weights=TRUE,
-                             scale=(n-1)/n,
-                             type="JK1")
-svymean(~enroll, api2sc.repdes)
-```
-
-
-```{r}
-set.seed(222)
-apipop |> 
-  select.2sc(n=40, cfraction=0.30, mmin=2, clustervar="dnum") |> 
-  svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=_) |> 
-  svymean(~enroll, design=_)
-```
-
-
-```{r}
-table(api2sc$stype)
-```
-
-
-
-Origin of missing data
-
-Calibration for unit non-response
-
-* Poststratification
-
-Imputation for item non-response
-
 ## Replicate weights
 
-Later in the course we'll see situations where non-response means that the 
-weights from our sample design have to be adjusted (e.g. by poststratification).
-When this happens the estimation methods associated with the sample designs above
-no longer work, and we have to resort to approximations.
+So we need replicate weights - generate these
 
 In such circumstances we often create multiple sets of weights in addition to the
 adjusted weights.  These **replicate weights** are what are used to estimate the
@@ -171,3 +114,162 @@ for a wider range of estimators than the usual means and totals.
 **Jacknife** weights are calculated by systematically deleting PSUs at the first
 stage of selection, and then scaling the weights on the remaining rows so that they 
 still add up to the same total.
+```{r}
+api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
+```
+Informative warning here: no fpc can apply at second stage or deeper.
+
+```{r}
+names(api2sc.jkdes)
+api2sc.jkdes$repweights$weights[1:3,]  # an n x n matrix of weights: each column is a replicate, each row is a first stage unit
+```
+Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one `dnum` out for each replicate.
+These need to be multiplied by the original sampling weight to get the actual weights.
+
+Use JK1 for unstratified designs, JKn for stratified designs
+
+```{r}
+svymean(~enroll, design=api2sc.jkdes)
+```
+Better estimate of the SE.
+
+We can poststratify these weights by the way: we poststratify each
+replicate weight set in addition to the probability weights themselves.
+
+```{r}
+api2sc.jkdes.ps <- postStratify(api2sc.jkdes, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, design=api2sc.jkdes.ps)
+```
+We get immediate reduction of the standard errors
+
+Comparison
+```{r}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake)),
+  ff(svymean(~enroll, api2sc.jkdes)),
+  ff(svymean(~enroll, api2sc.jkdes.ps))
+  ) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
+                       "JK1","JK1+PS(stype)"),
+                     c("Estimate","SE"))
+ss
+```
+Take a look at the replicate weights after post-stratification
+```{r}
+api2sc.jkdes.ps$repweights[1:3,]
+```
+
+We might have been **supplied** these weights, someone else might have
+created them.  In which case our dataset would look like this
+```{r}
+fwmat <- api2sc.jkdes.ps$repweights$weights[api2sc.jkdes.ps$repweights$index,]
+colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
+pweight <- api2sc.jkdes.ps$pweights
+fwmat <- diag(pweight)%*%fwmat
+sum(pweight)
+apply(fwmat,2,sum)
+api2sc.withrep.ps <- cbind(api2sc, pweight, fwmat)
+```
+We create the design using the probability weights `pweight`
+and the set of replicate weights `repweight001-repweight040`.
+
+```{r}
+pweightcol <- match("pweight",names(api2sc.withrep.ps)) # which column name is exactly equal to pweight
+repweightcols <- grep("^repweight",names(api2sc.withrep.ps)) # which columnnames start with repweight?
+varcols <- (1:ncol(api2sc.withrep.ps))
+varcols <- varcols[!(varcols%in%c(pweightcol,repweightcols))]
+n <- length(unique(api2sc$dnum))
+api2sc.repdes.ps <- svrepdesign(variables=api2sc.withrep.ps[,varcols],
+                                weights=api2sc.withrep.ps[,pweightcol],
+                                repweights=api2sc.withrep.ps[,repweightcols],
+                                combined.weights=TRUE,
+                                scale=(n-1)/n,
+                                type="JK1")
+svymean(~enroll, api2sc.repdes.ps)
+```
+```{r}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake)),
+  ff(svymean(~enroll, api2sc.jkdes)),
+  ff(svymean(~enroll, api2sc.jkdes.ps)),
+  ff(svymean(~enroll, api2sc.repdes.ps))
+  ) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
+                       "JK1","JK1+PS(stype)","JK1+PS(stype)"),
+                     c("Estimate","SE"))
+ss
+```
+
+JKn is used with stratified designs
+
+E.g. draw a two stage cluster sample within two strata: schools which are or are
+not eligible for an awards programme:
+```{r}
+set.seed(999)
+apist2sc <- apipopc |>
+  select.st2sc(n=40, stratumvar="awards", cfraction=0.20, clustervar="dnum")
+apist2sc.des <- svydesign(id=~dnum+snum, strata=~awards, fpc=~bigN1+bigN2, 
+                          data=apist2sc, nest=TRUE)
+apist2sc.des.ps <- postStratify(apist2sc.des, strata=~stype, population=stype.benchmarks)
+```
+Note: we need `nest=TRUE` here because districts `dnum` do not nest within strata.
+I.e. it is the **combination** of `awards` and `dnum` that actually defines the clusters here.
+
+```{r}
+svymean(~enroll, design=apist2sc.des)
+svymean(~enroll, design=apist2sc.des.ps)
+apist2sc.jkdes <- as.svrepdesign(apist2sc.des, type="JKn")
+svymean(~enroll, design=apist2sc.jkdes)
+apist2sc.jkdes.ps <- postStratify(apist2sc.jkdes, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, design=apist2sc.jkdes.ps)
+```
+
+There are alternative methods to Jacknife generation of replicate weights.
+You may hear of Bootstrap weights, and Balanced Repeated Replication.  Some
+of these have multiple variants.  We don't need to worry about these.
+
+## Demonstration of ps SE improvement
+
+```{r}
+set.seed(222)
+R <- 100
+sim <- t(sapply(1:R, 
+              function(i) {
+  ss <- apipopc |> 
+    select.2sc(n=100, cfraction=0.30, mmin=2, clustervar="dnum") 
+  d1 <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=ss)  
+  d2 <- postStratify(d1, strata=~stype, population=stype.benchmarks)
+  e1 <- ff(svymean(~api00, design=d1))
+  e2 <- ff(svymean(~api00, design=d2))
+  return(c(e1,e2))
+}))
+```
+
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,1],main="Simple estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+hist(sim[,3],main="Postratified estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+```
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,2],main="SE of Simple estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,1]),col="red",lwd=2)
+hist(sim[,4],main="SE of Postratified estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,3]),col="red",lwd=2)
+
+```
+
+
+

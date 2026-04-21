@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  18 APR 2026 14:41
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  20 APR 2026 19:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1304,26 +1304,2846 @@ File: _main_files/figure-latex/unnamed-chunk-171-1.pdf Graphic file (type pdf)
 
 ]
 Chapter 8.
-[107] [108
+[107] [108] [109]
+Overfull \hbox (23.3445pt too wide) in paragraph at lines 5863--5863
+[]\TU/lmtt/m/n/10 ## Warning in as.svrepdesign.default(api2sc.des, type = "JK1"
+): Finite population[] 
+ []
 
-]
+
+Overfull \hbox (33.8445pt too wide) in paragraph at lines 5877--5877
+[]\TU/lmtt/m/n/10 ##  [5] "scale"            "rscales"          "call"         
+    "combined.weights"[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##           [,1]     [,2]     [,3]     [,4]     [,5]     [,6
+]     [,7]     [,8][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.00000
+0 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 0.000000 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+[110]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##           [,9]    [,10]    [,11]    [,12]    [,13]    [,14
+]    [,15]    [,16][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [9,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [10,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [11,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [12,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [13,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.00000
+0 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 0.000000 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[111]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##          [,17]    [,18]    [,19]    [,20]    [,21]    [,22
+]    [,23]    [,24][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [17,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [18,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [19,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [20,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [21,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.00000
+0 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 0.000000 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##          [,25]    [,26]    [,27]    [,28]    [,29]    [,30
+]    [,31]    [,32][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[112]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [25,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [26,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [27,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [28,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [29,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.00000
+0 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 0.000000 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [33,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [34,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [35,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [36,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [37,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##          [,33]    [,34]    [,35]    [,36]    [,37]    [,38
+]    [,39]    [,40][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [4,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [5,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [6,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [7,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [8,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ##  [9,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [10,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [11,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [12,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [13,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [14,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [15,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [16,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[113]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [17,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [18,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [19,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [20,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [21,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [22,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [23,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [24,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [25,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [26,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [27,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [28,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [29,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [30,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [31,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [32,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [33,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [34,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [35,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [36,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [37,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.02564
+1 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [38,] 1.025641 1.025641 1.025641 1.025641 1.025641 0.00000
+0 1.025641 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [39,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 0.000000 1.025641[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6091--6091
+[]\TU/lmtt/m/n/10 ## [40,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.02564
+1 1.025641 0.000000[] 
+ []
+
+[114]
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ##      [,1]    [,2]     [,3]     [,4]     [,5] [,6]    [,7] 
+    [,8]     [,9][] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 0.00000 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 0.00000 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 0.00000 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 0.000000 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 0.000000 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 0.000000 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 0.000000 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 0.000000 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 0.00 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 0.00000 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+0.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+0.000000 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 0.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 0.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+[115]
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 
+1.067176 1.000000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 
+1.000000 1.030303[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 
+1.012640 1.009450[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ##      [,10]    [,11]  [,12]    [,13]   [,14]    [,15]  [,16
+]    [,17]    [,18][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 0.000000 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 0.000000 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 0.000000 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 0.0000 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 0.000000 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 0.000000 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 0.00000 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 0.000000 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 0.000000 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 0.000
+0 1.000000 1.000000[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[116]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 0.000000 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 0.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.000
+0 1.000000 1.032496[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.062
+5 1.000000 1.000000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.000
+0 1.052553 1.006280[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ##      [,19]    [,20]    [,21]    [,22]   [,23] [,24]    [,2
+5]    [,26]   [,27][] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[117]
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 0.000000 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 0.000000 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 0.000000 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 0.000000 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 0.000000 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 0.000000 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 0.00000  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  0.00 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 0.0000
+00 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 0.000000 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 0.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 0.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.0000
+00 1.000000 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.0000
+00 1.159091 1.00000[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.0322
+11 1.150833 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ##      [,28]    [,29]    [,30]   [,31]   [,32] [,33]    [,34
+]   [,35]   [,36][] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[118]
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 0.000000 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 0.000000 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 0.000000 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 0.000000 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 0.000000 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 0.000000 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 0.00000 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 0.00000 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 0.00000  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  0.00 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 0.00000
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 0.00000
+0 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 0.00000 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 0.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 0.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.03249
+6 1.04955 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.00000
+0 1.00000 1.00000[] 
+ []
+
+
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.00628
+0 1.00945 1.00628[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[119]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[120]
+Overfull \hbox (28.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ##  [1]  1  2  3  4  5  4  6  6  7  8  9 10 11 12 13 14 15 15
+ 15 16 17 17 17 18 18[] 
+ []
+
+
+Overfull \hbox (28.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## [26] 19 19 19 19 19 19 19 20 19 19 19 21 22 23 24 24 25 25
+ 26 27 28 28 29 29 30[] 
+ []
+
+
+Overfull \hbox (28.5945pt too wide) in paragraph at lines 6483--6483
+[]\TU/lmtt/m/n/10 ## [51] 29 31 32 33 33 33 34 35 36 36 37 38 37 37 37 37 37 38
+ 39 40 41 41 42 42 42[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight001 repweight002 repweight003 repweight004 repwei
+ght005 repweight006[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight007 repweight008 repweight009 repweight010 repwei
+ght011 repweight012[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight013 repweight014 repweight015 repweight016 repwei
+ght017 repweight018[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight019 repweight020 repweight021 repweight022 repwei
+ght023 repweight024[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight025 repweight026 repweight027 repweight028 repwei
+ght029 repweight030[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ## repweight031 repweight032 repweight033 repweight034 repwei
+ght035 repweight036[] 
+ []
+
+
+Overfull \hbox (18.0945pt too wide) in paragraph at lines 6523--6523
+[]\TU/lmtt/m/n/10 ##         6157         6157         6157         6157       
+  6157         6157[] 
+ []
+
+[121] [122] [123] [124]
 Chapter 9.
-[109] [110] [111
+[125
 
-] [112
+] [126] [127
+
+] [128
 
 ]
 Appendix A.
-(_main.bbl [113] [114
+(_main.bbl [129] [130
 
-]) [115] (_main.aux) ) 
+]) [131] (_main.aux) ) 
 Here is how much of TeX's memory you used:
- 24877 strings out of 411463
- 448072 string characters out of 5818008
+ 24881 strings out of 411463
+ 448125 string characters out of 5818008
  1882290 words of memory out of 5000000
- 44746 multiletter control sequences out of 15000+600000
+ 44750 multiletter control sequences out of 15000+600000
  518916 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 86i,13n,121p,1004b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 86i,13n,121p,1004b,1106s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on _main.pdf (115 pages).
+Output written on _main.pdf (131 pages).
