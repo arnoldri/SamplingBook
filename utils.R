@@ -1,9 +1,26 @@
-is.unique <- function(x) length(x)==length(unique(x))
+##############################################################
+# Useful functions
+
+is.unique <- function(x) {
+  # are the elements of x all distinct?
+  length(x)==length(unique(x))
+}
 
 is.nested <- function(df, x, y) {
   # do all the levels of x nest within levels of y?
   all(tapply(df[,y], df[,x], function(yvals) length(unique(yvals)))==1)
 }
+
+modevalue <- function(x) {
+  # mode of vector x
+  # if the vector has multiple modes it returns the first
+  xvals <- unique(x)
+  xvals[which.max(tabulate(match(x, xvals)))]
+}
+
+
+##############################################################
+# Drawing samples from a data frame df
 
 select.srswor <- function(df, n) {
   # SRSWOR
@@ -66,6 +83,7 @@ select.stsrs <- function(df, n, stratumvar,
                          allocation="equal",
                          nmin=2, # minimum number of units to select per stratum 
                          method="SRSWOR", sizevar=NULL) {
+  # Stratified SRS
   bigN <- nrow(df)
   if(!stratumvar%in%names(df)) {
     stop("Stratum variable is not present in the data frame")
@@ -96,6 +114,7 @@ select.stsrs <- function(df, n, stratumvar,
 
 select.1sc <- function(df, n, clustervar, 
                        method="SRSWOR", sizevar=NULL) {
+  # One stage cluster design with SRSWOR or PPSWR
   bigM <- nrow(df)
   if(!clustervar%in%names(df)) {
     stop("Cluster ID variable is not present in the data frame")
@@ -121,6 +140,7 @@ select.2sc <- function(df, n, # number of first stage clusters to select
                        mmin=2, # minimum number of 2nd stage clusters to select
                        method1="SRSWOR", sizevar1=NULL,
                        method2="SRSWOR", sizevar2=NULL) {
+  # Two stage cluster design with SRSWOR or PPSWR at each stage
   bigM <- nrow(df)
   if(!clustervar%in%names(df)) {
     stop("Cluster ID variable is not present in the data frame")
@@ -171,6 +191,7 @@ select.st2sc <- function(df,
                          mmin=2, # minimum number of 2nd stage clusters to select
                          method1="SRSWOR", sizevar1=NULL,
                          method2="SRSWOR", sizevar2=NULL) {
+  # Stratified two stage cluster design with SRSWOR or PPSWR at each stage
   
   # stratum selection  
   bigN <- nrow(df)
@@ -207,3 +228,125 @@ select.st2sc <- function(df,
   return(samp)
 }
 
+#####################################################################
+# Impute variable varname in data frame df
+# Methods are
+# sample: hot deck imputation
+#   if a formula is supplied then this creates cells 
+# mean, median, mode: mean, median or mode imputation
+#   if a formula is supplied then this creates cells 
+# lm.mean: linear regression imputation
+#   a formula *must* be supplied: should be the RHS of the regression model
+#   formula.  Imputes the mean value predicted by the model
+# lm.sim: linear regression imputation with added error
+#   a formula *must* be supplied: should be the RHS of the regression model
+#   formula.  Imputes the mean value predicted by the model with added error
+
+impute <- function(df, varname, 
+                   method=NULL,
+                   formula=NULL, 
+                   impute.suffix=".imp") {
+  missing <- is.na(df[,varname])
+  df[,paste0(varname,impute.suffix)] <- missing
+  
+  if(method=="sample") {
+    # Hot Deck imputation - method is the same for any type of variable
+    if(is.null(formula)) {
+      # overall
+      df[missing,varname] <- sample(df[!missing,varname],sum(missing),replace=TRUE)
+      
+    } else if(!is.null(formula)) {
+      # in cells defined by the formula
+      mmat <- model.matrix(formula, data=df)
+      df$.tmp.rownames <- 1:nrow(df)
+      df$.tmp.cellnames <- apply(mmat,1,paste,collapse=";")
+      df <- do.call(rbind, by(df, df$.tmp.cellnames,
+                              function(dfx) {
+                                midx <- dfx[,paste0(varname,impute.suffix)]
+                                if(sum(!midx)==0) {
+                                  dfx[midx,paste0(varname,impute.suffix)] <- FALSE
+                                  warning("Cell with missing data but no donors: data not imputed")
+                                } else {
+                                  dfx[midx,varname] <- sample(dfx[!midx,varname],sum(midx),replace=TRUE)
+                                }
+                                return(dfx)
+                              }))
+      df <- df[order(df$.tmp.rownames),]
+      df$.tmp.rownames <- NULL
+      df$.tmp.cellnames <- NULL
+    } else {
+      # not recognised
+      stop("Method not recognised")
+    }
+    
+  } else if(is.numeric(df[,varname])) {
+    # Methods for numeric variables
+    
+    if(method=="median") {
+      # overall median imputation
+      df[missing,varname] <- median(df[!missing,varname])
+      
+    } else if(method=="mean") {
+      # overall mean imputation
+      df[missing,varname] <- mean(df[!missing,varname])
+      
+    } else if(method=="lm.mean" && !is.null(formula)) {
+      # linear model mean imputation with cells defined by the formula
+      formula <- as.formula(paste0(varname,
+                                   paste0(as.character(formula),collapse=" ")))
+      lm1 <- lm(formula, data=df[!missing,])
+      df[missing,varname] <- predict(lm1,newdata=df[missing,])
+      
+    } else if(method=="lm.sim" && !is.null(formula)) {
+      # linear model imputation with cells defined by the formula with added error
+      formula <- as.formula(paste0(varname,
+                                   paste0(as.character(formula),collapse=" ")))
+      lm1 <- lm(formula, data=df[!missing,])
+      err <- rnorm(sum(missing),0,sigma(lm1))
+      df[missing,varname] <- predict(lm1,newdata=df[missing,]) + err
+      
+    } else {
+      # not recognised
+      stop("Method not recognised")
+    }
+  } else if(is.character(df[,varname]) || is.factor(df[,varname])) {
+    # Methods for categorical variables
+    
+    if(method=="mode") {
+      if(is.null(formula)) {
+        # overall mode imputation
+        df[missing,varname] <- modevalue(df[!missing,varname])
+        
+      } else {
+        # mode imputation in cells defined by the formula
+        mmat <- model.matrix(formula, data=df)
+        df$.tmp.rownames <- 1:nrow(df)
+        df$.tmp.cellnames <- apply(mmat,1,paste,collapse=";")
+        df <- do.call(rbind, by(df, df$.tmp.cellnames,
+                                function(dfx) {
+                                  midx <- dfx[,paste0(varname,impute.suffix)]
+                                  if(sum(!midx)==0) {
+                                    dfx[midx,paste0(varname,impute.suffix)] <- FALSE
+                                    warning("Cell with missing data but no donors: data not imputed")
+                                  } else {
+                                    dfx[midx,varname] <- modevalue(dfx[!midx,varname])
+                                  }
+                                  return(dfx)
+                                }))
+        df <- df[order(df$.tmp.rownames),]
+        df$.tmp.rownames <- NULL
+        df$.tmp.cellnames <- NULL
+      }
+      
+    } else {
+      # not recognised
+      stop("Method not recognised")
+    }
+  } else {
+    stop("Variable type is not numeric or factor/character - cannot be imputed")
+  }
+  return(df)
+}
+
+
+#####################################################################

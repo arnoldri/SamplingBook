@@ -27,19 +27,9 @@ library(mice)
 library(lattice)
 ```
 
-Mean imputation/cell mean imputation: method = 'mean'
-Median imputation/cell median imputation: 
-Hot deck cell imputation: method = 'sample' within cells
-Regression imputation
-
-Don't impute a column by setting the method="" for that column
-
-'blocks' are sets of variables, treated similarly
-```{r}
-mice(msurf, m=5, 
-     method=,
-     blocks=)
-```
+Package mice provides for multiple imputation methods, but gives some datasets
+and some visualisation tools.   It's a bit tricky to use, so we'll use a simpler
+function `impute()`.
 
 Example dataset supplied with mice is `nhanes` - note all variables are numeric
 ```{r}
@@ -61,6 +51,73 @@ Inspect missing pattern
 md.pattern(mnhanes)
 md.pattern(msurf)
 ```
+
+Mean, median or mode imputation
+```{r}
+dd <- impute(mnhanes, varname="bmi", method="sample")
+table(mnhanes$bmi,exclude=NULL)
+table(dd$bmi,exclude=NULL)
+```
+
+```{r}
+dx <- mnhanes
+dx$bmi[dx$age=="1"] <- NA
+dd <- impute(dx, varname="bmi", method="sample", formula=~age)
+table(mnhanes$bmi,exclude=NULL)
+table(dd$bmi,exclude=NULL)
+```
+
+
+```{r}
+varname <- "bmi"; tapply(mnhanes[,varname], mnhanes[,"age"], mean, na.rm=TRUE)
+```
+
+Overall mean and median and mode
+```{r}
+impute(mnhanes, varname="bmi", method="mean") 
+impute(mnhanes, varname="bmi", method="median") 
+impute(msurf, varname="Marital", method="mode")
+```
+
+Overall mean
+```{r}
+dd <- impute(msurf, varname="Income", method="mean")
+dd[dd$Income.imp,]
+```
+
+```{r}
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+```
+
+
+
+
 
 Overall mean imputation
 ```{r}
@@ -220,4 +277,22 @@ Stochastic regression imputation: we sample from the fitted distribution
 ```{r}
 mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
 ```
+
+
+# Package mice
+
+Don't impute a column by setting the method="" for that column
+
+'blocks' are sets of variables, treated similarly
+```{r}
+mice(msurf, m=5, 
+     method=,
+     blocks=)
+```
+
+Mean imputation/cell mean imputation: method = 'mean'
+Median imputation/cell median imputation: 
+Hot deck cell imputation: method = 'sample' within cells
+Regression imputation
+
 
