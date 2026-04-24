@@ -90,6 +90,7 @@ calibration
 replicate-weights
 demonstration-of-ps-se-improvement
 imputation
+package-mice
 designing-surveys
 another-interpretation-of-the-deff
 computing-the-required-sample-size

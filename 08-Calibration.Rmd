@@ -8,6 +8,38 @@ $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
 $\\newcommand{\\estm}{\\widehat}$'`
 
+At the end of a survey we may find ourselves in the undesirable situation that
+
+ * Purely by chance, the sample is somewhat unbalanced: e.g. by chance we may have 
+   selected many more males than females, or more large households than small ones, or
+ * We may have had **unit nonresponse** - i.e. there may be selected units from
+   which we have collected no data.  In the case of human subjects this may have
+   been from a failure to contact the selected person, or the refusal of the 
+   person to answer our questions.
+   
+In both cases we are in the situation that our sample, even when weighted, is
+not a good representation of the population from which it is drawn.  
+
+```{r echo=FALSE}
+surf <- read.csv("data/surf.csv")[,1:8]
+```
+
+For example consider the SURF dataset, which is a synthetic sample of 200 individuals
+between the ages of 15 and 45.  The first 10 rows are shown below.
+
+```{r echo=FALSE}
+surf |> slice_head(n=10) |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+The dataset contains a mixture of numerical and categorical variables, all with very
+self explanatory names (except note that `Income` and `Hours` are weekly quantities, 
+and also that the income values are somewhat old!).  We'll treat it as a SRSWOR from
+the New Zealand population.  
+
+
+
 ## Calibration
 
 ```{r}

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>10 Designing Surveys | STAT395: Sampling</title>
+  <title>11 Designing Surveys | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="10 Designing Surveys | STAT395: Sampling" />
+  <meta property="og:title" content="11 Designing Surveys | STAT395: Sampling" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Sampling notes." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="10 Designing Surveys | STAT395: Sampling" />
+  <meta name="twitter:title" content="11 Designing Surveys | STAT395: Sampling" />
   
   <meta name="twitter:description" content="Sampling notes." />
   
@@ -23,14 +23,14 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-23" />
+<meta name="date" content="2026-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="imputation.html"/>
+<link rel="prev" href="package-mice.html"/>
 <link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -131,7 +131,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -283,10 +282,11 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="weight-adjustments.html"><a href="weight-adjustments.html#demonstration-of-ps-se-improvement"><i class="fa fa-check"></i><b>8.3</b> Demonstration of ps SE improvement</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a></li>
-<li class="chapter" data-level="10" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>10</b> Designing Surveys</a>
+<li class="chapter" data-level="10" data-path="package-mice.html"><a href="package-mice.html"><i class="fa fa-check"></i><b>10</b> Package mice</a></li>
+<li class="chapter" data-level="11" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>11</b> Designing Surveys</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>10.1</b> Another interpretation of the Deff</a></li>
-<li class="chapter" data-level="10.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>10.2</b> Computing the Required Sample Size</a></li>
+<li class="chapter" data-level="11.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>11.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="11.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>11.2</b> Computing the Required Sample Size</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
@@ -311,8 +311,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="designing-surveys" class="section level1 hasAnchor" number="10">
-<h1><span class="header-section-number">10</span> Designing Surveys<a href="designing-surveys.html#designing-surveys" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="designing-surveys" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">11</span> Designing Surveys<a href="designing-surveys.html#designing-surveys" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
 <p><span class="math inline">\(\DeclareMathOperator*{\argmin}{argmin}\)</span>
 <span class="math inline">\(\newcommand{\var}{\mathrm{Var}}\)</span>
@@ -327,8 +327,8 @@ else matters.</p>
 a survey is the most significant single decision to make since it determines
 the standard errors for the survey estimates. In real life the decision
 about sample size is often severely constrained by available resources.</p>
-<div id="another-interpretation-of-the-deff" class="section level2 hasAnchor" number="10.1">
-<h2><span class="header-section-number">10.1</span> Another interpretation of the Deff<a href="designing-surveys.html#another-interpretation-of-the-deff" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="another-interpretation-of-the-deff" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Another interpretation of the Deff<a href="designing-surveys.html#another-interpretation-of-the-deff" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Assume that for sample size <span class="math inline">\(n\)</span> the variance of an estimator
 in a specific design has the approximate formula
 <span class="math display">\[
@@ -356,8 +356,8 @@ the Deff for the complex design.</p>
 <p>If the Deff is 2 (as it may be in a cluster design for example), then we need twice
 the sample size an SRSWOR would need in order to achieve the same standard error.</p>
 </div>
-<div id="computing-the-required-sample-size" class="section level2 hasAnchor" number="10.2">
-<h2><span class="header-section-number">10.2</span> Computing the Required Sample Size<a href="designing-surveys.html#computing-the-required-sample-size" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="computing-the-required-sample-size" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Computing the Required Sample Size<a href="designing-surveys.html#computing-the-required-sample-size" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li><p>Identify your <strong>design estimate</strong> – this is the estimate that will
 underlie a headline you could imagine being written about your survey.</p></li>
@@ -409,7 +409,7 @@ to <span class="math inline">\(n_2\)</span>, within each stratum.)</p></li>
           </div>
         </div>
       </div>
-<a href="imputation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="package-mice.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -424,42 +424,42 @@ to <span class="math inline">\(n_2\)</span>, within each stratum.)</p></li>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

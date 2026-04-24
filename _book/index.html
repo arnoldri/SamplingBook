@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-23" />
+<meta name="date" content="2026-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,7 +131,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -283,10 +282,11 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="weight-adjustments.html"><a href="weight-adjustments.html#demonstration-of-ps-se-improvement"><i class="fa fa-check"></i><b>8.3</b> Demonstration of ps SE improvement</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a></li>
-<li class="chapter" data-level="10" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>10</b> Designing Surveys</a>
+<li class="chapter" data-level="10" data-path="package-mice.html"><a href="package-mice.html"><i class="fa fa-check"></i><b>10</b> Package mice</a></li>
+<li class="chapter" data-level="11" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>11</b> Designing Surveys</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>10.1</b> Another interpretation of the Deff</a></li>
-<li class="chapter" data-level="10.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>10.2</b> Computing the Required Sample Size</a></li>
+<li class="chapter" data-level="11.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>11.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="11.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>11.2</b> Computing the Required Sample Size</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="appendix"><span><b> </b></span></li>
@@ -314,7 +314,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">STAT395: Sampling</h1>
 <p class="author"><em>Richard Arnold et al.</em></p>
-<p class="date"><em>2026-04-23</em></p>
+<p class="date"><em>2026-04-24</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -404,13 +404,13 @@ Basics of SRSWOR inference; sample weights;</li>
 <h2><span class="header-section-number">1.2</span> Recommended reading<a href="index.html#recommended-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are lots of books on sample surveys.</p>
 <ul>
-<li>Thomas Lumley’s book ‘Complex Surveys’ (<span class="citation">T. S. Lumley (<a href="#ref-Lumley2010">2010</a>)</span>) is a good introduction to sample survey analysis with R,
-and accompanies the <code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>).</li>
+<li>Thomas Lumley’s book ‘Complex Surveys’ (<span class="citation">Lumley (<a href="#ref-Lumley2010">2010</a>)</span>) is a good introduction to sample survey analysis with R,
+and accompanies the <code>survey</code> package (<span class="citation">Lumley (<a href="#ref-survey2004">2004</a>)</span>).</li>
 <li>Groves et al. ‘Survey Methodology’ (groves.etal) is a good general summary of the important issues in survey design.</li>
-<li>Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (<span class="citation">Särndal, Swensson, and Wretmann (<a href="#ref-ssw">1992</a>)</span>)</li>
+<li>Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (<span class="citation">Särndal et al. (<a href="#ref-ssw">1992</a>)</span>)</li>
 <li>Likewise the books by <span class="citation">Cochran (<a href="#ref-cochran">1977</a>)</span> and <span class="citation">Kish (<a href="#ref-kish">1965</a>)</span></li>
 <li>Little and Rubin have a great book on missing data (<span class="citation">Little and Rubin (<a href="#ref-littlerubin">2002</a>)</span>)</li>
-<li>More recent are the books by <span class="citation">Lohr (<a href="#ref-lohr">1999</a>)</span> and <span class="citation">Scheaffer, III, and Ott (<a href="#ref-scheaffer.mendenhall.ott">2006</a>)</span></li>
+<li>More recent are the books by <span class="citation">Lohr (<a href="#ref-lohr">1999</a>)</span> and <span class="citation">Scheaffer et al. (<a href="#ref-scheaffer.mendenhall.ott">2006</a>)</span></li>
 <li>And in 1994 StatsNZ published ‘A Guide to Good Survey Design’ (<span class="citation">Zealand (<a href="#ref-statsnz">1995</a>)</span>)</li>
 <li>Notes from the STAT392 course on Sample Surveys
 <a href="https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html" class="uri">https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html</a></li>
@@ -451,7 +451,7 @@ and accompanies the <code>survey</code> package (<span class="citation">T. Lumle
 <div id="r-packages" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> R Packages<a href="index.html#r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li><code>survey</code> package (<span class="citation">T. Lumley (<a href="#ref-survey2004">2004</a>)</span>) with this handy summary of command uses
+<li><code>survey</code> package (<span class="citation">Lumley (<a href="#ref-survey2004">2004</a>)</span>) with this handy summary of command uses
 <a href="https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/" class="uri">https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/</a></li>
 <li><code>srvyr</code> a dplyr wrapper for the <code>survey</code> package and <code>jtools</code> which also provides some extensions</li>
 <li><code>gtsummary</code> creates outputs ready for publication (difficult to build/load)</li>
@@ -469,18 +469,18 @@ and accompanies the <code>survey</code> package (<span class="citation">T. Lumle
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-cochran" class="csl-entry">
-Cochran, W. G. 1977. <em>Sampling Techniques</em>. Third. New York: Wiley.
+Cochran, W. G. 1977. <em>Sampling Techniques</em>. Third. Wiley.
 </div>
 <div id="ref-kish" class="csl-entry">
-Kish, L. 1965. <em>Survey Sampling</em>. New York: Wiley.
+Kish, L. 1965. <em>Survey Sampling</em>. Wiley.
 </div>
 <div id="ref-littlerubin" class="csl-entry">
-Little, R. J. A., and D. B. Rubin. 2002. <em>Statistical Analysis with Missing Data</em>. Second. Hoboken: Wiley.
+Little, R. J. A., and D. B. Rubin. 2002. <em>Statistical Analysis with Missing Data</em>. Second. Wiley.
 </div>
 <div id="ref-lohr" class="csl-entry">
-Lohr, Sharon L. 1999. <em>Sampling: Design and Analysis</em>. Pacific Grove, CA, USA: Duxbury Press.
+Lohr, Sharon L. 1999. <em>Sampling: Design and Analysis</em>. Duxbury Press.
 </div>
 <div id="ref-survey2004" class="csl-entry">
 Lumley, Thomas. 2004. <span>“Analysis of Complex Survey Samples.”</span> <em>Journal of Statistical Software</em> 9 (1): 1–19.
@@ -489,13 +489,13 @@ Lumley, Thomas. 2004. <span>“Analysis of Complex Survey Samples.”</span> <em
 Lumley, Thomas S. 2010. <em>Complex Surveys: A Guide to Analysis Using r (Wiley Series in Survey Methodology)</em>. Wiley.
 </div>
 <div id="ref-ssw" class="csl-entry">
-Särndal, C-E., B. Swensson, and J. Wretmann. 1992. <em>Model Assisted Survey Sampling</em>. New York: Springer-Verlag.
+Särndal, C-E., B. Swensson, and J. Wretmann. 1992. <em>Model Assisted Survey Sampling</em>. Springer-Verlag.
 </div>
 <div id="ref-scheaffer.mendenhall.ott" class="csl-entry">
-Scheaffer, R. L., W. Mendenhall III, and R. L. Ott. 2006. <em>Elementary Survey Sampling</em>. Sixth. Belmont: Duxbury.
+Scheaffer, R. L., W. Mendenhall III, and R. L. Ott. 2006. <em>Elementary Survey Sampling</em>. Sixth. Duxbury.
 </div>
 <div id="ref-statsnz" class="csl-entry">
-Zealand, Statistics New. 1995. <em>A Guide to Good Survey Design</em>. Second. Wellington: Statistics New Zealand.
+Zealand, Statistics New. 1995. <em>A Guide to Good Survey Design</em>. Second. Statistics New Zealand.
 </div>
 </div>
             </section>
@@ -518,42 +518,42 @@ Zealand, Statistics New. 1995. <em>A Guide to Good Survey Design</em>. Second. W
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
