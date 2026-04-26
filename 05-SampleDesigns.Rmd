@@ -47,9 +47,9 @@ sample designs, and it appears nested inside many more complex designs as we'll 
 We have a population of size $N$ which is fully enumerated (i.e. fully listed), and
 we want to select a sample of size $n$.
 
-The defining property of a SRSWOR is that all samples of size $n$ have an equal chance
-of selection.  A **consequence** of this definition is that all population units have 
-the same chance of selection.
+The defining property of a SRSWOR is that **all samples of size $n$** have an equal chance
+of selection.  A **consequence** of this definition is that **all population units** have 
+an equal chance of selection.
 
 There are 
 \[
@@ -166,7 +166,7 @@ If $n$ is tiny compared to $N$, $p_i$ is approximately $n/N$ which is the SRSWOR
 probability.  In practice we assign a weight of $N/n$ to each unit as it is selected, so if unit
 $i$ is selected $m_i$ times then it ends up with a weight of 
 \[
-   w_i = m_\frac{N}{n}
+   w_i = m\frac{N}{n}
 \]   
 If we use the approximate weights calculated in this way we have what is known as the 
 Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator.  However we think of 
@@ -331,7 +331,7 @@ samp |>
 ## Linear Systematic Random Sample (LSRS)
 
 This design is often used in cases where the population is not fully enumerated, but is
-presented to us in the form of a queue.  For example we might want to select one in ten
+presented to us in the form of an ordered list or a queue.  For example we might want to select one in ten
 passengers cars checking in for a ferry crossing.  Another example is where there is information
 in the ordering of a list: for example a list might be sorted from youngest to oldest, or 
 sorted from north to south.  We can space out our sample down the list, avoiding the chance
@@ -358,7 +358,7 @@ but in fact this is a special case of a one-stage cluster sample (1SC, see below
 ```{r lsrs, echo=FALSE}
 #| fig.align='center',
 #| fig.width=5,
-#| fig.cap="Linear Systematic Random Sample (LSRS)"
+#| fig.cap="Linear Systematic Random Sample (LSRS).  Note that the sample is spaced out a regular intervals."
 knitr::include_graphics("include-files/fig/LSRS.png")
 ```
 
@@ -504,8 +504,9 @@ Stratified sampling is done for a number of reasons
     they are selected with low probability: since they resemble each other more, and
     one can stand in for another. 
     
-    Having a strata designed so that the units within the strata resemble each other
-    strongly (one can stand in for another easily), but where units in different
+    The best stratified designs have strata designed so that the units within each 
+    stratum resemble each other strongly (one can stand in for another easily), 
+    but where units in different
     strata differ strongly from each other.  For the same sample size as a SRSWOR 
     stratified designs can sometimes achieve much much smaller standard errors.
     
@@ -661,7 +662,8 @@ samp |>
   kable_styling(full_width=FALSE)
 ```
 
-PPSWR with Equal Allocation
+PPSWR with Equal Allocation (Schools are selected within strata with probability
+propotional to the number of enrolled students `Total`.)
 ```{r}
 samp <- schools |> select.stsrs(n=120,  
                                 stratumvar="Education_Region", 
@@ -716,10 +718,10 @@ additional house you survey in a street you're not really getting as much new
 information as if you were to survey an additional house somewhere else in the 
 city.
 
-For that reason cluster samples have to be larger than SRS to achieve the 
+For that reason cluster samples have to have larger sample sizes than SRS to achieve the 
 same accuracy of their estimates.
 
-Note that it makes no sense to cluster if there is no saving to be made regarding
+**Note** that it makes no sense to cluster if there is no saving to be made regarding
 cost or some other equivalent operational consideration.  If we are doing a phone
 survey, where no travel at all is involved, then clustering doesn't make any sense.  
 
@@ -763,7 +765,8 @@ sample size: we might select by chance a set of very large
 clusters, or a set of very small clusters.  
 
 In stratified sampling we want to make the strata as different from
-one another as possible, and to be as internally homogeneous.  
+one another as possible, and to be as internally homogeneous.
+
 In cluster sampling it's the reverse situation: we want our clusters to be internally 
 diverse, and for that diversity to be present as far as possible within 
 every cluster.  This is because we're only selecting a few clusters, and
@@ -829,7 +832,7 @@ samp |>
 ## Two stage cluster sampling (2SC)
 
 The obvious drawback of the One Stage cluster design is that we are getting
-a lot of information from clusters which may be very homogeneous.   This drives
+a lot of information from clusters which may be very internally homogeneous.   This drives
 the inefficiency of the design: we're wasting a lot of our sampling effort.  
 
 An obvious solution is to select a set of clusters, and then only take a sample of units
@@ -851,7 +854,7 @@ knitr::include_graphics("include-files/fig/SRS2SC.png")
 ```
 
 We use the same notation as in one stage clustering: there are $N$ PSUS of
-which select $n$, and in PSU $i$ there are $M_i$ PSUs, of which we select $m_i$.
+which select $n$, and in PSU $i$ there are $M_i$ SSUs, of which we select $m_i$.
 The total number of SSUs is in all of the PSUs in the population is 
 \[
    M = \sum_{i=1}^N M_i

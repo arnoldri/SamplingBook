@@ -38,6 +38,7 @@ knitr::opts_chunk$set(echo = TRUE, out.align="center")
 ```{r echo=FALSE, warning=FALSE, error=FALSE}
 library(haven)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(kableExtra)
 library(survey)
@@ -115,7 +116,7 @@ Use of `sample()` and other simulation methods in R for a variety of designs
 *	Compute and interpret the design effect
 * Analyse data and present results from a survey
 
-### Test 2 (30%) [assessment period] [1.5 hours, closed book] {-}
+### Test 2 (25%) [assessment period] [1.5 hours, closed book] {-}
 
 *	Survey process, populations and frames
 * Describe sample designs

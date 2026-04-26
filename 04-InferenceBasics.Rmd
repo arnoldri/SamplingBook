@@ -137,9 +137,15 @@ confint(lm1)
 
 Here `(Intercept)` is the estimate for $\mu$, the population mean.  
 The 'residual standard error' in the R output is actually what we'd rather
-call $\widehat{\sigma}$, our estimate of the standard deivation $\sigma$.  
+call $\widehat{\sigma}$, our estimate of the standard deivation $\sigma$. 
 
-The confidence interval is only valid if the model in equation \@ref(eq:simplelinearmodel) 
+We can get hold of this value from a fitted `lm()` object using the `sigma()`
+function:
+```{r}
+sigma(lm1)
+```
+
+The confidence interval anove is only valid if the model in equation \@ref(eq:simplelinearmodel) 
 holds: i.e. if the data are normally distributed about the mean.  The histogram
 in Figure \@ref(fig:starwarssample) suggests that this is not the case however, since
 there is a clear outlier at low height.  
@@ -177,6 +183,13 @@ if we draw a simple random sample without replacement of size $n$ there are
 possible samples: i.e. the number of ways it is possible to draw $n$ objects
 from a collection of $N$ without regard to the order they are selected.
 
+> Recall that $n!$ is the factorial of $n$: the product of all integers
+> from $n$ down to $1$:
+> \[
+>     n! = n\times(n-1)\times(n-2)\times ... \times 2 \times 1
+> \]
+> So $5!=5\times 4\times 3\times 2\times 1=120$.  
+
 In our example of selecting $n=20$ from $N=87$ there are an astronomical
 number of possible samples:
 \[
@@ -186,7 +199,7 @@ There is of course only one way to select a census though:
 \[  
    \binom{87}{87} = \frac{87!}{87!0!} = 1
 \]
-(using the at first face slightly annoying definition 0!=1).  Since there's only 
+(using the at first face slightly annoying convention that 0!=1).  Since there's only 
 one possible sample when we're drawing a census the variation among sample estimates 
 from different samples is zero: i.e. the standard error is zero.  
 
@@ -251,7 +264,7 @@ Sampling begins with the sample frame - usually this is a **list** of the
 members, or **units**, which make up the population.  
 
 The list contains at minimum some **identifier** of each unit, which enables
-it to be found/contacted/measured once it has been selected, and possibly 
+it to be found/contacted/measured once it has been selected, and may contain 
 a lot of other information too.
 
 Data that we have on the frame is called **auxiliary information**: it is
@@ -322,7 +335,7 @@ The **expected value** of each indicator variable is $\pi_i$
 \end{eqnarray}
 Each selected sample member carries a **sample weight** which is the number of units
 in the population that that unit represents.  These weights are defined as the 
-inverses of the selection probabilities.
+**inverses of the selection probabilities**.
 \[
    W_i = \frac{1}{\pi_i}
 \]
