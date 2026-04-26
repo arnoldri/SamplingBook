@@ -1,0 +1,4735 @@
+--- 
+title: "STAT395: Sampling"
+author: "Richard Arnold et al."
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Sampling notes."
+output: 
+  bookdown::html_document2: default
+  bookdown::pdf_book: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+  bookdown::pdf_document2: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+---
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, out.align="center")
+```
+
+```{r echo=FALSE, warning=FALSE, error=FALSE}
+library(haven)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(kableExtra)
+library(survey)
+library(srvyr)
+library(sampling)
+library(jtools)
+#library(gtsummary) # error installing/loading this
+library(mice)
+#library(simputation) # error installing/loading this
+library(scales)
+source("utils.R")
+```
+
+# Introduction
+
+These are notes for the Sampling section of STAT395/455.  The course
+overlaps to some extent with STAT392/439, but there is a greater 
+emphasis on R coding, computation, summary and display. 
+
+## Lecture Plan
+
+Course Learning Objectives
+
+-	Describe the steps in the survey process, including the sources of survey error;
+-	Draw samples from a sample frame under a variety of sample designs, and compute survey weights;
+-	Carry out, interpret and present statistical inference procedures on survey data, including adjustments for non-response.
+
+Lecture plan (3 lectures + 1 tutorial per week)
+
+Bring a laptop to the Friday (tutorial) lecture.
+
+### Week 1 – The Survey Process {-}
+
+* The survey process, sources of survey error
+* Populations and Frames
+* Sampling in finite and infinite populations;
+  Basics of SRSWOR inference; sample weights;
+* **Tutorial:** Sampling basics; Population and Frames
+
+### Week 2 – Sampling {-}
+
+Use of `sample()` and other simulation methods in R for a variety of designs 
+[`sampler` package (does power calculations, allocation, SRS and STSRS, but not cluster)] 
+[`sampling` package – can do cluster samples]
+
+*	Simple random sampling, with and without replacement
+* Stratified sampling
+* Cluster sampling
+* Sampling in complex designs
+* Sample size calculation and allocation
+* Survey weights – create estimates from weights without standard errors
+* **Tutorial:** using R to draw samples and compute survey weights
+
+### Week 3 - Inference with the R survey package {-}
+
+* Inference in simple and complex designs, including regression
+* Variance estimation 
+* Definition and interpretation of the design effect
+* **Tutorial:** using R to specify designs and draw inferences
+
+### Week 4 – Non-response and complex designs {-}
+
+*	Post-stratification for non-response adjustment
+* Imputation (`simputation` package)
+*	Jackknife and bootstrap inference
+* **Tutorial:** raking adjustments to weights; imputation; jackknife inference
+
+### Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11] {-}
+
+*	Survey process, populations and frames
+*	Describe a real survey, comment on design
+*	Propose a sample design, frame, comment on scope and coverage
+*	Draw and analyse a sample under various designs
+*	Compute sample sizes and allocate samples in stratified sampling
+*	Compute and interpret the design effect
+* Analyse data and present results from a survey
+
+### Test 2 (25%) [assessment period] [1.5 hours, closed book] {-}
+
+*	Survey process, populations and frames
+* Describe sample designs
+* Compute and interpret sample weights
+* Use sample weights for point estimates
+* Interpret output from survey inference in R
+* Compare results, interpret design effect
+* Describe methods for non-response adjustment (imputation and post-stratification); comment on bias reduction and assumptions being made
+* Describe the jackknife method of variance estimation
+
+## Recommended reading
+
+There are lots of books on sample surveys.
+
+ * Thomas Lumley's book 'Complex Surveys' (@Lumley2010) is a good introduction to sample survey analysis with R,
+   and accompanies the `survey` package (@survey2004).
+ * Groves et al. 'Survey Methodology' (groves.etal) is a good general summary of the important issues in survey design.
+ * Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (@ssw)
+ * Likewise the books by @cochran and @kish
+ * Little and Rubin have a great book on missing data (@littlerubin)
+ * More recent are the books by @lohr and @scheaffer.mendenhall.ott
+ * And in 1994 StatsNZ published 'A Guide to Good Survey Design' (@statsnz)
+ * Notes from the STAT392 course on Sample Surveys 
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html
+ * A crash guide to using iNZight for sample surveys
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/iNZightManual/_book/index.html
+   (iNZight is free software, using the `survey` package in the back end.)
+
+And also
+ 
+ * CRAN site on R resources for Official Statistics https://cran.r-project.org/web/views/OfficialStatistics.html
+ * Online book on using R for survey analysis:
+   https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
+ * This gallery of R graphs https://r-graph-gallery.com/
+ 
+Some simple lectures on Sample Surveys
+
+ * https://r-project.ro/conference2017/presentations/Camelia_Goga_sondages.pdf
+ * Notes for epidemiologists: https://www.epirhandbook.com/en/new_pages/survey_analysis.html
+ * Notes on imputation: https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/
+ * An online book about spatial sampling https://dickbrus.github.io/SpatialSamplingwithR/
+ * From Qualtrics https://www.qualtrics.com/articles/strategy-research/sampling-methods/
+
+Data
+
+ * UC Irvine Machine Learning data repository: http://archive.ics.uci.edu/
+ * Some free microdata sets: https://asdfree.com/
+ * Kaggle data repository: https://www.kaggle.com/
+   * Airline dataset from Kaggle:
+     https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics
+     [distributed under the Creative Commons Licence 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/]
+ * Address file from LINZ: https://data.linz.govt.nz/layer/123113-nz-addresses/
+ * List of NZ schools https://www.educationcounts.govt.nz/directories/list-of-nz-schools
+ * Data on Population, GDP and Military Expenditure from 'Our World in Data' https://ourworldindata.org/
+ 
+## R Packages
+
+* `survey` package (@survey2004) with this handy summary of command uses
+   https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
+* `srvyr` a dplyr wrapper for the `survey` package and `jtools` which also provides some extensions
+* `gtsummary` creates outputs ready for publication (difficult to build/load)
+* `sampling` package for drawing samples according to various designs
+* `mice` package for imputation
+* `simputation` package for imputation (difficult to build/load)
+* `haven` package to import `SAS`, `Stata` and `SPSS` data files
+ 
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'survey'
+), 'packages.bib')
+```
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
+
+<!--chapter:end:index.Rmd-->
+
+# Sampling
+
+```{r echo=FALSE}
+set.seed(123)
+```
+
+In statistics the data we analyse is often a subset, i.e. 
+a **sample** of members of a **population**.
+
+> For example we might have a sample of households whose members respond to a questionnaire,
+> or a sample of plants from a field. 
+
+In order to select from a population we first enumerate (list) the population in some
+way and then make a random selection of our subset members from that list.  The method
+by which we do so is called the **sample design**.  
+
+Our focus in statistics is often the **estimation** of population characteristics
+(known as **population parameters**) on the basis of sample characteristics
+(which are called **sample statistics**).  We are always aware that the sample 
+we drew from the population is not the only sample we could have drawn, and therefore
+our conclusions are subject to uncertainty, which we call **sampling error**.  
+
+This uncertainty associated with sampling is the reason we have confidence intervals
+on our estimates, and why we can neither **prove** nor **disprove** hypotheses.  
+
+```{r statistical-infrence, fig.cap="Statistical Inference", out.width='100%', echo=FALSE, fig.align="center"}
+knitr::include_graphics("include-files/fig/StatisticalInference.png")
+```
+
+(One exception is when we do a **census** where we select and get fully accurate data
+from every member of the population.  Then there's no uncertainty left at all, 
+and our sampling errors are zero.)
+
+When generating **simulated** datasets we also generate samples.  Simulation
+is often done as a means of testing out statistical ideas and methods, 
+or (in the case of the bootstrap method) when conventional ways of estimating
+standard errors (and therefore confidence intervals) don't work. 
+
+Before we get into detail of estimation and inference, let's spend some time
+thinking about how sampling works.  
+
+## Random numbers
+
+In both settings (sampling and simulation) we need to start with a method
+of generating random numbers.  We'll start by assuming we have 
+some means of generating a random sequence of numbers uniformly 
+distributed in the interval [0,1]:
+\[
+    U_i \sim \text{Uniform}(0,1)\qquad \text{for $i=1,2,3, \ldots$}
+\]
+Here 'uniformly distributed' means that all values in the range [0,1] are
+equally likely to occur.  
+
+In R this is done using the `runif()` function.  For example to generate 5 
+random draws from Uniform(0,1):
+```{r}
+runif(5)
+```
+
+Another draw will a different set of random numbers:
+```{r}
+runif(5)
+```
+
+If we draw a histogram of 100 draws it looks a bit lumpy:
+```{r} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="100 draws from Uniform(0,1)"
+hist(runif(100), xlab="x", ylab="Frequency")
+```
+
+But a histogram of 100,000 draws is very uniform:
+```{r} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="100000 draws from Uniform(0,1)"
+hist(runif(100000), xlab="x", ylab="Frequency")
+```
+
+Although the numbers appear to be random they are in fact generated using
+formulae, so if one knows the formula the sequence of random numbers generated by
+`runif()` is completed predictable.  However the formula
+is complex enough that there are no easily discernible patterns in sequences of 
+many millions of draws.  These numbers are **psuedo-random**, but they are
+random enough for our purposes.  
+
+Underlying the random number generator is a **seed** value, which initiates the
+sequence.  If we set the seed to a particular value, the sequence of random
+numbers that will be generated after doing so will always be the same.
+
+```{r}
+set.seed(111)
+runif(5)
+runif(5)
+runif(5)
+```
+
+```{r}
+set.seed(8)
+runif(5)
+```
+
+```{r}
+set.seed(111)
+runif(5)
+```
+
+This property can be very useful when testing and comparing algorithms: 
+we can generate an identical sequence of random numbers and check (for
+example) that two methods of estimation give the same results on 
+two identical randomly generated datasets.  
+
+## Sampling from categorical random variables
+
+Draws from a uniform distribution are all we need to simulate/sample
+from any distribution.  
+
+**Heads or tails**: if the probability of flipping heads is 0.5, 
+we can generate `n` random numbers, and then label any values less 
+than 0.5 as Heads and the remainder as tails.
+
+```{r echo=FALSE}
+set.seed(123)
+```
+
+
+```{r}
+n <- 10
+u <- runif(n)
+u
+y <- ifelse(u<=0.5,"Heads","Tails")
+y
+table(y)
+```
+
+```{r}
+table(ifelse(runif(10000)<=0.5,"Heads","Tails"))
+```
+
+We can extend this idea to any set of categories.
+
+**Red, Green or Blue**: Say we have a six sided die: three sides are red, two are green and one is blue.
+The probabilities of rolling the three colours are therefore $\frac12$, $\frac13$, $\frac16$ respectively.  
+These probabilities add to one.
+
+The random variable $Y$ is the colour that the die shows when we roll it.
+
+```{r}
+pp <- c(Red=1/2, Green=1/3, Blue=1/6)
+sum(pp)
+```
+In general we might have $m$ categories, where the probability of that $Y$ 
+category $k$ is $p_k$: $\Pr(Y=k)=p_k$. and 
+\[
+   \sum_{k=1}^m p_k = 1
+\]
+We then compute the **cumulative probabilities** $c_k$, the partial sums of these probabilities:
+\[
+   c_k = \sum_{j=1}^k p_j
+\]
+The final cumulative probability $c_m$ is always 1 by definition.  
+
+Implicitly we also have a value $c_0=0$, which is the the empty sum and always 
+equal to zero. 
+
+These cumulative probabilities $c_k$ are 'the probability that random variable $Y$ has
+a category label less than or equal to $k$:
+\[
+    \Pr(Y\leq k) = c_k = \sum_{j=1}^k p_j
+\]
+
+**Red, Green or Blue**: the cumulative probabilities are
+\begin{eqnarray*}
+  c_0 &=& 0.0000\\
+  c_1 &=& p_1 = 0.5000\\
+  c_2 &=& p_1+p_2 = 0.5000 + 0.3333 = 0.8333\\
+  c_3 &=& p_1+p_2+p_3 = 0.5000 + 0.3333 + 0.1667 = 1.0000
+\end{eqnarray*}
+
+```{r}
+m <- length(pp) # Number of categories
+cp <- cumsum(pp)
+cp
+```
+
+We then take a set of uniform random numbers $u_1,\ldots,u_n$.  We then
+want to find which of the $m$ labels corresponds to each random number $u_i$. 
+
+The rule is that if $u_i$ is less than cumulative probability $c_k$ but 
+greater than $c_{k-1}$, then we assign the label $k$.  
+
+There are various ways to do this, here's a version using `case_when()` from 
+the `dplyr` package:
+```{r}
+set.seed(112)
+u <- runif(8)
+u
+y <- case_when(u <= cp[1] ~ "Red",
+               u <= cp[2] ~ "Green",
+               .default="Blue")   # here .default means "otherwise"
+data.frame(round(u,5),y)
+table(y)
+table(y)/length(y)
+```
+
+Note that the categories in the table haven't come out in the Red-Green-Blue order that we want -
+instead they're in the default alphabetical order.
+
+We can fix this by converting `y` to a `factor` object:
+
+```{r}
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+Here's what is really going on: we if we plot the cumulative probabilities as
+a staircase -- a **cumulative distribution function (CDF)** then 
+we draw $u_i$ from a Uniform(0,1) distribution, and then find where
+a horizontal line drawn at the level of $u_i$ intersects the CDF: and that
+is the value of the categorical variable $y_i$.  
+
+The larger the probability $p_k$ the bigger the jump in the staircase, and
+the larger the probability that category $k$ will be selected.  
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing a random category"
+i <- 1
+plot(0:m,c(0,cp),type="s",ylim=c(0,1),axes=FALSE,
+     xlab="Category",ylab="U")
+axis(1,at=1:m,labels=names(pp)); axis(2); box()
+axis(4,at=c(0,cp),lab=sprintf("%.3f",c(0,cp)),las=2)
+text(0,u[i],label=bquote(u[.(i)]),pos=2,xpd=TRUE)
+points(0,u[i],pch=16,cex=1.7,col="red")
+arrows(0,u[i], as.numeric(y[i]),u[i], col="red", lwd=2)
+arrows(as.numeric(y[i]),u[i], as.numeric(y[i]),0, col="red", lwd=2)
+title(bquote(u[.(i)]==.(sprintf("%.3f",u[i]))*"; "*y[.(i)]*"="*.(as.character(y[i]))))
+```
+
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing a random category"
+i <- 2
+plot(0:m,c(0,cp),type="s",ylim=c(0,1),axes=FALSE,
+     xlab="Category",ylab="U")
+axis(1,at=1:m,labels=names(pp)); axis(2); box()
+axis(4,at=c(0,cp),lab=sprintf("%.3f",c(0,cp)),las=2)
+text(0,u[i],label=bquote(u[.(i)]),pos=2,xpd=TRUE)
+points(0,u[i],pch=16,cex=1.7,col="red")
+arrows(0,u[i], as.numeric(y[i]),u[i], col="red", lwd=2)
+arrows(as.numeric(y[i]),u[i], as.numeric(y[i]),0, col="red", lwd=2)
+title(bquote(u[.(i)]==.(sprintf("%.3f",u[i]))*"; "*y[.(i)]*"="*.(as.character(y[i]))))
+```
+
+
+```{r}
+set.seed(112)
+n <- 10000
+u <- runif(n)
+y <- case_when(u <= cp[1] ~ "Red",
+               u <= cp[2] ~ "Green",
+               .default="Blue")
+y <- factor(y, levels=names(pp))
+table(y)
+```
+
+The `sample()` function implements this conveniently: select from the integers
+1 to `m`
+```{r}
+n <- 10000
+y <- sample(m, size=n, prob=pp, replace=TRUE)
+table(y)
+```
+(need `replace=TRUE` here, see below).
+
+... or state the vector `1:m` explicitly
+```{r}
+y <- sample(1:m, size=n, prob=pp, replace=TRUE)
+table(y)
+```
+
+... or directly from the vector of labels ...
+```{r}
+y <- sample(c("Red","Green","Blue"), size=n, prob=pp, replace=TRUE)
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+... get the labels from `pp` ...
+```{r}
+y <- sample(names(pp), size=n, prob=pp, replace=TRUE)
+y <- factor(y,levels=names(pp))
+table(y)
+```
+
+
+## Sampling from discrete numerical random variables
+
+The ideas above carry straight over to discrete numerical random variables.
+
+The Binomial distribution $Y\sim\text{Bin}(m,p)$ is the number
+of successes in $m$ trials where the probability of success on each
+trial is the same $p$, and all the trials are independent.  
+
+$Y$ takes values 0 to $m$, and those probabilities can be calculated by
+\[
+   P(Y=k) = \binom{m}{k} p^k (1-p)^{m-k} = \frac{m!}{k!(m-k)!} p^k (1-p)^{m-k}
+\]
+R provides these probabilities in the function `dbinom()`
+
+e.g. $m=10$ rolls of a six-sided die, and $Y$ is the number of times we get a 1, 
+so $p=1/6$
+```{r}
+m <- 10
+p <- 1/6
+pp <- dbinom(0:m, m, p)
+pp
+```
+
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Binomial probabilities"
+barplot(pp, names=0:m,
+        xlab="y", ylab="Pr(Y=y)",
+        main=bquote("Bin("*.(m)*","*.(sprintf(" %.4f",p))*")"))
+```
+
+The CDF is given by the function `pbinom()`
+```{r}
+cp <- pbinom(0:m, m, p)
+```
+
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Binomial CDF"
+plot(0:m, cp, type="s",
+        xlab="y", ylab="Pr(Y<=y)",
+        main=bquote("Bin("*.(m)*","*.(sprintf(" %.4f",p))*")"))
+```
+
+Drawing a single value of $Y$ proceeds the same way as for a categorical
+variable:
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Drawing from a Binomial(10,1/6) distribution"
+u <- 0.511
+cp <- pbinom(0:m, m, p)
+y <- min((0:m)[u<cp])
+plot(c(0,0:m),c(0,cp),type="s",ylim=c(0,1),
+     xlab="Y",ylab="U")
+text(0,u,label=expression(u),pos=2,xpd=TRUE)
+points(0,u,pch=16,cex=1.7,col="red")
+arrows(0,u, y,u, col="red", lwd=2)
+arrows(y,u, y,0, col="red", lwd=2)
+title(bquote(u==.(sprintf("%.3f",u))*"; "*y*"="*.(y)))
+```
+
+So we can draw multiple values of $Y$ from Bin(10,$\frac16$) 
+using the `sample()` function:
+
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from a Binomial(10,1/6)"
+n <- 10000
+pp <- dbinom(0:m, m, p)
+y <- sample(0:m, n, prob=pp, replace=TRUE)
+barplot(table(y))
+```
+
+Of course R provides a specific function for doing the same thing: `rbinom()`
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from a Binomial(10,1/6)"
+n <- 10000
+y <- rbinom(n, m, p)
+barplot(table(y))
+```
+But that function is just doing what we've described above using `sample()`.
+
+A particular common example is where we have $m$ objects and want to select 
+one of them at random, with each object having equal probability of being 
+selected: i.e. each has probability $1/m$.  
+
+## Sampling from continuous random variables
+
+Continous random variables are simulated using the same principle.  
+
+The cumulative distribution function (CDF) of a continuous random variable $Y$ is
+defined to be
+\[
+   F(y) = \Pr(Y\leq y) = \int_{-\infty}^y f(y')\;{\rm d}y'
+\]
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=8,
+#| fig.cap="Normal distribution density and CDF"
+par(mfrow=c(1,2))
+np <- 101
+x <- seq(from=-3, to=+3, length=np)
+y <- dnorm(x)
+plot(x,y, type="l",main="Normal density",xlab="y",ylab="f(y)")
+z <- 1
+x <- seq(from=-3, to=z, length=np)
+y <- dnorm(x)
+polygon(c(x[1],x,x[np]),c(0,y,0),col="grey")
+x <- seq(from=-3, to=+3, length=np)
+y <- pnorm(x)
+plot(x,y, type="l",xlab="y",ylab="F(y)")
+title(bquote("F(1)=Pr(Y<"*.(z)*")="*.(round(pnorm(z),4))))
+x <- c(x[1],z,z); y <- c(rep(pnorm(z),2),0)
+lines(x,y,col="red")
+```
+
+We can use $F(y)$ to draw a random value from the distribution of $Y$
+by first drawing a random value $U$ from a Uniform(0,1) distribution. 
+
+We then solve the equation
+\[
+   U = F(y)
+\]
+for  $y$: i.e. find the value of $y$ corresponding to a CDF value of $U$.
+
+For many standard distributions (including the Normal and Gamma distributions) 
+there is no analytic formula which gives the solution for $y$ given $u$: 
+but there are numerical approximations which can be used in those settings.
+
+One simple case which does have an analytic solution is the Exponential 
+distribution $Y\sim\text{Exp}(\lambda)$.  This is a one parameter distribution 
+where $Y$ is non-negative ($Y\geq 0$), and can be used to model cases such 
+the length of time it takes for an event to occur (e.g. the length of time for a 
+radioactive nucleus to decay).  The single parameter $\lambda$ is the **rate** 
+(e.g. number of radioactive decay events per unit time).  
+
+The exponential distribution has probability density function
+\[
+   f(y) = \lambda e^{-\lambda y}\qquad \text{where $y\geq 0$}
+\]
+and has mean $E[Y]=1/\lambda$. 
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Exponential probability distribution"
+lambda <- 0.5
+np <- 101
+yvec <- seq(from=0, to=10, length=np)
+fvec <- lambda*exp(-lambda*yvec)
+plot(yvec, fvec, type="l", 
+     xlab="y", ylab="f(y)", main="Probability density of Exp(0.1)")
+```
+
+The CDF is the integral of the probability density function
+\[
+   \Pr(Y\leq y) = F(y) = \int_0^y f(y)\,{\rm d}y
+\]
+which for the Exponential distribution is
+\[
+  F(y) = \int_0^y \lambda e^{-\lambda t} {\rm d}t = 1 - e^{-\lambda y}
+\]
+
+```{r echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Exponential cumulative probability distribution"
+lambda <- 0.5
+np <- 101
+yvec <- seq(from=0, to=10, length=np)
+cdfvec <- 1-exp(-lambda*yvec)
+plot(yvec, cdfvec, type="l", 
+     xlab="y", ylab="f(y)", main="CDF of Exp(0.1)")
+```
+
+Solving
+\[
+   u = F(y) = 1-e^{-\lambda y}
+\]
+for $y$ leads to 
+\[
+   y = -\frac{1}{\lambda}\log(1-u)
+\]
+
+Using this function we can easily draw directly from an 
+Exponential distribution.  
+```{r}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="10000 draws from an Exponential distribution"
+n <- 10000
+u <- runif(n)
+lambda <- 0.5
+y <- -(1/lambda)*log(1-u)
+mean(y)
+hist(y, main="Histogram of draws from Exp(0.5)")
+```
+
+
+## Sampling from a finite collection
+
+The simulations discussed so far all draw from **infinite** populations: 
+we can set the sample size $n$ to any value.  However it often occurs that
+we have only a finite population - e.g. when drawing a random sample 
+of students from a class, or households from a suburb for interview. 
+Then the population size $N$ is finite.
+
+In the general case we have a set of $N$ **units** (i.e. students or households)
+in a population of finite size, and we want to draw a sample of $n$ of these units.   
+
+We usually start by listing or **enumerating** the units.  This list is called 
+a **frame** or a **sample frame**.  
+
+Consider the case where we have a small street containing 
+$N=10$ houses, numbered 1-10. 
+We want to select 5 of these houses with equal probability.  There are a number of 
+ways we could do this.
+
+### Sampling without replacement
+
+If the houses have equal probability then we could proceed as follows:
+
+ * We draw a random number from 1-10, e.g. house number 2, and mark it as selected
+ * We draw another random number from 1-10, e.g. house number 5, and mark it as selected
+ * We repeat this process, but if we choose a house that is already selected, we discard that
+   selection;
+ * The process continues until we have a set of 5 distinct houses.
+ 
+At the start we take our frame (i.e. list) of houses, 
+and initially mark them all as unselected.  Then at each step where we 
+successfully select a previously unselected house we mark that house as selected.
+ 
+```{r}
+bigN <- 10 # population size
+frame <- data.frame(house=1:bigN, selected=FALSE)
+n <- 5  # sample size
+nselected <- 0
+while(nselected < n) {
+  i <- sample(bigN, 1)  # sample a single number at random from 1:bigN with equal probability
+  if(!frame$selected[i]) {
+    frame$selected[i] <- TRUE
+    nselected <- nselected + 1 
+  }
+}
+frame$house[frame$selected]
+```
+
+It's not guaranteed how many steps this process is going to take, since the number
+of times we select a house that has already been selected is random.  If the sample size
+$n$ is small and the population size $N$ is large then it will take $n$ steps, or possibly 
+just a few more.   If $n$ is close to $N$ and $N$ is large, it could take a very very
+long time.
+
+A simpler way to solve this is to assign each house a distinct random number
+between 0 and 1, and then sort the frame in order of the random numbers. 
+
+Our sample of $n$ units is just the first $n$ units in the sorted frame.
+Since the random numbers assigned have no correlation with any property of the
+units on the frame, then the top $n$ units of of the sorted frame are a 
+simple random sample from the frame.
+
+```{r}
+bigN <- 10 # population size
+frame <- data.frame(house=1:bigN, selected=FALSE)
+n <- 5  # sample size
+frame$u <- runif(bigN)
+frame <- frame[order(frame$u),]
+frame$selected[1:n] <- TRUE
+frame
+frame <- frame[order(frame$house),]
+frame$house[frame$selected]
+```
+
+Of course, the simplest way of all is just to use the `sample()` function
+
+```{r}
+bigN <- 10 # population size
+n <- 5  # sample size
+sample(bigN, n)
+```
+
+It's very often that we do have a frame, a list of objects with names, and we 
+want to select from this at random.
+
+```{r}
+frame <- data.frame(Name=c("Mark","Chloe","Sam","Caitlin","Harry","Nina"),
+                    Age=c(20,19,18,19,19,21),
+                    Major=c("STAT","STAT","DATA","COMP","MATH","STAT"))
+frame
+```
+
+We can select, say, 3 names 
+
+```{r}
+n <- 3
+samplenames <- sample(frame$Name, n)
+samplenames
+```
+
+and then subset the frame
+```{r}
+samplemembers <- frame[frame$Name%in%samplenames,]
+samplemembers
+```
+
+If you like dplyr
+```{r}
+samplemembers <- frame |> 
+  filter(Name%in%samplenames)
+samplemembers
+```
+
+Note we can find out where in the frame particular individuals are located
+```{r}
+match(c('Mark','Harry'),frame$Name)
+```
+
+If we're sampling without replacement, note (of course) that the sample
+size can be no bigger than the population size $n\leq N$.  
+
+### Sampling with replacement
+
+When selecting a sample of 5 houses it makes sense not to allow the possibility
+of selecting the same house twice.  So when we've selected a house we remove
+it from the list of houses available to select.  When using `sample()` this means 
+that we set `replace=FALSE`, meaning after we've selected a member of the population
+we don't put it back again.  
+
+But there are occasions where we select **with replacement** is the sensible
+thing to do.  This means there is a chance where a unit can be selected more than
+once, and this occurs in situations where we want to assign different probabilities
+of selection to different units of the population.
+
+Starting with the the case of equal probabilities, we repeatedly draw
+units from the population under identical circumstances: on every draw
+each unit is available for selection, and we count how many times each
+unit is selected.
+
+```{r}
+set.seed(111)
+bigN <- 10
+n <- 5
+replicate(n, sample(bigN, 1))
+```
+In this sample we've drawn Unit 3 twice.
+
+If $n$ is small and $N$ is large the probability of repeats is small.  But if a repeat
+happens we of course do not make our selected household repeat the questionnaire, instead
+we count them twice (or as many times as they are selected) in our analysis.  
+
+Imagine our sample of 10 houses aren't actually just houses, they're farms, and some of them 
+are very large and some are very small.  We want to give the large farms a high chance of
+selection.  
+
+```{r}
+set.seed(122)
+bigN <- 10
+n <- 5
+frame <- data.frame(farm=1:10, ncows=c(1000,5000,2000,500,500,
+                                       5000,500,5000,30000,100))
+frame
+sample(frame$farm, n, prob=frame$ncows, replace=TRUE)
+```
+Unsurprisingly, the very large farm number 9 has been selected three times here.
+
+It **is** possible to have unequal probability sampling **without** replacement, estimation
+of standard errors is complicated in such designs, so we won't be using such designs.  
+
+For now, just note that we switch to with replacement designs when we're sampling from
+sets of units where want to have units with different probabilities of selection.  
+
+
+
+
+
+
+<!--chapter:end:02-SamplingIntroduction.Rmd-->
+
+# Sample Surveys
+
+A sample survey is an exercise in which **data** are collected from a 
+**sample** (a subset) or a **population**.  The data collected are used to
+create **estimates** of the characteristics or **parameters** of the
+population.  
+
+Some examples:
+
+  * A sample of voters are telephoned to ask their voting intentions, with
+  the aim of predicting the outcome of the election;
+  * A sample of sites in a river catchment is tested for the presence of
+  algae to determine the spread of the algae throughout the entire catchment;
+  * A sample of households is selected, and the residents asked about their
+  employment status, in order to estimate the national unemployment rate.
+
+A **census** is a special case of a sample survey in which every member of
+the population is surveyed.
+
+## The Survey Process
+
+The different steps in the survey process are shown in Figure \@ref(fig:survey-process1).
+
+```{r survey-process1, fig.cap="The Survey Process", out.width='100%', echo=FALSE, fig.align="center"}
+#knitr::include_graphics("include-files/fig/survey.process1.jpg")
+knitr::include_graphics("include-files/fig/SurveyProcess1.png")
+```
+
+  * Every survey has a set of **objectives** -- the particular populations
+  which are of interest;
+  * These parameters are properties of the **target population**: the
+  population about which estimates are to be made;
+  * Not all members of the target population are able to be identified: the
+  ones that can be surveyed make up the **survey population**;
+  * The **sample frame** is a listing of all members of the survey
+  population;
+  * The **sample design** is the method of selecting the sample from the
+  frame.  The **sample size** is usually decided as a compromise between the 
+  required **accuracy of estimates** and the survey **costs** and other
+  constraints (e.g. the time available for the survey);
+  * **survey instrument** is the means of data collection.  It is
+  usually a paper or electronic questionnaire, completed by the respondent or
+  the interviewer/observer.  The instrument aims to measure the properties of
+  the sample members which mean that the desired population characteristic can
+  be estimated.  The instrument must be **valid** (it must actually measure
+  what it intends to measure) and **reliable** (repeated measurements of the
+  same sample member under identical circumstances should always yield similar
+  results);
+  * The sample members are **contacted** and **recruited** into the
+  sample.  Not all selected members will be able to be contacted (even after
+  strenuous efforts), and some will not respond even if contacted;
+  * The data are collected from the sample members in some **mode**
+  (e.g. face-to-face, telephone, web, observational, ...);
+  * The data collected are **captured** (stored on a computer); **coded**
+  (converted into standard classification systems); **edited** (checks for
+  data consistency); and **stored** in a final dataset;
+  * The data may be **adjusted**, e.g. imputation or weight adjustments
+  for nonresponse may be done;
+  * **Estimates** of the parameters of interest are constructed, and other
+  **analysis** of the data is carried out (e.g. regression estimation,
+  comparison with other data etc.);
+  * The results are summarised in a **report**;
+  * The original data may be **archived** in some appropriate form,
+  or **destroyed**;
+  * A post-survey **evaluation** may be made to determine how well the survey
+  met its goals.
+
+For example: The Household Labour Force Survey (HLFS).
+
+  * One of the main **objectives** of the HLFS is to estimate the
+  unemployment rate every quarter;
+  * The **target population** is the working age population of
+  New Zealand;
+  * The **survey population** is the civilian, non-institutionalised
+  usually resident population of adults aged 15+ 
+  living in permanent, private dwellings on the main islands of New
+  Zealand (North Island, South Island and Waiheke Island);
+  * The **sample frame** is a list of dwellings created at the most recent
+  census and regularly updated to reflect changes;
+  * The **sample design** is a stratified cluster design.  Within each regional
+  government area a sample of small areas (PSUs) is selected.  A sample of
+  households is selected from within each PSU.  Every adult from the selected
+  households is surveyed.  15000 households and 30000 adults are surveyed every
+  three months, in order to create unemployment estimates accurate to within
+  $0.5$%. 
+  * The **survey instrument** is an electronic questionnaire.
+  * The interviewers contact the households in person or by telephone,
+  making up to 10 call backs to ensure contact is made.  **Proxy responses**
+  are permitted (i.e. one household member can respond on behalf of another).
+  The interview takes place by computer assisted personal or telephone
+  interviewing (CAPI or CATI).
+  * The results are **post-stratified** to match the current population estimates
+  in each local government area;
+  * **Estimates** of the unemployment rate are published within about 6
+  weeks of the end of the quarter.
+
+
+## Populations and Frames
+
+The target population defines the **scope** of the survey: the set of units
+which make up the population in which we are interested.
+
+The sample frame is a method of gaining access to the members of the target
+population.  It is an actual or conceptual list.  However it may not be
+perfect (Figure \@ref(fig:scope-coverage)). 
+
+ * Not all members of the target population will appear on the sample frame:
+  the missing units are **out of coverage**;
+ * Not all units listed on the sample frame are members of the target
+  population:  the extra units are **out of scope**.
+ * The survey population are those units which are both in the target
+  population (in scope) and on the frame (in coverage).
+
+Our aim is to have a sample frame which covers most if not all of the target
+population, and which has only very few out of scope units.  
+
+The reason for this is very important: we can make estimates about units in a population
+**only** if they are included in the sample frame.  This inference is possible
+**whether or not we select them**.  If there is a subpopulation of units that is
+not on our frame (i.e. they are out of coverage) then we can never select them, we
+can never learn anything about them, and therefore we cannot make inferences about them.
+
+```{r scope-coverage, fig.cap="Scope and Coverage", out.width='70%', echo=FALSE, fig.align="center"}
+knitr::include_graphics("include-files/fig/ScopeCoverage.png")
+```
+
+### What is a sampling frame?
+
+The sampling frame is a key element in the survey process which provides the
+basis from which a *random* (probability based) sample can be selected.  The
+purpose of having a sampling frame is to enable each member of the target
+population a nonzero probability of being selected to participate in the
+survey.  The *quality* of the data, from a survey which has as its basis a
+comprehensive frame, can be *measured and controlled*.
+
+The term sampling frame is sometimes misunderstood, often being thought of as a
+list containing each member of the population. In fact that is more a
+description of an `ideal' sampling frame.  The best way to show what a sampling
+frame can be in practice is to examine some examples:
+
+ * **List Frames.** Good up-to-date lists make ideal frames.  However lists of
+  units (electoral rolls, telephone listings etc.)  are generally formed for
+  purposes other than for use as sampling frames.  For this reason they are
+  often not close to `ideal' sampling frames.  Some discussion of list frame
+  problems comes later.
+  
+ * **Multi-stage Sampling Frames.** These frames consist of a set of lists
+  which are arranged in a hierarchy of stages. For example a typical household
+  survey frame will be organised like so: The first list is a a set of
+  non-overlapping geographic areas from which a sample of areas is taken. For
+  example we may list all the local regional councils and take a sample of
+  them.  Within these areas we might then list all the households and take
+  samples from the household lists. From each household we would then list the
+  residents and interview selections of them.  Note that we do not have to list
+  the entire population. The only comprehensive list needed is the list of the
+  areas which will be quite small.  By giving each area a chance of being
+  selected we ensure each person living in each area has a chance of selection.
+  
+ * **Continuous Sampling Frames.** Consider the population of people entering a
+  country from international flights.  Suppose we choose a random number
+  between one and ten ($=k$) and then interview the $k$th, $(k+10)$th,
+  $(k+20)$th ... persons who file through customs.  We will have a sample where
+  every person has had a 1 in 10 chance of being selected. But what is the
+  frame? There is no list.  We call such a situation a `conceptual list', where
+  the people filing into the country effectively formed a long queue of people
+  which we have treated like a listing of the population, although a listing of
+  names was never constructed.  \end{description}
+
+One can find many different definitions of sampling frames. The following is a
+simplified definition that should serve our purposes:
+
+>  A *sampling frame* is part of the system of rules and procedures used when
+>  determining who is to be surveyed and which ensure that each member of the
+>  population get some measurable (non-zero) chance of participating in the
+>  survey.
+
+The examples above show that we need to think beyond the concept of a list of
+units, whose construction is a separate exercise from the other survey stages.
+
+### What is a *good* sampling frame?
+
+We will often have several frames available and will have to decide between
+different options. To help us with this decision we need to be a little more
+specific about what makes a good sampling frame.  The first thing we should
+consider is the effective coverage of the sampling frame. This can be
+determined by testing it for the following properties:
+
+ * **Each unit should be counted at least once**.  If there are missing
+  units (out of coverage) then the survey results may be biased if the excluded
+  units tend to be different to the units which are included.
+  
+ * **Each unit should be counted only once**. The problem is that we
+  usually can not tell how many times a unit is duplicated. This means we can
+  not tell how many chances a unit has of being sampled.  This can cause
+  similar bias if the units which are duplicated are different to the other
+  units.  The results will be biased towards the duplicated sub-group of the
+  population.
+  
+ * **Each unit should be distinguishable from the other units on the
+    frame**.  If we select a unit from the frame (say Jane Smith) but then can
+  not tell who this refers to, when there are many Jane Smiths in the
+  population, then the frame has not done its job.
+  
+ * **Should provide up-to-date information about the units**. For example
+  it if it claims to provide Jane Smith's address it should be the current
+  address.
+  
+ * **No units should be there if they are not meant to be**. Extra units
+  (out of scope) are not a serious problem unless we fall into the elementary
+  error of replacing them whenever we come across them in the sample. This
+  confuses selection probabilities. The correct procedure is to drop any
+  ineligible unit found in the sample and not replace them.
+  
+ * **Should allow direct access to each unit**. Ideally the frame will
+  ultimately supply us with a list of the units we are interested in analyzing.
+  Sometimes a frame will only give samples of groups of units e.g. a list of
+  addresses, each of which may contain many people. Further work is needed
+  before a sample of people is realized.
+
+## Approaches to sampling
+
+We're talking here about random sampling, or **probability sampling**.  For
+the purposes of statistical inference such sampling is the only defensible method -
+it's the only one that leads us to properly constructed confidence intervals 
+and hypothesis tests.  Other approaches do exist though, and even though you'll see
+them used they all have significant defects.
+
+* **Probability sampling** is the gold standard: every member of the population
+  has a known, non-zero chance of selection;
+* **Purposive sampling**: the surveyor selects members of the population that 
+  they consider to be representative - dangerously biased towards the views
+  and prejudices of the surveyor;
+* **Haphazard sampling**: the surveyor uses any members of the population that
+  they come across. This is what happens on the street corner when you're asked
+  questions by a surveyor;
+* **Quota sampling**: resembles stratified sample (see later): the surveyor fills
+  quotas of respondents to balance numbers of respondents in categories (e.g. by 
+  age/gender/ethnicity), but does not make an accounting for non-response (see later);
+* **Snowball sampling**: used in rare populations that are highly connected (e.g.
+  refugees from a particular country): existing sample members recruit new sample
+  members using their contacts;
+* **Self-selected sampling**: this is the **worst** of all: the respondents themselves
+  decide whether to be selected: they see an advertisement on a webpage or phone
+  in with their views.  Only profiles motivated population members - the silent
+  majority are never measured.
+
+## Example datasets
+
+We'll use and re-use a number of standard datasets.
+
+### API
+
+This is a dataset on Student performance in California schools.  The dataset is distributed with the `survey` library in R, and there are a number of unit record datasets which are drawn from a population dataset `apipop` under various sample designs.   The population units are the schools, and a number of characteristics are available.  Full documentation can be found in the `survey` package.  The variables we use mostly are:
+
+  * `stype` - School type (Elementary/Middle/High School)
+  * `snum` - School number
+  * `dnum` - District number
+  * `api99` - Academic Performance Indicator for the school in the year 1999
+  * `api00` - Academic Performance Indicator for the school in the year 2000
+  * `sch.wide` - Did the school meet its school-wide growth target?
+  * `awards` - Is the school eligible for an awards program
+  * `meals` - Percentage of students eligible for subsidised meals
+  * `ell` - Percentage of students that are English Language Learners
+  * `grad.sch` - Percentage of students with parents with a postgraduate education
+  * `enroll` - Number of students enrolled
+  * `api.stu` - Number of students tested in the API
+
+
+### From the dplyr package
+
+* `starwars` - a list of characteristics of 87 characters from the Star Wars
+  movie series;
+  
+  
+
+  
+
+
+
+<!--chapter:end:03-SurveyProcess.Rmd-->
+
+# Statistical Inference
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+## Inference in infinite populations
+
+Let's briefly review a few familiar results from earlier statistics courses.
+
+Most of what we've done in earlier courses has assumed that we have
+a **simple random sample** from an **infinite** population.
+
+We'll use data from the `starwars` dataset (in the `dplyr` package).  There
+are data on 87 characters, including their heights in centimetres.  
+Six heights are missing, but let's just guess them so we have no missing data
+(this process of inventing data has a respectable name:  **'imputation'**, 
+and we'll come back to it later).
+
+```{r}
+library(dplyr)
+data(starwars)
+sum(is.na(starwars$height))
+starwars <- starwars |> 
+  mutate(height=case_when(name=="Arvel Crynyd" ~ 172, # same as Luke
+                          name=="Finn" ~ 172, # same as Luke
+                          name=="Rey" ~ 150,  # same as Leia
+                          name=="Poe Dameron" ~ 172, # same as Luke
+                          name=="BB8" ~ 96, # same as R2D2
+                          name=="Captain Phasma" ~ 167, # same as C3P0
+                          .default=height))
+```
+
+The mean height $\bar{Y}$ of characters in the Star Wars universe is a **population parameter**.
+We can **estimate** it from a sample of characters.  
+
+> **Note:** we're using capital letters for **population parameters** 
+> ($\bar{Y}$ is the population mean), and lower case letters for **sample statistics**
+> ($\bar{y}$ is the sample mean).
+> 
+> It's also common to see Greek letters for **population parameters** (e.g. $\mu$ for the
+> population mean), upper case latin letters for random variables, and lower case latin letters
+> for sample statistics.  
+
+For the purposes of this exercise let's imagine there are only $N=87$ individuals in the entire 
+Star Wars universe. Let's draw a random sample of $n=20$ from this population of $N=87$:
+```{r}
+set.seed(222)
+bigN <- nrow(starwars)
+n <- 20
+samplemembers <- starwars[sample(bigN, n, replace=FALSE),]
+samplemembers |>
+  dplyr::select(name,height,mass,hair_color,homeworld) |>
+  kbl() |>
+  kable_styling()
+```
+
+```{r starwarssample, echo=FALSE} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Histogram of heights of a sample of Star Wars characters (vertical line at the sample mean)"
+hist(samplemembers$height, xlab="Height (cm)", ylab="Frequency", 
+     breaks=15, main="Heights of Star Wars characters")
+abline(v=mean(samplemembers$height),col="red",lwd=2)
+```
+
+Compute the sample mean $\bar{y}$ and standard deviation $s_y$:
+```{r}
+ybar <- mean(samplemembers$height)
+ybar
+sdy <- sd(samplemembers$height)
+sdy
+```
+
+```{r echo=FALSE}
+tstar <- qt(0.05/2, df=n-1, lower.tail=FALSE)
+se <- sdy/sqrt(n)
+moe <- tstar*se
+ci <- ybar + moe*c(-1,1)
+fpc <- sqrt(1-n/bigN)
+sefpc <- se*fpc
+moefpc <- moe*fpc
+cifpc <- ybar + moefpc*c(-1,1)
+```
+
+We know how to make a point estimate $\widehat{\bar{Y}}$ for the population
+mean $\bar{Y}$ (remember that a hat $\widehat{.}$ over a symbol indicates 
+an estimate of that parameter): the population mean is estimated by the sample
+mean $\bar{y}$:
+\[
+    \widehat{\bar{Y}} = \bar{y} = `r sprintf("%.1f",ybar)`
+\]
+and a 95% confidence interval is given by
+\begin{eqnarray}
+    \widehat{\bar{Y}} \pm \bfa{MOE}{\widehat{\bar{Y}}}
+    &=& \widehat{\bar{Y}} \pm T^\ast_{n-1}\times \bfa{SE}{\widehat{\bar{Y}}}\\
+    &=&  \bar{y} \pm T^\ast_{n-1}\times\frac{s_y}{\sqrt{n}}\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.2f",tstar)` \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.2f",tstar)` \times `r sprintf("%.2f",se)`\\
+    &=& 
+    `r sprintf("%.1f",ybar)` \pm `r sprintf("%.1f",moe)`\\
+    &=& 
+    `r sprintf("(%.1f,%.1f)",ci[1],ci[2])`
+\end{eqnarray}
+
+Here:
+
+* $\bfa{SE}{\widehat{\bar{Y}}}$ is the **standard error** or **sampling error** of the 
+  estimator $\widehat{\bar{Y}}$ of the population mean $\bar{Y}$;
+* $T^\ast_{n-1}$ is the quantile of the $t-$distribution with $n-1$ degrees of
+  freedom so that the interval $[-T^\ast_{n-1},+T^\ast_{n-1}]$ encloses 95% of the probability
+  of the $t-$distribution;
+* $\bfa{MOE}{\widehat{\bar{Y}}}$ is the **margin of error**, the half-width of the confidence interval, 
+  and is the standard error scaled by $T^\ast_{n-1}$.
+
+This is what is known as a **model based** estimate, the statistical model being
+\begin{equation}
+   y_i = \mu + \varepsilon_i \qquad \text{where $\varepsilon_i\overset{\rm iid}{\sim} N(0,\sigma^2)$}
+   (\#eq:simplelinearmodel)
+\end{equation}
+There are just two parameters here: the population mean $\mu$, and the population 
+standard deviation $\sigma$.
+
+We can fit this simplest of all linear regression models using the `lm()` function and 
+get the same results:
+```{r}
+lm1 <- lm(height ~ 1, data=samplemembers)
+summary(lm1)
+confint(lm1)
+```
+
+Here `(Intercept)` is the estimate for $\mu$, the population mean.  
+The 'residual standard error' in the R output is actually what we'd rather
+call $\widehat{\sigma}$, our estimate of the standard deivation $\sigma$. 
+
+We can get hold of this value from a fitted `lm()` object using the `sigma()`
+function:
+```{r}
+sigma(lm1)
+```
+
+The confidence interval anove is only valid if the model in equation \@ref(eq:simplelinearmodel) 
+holds: i.e. if the data are normally distributed about the mean.  The histogram
+in Figure \@ref(fig:starwarssample) suggests that this is not the case however, since
+there is a clear outlier at low height.  
+
+> The Central Limit Theorem (CLT) tells us that if $n$ is large enough then our
+> estimate for $\mu$ is useable, and its confidence interval realistic, even 
+> if the model in equation \@ref(eq:simplelinearmodel) doesn't actually hold.  
+> 
+> The CLT enables much of statistcal practice to yield meaningful results even
+> without our knowing the true data generation model. 
+> 
+> In this course most of the examples will have sample sizes large enough
+> that the CLT will mean our results are valid.  In these cases when
+> constructing a confidence interval it will 
+> be sufficient to replace $T^\ast_{n-1}$ with the equivalent $Z^\ast=1.96$
+> from the Normal distribution.  
+
+## Inference in finite populations
+
+Recall that the standard error of an estimate is the variability
+of estimates between different samples: in fact it is defined as the standard deviation
+of all possible estimates from all possible estimates drawn using the
+same sample design. 
+
+In an infinite population there are an infinite number of possible samples.
+
+However in a finite population that isn't the case.  In a population of size $N$
+if we draw a simple random sample without replacement of size $n$ there are
+\begin{eqnarray}
+    \binom{N}{n} &=& {}^NC_n\\
+                 &=& \frac{N!}{n! (N-n)!}\\ 
+                 &=& \frac{N\times (N-1)\times (N-2)\times ... \times (N-n+1)}{
+                           n\times (n-1)\times (n-2)\times ... \times 1}
+\end{eqnarray}
+possible samples: i.e. the number of ways it is possible to draw $n$ objects
+from a collection of $N$ without regard to the order they are selected.
+
+> Recall that $n!$ is the factorial of $n$: the product of all integers
+> from $n$ down to $1$:
+> \[
+>     n! = n\times(n-1)\times(n-2)\times ... \times 2 \times 1
+> \]
+> So $5!=5\times 4\times 3\times 2\times 1=120$.  
+
+In our example of selecting $n=20$ from $N=87$ there are an astronomical
+number of possible samples:
+\[
+   \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
+\]
+There is of course only one way to select a census though:
+\[  
+   \binom{87}{87} = \frac{87!}{87!0!} = 1
+\]
+(using the at first face slightly annoying convention that 0!=1).  Since there's only 
+one possible sample when we're drawing a census the variation among sample estimates 
+from different samples is zero: i.e. the standard error is zero.  
+
+It's also true that if $n$ is close to $N$ then sample estimates hardly differ from
+one another.
+
+We clearly need a modification of our standard error formula
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \frac{s_y}{\sqrt{n}}
+   \qquad \text{(Infinite population)}
+\]
+to allow for sample sizes $n$ being close to the population size.
+
+That modification is the **finite population correction (fpc)**:
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} = \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}
+   \qquad \text{(Finite population)}
+\]
+The factor $\sqrt{1-n/N}$ squashes the standard error to zero in the case that $n=N$, 
+but for very small $n$ has a value close to 1, and makes no difference at all.
+
+In our example we had a standard error of
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \frac{s_y}{\sqrt{n}}\\
+                              &=& \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.2f",se)`
+\end{eqnarray}
+If we incorporate the fpc this becomes
+\begin{eqnarray}
+  \bfa{SE}{\widehat{\bar{Y}}} &=& \sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+                              &=& \sqrt{1-\frac{`r n`}{`r bigN`}}\frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.4f",fpc)` \times \frac{`r sprintf("%.1f",sdy)`}{\sqrt{`r n`}}\\
+                              &=& `r sprintf("%.2f",sefpc)`
+\end{eqnarray}
+This narrows the confidence interval for the estimate of the population mean height 
+from `r sprintf("(%.1f,%.1f)", ci[1], ci[2])`
+to `r sprintf("(%.1f,%.1f)", cifpc[1], cifpc[2])`.
+
+This is a **design based** confidence interval, in which it is the sample design
+which foremost in our derivation of standard errors.  
+
+There is quite a lot of theory behind derivation of standard errors in the complex
+designs which arise in sample surveys.  
+
+The `survey` package in R implements the consequences of sample designs which will 
+mean we can use the theory without having to derive it.  
+
+For example here's a call to some `survey` package functions which
+gives us the effect of the fpc in our example:
+```{r}
+samplemembers$bigN <- bigN
+ss <- svymean(height~1, design=svydesign(ids=~1, fpc=~bigN, data=samplemembers))
+ss
+confint(ss)
+```
+
+If you're interested in the theory take a look at a text like @cochran or @ssw. 
+
+## The survey inference process
+
+Sampling begins with the sample frame - usually this is a **list** of the
+members, or **units**, which make up the population.  
+
+The list contains at minimum some **identifier** of each unit, which enables
+it to be found/contacted/measured once it has been selected, and may contain 
+a lot of other information too.
+
+Data that we have on the frame is called **auxiliary information**: it is
+data that is available about a unit whether or not it has been sampled.  Some
+sample designs rely on this auxiliary data during the process of sample selection. 
+
+In probabilistic (random) sampling each unit $i$ has a known nonzero chance of
+selection $\pi_i$, which may depend on the auxiliary data in some way. 
+These probabilities don't have to be equal, just known and nonzero.
+
+In random sampling we generate a random variable $I_i$ for each 
+population member, based on the sample design, to decide whether it is 
+selected into the sample or not:
+\begin{equation}
+   I_i = \begin{cases}
+         1,\qquad &\text{if unit $i$ is selected}\\
+         0,       &\text{otherwise}
+         \end{cases}
+\end{equation}
+The sample size is just the sum of these random variables
+\[
+   n = \sum_{i=1}^N I_i
+\]
+
+```{r sampleframe, echo=FALSE}
+ff <- data.frame(UnitID=c(1, 2, 3, "$\\vdots$", "$i$", "$\\vdots$", "N"),
+                 X=c("${\\bf X}_1$","${\\bf X}_2$","${\\bf X}_3$",
+                     "$\\vdots$","${\\bf X}_i$","$\\vdots$","${\\bf X}_N$"),
+                 P=c("$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\vdots$","$\\pi_i$","$\\vdots$","$\\pi_N$"),
+                 I=c("$I_1$","$I_2$","$I_3$","$\\vdots$","$I_i$","$\\vdots$","$I_N$")
+                 )
+ff |>
+  kbl(caption = "Sample Frame ($N$ rows)",
+      col.names=c("Unit ID", "Data", "Probability", "Indicator"),
+      escape=FALSE, align = 'cccc') |>
+  kable_styling() |>
+  add_header_above(c(" ","Auxiliary", "Selection", "Selection")) 
+```
+
+So we start with the $N$ rows of the sample frame (Table \@ref(tab:sampleframe)) generate
+the sample indicators $I_i$, and reduce to the $n$ rows of data in Table \@ref(tab:sampledata).
+For each member $k$ of the sample we know its population identifier $i_k$, its auxiliary information
+${\bf x}_k$, selection probability $\pi_k$, and we also collect and record the survey data ${\bf y}_k$.  
+
+```{r sampledata, echo=FALSE}
+fs <- data.frame(Unit=c(1, 2, 3, "$\\vdots$", "$k$", "$\\vdots$", "$n$"),
+                 UnitID=c("$i_1$", "$i_2$", "$i_3$", "$\\vdots$", "$i_k$", "$\\vdots$", "$i_n$"),
+                 X=c("${\\bf x}_1$","${\\bf x}_2$","${\\bf x}_3$",
+                     "$\\vdots$","${\\bf x}_k$","$\\vdots$","${\\bf x}_n$"),
+                 P=c("$\\pi_1$","$\\pi_2$","$\\pi_3$","$\\vdots$","$\\pi_k$","$\\vdots$","$\\pi_n$"),
+                 W=c("$w_1$","$w_2$","$w_3$","$\\vdots$","$w_k$","$\\vdots$","$w_n$"),
+                 Y=c("${\\bf y}_1$","${\\bf y}_2$","${\\bf y}_3$",
+                     "$\\vdots$","${\\bf y}_k$","$\\vdots$","${\\bf y}_n$")
+                 )
+fs |>
+  kbl(caption = "Sample Data ($n$ rows)",
+      col.names=c("Unit", "Unit ID", "Data", "Probability", "Weight", "Data"),
+      escape=FALSE, align = 'ccccc') |>
+  kable_styling() |>
+  add_header_above(c("Sample"," ","Auxiliary", "Selection", "Sample", "Sample")) 
+```
+
+The **expected value** of each indicator variable is $\pi_i$
+\begin{eqnarray}
+    E[I_i] &=& 1\times\Pr(I_i=1) + 0\times\Pr(I_i=0)\\
+           &=& 1\times\pi_i + 0\times(1-\pi_i)\\
+           &=& \pi_i
+\end{eqnarray}
+Each selected sample member carries a **sample weight** which is the number of units
+in the population that that unit represents.  These weights are defined as the 
+**inverses of the selection probabilities**.
+\[
+   W_i = \frac{1}{\pi_i}
+\]
+
+Consider some characteristic $Y_i$ which each population member has.  e.g. in a 
+survey of households we might be measuring the amount of money $Y_i$ that household
+$i$ spends on internet streaming services.  The total amount of money spent by 
+all households in the population combined is
+\[
+   Y = \sum_{i=1}^N Y_i
+\]
+However we only know $Y_i$ for some households: those which are selected, i.e.
+those which have $I_i=1$.
+
+The **Horwitz-Thompson** (HT) estimator of the population total is
+\begin{eqnarray}
+  \widehat{Y} &=& \sum_{i=1}^N I_i W_i Y_i\\
+              &=& \sum_{k=1}^n w_k y_k
+\end{eqnarray}
+i.e. a weighted sum of the observed household spending values $y_k$ just for the $n$
+selected households. ($I_i=0$ for any unselected households, so the sum of $N$ terms
+simplifies to a sum of $n$ terms, just over the sample members.)
+
+We can see that the HT estimator is **unbiased**: 
+\begin{eqnarray}
+  E[\widehat{Y}] &=& \sum_{i=1}^N E[I_i] W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i W_i Y_i\\
+                 &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i} Y_i\\
+                 &=& \sum_{i=1}^N Y_i\\
+                 &=& Y
+\end{eqnarray}
+i.e. although the observed value $\widehat{Y}$ from a given sample may not equal the
+true value $Y$, when averaged over all possible samples we can see that on average
+it does equal the true population value.  
+
+We also want the standard error $\bfa{SE}{\widehat{Y}}$ to be small, so that we have
+precise estimates.
+
+We're all familiar with the idea that the larger the sample size $n$ the smaller the 
+standard error.  We now know that the standard error is going to crush down to zero 
+in finite populations the closer we get to a census. 
+
+There's a further advantage we can get by making a good choice of **sample design**.  
+Two different methods of selecting a sample of the **same sample size $n$** may lead
+to very different values of the standard error, and thus confidence intervals of 
+very different widths.  
+
+Incidentally, the expected value of the sum of the sample weights among sample members is equal to 
+the population size:
+\begin{eqnarray}
+    \sum_{k=1}^n w_k &=& \sum_{i=1}^N I_i W_i\\
+  E\left[\sum_{k=1}^n w_k\right] 
+                      &=& \sum_{i=1}^N E[I_i] W_i\\
+                      &=& \sum_{i=1}^N \pi_i W_i\\
+                      &=& \sum_{i=1}^N \pi_i \frac{1}{\pi_i}\\
+                      &=& \sum_{i=1}^N 1\\
+                      &=& N
+\end{eqnarray}
+
+Here's one way to think about sample weights.  We have a population of size $N$
+we want to make estimates about: what we'd really like is a dataset of all $N$ individuals.
+Instead we only have $n<N$ individuals.   So we (conceptually) replicate each of the $n$
+sampled indidividuals by their weight: this makes a new synthetic dataset which does
+have the $N$ entries we're interested in.  Each row is identical to a number of others, 
+however in the real population there are many individuals who sometimes very closely 
+resemble each other.  So the properties of our synthetic population may be good enough 
+for estimating the properties of the true population.  
+
+The weight of a sample member indicates how many members of the population that
+sample member represents.  If we had a population of size $N=100$ and a simple random 
+sample of size $n=20$ then each sample member represents $w=100/20=5$ people in the 
+population.  
+
+In many designs the weights differ between individuals:
+high weights mean that the sample member represents many other individuals.  A weight
+of 1 means that sample member represents themself alone.
+
+There's no problem with weights being fractions - since we only conceptually but 
+don't **actually** replicate the data.
+
+```{r weights, echo=FALSE} 
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="How weights work in SRSWOR: we want to make estimates about a population of size $N$, but only have a sample of size $n$: so we replicate each sample member $w=N/n$ times to generate a synthetic population of size $N$ which we can analyse."
+knitr::include_graphics("include-files/fig/Weights.png")
+```
+
+## Example
+
+We might have a small street of five houses.  Our frame is 
+just the list of addresses.  We might know the household rateable value
+from the City Council list of dwellings.
+
+```{r echo=FALSE}
+hframe <- data.frame(
+  ID=c(6451,6452,8773,7164,6125),
+  Address=c("1 Chestnut Place","2 Chestnut Place","2A Chestnut Place",
+            "3 Chestnut Place","4 Chestnut Place"),
+  Value=c(1.201, 0.780, 0.520, 2.530, 0.900)
+)
+hframe |>
+  kbl(col.names=c("ID","Address","Value ($M)"), 
+      align='clc') |>
+  kable_styling()
+```
+
+We might then select a simple random sample of $n=2$ houses
+from the $N=5$ in the small street.  The probability of selection is $\pi_i=2/5$ 
+for each house.  We draw our random sample and select house number 2A and 
+house number 5 into our sample.
+
+```{r echo=FALSE}
+hframe$prob <- rep(0.4,5)
+hframe$selected <- c(0,0,1,0,1)
+hframe |>
+  kbl(col.names=c("ID","Address","Value (\\$M)","Prob. $\\pi_i$", "Selected, $I_i$"), 
+      align='clccc', escape=FALSE) |>
+  kable_styling()
+```
+
+We visit each selected house and ask how much they spend $y_k$ on all their internet streaming
+services each month.  
+
+```{r echo=FALSE}
+dframe <- hframe[hframe$selected==1,]
+dframe$weight <- 1/dframe$prob
+dframe$y <- c(75, 19)
+dframe$prob <- NULL
+dframe$selected <- NULL
+dframe |>
+  kbl(col.names=c("ID","Address","Value (\\$M)","Weight $w_k$", "Internet spend, $y_k$"), 
+      align='clccc', escape=FALSE) |>
+  kable_styling()
+```
+
+```{r echo=FALSE}
+n <- 2
+N <- 5
+ybar <- mean(dframe$y)
+sy <- sd(dframe$y)
+se <- sqrt(1-n/N)*sy/sqrt(n)
+tstar <- abs(qt(0.025,n-1))
+tstar <- 1.96
+moe <- tstar*se
+ci <- ybar + moe*c(-1,1)
+ytot <- N*ybar
+citot <- N*ci
+```
+
+Each house in the sample has a weight of 2.5 = 5/2: i.e. it represents itself and 1.5 other houses
+in the street.  The sum of the weights of the two selected houses is equal to the population size 
+$N=5$.
+
+Our sample is really too small to do any sensible inference on: but let's do it anyway to show how things 
+work.  We calculate the mean and standard deviation of the monthly internet streaming values: 
+$\bar{y}=`r sprintf("\\$%.2f",ybar)`$, and $s_y=`r sprintf("\\$%.2f",sy)`$.
+
+Our estimate of the mean monthly spend is $\bar{y}=`r sprintf("\\$%.1f",ybar)`$, with a margin of error of
+\begin{eqnarray}
+   \bfa{MOE}{\widehat{\bar{Y}}} 
+   &=& Z^\ast\sqrt{1-\frac{n}{N}}\times\frac{s_y}{\sqrt{n}}\\
+   &=& 1.96\sqrt{1-\frac{2}{5}}\times\frac{`r sprintf("\\$%.2f",sy)`}{\sqrt{2}}\\
+   &=& `r sprintf("\\$%.2f",moe)`
+\end{eqnarray}
+which gives a 95% confidence interval of `r sprintf("(\\$%.2f,\\$%.2f)",ci[1],ci[2])` (although
+the use of the large sample value $Z^\ast=1.96$ is very much **not** justified here.)
+
+In finite populations we are sometimes interested in population totals - which don't make any 
+sense in infinite populations.   Now we have an estimate of the mean spend per house, we can 
+scale it up by the population size to see how much per month is being spent by all of the houses
+combined:
+\begin{eqnarray}
+  \widehat{Y} &=& N\widehat{\bar{Y}}\\
+              &=& 5\times `r sprintf("\\$%.2f",ybar)`\\
+              &=& `r sprintf("\\$%.2f",ytot)`
+\end{eqnarray}
+and we can scale the confidence interval up in the same way
+\begin{eqnarray}
+  \bfa{CI}{\widehat{Y}} &=& N\bfa{CI}{\widehat{\bar{Y}}}\\
+                        &=& 5\times `r sprintf("(\\$%.2f,\\$%.2f)",ci[1],ci[2])`\\
+                        &=& `r sprintf("(\\$%.2f,\\$%.2f)",citot[1],citot[2])`
+\end{eqnarray}
+
+<!--chapter:end:04-InferenceBasics.Rmd-->
+
+# Sample Designs
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+In this Chapter we consider the various sample designs in common
+use, the reasons for using each one, and methods for selecting from suitable
+frames.  
+
+We'll use a variety of datasets.
+
+## Census
+
+The simplest of all!  We select every unit in the population, so $n=N$.
+
+The probability of selection is
+\[
+   \pi = \frac{n}{N} = \frac{N}{N} = 1
+\]
+i.e. every unit is selected with certainty, and the sample weights are all
+\[
+   w_i = \frac{1}{\pi_i} = \frac{1}{1} = 1
+\]
+so each unit in the sample represents itself alone. 
+
+```{r census, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Census"
+knitr::include_graphics("include-files/fig/Census.png")
+```
+
+### Design considerations {-}
+
+None: we're sampling all $N$ members of the population.
+
+## Simple Random Sampling Without Replacement (SRSWOR)
+
+The Simple Random Sample WithOut Replacement is the most fundamental of all
+sample designs, and it appears nested inside many more complex designs as we'll see later.  
+
+We have a population of size $N$ which is fully enumerated (i.e. fully listed), and
+we want to select a sample of size $n$.
+
+The defining property of a SRSWOR is that **all samples of size $n$** have an equal chance
+of selection.  A **consequence** of this definition is that **all population units** have 
+an equal chance of selection.
+
+There are 
+\[
+   \binom{N}{n} = {}^NC_n = \frac{N!}{n!(N-n)!} 
+\]
+possible samples.  The R function `choose(n,k)` can be used for evaluating the number
+of possible samples.  e.g. the number of ways to select $n=20$ units from $N=87$ is  
+```{r}
+choose(87,20)
+```
+
+The probability of selection of each unit is
+\[
+   \pi_i = \frac{n}{N}
+\]
+leading to sample weights
+\[
+   w_i = \frac{N}{n}
+\]
+The SRSWOR is used when the **costs** of different samples are not known to differ
+(e.g. there are no units that are more costly to visit than others), and where
+there is no informative auxiliary information.  
+
+If we have a sample frame stored as an R data frame `sframe` with a column `ĪD` uniquely 
+identifying the units, then we can select an SRSWOR as follows:
+
+```{r eval=FALSE}
+bigN <- nrow(sframe)
+samp <- sframe[sample(bigN,n),]
+samp$weight <- bigN/n
+```
+or
+```{r eval=FALSE}
+bigN <- nrow(sframe)
+IDset <- sample(sframe$ID,n)
+samp <- sframe[sframe$ID %in% IDset,]
+samp$weight <- bigN/n
+```
+or as a function 
+```{r}
+select.srswor <- function(df, n) {
+  # SRSWOR
+  bigN <- nrow(df)
+  if(n<=bigN) {
+    samp <- df[sample(bigN,n,replace=FALSE),]
+    samp$bigN <- bigN
+    samp$weight <- bigN/n
+  } else {
+    stop("Cannot have a SRSWOR with n>N")
+  }
+  return(samp)
+} 
+```
+
+
+```{r srswor, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Simple Random Sample WithOut Replacement (SRSWOR)"
+knitr::include_graphics("include-files/fig/SRS.png")
+```
+
+### Design considerations {-}
+
+* We only need to decide on the sample size $n$ (see later).
+
+### Example {-}
+
+Select $n=5$ units from a frame listing of airports with IATA codes 
+sourced from Kaggle https://www.kaggle.com/datasets/syedasimalishah/airports/data
+
+```{r echo=FALSE}
+airports <- read.csv("data/airports_w_headers.csv",encoding="UTF8")
+names(airports) <- c("ID","Name","City","Country","IATA","ICAO",
+                     "Latitude","Longitude","Altitude","TimeZoneHours","DST","TimeZoneName","Type","Source")
+airports <- airports[order(airports$IATA),]
+airports <- airports[airports$IATA!="",]
+airports$ID <- 1:nrow(airports)
+row.names(airports) <- NULL
+```
+
+The top ten rows of the dataset of $N=`r nrow(airports)`$ are shown here:
+```{r echo=FALSE}
+airports[1:10,c("ID","IATA","Name","City","Country","Latitude","Longitude")] |>
+  kbl(row.names=FALSE) |>
+  kable_styling()  
+```
+
+And here is a SRSWOR of $n=5$ airports
+```{r}
+samp <- airports |> select.srswor(n=5)
+```
+
+```{r echo=FALSE}
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","bigN","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)",row.names=FALSE) |>
+  kable_styling()
+```
+
+## Simple Random Sampling With Replacement (SRSWR)
+
+This design is rarely used, but is the simplest form of Probability Proportional to Size 
+With Replacement (PPSWR) sampling, but with the sizes all equal.  
+
+Sampling proceeds in principle by selecting one unit at a time where each unit has a $1/N$
+chance of being selected each time.  After $n$ draws the probability a unit has been selected
+at least once is 
+\[
+    p_i = 1 - \left(1-\frac{1}{N}\right)^n
+\]
+(This is 1 minus the chance that a unit is not selected on any of the $n$ sampling occasions.)
+
+If $n$ is tiny compared to $N$, $p_i$ is approximately $n/N$ which is the SRSWOR selection 
+probability.  In practice we assign a weight of $N/n$ to each unit as it is selected, so if unit
+$i$ is selected $m_i$ times then it ends up with a weight of 
+\[
+   w_i = m\frac{N}{n}
+\]   
+If we use the approximate weights calculated in this way we have what is known as the 
+Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator.  However we think of 
+the weights in the same way and this distinction need not concern us. 
+
+### Design considerations {-}
+
+As in a SRSWOR, we only need to decide on the sample size $n$.
+
+### Example {-}
+
+Here is a SRSWR of $n=5$ airports: note that we have aggregated
+across any instances of multiple selections, so that in the output
+sample list each unit appears only once no matter how often it was selected.
+```{r eval=FALSE}
+bigN <- nrow(airports)
+n <- 5
+samp <- airports[sample(bigN,n,replace=TRUE),]
+samp$weight <- bigN/n
+samp <- samp |>
+  group_by(ID) |>
+  summarise(across(-weight, first), nsampled=n(), weight=sum(weight))
+```
+or as a function
+```{r}
+select.srswr <- function(df, n) {
+  # SRSWR
+  bigN <- nrow(df)
+  df$rownames <- 1:bigN
+  samp <- df[sample(bigN,n,replace=TRUE),]
+  samp$bigN <- bigN
+  samp$weight <- bigN/n
+  samp <- samp |>
+    group_by(rownames) |>
+    summarise(across(-weight, first), nsampled=n(), weight=sum(weight)) |>
+    as.data.frame() |>
+    ungroup() |>
+    select(-rownames)
+  return(samp)
+}
+```
+
+```{r}
+samp <- airports |> select.srswr(n=5)
+```
+
+
+```{r echo=FALSE}
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","nsampled","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)") |>
+  kable_styling()
+```
+
+## Probability proportion to size Sampling (PPSWR)
+
+This sample design generalises the SRSWR design to unequal probabilities of 
+selection.  This design recognises that some units may have more influence on 
+our estimates because of some **size** property that is known (it must be on the
+frame).  We therefore give these units higher probabilities of being selected, 
+and therefore lower weight.
+
+We draw $n$ units, one at a time, but with probabilities which are proportional to 
+the size measure $X_i$: thus the probability of selection of unit $i$ on each
+of the $n$ draws from the population is
+\[
+   p_i = \frac{X_i}{\sum_{j=1}^N X_j}
+\]
+Approximating the probability of selection $\pi$ after $n$ draws as $np_i$
+leads to the sample weights
+\[
+   w_i = \frac{1}{np_i}
+\]
+In a PPSWR sample these weights are not guaranteed to add up to the population size.
+
+### Design considerations {-}
+
+We need to decide on:
+
+* the size variable $X_i$ (which must be known for every unit in the population), and
+* the sample size $n$.
+
+The size variable $X_i$ should correlate in some way with the population characteristics
+we want to estimate.  If we're interested in estimating the total economic output of 
+businesses, then the amount of tax each business paid last year would be a good size 
+variable.  But it wouldn't be helpful if we were interested in estimating the 
+proportion of businesses with family friendly employment practices. 
+
+With replacement designs lose some efficiency because their estimators do not 
+incorporate a finite population correction in their standard errors.
+For small sampling fractions (i.e. small $n/N$) this is not a significant drawback.  
+
+### Example {-}
+
+```{r echo=FALSE}
+pop <- read.csv("data/population.csv")
+pop <- pop |> filter(Year==2023) |> 
+  rename(Country=Entity, Population=all.years) |>
+  arrange(Country) 
+pop <- pop[!grepl("^OWID_",pop$Code),]
+pop <- pop[!grepl("^UN_",pop$Code),]
+pop <- pop[pop$Code!="",]
+pop$Prob <- pop$Population/sum(pop$Population)
+row.names(pop) <- NULL
+bigN <- nrow(pop)
+```
+
+We have a list of $N=`r bigN`$ countries and their 2023 populations: 
+the first 10 are listed below
+```{r echo=FALSE}
+pop[1:10,] |>
+  kbl() |>
+  kable_styling()
+```
+
+Select a PPSWR sample of $n=10$ countries, with probability proportional to their population sizes.
+```{r eval=FALSE}
+set.seed(111)
+bigN <- nrow(pop)
+n <- 10
+samp <- pop[sample(bigN,n,prob=pop$Prob,replace=TRUE),]
+samp$weight <- 1/(n*samp$Prob)
+samp <- samp |>
+  group_by(Country) |>
+  summarise(across(-weight, first), nsampled=n(), weight=sum(weight))
+```
+
+or as a function
+```{r}
+select.ppswr <- function(df, n, sizevar) {
+  # PPSWR
+  bigN <- nrow(df)
+  df$rownames <- 1:bigN
+  samp <- df[sample(bigN,n,prob=df[,sizevar],replace=TRUE),]
+  samp$bigN <- bigN
+  samp$weight <- bigN/n
+  samp <- samp |>
+    group_by(rownames) |>
+    summarise(across(-weight, first), nsampled=n(), weight=sum(weight)) |>
+    as.data.frame() |>
+    ungroup() |>
+    select(-rownames)
+  return(samp)
+}
+```
+
+```{r echo=FALSE}
+set.seed(111)
+```
+
+```{r}
+samp <- pop |> select.ppswr(n=10, sizevar="Population")
+```
+
+```{r echo=FALSE}
+samp |>
+  kbl() |>
+  kable_styling()
+```
+
+
+
+## Linear Systematic Random Sample (LSRS)
+
+This design is often used in cases where the population is not fully enumerated, but is
+presented to us in the form of an ordered list or a queue.  For example we might want to select one in ten
+passengers cars checking in for a ferry crossing.  Another example is where there is information
+in the ordering of a list: for example a list might be sorted from youngest to oldest, or 
+sorted from north to south.  We can space out our sample down the list, avoiding the chance
+that our sample doesn't have a good spread of ages, or a good spread of latitudes.
+
+We select $n$ units from $N$ by first calculating the **skip** $k$, which is the nearest integer
+at or below $N/n$.  We then choose at random one unit from the first $k$ of our list or queue, say that is unit 
+number $j$.   We then select units $j$, $j+k$, $j+2k$, $j+3k$, etc. 
+
+Selecting one unit at random in the first $k$ (rather than just selecting the **first** unit, 
+as we might naively think of doing) means that every unit in the list has a chance of selection.  
+
+The selection probabilities are 
+\[
+   \pi_i = \frac{n}{N}
+\]
+and weights are
+\[
+   w_i = \frac{N}{n}
+\]
+Data from this design are often analysed as if they were drawn as a SRSWOR,
+but in fact this is a special case of a one-stage cluster sample (1SC, see below).
+
+```{r lsrs, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Linear Systematic Random Sample (LSRS).  Note that the sample is spaced out a regular intervals."
+knitr::include_graphics("include-files/fig/LSRS.png")
+```
+
+Note that if there are $N$ units but $N$ is not an exact multiple of the skip $k$, then 
+the sample size will differ depending on which of the first $k$ units we select to
+initiate sampling.  For example if we wanted to select $n=3$ units by LSRS from a 
+list of $N=11$ units, then the skip size is $k=\text{floor}(11/3)=\text{floor}(3.67)=3$.
+If we start the process by selecting the first unit, we'd end up with the sample 
+of 4 units, $\{1,4,7,10\}$, but if we start by selecting the 4th unit we'd end up 
+with only 3 units, $\{4,7,10\}$.
+
+Another common reason to take an LSRS is in household surveys: we're selecting 
+dwellings from a small area, and for reasons of confidentiality (we don't want 
+members of different selected households to be aware that they
+are both in the same survey), or to prevent collusion between neighbouring selected households, 
+we space the sample out along the street using a LSRS to separate the selected 
+dwellings as much as possible.  
+
+An LSRS is also a convenient way to sample if you have a printed list.
+After choosing the random start location among the first $k$ units you can
+skip down the list at fixed intervals - something that is conventient 
+and simple to do on a printed list.  
+
+### Design considerations {-}
+
+* Choose a sample size $n$
+* Consider the ordering of the list and whether units differ systematically 
+through the list
+
+An LSRS has one risk, and that is a periodicity in the frame that you 
+are unaware of.  For example if we are selecting apartments from a building to 
+inspect for structural weaknesses, and select every fourth one (after a random start), 
+we had better be sure that there aren't exactly four apartments per floor: 
+otherwise we'll have inadvertently selected a column of apartments stacked one 
+above the other, e.g. all in the north-east corner.  We'll miss any
+systematic issues that occur with the north-west apartments in that case.
+
+Such unknown periodicities are unlikely in most cases, but we should be aware
+that they can occur.
+
+More importantly if the list is ordered in some way, e.g. by size of location, 
+then a LSRS guarantees a spread across the variable that defines the ordering.
+This can be highly desirable since we are sure to be sampling across the full 
+diversity of the ordering variable.  A good example is sampling passengers seated
+in an aircraft - if we take an LSRS using a list of passengers ordered by row and
+seat number we'll be guaranteed to get a spread of business class, premium economy and 
+economy class passengers in our sample. 
+
+### Example {-}
+
+To select a LSRS of airports, let's order the airports by latitude, and then 
+take a LSRS of $n=5$ units.
+```{r}
+bigN <- nrow(airports)
+airports <- airports[order(airports$Latitude),]
+n <- 5
+k <- floor(bigN/n)
+cat("Skip size is k =",k,"\n")
+i0 <- sample(k,1) # first selected unit
+cat("Starting sampling at unit",i0,"\n")
+n <- (bigN-i0)%/%k + 1 # recalculate the sample size
+cat("Actual sample size is",n,"\n")
+samp <- airports[i0 + (0:(n-1))*k,]
+samp$weight <- bigN/n
+```
+
+```{r}
+select.lsrs <- function(df, n) {
+  # LSRS
+  bigN <- nrow(df)
+  k <- floor(bigN/n)
+  i0 <- sample(k,1) # first selected unit
+  n <- (bigN-i0)%/%k + 1 # recalculate the sample size
+  samp <- df[i0 + (0:(n-1))*k,]
+  samp$bigN <- bigN
+  samp$weight <- bigN/n
+  return(samp)
+}
+
+samp <- airports |> select.lsrs(5)
+```
+
+```{r echo=FALSE}
+rownames(samp) <- NULL
+samp[,c("ID","IATA","Name","City","Country","Latitude","Longitude","weight")] |>
+  kbl(caption="Sample of airports (SRSWOR)") |>
+  kable_styling()
+```
+
+## Stratified Simple Random Sample (STSRS)
+
+In this design we take our population of $N$ units and break it into $H$ subgroups
+using our auxiliary data from the frame.  We then draw separate samples from **each of
+the subgroups**.  
+
+To draw a stratified sample each population unit needs to be assigned in advance
+to one, and only one, of these subgroups - which are known as **strata** 
+(singular: **stratum**).
+
+There are $N_h$ units in stratum $h$, and all of these stratum-level population sizes add to the
+total population size:
+\[
+   N = \sum_{h=1}^H N_h
+\]
+Dividing both sides of this equation by $N$ we have the stratum fractions $F_h=N_h/N$: these are 
+the proportions of the **population** that belong to the various strata, and they add up to 1:
+\[
+   1 = \sum_{h=1}^H \frac{N_h}{N} = \sum_{h=1}^H F_h
+\]
+
+For example, we can assign all residential addresses in New Zealand to exactly one of 
+a defined set of non-overlapping regions, such as regional council areas.  Or we might just have
+two strata: North Island, South Island (neglecting any addresses on offshore islands).  There are
+$N=2.4$ million addresses in New Zealand, of which $N_1=1.72$ million in the North Island ($F_1=0.74=74%$)
+and $N_2=0.62$ million are in the South Island ($F_2=0.26=26%$). 
+
+We then divide or **allocate** our total sample size $n$ to the strata.  Stratum $h$ is allocated
+$n_h$ units, and the total sample size is then the sum of these:
+\[
+   n = \sum_{h=1}^H n_h
+\]
+We then carry out independent sampling in each of the strata.  
+
+The way we choose to define the strata and the way we then choose to allocate the 
+sample across the strata depend on our goals.  
+
+Stratified sampling is done for a number of reasons
+
+ 1. **Estimation Efficiency** - efficiency is the word statisticians use when considering 
+    how we can get standard errors which are as **small as possible**.
+    
+    In business surveys we often stratify because businesses differ from 
+    each other dramatically, particularly in size measures such as turnover
+    or size of workforce.  That means a small number of businesses (e.g. Spark, 
+    Air New Zealand, Fonterra) have a very large effect on estimates, and they
+    differ dramatically from each other as well.  If they
+    happen to be included or happen to be missed from our samples that means we'd
+    get estimates which differ very much between samples.  To protect ourselves 
+    against this we stratify by business size (using tax data).  The largest
+    businesses are in the top stratum, which is small, but a census is always done
+    of those businesses (the top stratum is called a **full coverage stratum**).
+    The smallest businesses are in the lowest stratum, and 
+    they are selected with low probability: since they resemble each other more, and
+    one can stand in for another. 
+    
+    The best stratified designs have strata designed so that the units within each 
+    stratum resemble each other strongly (one can stand in for another easily), 
+    but where units in different
+    strata differ strongly from each other.  For the same sample size as a SRSWOR 
+    stratified designs can sometimes achieve much much smaller standard errors.
+    
+ 1. **Subgroup estimates** - we may stratify by region because we want to make 
+    estimates for each region separately.  In that case we need to ensure that our sample
+    is large enough in each stratum to get reliable estimates.  A national SRSWOR runs
+    the risk that one region might happen to miss out on getting much sample.
+    
+ 1. **Operational considerations** - we may stratify by region because that is the 
+    easiest way to manage an interview workforce - we may have interviewers based in 
+    a number of regional cities, and having them interview in their local areas is 
+    the best way to organise that workforce.
+
+```{r stsrs, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Stratified Simple Random Sample (STSRS)"
+knitr::include_graphics("include-files/fig/STSRS.png")
+```
+
+Two common methods for allocating the $n$ sample units across the $H$ strata are:
+
+ 1. **Equal allocation**
+    \[
+       n_h = \frac{n}{H}
+    \]
+    Every stratum gets the same number of units allocated - independent of 
+    the stratum size.  That means we get different weights in each stratum:
+    \[
+       w_h = \frac{N_h}{n_h} = H\frac{N_h}{n}
+    \]
+    This is sensible when we want to have high precision estimates in 
+    each stratum separately.
+    
+ 1. **Proportional allocation**
+    \[
+       n_h = nF_h = n\frac{N_h}{N}
+    \]
+    Here large strata get a lot of units allocated to them, and small strata
+    get fewer units.  The consequence of this design is that the weights
+    of all units are equal, no matter which stratum they come from:
+    \[
+       w_h = \frac{N_h}{n_h} = \frac{N}{n}
+    \]
+    This allocation is also called **self weighting**, and the weights
+    are the same as in SRSWOR.  (Though note: even though the weights are the
+    same, the standard errors of estimates 
+    can differ **very significantly** from those from a SRSWOR.)
+
+### Design considerations {-}
+
+* Choose the stratification variable(s) $X_i$, decide the number of strata $H$,
+  define the strata using the stratification variable(s), 
+  determine the stratum sizes $N_h$, and stratum fractions $F_h=N_h/N$.
+* Choose the overall sample size $n$ and **allocate** it across the strata.
+
+### Example {-}
+
+```{r echo=FALSE}
+schools <- read.csv("data/nzschools.csv")
+bigN <- nrow(schools)
+```
+
+The 2026 directory of NZ schools available from https://www.educationcounts.govt.nz/directories/list-of-nz-schools
+lists `r bigN` schools of various types (after removing Schools with zero enrolments or with incomplete data).  
+Each School is associated with one of $H=12$ Education Regions, with counts $N_h$ and stratum fractions $F_h$ 
+listed below.
+
+```{r echo=FALSE}
+stratumproperties <- schools |> 
+  group_by(Education_Region) |>
+  summarise(Nh=n()) |>
+  arrange(Education_Region) |>
+  as.data.frame() 
+stratumproperties$h <- 1:nrow(stratumproperties)
+stratumproperties$Fh <- stratumproperties$Nh/sum(stratumproperties$Nh)
+stratumproperties |>
+  select(h,Education_Region,Nh,Fh) |>
+  mutate(Fh=sprintf("%.4f",Fh)) |>
+  kbl(col.names=c("$h$","Education Region","$N_h$","$F_h$"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+We can select a stratified sample using the following function 
+which implements an independent simple random sample within 
+each stratum with either equal or proportional allocation. 
+
+It implements PPSWR sampling within strata as well.
+```{r}
+select.stsrs <- function(df, n, stratumvar, 
+                         allocation="equal",
+                         nmin=2, # minimum number of units to select per stratum 
+                         method="SRSWOR", sizevar=NULL) {
+  bigN <- nrow(df)
+  if(!stratumvar%in%names(df)) {
+    stop("Stratum variable is not present in the data frame")
+  }
+  stratumproperties <- as.data.frame(table(df[,stratumvar]))
+  names(stratumproperties) <- c(stratumvar,"Nh")
+  if(allocation=="equal") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n/nrow(stratumproperties))))
+  } else if(allocation=="proportional") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,                                                                                   round(n*stratumproperties$Nh/sum(stratumproperties$Nh))))
+  } else {
+    stop("Invalid allocation")
+  }
+  df <- merge(df,stratumproperties,by=stratumvar)
+
+  if(method=="SRSWOR") {
+    samp <- do.call(rbind, by(df, df[,stratumvar], 
+                              function(dfx) select.srswor(dfx,first(dfx$nh))))
+  } else if(method=="PPSWR") {
+    samp <- do.call(rbind, by(df, df[,stratumvar], 
+                              function(dfx) select.ppswr(dfx,first(dfx$nh),sizevar=sizevar)))
+  } else {
+    stop("Sampling method invalid")
+  }
+  return(samp)
+}
+```
+
+SRSWOR with Equal allocation
+```{r}
+samp <- schools |> select.stsrs(n=120,  
+                                stratumvar="Education_Region", allocation="equal")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), weight=first(weight),
+            SelectedSchools=paste(School_Id,collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Weight, $w_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+SRSWOR with proportional allocation 
+```{r}
+samp <- schools |> select.stsrs(n=120, 
+                                stratumvar="Education_Region", 
+                                allocation="proportional", sizevar="Total")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), weight=first(weight),
+            SelectedSchools=paste(School_Id,collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Weight, $w_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+PPSWR with Equal Allocation (Schools are selected within strata with probability
+propotional to the number of enrolled students `Total`.)
+```{r}
+samp <- schools |> select.stsrs(n=120,  
+                                stratumvar="Education_Region", 
+                                allocation="equal", 
+                                method="PPSWR", sizevar="Total")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Education_Region) |>
+  arrange(School_Id) |>
+  summarise(SampleSize=n(), Nh=first(Nh), 
+            SelectedSchools=paste(paste0(School_Id,ifelse(nsampled>1,"*","")),collapse=";")) |>
+  kbl(col.names=c("Education Region, $h$","$N_h$","$n_h$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+(Schools selected multiple times are indicated with a *)
+
+
+## One stage cluster sampling (1SC)
+
+One stage cluster sampling superficially resembles stratified sampling.
+As in stratified sampling we divide the population into groups, in this
+case called **clusters**, assign each member of the population to one and only one group.
+However rather than sample members from each cluster, we instead draw a sample
+of clusters (by SRSWOR, or sometimes by PPSWR).  We then take a **census** of
+each selected cluster.
+
+In the Schools example this would could define small regions across the 
+country, select a random sample of those regions, and then carry out a 
+census of schools in each selected region.  
+
+Unlike stratified sampling, which is often **more efficient** than simple
+random sampling (i.e. it has smaller standard errors for the same sample size),
+cluster sampling is **less efficient**: i.e. its standard errors are worse (larger) 
+than we'd get with a SRS with the same size.  
+
+We can see why the standard errors are worse when we consider **why** 
+we take cluster samples: the reason is predominantly to controlling costs.
+If we want to do a household survey in a city like Wellington we could list
+all of the residential addresses, and
+then draw a simple random sample of those dwellings.  That would mean having a sample
+that is scattered all over the city - and if we have to visit each dwelling to 
+collect the data, then that means a lot of travelling for the interviewers: especially
+if they have to visit some houses multiple times to make contact with the residents.
+So it's more **convenient** to select a set of houses on the same street and survey
+them - we can go from one to the next without much travel time.  
+
+The trouble is that people who live near each other tend to resemble each other:
+they have similar incomes, jobs, family sizes etc.  That means that for each
+additional house you survey in a street you're not really getting as much new
+information as if you were to survey an additional house somewhere else in the 
+city.
+
+For that reason cluster samples have to have larger sample sizes than SRS to achieve the 
+same accuracy of their estimates.
+
+**Note** that it makes no sense to cluster if there is no saving to be made regarding
+cost or some other equivalent operational consideration.  If we are doing a phone
+survey, where no travel at all is involved, then clustering doesn't make any sense.  
+
+```{r 1SC, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="One Stage Cluster Sample (1SC)"
+knitr::include_graphics("include-files/fig/SRS1SC.png")
+```
+
+Our notation becomes slightly more complex here: we have $N$ clusters, labelled
+$i=1,\ldots,N$.  Then in cluster $i$ we have $M_i$ units, labelled $j=1,\ldots,M_i$.
+There is a total of 
+\[
+   M = \sum_{i=1}^N M_i
+\]
+units in the population.  
+
+The selection probability of a unit is simply the probability that the cluster
+they are a member of is selected.  So if we select clusters by SRSWOR then unit $j$ 
+in cluster $i$ has selection probability
+\[
+   \pi_{ij} = \frac{n}{N}
+\]
+leading to a weight of
+\[
+   w_{ij} = \frac{N}{n}
+\]
+where again we note that $n$ is the number of **clusters** selected, and $N$
+is the number of **clusters** in the population.
+
+### Design considerations {-}
+
+* We need to decide how to break our populations into clusters, 
+  and also the sizes of those clusters
+* We need to choose an overall sample size.
+
+Clusters can vary in size, so we even though we can control
+the number of clusters we select, we can't control the overall 
+sample size: we might select by chance a set of very large 
+clusters, or a set of very small clusters.  
+
+In stratified sampling we want to make the strata as different from
+one another as possible, and to be as internally homogeneous.
+
+In cluster sampling it's the reverse situation: we want our clusters to be internally 
+diverse, and for that diversity to be present as far as possible within 
+every cluster.  This is because we're only selecting a few clusters, and
+they have to stand in for all of the unselected clusters.  So they'd better
+reflect the full population diversity.  
+
+### Example {-}
+
+There are $N=87$ Territorial Authorities (TAs) in New Zealand (these are 
+local government districts).  Each TA has $M_i$ schools, so the total
+number of schools in the population is
+\[
+    M = \sum_{i=1}^N M_i
+\]
+We could select a SRS of $n=10$ TAs and then do a 
+census of the Schools in each selected TA.  Here $n$ is the sample size
+of clusters, not the sample size of schools.  If cluster $i$ contains $M_i$
+schools then the total number of schools selected is 
+\[
+    m = \sum_{i\in\text{sample}} M_i
+\]
+
+A function to do this selection in R is:
+```{r}
+select.1sc <- function(df, n, clustervar, 
+                       method="SRSWOR", sizevar=NULL) {
+  bigM <- nrow(df)
+  if(!clustervar%in%names(df)) {
+    stop("Cluster ID variable is not present in the data frame")
+  }
+  clusterproperties <- as.data.frame(table(df[,clustervar]))
+  names(clusterproperties) <- c(clustervar,"Mi")
+  if(method=="SRSWOR") {
+     sampcluster <- clusterproperties |> 
+                       select.srswor(n=n)
+  } else if(method=="PPSWR") {
+     sampcluster <- clusterproperties |>
+                       select.ppswr(n=n, sizevar="Mi")
+  } else {
+    stop("Sampling method invalid")
+  }
+  samp <- merge(df,sampcluster,by=clustervar)
+
+  return(samp)
+}
+```
+
+```{r}
+samp <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(Mi=n(), 
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),8)],collapse=";"),ifelse(n()>8,"...",""))) |>
+  kbl(col.names=c("Territorial Authority, $i$","$M_i$","Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+
+## Two stage cluster sampling (2SC)
+
+The obvious drawback of the One Stage cluster design is that we are getting
+a lot of information from clusters which may be very internally homogeneous.   This drives
+the inefficiency of the design: we're wasting a lot of our sampling effort.  
+
+An obvious solution is to select a set of clusters, and then only take a sample of units
+within those clusters, rather than sampling all of them.  
+
+This breaks the sample design into two stages
+
+* **Stage 1** - select a set of clusters, which we refer to as **Primary Sampling Units** (PSUs);
+* **Stage 2** - select a set of units within the selected clusters.  These units are called
+  **Secondary Sampling Units** (SSUs).
+  
+Sampling at both stages can be by any method, though SRSWOR or PPSWR are the most common.  
+
+```{r 2SC, echo=FALSE}
+#| fig.align='center',
+#| fig.width=5,
+#| fig.cap="Two Stage Cluster Sample (2SC)"
+knitr::include_graphics("include-files/fig/SRS2SC.png")
+```
+
+We use the same notation as in one stage clustering: there are $N$ PSUS of
+which select $n$, and in PSU $i$ there are $M_i$ SSUs, of which we select $m_i$.
+The total number of SSUs is in all of the PSUs in the population is 
+\[
+   M = \sum_{i=1}^N M_i
+\]
+whereas the total sample size of SSUs is 
+\[
+   m = \sum_{i\in\text{Sample}} m_i
+\]
+where we just sum over the selected PSUs.
+
+If we use SRSWOR and select $n$ PSUs from the $N$ available 
+then the probability of selection of a PSU is
+\[
+   \pi^{(1)}_i= \Pr(\text{PSU $i$ is selected}) = \frac{n}{N}
+\]
+leading to the first stage weight of 
+\[
+   w^{(1)}_i = \frac{1}{\pi^{(1)}_i} = \frac{N}{n}
+\]
+If PSU $i$ is selected we then select $m_i$ units (SSUs) out of the $M_i$
+available.  The probability that SSU $j$ is selected given that PSU $i$ has 
+been selected is
+\[
+   \pi^{(2)}_{ij}= \Pr(\text{SSU $j$ is selected given that PSU $i$ was selected}) = \frac{m_i}{M_i}
+\]
+leading to the second stage weight of 
+\[
+   w^{(2)}_{ij} = \frac{1}{\pi^{(2)}_{ij}} = \frac{M_i}{m_i}
+\]
+The overall probability that SSU $j$ in PSU $i$ is selected is the product
+of the first and second stage selection probabilities:
+\[
+   \pi_{ij} = \pi^{(1)}_i \pi^{(2)}_{ij} = \frac{n}{N}\times\frac{m_i}{M_i}
+\]
+and its overall weight is the product of the first and second stage weights
+\[
+   w_{ij} = w^{(1)}_i w^{(2)}_{ij} = \frac{N}{n}\times\frac{M_i}{m_i}
+\]
+
+For example I might have $N=100$ small areas covering Wellington, and I select
+$n=10$ of them.  Then in one of those selected areas there might be $M_i=120$ houses, 
+of which I select $m_i=15$.  The first and second stage probabilities are
+\[
+   \pi^{(1)}_i = \frac{10}{100} = 0.100
+   \qquad \text{and} \qquad
+   \pi^{(2)}_{ij} = \frac{15}{120} = 0.125
+\]
+So the chances that a house in PSU $i$ is selected is
+\[
+   \pi_{ij} = (0.100)(0.125) = 0.0125
+\]
+with total weight
+\[
+   w_{ij} = \frac{100}{10}\times\frac{120}{15} = 10\times 8 = 80
+\]
+
+There are two special cases of two stage clustering which reduce to 
+simpler designs
+
+* A first stage census: $n=N$: we sample from every PSU.  This is equivalent
+  to **stratified sampling**, where we sample from every stratum. 
+* A second stage census: $m_i=M_i$: we take a census of all SSUs in each selected cluster.
+  This is equivalent to **one stage clustering**.
+
+### Design considerations {-}
+
+We have a lot of decisions to make:
+
+* How many PSUs (clusters) $N$, and how we define them
+* The number of PSUs to select $n$
+* The number of SSUs to select within each selected PSU.  Rather 
+  than state the sample size $m_i$ for each cluster, this is 
+  often specified as the **proportion** of the cluster size we'll select.
+  e.g. we might select 1 in 10 of the SSUs.
+
+### Example {-}
+
+Let's return to the schools example.  We'll select $n=10$ TAs, but then 
+select 20% of the schools in each selected TA - although we'll also ensure 
+we have at least 2 schools in each selected cluster.
+
+A function to do this selection in R is:
+```{r}
+select.2sc <- function(df, n,  # number of first stage clusters to select 
+                       cfraction, clustervar, 
+                       mmin=2, # minimum number of 2nd stage clusters to select
+                       method1="SRSWOR", sizevar1=NULL,
+                       method2="SRSWOR", sizevar2=NULL) {
+  bigM <- nrow(df)
+  if(!clustervar%in%names(df)) {
+    stop("Cluster ID variable is not present in the data frame")
+  }
+  clusterproperties <- as.data.frame(table(df[,clustervar]))
+  bigN <- nrow(clusterproperties)
+  names(clusterproperties) <- c(clustervar,"Mi")
+  if(method1=="SRSWOR") {
+     sampcluster <- clusterproperties |> 
+                       select.srswor(n=n)
+  } else if(method1=="PPSWR") {
+     sampcluster <- clusterproperties |>
+                       select.ppswr(n=n, sizevar="Mi")
+  } else {
+    stop("First stage sampling method invalid")
+  }
+  sampcluster$mi <- pmin(sampcluster$Mi,pmax(mmin,round(cfraction*sampcluster$Mi)))
+  samp1 <- merge(df,sampcluster,by=clustervar)
+  samp1 <- samp1 |> rename(bigN1=bigN,weight1=weight)
+  samp1$n1 <- n
+
+  # Second stage selection
+  if(method2=="SRSWOR") {
+    samp2 <- do.call(rbind, 
+                     by(samp1, samp1[,clustervar],
+                        function(ds) select.srswor(ds,n=first(ds$mi))
+                               ))
+  } else if(method2=="PPSWR") {
+    samp2 <- do.call(rbind, 
+                     by(samp2, samp2[,clustervar],
+                        function(ds) select.ppswr(ds,n=first(ds$mi),sizevar=sizevar2)
+                               ))
+  } else {
+    stop("Second stage sampling method invalid")
+  }
+  samp2 <- samp2 |> rename(bigN2=bigN,weight2=weight)
+  samp2$n2 <- samp2$mi
+  samp2$weight <- samp2$weight1*samp2$weight2
+
+  return(samp2)
+}
+```
+
+```{r}
+samp <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
+                              clustervar="Territorial_Authority")
+```
+
+```{r echo=FALSE}
+samp |>
+  group_by(Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(N=first(bigN1),n=first(n1),Mi=first(bigN2),mi=n(), 
+            weight1=first(weight1),weight2=first(weight2),weight=first(weight),
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),4)],collapse=";"),ifelse(n()>4,"...",""))) |>
+  ungroup() |>
+  mutate(weight1=sprintf("%.2f",weight1)) |>
+  mutate(weight2=sprintf("%.2f",weight2)) |>
+  mutate(weight=sprintf("%.2f",weight)) |>
+  kbl(col.names=c("Territorial Authority, $i$",
+                  "$N$","$n$","$M_i$","$m_i$",
+                  "$w^{(1)}_i$","$w^{(2)}_{ij}$","Weight, $w_{ij}$",
+                  "Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+## Complex multistage designs
+
+The ideas in two stage cluster sampling can be extended to a third stage of sampling 
+(i.e. we may wish to sample within SSUs), and we can also combine cluster sampling
+with stratified sampling.  
+
+For example, the Statistics NZ Household sampling frame is a multistage cluster
+design, where the sample is selected as follows:
+
+ 1. NZ is stratified into $H=12$ regions (e.g. Northland, Auckland, Hawke's
+    Bay etc.);
+ 1. Each stratum (region) is broken into $N_h$ PSUs - small areas that 
+    contain (on average) about 100 households.  
+    A PPSWR of $n_h$ PSUs is taken within each stratum $h$; (First stage sample.)
+ 1. Within the $k^{\rm th}$ selected PSU, which is of size $M_{hk}$, a linear
+    systematic random sample is taken of $m_{hk}$ households; (Second stage
+    sample.)
+ 1. Depending on the survey, **all** $A_{hk\ell}$ eligible members of the
+    $\ell^{\rm th}$ selected
+    household will be surveyed, or a SRSWOR of $a_{hk\ell}$ members may be taken. 
+    (Third stage sample.)
+
+The sample size is therefore
+\[
+   \text{Sample Size} = 
+   \sum_{h=1}^H\sum_{k\in s_I}\sum_{\ell\in s_k} a_{hk\ell}
+\]
+and the sample weights of individual $j$ in household $\ell$ of PSU $k$ in 
+stratum $h$ are
+\[
+   w_{hk\ell j} = \frac{N_h}{n_h}\frac{M_{hk}}{m_{hk}}
+                  \frac{A_{hk\ell}}{a_{hk\ell}}
+\]
+i.e. these are just the product of the weights at each stage of selection.  
+
+Function to draw a stratified two stage cluster sample
+```{r}
+select.st2sc <- function(df, 
+                         n,      # total number of 1st stage clusters to select over all strata
+                         stratumvar, allocation="equal",
+                         nmin=2, # minimum number of 1st stage clusters to select per stratum
+                         cfraction, clustervar, 
+                         mmin=2, # minimum number of 2nd stage clusters to select
+                         method1="SRSWOR", sizevar1=NULL,
+                         method2="SRSWOR", sizevar2=NULL) {
+
+  # stratum selection  
+  bigN <- nrow(df)
+  if(!stratumvar%in%names(df)) {
+    stop("Stratum variable is not present in the data frame")
+  }
+  if(!clustervar%in%names(df)) {
+    stop("Clustring variable is not present in the data frame")
+  }
+  xx <- tapply(df[,clustervar], df[,stratumvar], function(x) length(unique(x)))
+  stratumproperties <- data.frame(Var1=names(xx),Freq=xx)
+  names(stratumproperties) <- c(stratumvar,"Nh")
+  rownames(stratumproperties) <- NULL
+  if(allocation=="equal") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n/nrow(stratumproperties))))
+  } else if(allocation=="proportional") {
+    stratumproperties$nh <- pmin(stratumproperties$Nh,pmax(nmin,
+                                 round(n*stratumproperties$Nh/sum(stratumproperties$Nh))))
+  } else {
+    stop("Invalid allocation")
+  }
+  df <- merge(df,stratumproperties,by=stratumvar)
+  
+  samp <- do.call(rbind, by(df, df[,stratumvar], 
+                            function(dfx) {
+                               select.2sc(dfx, n=first(dfx$nh), 
+                                          cfraction=cfraction, 
+                                          clustervar=clustervar, 
+                                          mmin=mmin, 
+                                          method1=method1, sizevar1=sizevar1,
+                                          method2=method2, sizevar2=sizevar2)
+                            }))
+  return(samp)
+}
+```
+
+```{r}
+samp <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+First 10 of the selected first stage clusters:
+```{r echo=FALSE}
+samp |>
+  group_by(Region,Territorial_Authority) |>
+  arrange(School_Id) |>
+  summarise(N=first(bigN1),n=first(n1),Mi=first(bigN2),mi=n(), 
+            weight1=first(weight1),weight2=first(weight2),weight=first(weight),
+            SelectedSchools=paste(paste0(School_Id[1:min(n(),4)],collapse=";"),ifelse(n()>4,"...",""))) |>
+  ungroup() |>
+  slice_head(n=10) |>
+  mutate(weight1=sprintf("%.2f",weight1)) |>
+  mutate(weight2=sprintf("%.2f",weight2)) |>
+  mutate(weight=sprintf("%.2f",weight)) |>
+  kbl(col.names=c("Region, $h$","Territorial Authority, $i$",
+                  "$N_h$","$n_h$","$M_{hi}$","$m_{hi}$",
+                  "$w^{(1)}_i$","$w^{(2)}_{ij}$","Weight, $w_{ij}$",
+                  "Selected Schools"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+
+
+
+<!--chapter:end:05-SampleDesigns.Rmd-->
+
+# Sample Designs in R
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+The method of anlalysis of survey data depends crucially on its sample 
+design.  Simple methods of analysis which neglect the sample design can
+lead to estimates which are severely biased, and standard errors that
+are incorrect. 
+
+In the this and the following Chapter we'll use the `survey` package in R to carry out analyses.
+We'll use the `schools` data set as our primary example, but also use
+data on populations and Gross Domestic Product for each country in 2023
+from the 'Our World in Data' website.
+
+```{r echo=FALSE}
+#schools <- read.csv("data/nzschools-list.csv")
+#names(schools)[c(22,28,39)] <- c("Takiwā","Māori_Electorate","Māori")
+#  schools[schools$Regional_Council=="Area Outside Region",]
+#schools <- schools[schools$Territorial_Authority!="",]
+#schools <- schools[!is.na(schools$Total) & schools$Total>0,]
+#schools <- schools |> 
+#             mutate(Region=case_when(Territorial_Authority=="Chatham Islands Territory" ~ "Chatham Islands",
+#                                 Territorial_Authority=="Rotorua District" ~ "Bay of Plenty Region",
+#                                 Territorial_Authority=="Stratford District" ~ "Taranaki Region",
+#                                 Territorial_Authority=="Taupo District" ~ "Waikato Region",
+#                                 Territorial_Authority=="Waitaki District" ~ "Otago Region",
+#                                 .default=Regional_Council))
+#write.csv(schools,"data/nzschools.csv",row.names=FALSE)
+#is.nested(schools, "Territorial_Authority", "Regional_Council")
+#is.nested(schools, "Territorial_Authority", "Region")
+```
+
+
+```{r echo=FALSE}
+pop <- read.csv("data/population.csv")
+pop <- pop |> filter(Year==2023) |> 
+  rename(Country=Entity, Population=all.years) |>
+  arrange(Country) 
+pop <- pop[!grepl("^OWID_",pop$Code),]
+pop <- pop[!grepl("^UN_",pop$Code),]
+pop <- pop[pop$Code!="",]
+pop$Prob <- pop$Population/sum(pop$Population)
+row.names(pop) <- NULL
+
+gdp <- read.csv("data/government-expenditure-vs-gdp.csv")
+gdp <- gdp |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(GovtSpend="Government.expenditure") |>
+  arrange(Country) 
+gdp <- gdp[!grepl("^OWID_",pop$Code),]
+gdp <- gdp[!grepl("^UN_",pop$Code),]
+gdp <- gdp[gdp$Code!="",]
+row.names(gdp) <- NULL
+
+gdp <- merge(gdp,pop)
+gdp$Prob <- gdp$Population/sum(gdp$Population)
+gdp$GDPPerCapita <- gdp$GDP/gdp$Population
+
+mil <- read.csv("data/military-spending-sipri.csv")
+#mil <- read.csv("data/military-expenditure-as-a-share-of-government-spending.csv")
+mil <- mil |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(MilSpend=Military.expenditure) |>
+  select(-Region) |>
+  arrange(Country) 
+mil <- mil[!grepl("^OWID_",pop$Code),]
+mil <- mil[!grepl("^UN_",pop$Code),]
+mil <- mil[pop$Code!="",]
+row.names(mil) <- NULL
+
+mil <- merge(gdp,mil)
+```
+
+```{r echo=FALSE}
+schools <- read.csv("data/nzschools.csv")
+```
+
+```{r}
+# Census
+schools.census <- schools |> select.srswor(n=nrow(schools))
+# SRSWOR
+schools.srswor <- schools |> select.srswor(n=20)
+# PPSWR
+schools.ppswr <- schools |> select.ppswr(n=20, sizevar="Total")
+# STSRS
+schools.stsrs <- schools |> select.stsrs(n=60, stratumvar="Education_Region")
+# 1SC
+schools.1sc <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
+# 2SC
+schools.2sc <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+# ST2SC
+schools.st2sc <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+In order to make estimates from sampled data using the `survey` package
+we need to specify the sample design we're using. 
+We'll do this for the various sample designs covered in the 
+previous chapter.  
+
+> Note that in the `survey` package we identify variables with their names without
+> quotes and with a `~` symbol in front.  (If you're interested you can 
+> use the `survyr` package which is a `dplyr`-like wrapper for `survey` 
+> with functions defined so that the `~` isn't necessary.)
+
+We'll define each design, and then use it to estimate the mean 
+size of school rolls in the population (stored in the variable `Total` in
+the `schools` data frame.  (One exception will be the PPSWR example
+where we'll select a sample of countries using their population size
+as the size variable.)
+
+The true mean school size is
+```{r}
+ybar <- mean(schools$Total)
+ybar
+```
+
+## Census
+
+The analysis of a census is trivial (at least, if there is no non-response).
+We can create a census dataset by taking an SRSWOR of size $n=N$.
+```{r}
+schools.census <- schools |> select.srswor(n=nrow(schools))
+```
+This function adds the column `bigN` to the dataset, which contains 
+population size $N$ repeated on every row.
+
+Now we can specify the design.
+```{r}
+schools.census.des <- svydesign(id=~1, data=schools.census, fpc=~bigN)
+```
+Note that we tell R which column contains the population size using the `fpc` argument. 
+Our data aren't clustered, so the `id` variable (which identifies clusters) is set to 1.
+
+```{r}
+svymean(~Total, design=schools.census.des, deff=TRUE)
+```
+The estimated mean is `r sprintf("%.2f", ybar)`, which is of course
+exactly equal to the population mean - and note that the standard error is zero:
+**censuses have no sampling error**.  We've measured everything there is to measure
+so we have no uncertainty.  
+
+We've requested `Deff=TRUE`, and have got a Deff value of NaN, which means
+the Deff was not able to be calculated.  We'll discuss what this means later on.  
+
+If we had left out the `fpc` command 
+```{r}
+schools.census.des <- svydesign(id=~1, data=schools.census)
+```
+we get a warning that we can interpret as R assuming an SRSWR from an infinite population.
+
+The estimated mean is the same, but the standard error are now what'd we'd have learned 
+from first year statistics.
+```{r}
+svymean(~Total, design=schools.census.des, deff=TRUE)
+```
+```{r}
+sy <- sd(schools.census$Total)
+n <- nrow(schools.census)
+se <- sy/sqrt(n)
+```
+
+i.e. the standard error is
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+
+Also notice that the `Deff` value has changed to `Inf` (meaning infinity) -
+again we'll come back to what this means this shortly.  
+
+## Simple Random Sample WithOut Replacement (SRSWOR)
+
+```{r echo=FALSE}
+set.seed(111)
+```
+
+Let's draw a sample of $n=60$ schools from the population by SRSWOR.
+```{r}
+schools.srswor <- schools |> select.srswor(n=60)
+```
+
+Here are the top 5 rows of the 60 in the sample
+```{r echo=FALSE}
+schools.srswor |>
+  slice_head(n=5) |>
+  select(School_Id,Org_Name,Add2_City,Regional_Council,bigN,weight) |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+
+To specify the design we use the same syntax as above:
+```{r}
+schools.srswor.des <- svydesign(id=~1, data=schools.srswor, fpc=~bigN)
+```
+
+Estimating the mean school size is also just the same:
+```{r}
+svymean(~Total, design=schools.srswor.des, deff=TRUE)
+```
+
+This is the mean of a genuine sample now, so we have an estimated mean value that
+differs from the truth, and the standard error is the gauge of its accuracy.
+
+The standard error comes from the finite population corrected formula:
+```{r}
+bigN <- first(schools.srswor$bigN) # take the entry in the first row: they're all the same
+sy <- sd(schools.srswor$Total)
+n <- nrow(schools.srswor)
+se <- sqrt(1-n/bigN)*sy/sqrt(n)
+```
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \sqrt{1-\frac{n}{N}}\frac{s_y}{\sqrt{n}} 
+   = \sqrt{1-\frac{`r n`}{`r bigN`}}
+     \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+
+Compare this to the simple SE, which is just slightly bigger
+```{r}
+se <- sy/sqrt(n)
+```
+\[
+   \bfa{SE}{\widehat{\bar{Y}}} 
+   = \frac{s_y}{\sqrt{n}} 
+   = \frac{`r sprintf("%.3f",sy)`}{\sqrt{`r n`}} = `r sprintf("%.3f",se)`
+\]
+This is what we get if we omit the `fpc`
+```{r}
+schools.srswor.des <- svydesign(id=~1, data=schools.srswor)
+svymean(~Total, design=schools.srswor.des, deff=TRUE)
+```
+
+## Probability Proportional to Size With Replacement (PPSWR)
+
+We have a dataset from 'Our World in Data' giving population sizes, 
+Gross Domestic Product and military expenditure in 2023 (all in US dollars).
+The first 10 rows are below:
+```{r echo=FALSE}
+mil |>
+  slice_head(n=10) |>
+  select(-Year) |>
+  select(-Prob) |>
+  kbl() |>
+  kable_styling()
+```
+
+We can select a PPSWR using population as the size variable
+```{r}
+mil.ppswr <- mil |> select.ppswr(n=30, sizevar="Population")
+```
+
+The `weight` column here combines the weight over the number of times a unit is selected
+```{r}
+mil.ppswr.des <- svydesign(id=~1, data=mil.ppswr, weight=~weight)
+```
+
+The mean military expenditure per country is
+```{r}
+svymean(~MilSpend, design=mil.ppswr.des, deff=TRUE)
+```
+though more interesting is the **total** of this variable, to see
+how much the world is spending.
+```{r}
+svytotal(~MilSpend, design=mil.ppswr.des, deff=TRUE)
+```
+
+> The estimation of the **total** of a variable is only something
+> that makes sense in a finite population, and is a type of estimate
+> that is rarely found anywhere outside sample survey analysis.  
+> 
+> It is frequently of interest in Official (i.e. government) statistics
+> that we want to estimate the total number of people with a certain characteristic,
+> or the total amount of a commodity being exported, or total export earnings.
+
+Note again that in a with replacement design we can't apply the finite
+population correction.  
+
+## Stratified Sample
+
+```{r echo=FALSE}
+set.seed(112)
+```
+
+Recall that in this design we specify a set of groups called strata, and
+each population unit belongs to one of these strata.
+
+Selecting a sample of $n=60$ schools by equal allocation across the 12 
+Education Regions:
+```{r}
+schools.stsrs <- schools |> select.stsrs(n=60, stratumvar="Education_Region")
+```
+
+Specify this design
+```{r}
+schools.stsrs.des <- svydesign(id=~1, strata=~Education_Region, fpc=~Nh,
+                               data=schools.stsrs,
+                               survey.lonely.psu="remove")
+```
+Note that we've included the option `survey.lonely.psu="remove"` to mean
+that the estimation of standard errors doesn't fail if a stratum only has a single
+PSU.  
+
+We can now return to estimating the mean school size
+```{r}
+svymean(~Total, design=schools.stsrs.des, deff=TRUE)
+```
+
+### Design Effect
+
+Now it's finally time to talk about the **Design Effect**, or the Deff for short.
+
+The Deff of an estimator $\widehat{T}$ of a population characteristic $T$ in
+a particular sample design is defined to be
+\[
+   \bfa{Deff}{\widehat{T}_{\text{design}}}
+   = 
+   \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{
+         \bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}
+   = 
+   \left(\frac{\bfa{SE}{\widehat{T}_{\text{design}}}}{
+               \bfa{SE}{\widehat{T}_{\text{SRSWOR}}}}\right)^2
+\]
+where both estimators are based on samples of the same size.
+
+It tells us how the standard error differs between our design of 
+interest and a SRSWOR of the same sample size.
+
+Note that
+
+* We have a different Deff for every estimate we make from a survey.
+* A Deff<1 means that the Standard Errors are smaller than what
+  we'd get in SRSWOR.  A small Deff indicates a **more efficient** design.
+* A Deff of 1 means the design is no better than SRSWOR - and of course
+  (look back above) the Deffs of all estimates in SRSWOR are 1 by definition.
+* If we're dealing with a **census**, then the Standard Error is zero, 
+  and in any case there's no difference between designs, so the Deff
+  isn't defined. (That's why it was `NaN` or `Inf` in our census examples.)
+* **Stratified designs** can achieve Deffs much much less than 1 if their strata
+  are well defined to be informative about the estimates of interest.  e.g.
+  in business surveys where the strata are defined by business size we 
+  can get very good Deffs.
+* **Cluster designs** often have Deffs greater than 1, which show them to be 
+  significantly less efficient than SRSWOR.
+  
+The Deff values we get from R are approximations, and aren't very reliable
+when sample sizes are small.  But do notice that we have a Deff<1 here
+for the stratified sample of $n=60$ units, and the SE is lower than
+that achieved in the SRSWOR of $n=60$ units above.
+  
+```{r echo=FALSE}
+#(SE(svymean(~Total, design=schools.stsrs.des, deff=TRUE))/
+#  SE(svymean(~Total, design=schools.srswor.des, deff=TRUE)))^2
+```
+
+## One stage cluster design (1SC)
+
+```{r echo=FALSE}
+set.seed(221)
+```
+
+A one stage cluster design takes $n=10$ Territorial Authority areas (TAs) at random
+and selects all schools in each selected TA.
+```{r}
+schools.1sc <- schools |> select.1sc(n=10, clustervar="Territorial_Authority")
+```
+We need a column `bigN` which gives the number of TAs in the population.  
+
+```{r}
+schools.1sc.des <- svydesign(id=~Territorial_Authority, data=schools.1sc, 
+                             fpc=~bigN)
+```
+
+```{r}
+svymean(~Total, design=schools.1sc.des, deff=TRUE)
+```
+The Deff of this one stage cluster sample is bad (much larger than 1) - this is due to 
+strong differences between TAs in the mean school size.  The more the clusters differ from
+each other on the characteristic of interest, the worse the Deff gets.
+
+## Two stage cluster design (2SC)
+
+```{r echo=FALSE}
+set.seed(222)
+```
+
+A two stage cluster design takes $n=10$ Territorial Authority areas (TAs) at random
+and selects 20% of the schools in each selected TA.
+```{r}
+schools.2sc <- schools |> select.2sc(n=10, cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+```
+We need a column `bigN1` which gives the number of TAs in the population, and
+`bigN2` which is the number of schools in each TA.  We also need to specify names
+of unique identifiers of the first stage units (the PSUs: these are Territorial Authorities)
+and the second stage units (the SSUs: these are Schools).
+
+```{r}
+schools.2sc.des <- svydesign(id=~Territorial_Authority+School_Id, data=schools.2sc, 
+                             fpc=~bigN1+bigN2,
+                             survey.lonely.psu="remove")
+```
+
+```{r}
+svymean(~Total, design=schools.2sc.des, deff=TRUE)
+```
+
+This design specification has the fpc specified at both stages of selection, 
+and assumes SRSWOR at both stages.  The `survey` package currently only allows for the analysis
+of two stage cluster designs with PPSWR at the first stage of selection.  We'll stick 
+to considering designs with SRSWOR at both stages. 
+
+For the record, this is how to select a two stage cluster sample with PPSWR at the
+first stage, and how to specify its sample design in R:
+```{r}
+schools.2sc.ppswr <- schools |> select.2sc(n=10, 
+                                           method1="PPSWR", sizevar1="Total",
+                                           cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+schools.2sc.ppswr.des <- svydesign(id=~Territorial_Authority+School_Id, data=schools.2sc.ppswr, 
+                                   weight=~weight,
+                                   survey.lonely.psu="remove")
+svymean(~Total, design=schools.2sc.ppswr.des, deff=TRUE)
+```
+
+
+## Stratified two stage cluster design
+
+```{r echo=FALSE}
+set.seed(223)
+```
+
+Finally here is a stratified two stage sample of schools within TA's with Regions.
+The Regions are strata, the TAs are clusters within the Regions, and then 20% of 
+schools are sampled in the selected TAs.
+```{r}
+schools.st2sc <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="proportional",
+                                         cfraction=0.20, clustervar="Territorial_Authority")
+```
+
+The design is the same as the two stage cluster sample, except we add the stratum specification.
+```{r}
+schools.st2sc.des <- svydesign(id=~Territorial_Authority+School_Id, strata=~Region, 
+                               data=schools.st2sc, 
+                               fpc=~bigN1+bigN2,
+                               survey.lonely.psu="remove")
+```
+
+```{r}
+svymean(~Total, design=schools.st2sc.des, deff=TRUE)
+```
+
+
+
+
+
+
+
+
+<!--chapter:end:06-SampleDesignsInR.Rmd-->
+
+# Survey Analysis
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+With the ability to load a survey dataset and specify its survey design
+we're now ready to do some analysis.  
+
+We'll use the `api` dataset which comes with the survey package: it's a
+set of observations of the Academic Performance Index (API) on all 
+California Schools with at least 100 students in the years 1999 and 2000.  
+```{r}
+data(api)
+```
+
+```{r echo=FALSE}
+apivarnames <- read.csv("data/apivarnames.csv")
+```
+
+In particular we'll use the `apiclus2` dataset, which is a two stage
+cluster sample of 126 schools drawn from the population of 6194.
+The top 10 rows of the data set and some of the key variables are shown below.
+```{r}
+apiclus2$stype <- factor(apiclus2$stype, levels=c("E","M","H"))
+levels(apiclus2$stype) <- c("Elementary","Middle","High")
+
+apiclus2 |>
+  slice_head(n=10) |>
+  select(cds, stype, name, dnum, cnum, api99, api00) |>
+  kbl() |>
+  kable_styling()
+```
+
+The full set of variables in the dataset is:
+```{r echo=FALSE}
+apivarnames |>
+  kbl(col.names=c("Variable","Description")) |>
+  kable_styling(full_width=FALSE)
+```
+
+The `apiclus2` dataset was drawn by taking a sample of districts (labelled by district number `dnum`),
+and then a sample of schools within districts (schools are labelled by their school number `snum`).  
+The column `fpc1` contains the number of districts (757), and the column `fpc2` contains the
+number of schools in each district (which varies by district).
+
+We can specify this two stage cluster design using
+```{r}
+apiclus2.des <- svydesign(ids=~dnum+snum, fpc=~fpc1+fpc2, data=apiclus2)
+```
+
+The `summary()` function tells us the basics of the design we've just specified:
+```{r}
+summary(apiclus2.des)
+```
+
+We can see that from the summary that $n=40$ districts were sampled (out of $N=757$).
+Let's count the number of schools sampled per district.  We'll just display the top 15 largest 
+districts:
+```{r message=FALSE}
+apiclus2 |>
+  group_by(dnum,dname) |>
+  summarise(Mi=first(fpc2),mi=n()) |>
+  ungroup() |>
+  arrange(desc(Mi)) |>
+  slice_head(n=15) |>
+  kbl(col.names=c("dnum","District Name","$M_i$","$m_i$"),escape=FALSE) |>
+  kable_styling(full_width=FALSE)
+```
+After the 10 largest districts a census of schools is taken in each selected
+district $m_i=M_i$
+
+## Continous variables
+
+Consider the key outcome variable `api00``, the API score in the year
+2000 for each school.  
+
+### Display {-}
+
+The basic workhorse for the display of numerical variables is the histogram
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Weighted histogram of API (2000) scores"
+svyhist(~api00, design=apiclus2.des, prob=FALSE,
+        xlab="API Score (Year 2000)", 
+        main="Weighted distribution of API (2000) scores")
+```
+
+Note that this histogram differs strongly from the simple histogram
+of the sample values:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Unweighted histogram of API (2000) sample data"
+hist(apiclus2$api00, 
+        xlab="API Score (Year 2000)", 
+        main="Unweighted distribution of API (2000) scores")
+```
+a warning to us that with survey data we can go badly astray if we ignore 
+the sample design.
+
+Boxplots are an alternative to histograms:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API (2000) sample data"
+svyboxplot(api00~1, design=apiclus2.des, 
+           ylab="API (2000)", main="API (2000) Scores")
+```
+
+... especially if we want to display variables divided by a category: 
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API (2000) sample data"
+svyboxplot(api00~stype, design=apiclus2.des, 
+           xlab="School Type",
+           ylab="API (2000)", main="API (2000) Scores")
+```
+
+If we have two continuous variables we can plot them as a scatterplot, showing
+the weights of each observation:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Distribution of API scores in 1999 and 2000"
+svyplot(api00~api99, design=apiclus2.des, style="bubble",
+        xlab="API (1999)", ylab="API (2000)")
+```
+
+### Estimation {-}
+
+We've already seen that we can estimate means using the `svymean()` function.
+```{r}
+svymean(~api00, design=apiclus2.des)
+```
+The `jtools` package allows us to estimate the population standard deviation too
+```{r}
+library(jtools)
+svysd(~api00, design=apiclus2.des)
+
+```
+(**Pause a minute** and remind yourself of the difference between a standard deviation and
+a standard error.)
+
+We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:
+```{r}
+svymean(~api99+api00, design=apiclus2.des)
+```
+or for a variable split by categories by wrapping `svymean()` up inside a call to `svyby()`
+```{r}
+svyby(~api00, by=~stype, svymean, design=apiclus2.des)
+```
+
+A **dotchart** is a nice way of showing the estimated means and their confidence intervals:
+```{r}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Mean API (2000) scores by School Type"
+ss <- svyby(~api00, by=~stype, svymean, design=apiclus2.des)
+sc <- confint(ss)
+ns <- nrow(sc)
+dotchart(ss, xlim=range(sc), xlab="Mean API (2000) Score")
+arrows(sc[,1], 1:ns, sc[,2], 1:ns, angle=90, code=3, length=0.1)
+```
+
+If we want to test statistical hypotheses about differences between groups
+one way is to use the regression framework
+```{r}
+summary(svyglm(api00~stype, design=apiclus2.des))
+```
+Here we can see that with Elementary as the reference level we 
+get the same estimate of the mean API reported as the `(Intercept)`.
+We further see that there is no significant difference between Middle
+and Elementary Schools in mean API, but the mean API is significantly lower
+at High Schools compared to Elementary Schools.
+
+Regressions take of course take lots of variables into account, and
+we can apply familiar regression techniques to investigating 
+conditional associations between predictors and a continuous outcome. 
+
+For example we can test whether the percentage of children at a school
+who have free school meals (i.e. the `meals` variable) associates with the 
+API score:
+```{r}
+summary(svyglm(api00~stype+meals, design=apiclus2.des))
+```
+... and there is indeed a strong negative association: the higher the
+`meals` value the lower the API score.
+
+We can estimate **totals** using the `svytotal()` function - for example
+we can estimate the total number of students enrolled at all schools in 
+California:
+```{r}
+svytotal(~enroll, design=apiclus2.des, na.rm=TRUE)
+```
+Although note that we have had to remove some schools with unknown
+`enroll` values by stating `na.rm=TRUE`, and these forced removals likely mean 
+that our estimate of the total is an underestimate.
+
+Confidence intervals can be calculated using the `confint()` function
+```{r}
+confint(svymean(~api99+api00, design=apiclus2.des), level=0.95)
+```
+
+```{r}
+confint(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+
+The standard errors can be directly extracted using `SE()`
+```{r}
+SE(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+
+### Relative Sampling Errors (RSEs)
+
+The **relative standard errors**, also known as **relative sampling errors** 
+(RSEs) can be extracted by `cv()`:
+```{r}
+cv(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
+```
+RSEs are a useful measure of quality of estimates of quantities that are 
+strictly positive, such as the API score.
+
+```{r echo=FALSE}
+ss <- svymean(~api00, design=apiclus2.des)
+cc <- cv(ss)
+```
+
+If we learned that the SE of an estimate (e.g. the mean of `api00`) was 
+`r round(as.numeric(SE(ss)),2)` we wouldn't be able to assess whether it 
+was a good estimate or not without knowing that the value of the estimate
+was `r round(as.numeric(ss),2)`.  A good way to assess the quality of 
+an estimate is the SE of an estimate $\widehat{T}$ as a proportion of 
+the estimate $\widehat{T}$:
+\[
+   \bfa{RSE}{\widehat{T}} = \frac{\bfa{SE}{\widehat{T}}}{\widehat{T}}
+\]
+For overall mean `api00` the RSE is
+\[
+   \bfa{RSE}{\widehat{\bar{Y}}} 
+   = \frac{`r round(as.numeric(SE(ss)),2)`}{`r round(as.numeric(ss),2)`} 
+   = `r round(as.numeric(cc),3)`
+\]
+This is a highly precise estimate: the SE is only `r round(100*as.numeric(cc),1)`%
+of the value of the estimate.
+
+Good RSEs are only a few percent at most. Poor RSEs are larger than 10%, and anything bigger
+than 20% isn't really publishable.
+
+In general a standard deviation divided by a mean goes by the term
+**coefficient of variation** (CV), which is why the R function is 
+called `cv()`.
+```{r}
+cv(svymean(~api00, design=apiclus2.des))
+```
+
+## Categorical Variables
+
+The workhorse display for categorical variables is the barplot, 
+showing **proportions** in categories.  Proportions are first calculated
+using the `svymean()` function:
+```{r}
+#| fig.cap="Estimates of the proportions of Schools of each type",
+#| fig.align="center",
+#| fig.width=5
+barplot(svymean(~stype, design=apiclus2.des),
+        names=levels(apiclus2$stype),
+        xlab="School Type", ylab="Proportion")
+```
+
+```{r}
+svymean(~stype, design=apiclus2.des)
+```
+
+It's worth pausing to recognise that a proportion is a mean of a special
+type of variable called an **indicator variable**: it takes the value 1 if
+the observation is a member of specific category and 0 if not.  Add up all the ones 
+and zeroes and you get the number of observations in the category, and divide
+by the number of observations you get a proportion.
+\[
+    p = \frac{1 + 0 + 1 + 1 + 0 + 0 + ....}{n} = \frac{1}{n}\sum_{i=1}^n Y_i
+\]
+where $Y_i$ is an indicator variable.
+
+With sample data we calculate **weighted sums** though:
+\[
+   \widehat{p} = \frac{\sum_{i=1}^n w_i Y_i}{\sum_{i=1}^n w_i} = \frac{\widehat{Y}}{\widehat{N}}
+\]
+where the top line of this fraction is $\widehat{Y}$, our estimate of the
+number of individuals (in a finite population) who belong to the category of
+interest.  The bottom line is $\widehat{N}$, the estimated size of the population.
+$\widehat{N}$ is exact in some designs (e.g. SRSWOR, or Stratified SRSWOR), but
+is approximate in other designs (especially cluster designs).  
+
+These total estimates within categories can be estimated using the `svytotal()`
+function.  
+```{r}
+svytotal(~stype, design=apiclus2.des)
+```
+
+When creating barplots of estimated proportions and/or totals 
+we really should indicate the uncertainties in our
+estimates, and show confidence intervals on the bars.  We can use the standard
+errors provided by `svymean()` and `svytotal()`: the function `confint()` 
+will provide these:
+```{r}
+confint(svytotal(~stype, design=apiclus2.des))
+```
+These confidence intervals are symmetric about the point estimates:
+```{r}
+#| fig.cap="Estimated proportions of schools by school type - with symmetric confidence intervals",
+#| fig.width=5,
+#| fig.align="center"
+ss <- svymean(~stype, design=apiclus2.des)
+ci <- confint(ss)
+bp <- barplot(ss, xlab="School Type", ylab="Estimated Size",
+              names=levels(apiclus2$stype),
+              ylim=c(0,max(ci)))
+arrows(bp, ci[,1], bp, ci[,2], angle=90, length=0.2, code=3)
+```
+
+```{r tabci.symmetric}
+names(ss) <- levels(apiclus2$stype)
+cbind(as.numeric(ss),ci) |>
+  kbl(col.names=c("Estimate","2.5%","97.5%"), 
+      digits=3,
+      caption="Symmetric confidence interval estimates") |>
+  kable_styling(full_width=FALSE)
+```
+
+These symmetric intervals are actually somewhat unrealistic, because 
+`confint()` doesn't know it's dealing with indicator variables, and
+doesn't take into account the fact that proportions and totals can't go 
+negative.  
+
+A better method of constructing confidence intervals is the special
+function `svyciprop()`: 
+```{r}
+svyciprop(~I(stype=="Elementary"), design=apiclus2.des)
+```
+Note that we've had to create an indicator variable here using the `I()`
+function for just one level in order to calculate its confidence interval.
+
+To get a confidence interval proportion for every level of a factor 
+it's somewhat fiddly with the raw `survey` package:
+```{r}
+#| fig.cap="Estimated proportions of schools by school type - with asymmetric confidence intervals",
+#| fig.width=5,
+#| fig.align="center"
+ss <- svymean(~stype, design=apiclus2.des)
+ci <- t(sapply(levels(apiclus2$stype),
+       function(stypelevel) {
+          form <- eval(parse(text=paste0("formula(~I(stype==\"",stypelevel,"\"))")))
+          confint(svyciprop(form, design=apiclus2.des))    
+       }))
+bp <- barplot(ss, xlab="School Type", ylab="Estimated Size",
+              names=levels(apiclus2$stype),
+              ylim=c(0,max(ci)))
+arrows(bp, ci[,1], bp, ci[,2], angle=90, length=0.2, code=3)
+```
+```{r tabci.asymmetric}
+names(ss) <- levels(apiclus2$stype)
+cbind(as.numeric(ss),ci) |>
+  kbl(col.names=c("Estimate","2.5%","97.5%"), 
+      digits=3,
+      caption="Asymmetric confidence interval estimates") |>
+  kable_styling(full_width=FALSE)
+```
+
+The biggest thing to notice is that the confidence interval for "High"
+is now asymmetric: it's longer on the high side that the low side, and
+more correctly represents our uncertainty.  The estimates for "Elementary"
+and "Middle" are essentially unchanged.
+
+For **crosstabulations** we can use `svytable()`, which gives weighted
+counts in categories - e.g. of whether School Wide growth targest had been met
+```{r}
+svytable(~stype+sch.wide, design=apiclus2.des)
+```
+Which can be displayed with a side-by-side barplot
+
+```{r}
+#| fig.width=5,
+#| fig.align='center',
+#| fig.cap='Counts of schools meeting targets, by school type'
+st <- svytable(~sch.wide+stype, design=apiclus2.des)
+bp <- barplot(st, beside=TRUE, col=c("light blue","dark red"),
+              legend=TRUE, args.legend=list(title="Met targets"), 
+              xlab="School Type", ylab="Frequency")
+```
+
+A test of association is given by the weighted Chi-Square test
+```{r}
+svychisq(~stype+sch.wide, design=apiclus2.des)
+```
+We can carry out a logistic regression to make a similar test of association.  
+We have `sch.wide` as the binary outcome variable and `stype` as the predictor:
+```{r}
+summary(svyglm(I(sch.wide=="Yes")~stype, family=quasibinomial(link="logit"), 
+               design=apiclus2.des))
+```
+
+With regular `lm()` and `glm()` regression fits we can use F tests to determine
+whether specific terms in the model should be included.  A similar test
+can be done to test for the inclusion of specific terms using `regTermTest` 
+```{r}
+sr <- svyglm(I(sch.wide=="Yes")~stype, family=quasibinomial(link="logit"), 
+               design=apiclus2.des)
+regTermTest(sr, ~stype)
+```
+Here we can see that `stype` is contributing significantly to the fit of the model. 
+
+<!--chapter:end:07-SurveyAnalysis.Rmd-->
+
+# Weight adjustments
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+## Weight Calibration
+
+At the end of a survey we may find ourselves in the undesirable situation that
+
+ * **Purely by chance**, the sample is somewhat unbalanced: e.g. by chance we may have 
+   selected many more males than females, or more large households than small ones, or
+ * We may have had **unit nonresponse** - i.e. there may be selected units from
+   which we have collected no data.  In the case of human subjects this may have
+   been from a failure to contact the selected person, or the refusal of the 
+   person to answer our questions.
+   
+In both cases we are in the situation that our sample, even when weighted, is
+not a good representation of the population from which it is drawn.  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+nzpop <- read.csv("data/year-age-sex.csv")
+nzpop <- nzpop |>
+  filter(Year==2018)
+nzpop <- nzpop[nzpop$Age>=15 & nzpop$Age<=45,]
+idx <- nzpop$Age==45
+nzpop$count[idx] <- (1/5)*nzpop$count[idx]
+nzpop <- nzpop |>
+  mutate(AgeGrp=case_when(Age<=20 ~ "15-24",
+                          Age<=30 ~ "25-34",
+                          Age<=45 ~ "35-45"))
+nzpop <- nzpop |>
+  mutate(count=round(count)) |>
+  group_by(AgeGrp,Sex) |>
+  summarise(count=sum(count)) |>
+  as.data.frame()
+nzpop <- nzpop |> rename(Gender=Sex)
+nzpop$Gender <- factor(nzpop$Gender,levels=c("Male","Female"))
+levels(nzpop$Gender) <- tolower(levels(nzpop$Gender))
+total <- sum(nzpop$count)
+total.Gender <- tapply(nzpop$count, nzpop$Gender, sum)
+total.AgeGrp <- tapply(nzpop$count, nzpop$AgeGrp, sum)
+total.AgeGrp <- data.frame(AgeGrp=names(total.AgeGrp),Nh=total.AgeGrp)
+```
+
+```{r echo=FALSE}
+surf <- read.csv("data/surf.csv")[,1:8]
+bigN <- total
+n <- nrow(surf)
+surf$Gender <- factor(surf$Gender, levels=c("male","female"))
+surf <- surf |>
+  mutate(AgeGrp=case_when(Age<=24 ~ "15-24",
+                          Age<=34 ~ "25-34",
+                          Age<=45 ~ "35-45"))
+surf$bigN <- bigN
+surf$weight <- bigN/n
+n.Gender <- tapply(surf$Gender, surf$Gender, length)
+sampweight <- bigN/n
+```
+
+For example consider the SURF dataset, which is a synthetic sample of 200 individuals
+between the ages of 15 and 45.  The first 10 rows are shown below.  
+
+```{r echo=FALSE}
+surf |> slice_head(n=10) |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+The dataset contains a mixture of numerical and categorical variables, all with very
+self explanatory names (except note that `Income` and `Hours` are weekly quantities, 
+and also that the income values are somewhat old!).  We'll treat it as a SRSWOR from
+the New Zealand population between the ages of 15 and 45.  
+
+The total population in this age range is $N=`r total`$, the sample size is $n=`r n`$, 
+and so the weight of each sampled individual is 
+\[
+   w = \frac{N}{n} = {`r bigN`}{`r n`} = `r sprintf("%.1f",bigN/n)`
+\]
+Let's specify this simple random sampling design to R:
+```{r}
+surf.des <- svydesign(id=~1, fpc=~bigN, data=surf)
+```
+and then estimate the mean income:
+```{r}
+svymean(~Income, design=surf.des)
+```
+We should note that the mean income differs considerably between males and females.
+```{r}
+svyby(~Income, by=~Gender, design=surf.des, svymean)
+```
+
+```{r echo=FALSE}
+svyboxplot(Income~Gender, design=surf.des, main="Income by Gender", ylab="Weekly income")
+```
+
+Let's also note the distribution of the population by age and sex, as measured
+by the most recent census:
+```{r echo=FALSE}
+nzpoptab <- nzpop |> 
+  arrange(Gender) |>
+  pivot_wider(names_from="Gender", values_from="count") |>
+  as.data.frame()
+nzpoptab$Total <- apply(nzpoptab[,-1],1,sum)
+nzpoptab <- rbind(nzpoptab, 
+                  data.frame(AgeGrp="Total", rbind(apply(as.matrix(nzpoptab[,-1]),2,sum))))
+nzpoptab.pct <- as.data.frame(lapply(nzpoptab,
+  function(x) {
+    if(is.numeric(x)) return(sprintf("%.1f%%",100*x/total)) else (return(x))
+  }))
+nzpoptab |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+Or we can express these counts as percentages:
+```{r echo=FALSE}
+nzpoptab.pct |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+The proportions of males and females in the population are roughly equal in the population, 
+but in the sample they're not quite equal:
+```{r}
+svymean(~Gender, design=surf.des)
+```
+This has been caused by our having, by chance, sampled slightly more females than males.
+```{r}
+table(surf$Gender)
+```
+
+The consequence of this is that our estimate of the population mean income is 
+and underestimate, due to females earning less than males, and their being 
+slightly overrepresented in the sample.
+
+One obvious solution to this situation is to slightly upweight the males in the sample, and downweight
+the females, to take care of the imbalance.  Of course we only **know** about the 
+imbalance because we have the census counts which tell us that the proportions of
+males and females are roughly equal: otherwise we'd have no idea that there might be a problem.
+
+These external counts (external to the survey that is) are called **population benchmarks**, 
+and the weight adjustment that makes the weights match the benchmarks is called
+**poststratification**.  It's 'post-' here because we're making the stratification 
+(breaking into groups) **after** the survey has taken place.  Breaking the sample into 
+groups **beforehand**, and taking separate samples within each group is called stratified
+sampling.  But that is only possible if we know the group membership of sample members before
+we sample them - i.e. if the group membership information is available on the frame.  
+
+We have $n=`r n`$ individuals in a SRSWOR drawn from a population
+of size $N=`r bigN`$, with weights $w=`r bigN`/`r n`=`r sprintf("%.1f",bigN/n)`$.  These
+correctly add up to the population total
+\[
+   n \times w = n \times \frac{N}{n} = `r n`\times `r sprintf("%.1f",bigN/n)` = `r bigN`
+\]
+What we want is different weights for the males and females, so that they separately 
+add up to the total numbers of males $N_1=`r total.Gender[1]`$ and the total
+numbers of females $N_2=`r total.Gender[2]`$ in the population.  We can achieve this
+by computing new post-stratified weights using the known benchmarks $N_h$ and sample
+sizes $n_h$ in each of the post-strata, and computing new weights
+\[
+   w_h = \frac{N_h}{n_h}
+\]
+i.e. these are the weights we'd have used if we had actually carried out a
+stratified sample in the first place.
+
+```{r echo=FALSE}
+pstab <- data.frame(Gender=c("male","female"),
+                    SampWeight=sampweight,
+                    nh=n.Gender,
+                    Nh=total.Gender,
+                    PostStratWeight=total.Gender/n.Gender)
+rownames(pstab) <- NULL
+pstab |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+These new weights are now appropriately higher for males and lower for females.
+
+```{r echo=FALSE}
+Gender.benchmarks <- pstab[,c("Gender","Nh")]
+```
+
+
+In R we can modify the weights in the design object using the `postStratify()` function. 
+We first need to create a data frame storing the benchmarks:
+```{r}
+Gender.benchmarks
+```
+
+```{r}
+surf.des.ps <- postStratify(surf.des, strata=~Gender, population=Gender.benchmarks)
+```
+
+The orignal estimate of the proportions of males and females
+```{r}
+svymean(~Gender, design=surf.des)
+```
+has been modified to
+```{r}
+svymean(~Gender, design=surf.des.ps)
+```
+Notice that the Standard Errors here are zero: these proportions are no longer
+estimates, they have been imposed by our benchmarks.
+
+Then we can compare the orginal estimate of mean income
+```{r}
+svymean(~Income, surf.des)
+```
+with the post-stratified estimate
+```{r}
+svymean(~Income, surf.des.ps)
+```
+The estimate has been increased slightly as expected.  Also note that 
+the Standard Error has been reduced: this is often the case with
+post-stratified estimates: post-stratification makes the properties
+of different samples differ less than they otherwise would, and thereby 
+reduces our overall uncertainty.  
+
+Non-response can make these small chance differences even worse.
+Males and young people tend to have the lowest response rates in surveys.
+So let's see what happens to our mean estimate if we take our sample of 200 individuals
+and filter out 20% of the male respondents:
+```{r}
+set.seed(234)
+surf.nonresp <- surf
+surf.nonresp$Responds <- rbinom(nrow(surf),1,prob=ifelse(surf$Gender=="male",0.8,1.0))
+surf.nonresp <- surf.nonresp[surf.nonresp$Responds==1,]
+surf.nonresp$weight <- bigN/nrow(surf.nonresp)
+table(surf.nonresp$Gender)
+```
+
+We've now got a lot fewer males than females.  Let's see what this does to the 
+simple estimate of the population mean income:
+```{r}
+surf.nonresp.des <- svydesign(id=~1, fpc=~bigN, data=surf.nonresp)
+svymean(~Income, design=surf.nonresp.des)
+```
+
+The introduction of the non-response has led to a reduction in our original estimate
+from `r round(svymean(~Income, surf.des),2)` to `r round(svymean(~Income, surf.nonresp.des),2)`.
+
+Post-stratifying however
+```{r}
+surf.nonresp.des.ps <- postStratify(surf.nonresp.des, strata=~Gender, 
+                                    population=Gender.benchmarks)
+```
+leads to a dramatically improved estimate
+```{r}
+svymean(~Income, design=surf.nonresp.des.ps)
+```
+
+We know more than just the distribution of the population over Gender, we also know it over the
+three age groups.  So we can post-stratify by these variables too.
+
+```{r echo=FALSE}
+AgeGrp.Gender.benchmarks <- nzpop
+```
+
+We can store the AgeGrp/Gender benchmarks in a data frame `AgeGrp.Gender.benchmarks`:
+```{r echo=FALSE}
+AgeGrp.Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+and then post-stratify
+```{r}
+surf.nonresp.des.ps2 <- postStratify(surf.nonresp.des, strata=~AgeGrp*Gender, 
+                                     population=AgeGrp.Gender.benchmarks)
+svymean(~Income, design=surf.nonresp.des.ps2)
+```
+And this is estimate is going to be even better than before.
+
+However where should we stop?  Should we post-stratify by as many variables as we 
+possibly can?
+
+In general we need to ensure that we have enough individuals in the sample 
+in every cross-classified cell (in this case AgeGroup by Gender) to be able to 
+recalculate the weight.  Empty cells are going to cause us a problem, 
+since we'll be discarding the population weight associated
+with people of that type in the population who happen not to have turned up in the sample.
+
+In population surveys run by Statistics NZ we'll often see post-stratification by age 
+(in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.  
+
+### Poststratfication as a treatment for non-response {-}
+
+A warning here: post-stratification is often used to modify weights in the presence
+of non-response.  
+
+### Raking {-}
+
+We may not have full cross-classified benchmarks, for example we might know the
+totals by AgeGrp and totals by Gender, but not totals by AgeGrp and Gender simultaneously.
+In that case we can proceed iteratively: we post-stratify first by one variable, and
+then by other.  Each post-stratification on one variable messes up the post-stratification
+on the other.  But eventually the weights will converge to approximately match both sets
+of benchmarks.  This iteration is called **raking** (like raking a lawn one way, then other other), 
+or **Iterative Proportional Fitting**. 
+
+```{r echo=FALSE}
+AgeGrp.benchmarks <- total.AgeGrp
+```
+
+R implements raking in with the `rake()` function. We need a separate set of benchmarks
+for AgeGrp
+```{r echo=FALSE}
+AgeGrp.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+and for Gender
+```{r echo-FALSE}
+Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+With these we can rake the design:
+```{r}
+surf.nonresp.des.rake <- rake(surf.nonresp.des, 
+                              sample=list(~AgeGrp, ~Gender), 
+                              population=list(AgeGrp.benchmarks, Gender.benchmarks))
+```
+and then calculate our estimates
+```{r}
+svymean(~Income, design=surf.nonresp.des.rake)
+```
+
+
+### Another example {-}
+
+In the Academic Performance Indicator dataset we have full population information
+on types of School (`stype`=Elementary/Middle/High) and whether or not they
+met their year round performance indicators (`yr.rnd`=Yes/No).  These counts
+will be our benchmarks for post-stratification.
+
+```{r echo=FALSE}
+apipopc <- apipop[!is.na(apipop$enroll),]
+apipopc$stype <- factor(as.character(apipopc$stype),levels=c("E","M","H"))
+levels(apipopc$stype) <- c("Elementary","Middle","High")
+apipopc$yr.rnd[is.na(apipopc$yr.rnd)] <- "Yes"
+```
+
+The numbers of schools by type are in `stype.benchmnarks`
+```{r echo=FALSE}
+stype.benchmarks <- as.data.frame(table(apipopc$stype))
+names(stype.benchmarks) <- c("stype","Freq")
+stype.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+#sum(stype.benchmarks$Freq) # 6157
+```
+
+The number of schools by achievement of year round objectives are in `yr.rnd.benchmarks`
+```{r echo=FALSE}
+yr.rnd.benchmarks <- as.data.frame(table(apipopc$yr.rnd))
+names(yr.rnd.benchmarks) <- c("yr.rnd","Freq")
+yr.rnd.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+#sum(yr.rnd.benchmarks$Freq) # 6157
+```
+
+and we also have these counts **cross-classified**, i.e. numbers of schools for 
+each combination of `stype` and `yr.rnd`:
+```{r echo=FALSE}
+stype.yr.rnd.benchmarks <- as.data.frame(table(apipopc$stype, apipopc$yr.rnd))
+names(stype.yr.rnd.benchmarks) <- c("stype","yr.rnd","Freq")
+stype.yr.rnd.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+Select a two stage cluster sample - and then make estimates of the mean school 
+size (`enroll`)
+```{r}
+set.seed(111)
+api2sc <- apipopc |> 
+  select.2sc(n=40, cfraction=0.30, mmin=2, clustervar="dnum") 
+api2sc.des <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=api2sc) 
+table(api2sc$stype)/nrow(api2sc)
+svytable(~stype, design=api2sc.des)
+svytable(~stype, design=api2sc.des)/sum(api2sc$weight)
+svymean(~enroll, design=api2sc.des)
+svyby(~enroll, by=~stype, api2sc.des, svymean)
+```
+
+Poststratify by stype and reestimate
+```{r}
+api2sc.des.ps <- postStratify(api2sc.des, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, api2sc.des.ps)
+```
+
+Postratify by stype by yr.rnd and reestimate
+```{r}
+api2sc.des.ps2 <- postStratify(api2sc.des, strata=~stype+yr.rnd, 
+                               population=stype.yr.rnd.benchmarks)
+svymean(~enroll, api2sc.des.ps2)
+```
+
+Poststratify by stype + yr.rnd (i.e. we only have the marginals so we need to rake) 
+and reestimate
+```{r}
+api2sc.des.rake <- rake(api2sc.des, 
+                        sample=list(~stype, ~yr.rnd), 
+                        population=list(stype.benchmarks, yr.rnd.benchmarks))
+svymean(~enroll, api2sc.des.rake)
+```
+
+```{r echo=FALSE}
+ff <- function(x) c(as.numeric(x), SE(x))
+```
+
+
+Compare
+```{r echo=FALSE}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake))) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)"),
+                     c("Estimate","SE"))
+ss |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+## Replicate weights
+
+For some weight adjustments we no longer have a reliable method of computing
+the standard errors of our estimates.  This can occur when we have very 
+complex designs.  It can also be necessary when we don't have access to the frame, 
+and therefore don't have all the information we need to calculate standard errors.
+
+In such circumstances we often create multiple sets of weights in addition to the
+adjusted weights.  These **replicate weights** are what are used to estimate the
+standard errors, and they have the advantage that they can create standard errors
+for a wider range of estimators than the usual means and totals.  
+
+**Jacknife** weights are calculated by systematically deleting PSUs at the first
+stage of selection, and then scaling the weights on the remaining rows so that they 
+still add up to the same total.
+```{r}
+api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
+```
+There is an informative warning here: no fpc can apply at second stage of selection 
+(nor any subsequent stages).  
+
+(Also note that the method "JK1" is used for unstratified designs.  For stratified
+designs the jackknife is specified by "JKn": we don't just drop out one PSU over 
+the whole sample in each replicate, instead we drop out a PSU from every stratum.)
+
+Here are the first 3 rows and 8 columns: each row refers to a district `dnum`
+and each column is a replicate.
+```{r}
+api2sc.jkdes$repweights$weights[1:3,1:8]
+```
+Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one of the 40 districts `dnum` out for 
+each replicate, setting all units in that district to zero.
+These are scaling weights, and theyneed to be multiplied by the original sampling weight 
+to get the actual weights.
+
+
+```{r}
+svymean(~enroll, design=api2sc.jkdes)
+```
+This gives us a better estimate of the SE.
+
+If we are needing to post-stratify our weights to account for non-response, then
+we need also to poststratify each set of replicate weights.
+
+```{r}
+api2sc.jkdes.ps <- postStratify(api2sc.jkdes, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, design=api2sc.jkdes.ps)
+```
+Here post-stratification gives us a strong reduction of the standard errors
+
+Comparison
+```{r}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake)),
+  ff(svymean(~enroll, api2sc.jkdes)),
+  ff(svymean(~enroll, api2sc.jkdes.ps))
+  ) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
+                       "JK1","JK1+PS(stype)"),
+                     c("Estimate","SE"))
+ss |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+Let's take a look at the replicate weights after post-stratification
+```{r}
+api2sc.jkdes.ps$repweights$weights[1:3,1:8]
+```
+
+We might have been **supplied** replicate weights, i.e. someone else might have
+created them.  This is commonly the case when we have been granted access
+to a data set collected by a government department.
+
+In which case our dataset would look like this
+```{r}
+fwmat <- api2sc.jkdes.ps$repweights$weights[api2sc.jkdes.ps$repweights$index,]
+colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
+pweight <- api2sc.jkdes.ps$pweights
+fwmat <- diag(pweight)%*%fwmat
+sum(pweight)
+apply(fwmat,2,sum)
+api2sc.withrep.ps <- cbind(api2sc, pweight, fwmat)
+```
+We create the design using the probability weights `pweight`
+and the set of replicate weights `repweight001-repweight040`.
+
+```{r}
+pweightcol <- match("pweight",names(api2sc.withrep.ps)) # which column name is exactly equal to pweight
+repweightcols <- grep("^repweight",names(api2sc.withrep.ps)) # which columnnames start with repweight?
+varcols <- (1:ncol(api2sc.withrep.ps))
+varcols <- varcols[!(varcols%in%c(pweightcol,repweightcols))]
+n <- length(unique(api2sc$dnum))
+api2sc.repdes.ps <- svrepdesign(variables=api2sc.withrep.ps[,varcols],
+                                weights=api2sc.withrep.ps[,pweightcol],
+                                repweights=api2sc.withrep.ps[,repweightcols],
+                                combined.weights=TRUE,
+                                scale=(n-1)/n,
+                                type="JK1")
+svymean(~enroll, api2sc.repdes.ps)
+```
+```{r}
+ss <- rbind(
+  c(mean(apipopc$enroll), 0),
+  ff(svymean(~enroll, api2sc.des)), 
+  ff(svymean(~enroll, api2sc.des.ps)), 
+  ff(svymean(~enroll, api2sc.des.ps2)), 
+  ff(svymean(~enroll, api2sc.des.rake)),
+  ff(svymean(~enroll, api2sc.jkdes)),
+  ff(svymean(~enroll, api2sc.jkdes.ps)),
+  ff(svymean(~enroll, api2sc.repdes.ps))
+  ) 
+dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
+                       "JK1","JK1+PS(stype)","JK1+PS(stype)"),
+                     c("Estimate","SE"))
+ss
+```
+
+JKn is used with stratified designs
+
+E.g. draw a two stage cluster sample within two strata: schools which are or are
+not eligible for an awards programme:
+```{r}
+set.seed(999)
+apist2sc <- apipopc |>
+  select.st2sc(n=40, stratumvar="awards", cfraction=0.20, clustervar="dnum")
+apist2sc.des <- svydesign(id=~dnum+snum, strata=~awards, fpc=~bigN1+bigN2, 
+                          data=apist2sc, nest=TRUE)
+apist2sc.des.ps <- postStratify(apist2sc.des, strata=~stype, population=stype.benchmarks)
+```
+Note: we need `nest=TRUE` here because districts `dnum` do not nest within strata.
+I.e. it is the **combination** of `awards` and `dnum` that actually defines the clusters here.
+
+```{r}
+svymean(~enroll, design=apist2sc.des)
+svymean(~enroll, design=apist2sc.des.ps)
+apist2sc.jkdes <- as.svrepdesign(apist2sc.des, type="JKn")
+svymean(~enroll, design=apist2sc.jkdes)
+apist2sc.jkdes.ps <- postStratify(apist2sc.jkdes, strata=~stype, population=stype.benchmarks)
+svymean(~enroll, design=apist2sc.jkdes.ps)
+```
+
+There are alternative methods to Jacknife generation of replicate weights.
+You may hear of Bootstrap weights, and Balanced Repeated Replication.  Some
+of these have multiple variants.  We don't need to worry about these.
+
+### Demonstration of ps SE improvement
+
+```{r}
+set.seed(222)
+R <- 100
+sim <- t(sapply(1:R, 
+              function(i) {
+  ss <- apipopc |> 
+    select.2sc(n=100, cfraction=0.30, mmin=2, clustervar="dnum") 
+  d1 <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=ss)  
+  d2 <- postStratify(d1, strata=~stype, population=stype.benchmarks)
+  e1 <- ff(svymean(~api00, design=d1))
+  e2 <- ff(svymean(~api00, design=d2))
+  return(c(e1,e2))
+}))
+```
+
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,1],main="Simple estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+hist(sim[,3],main="Postratified estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+```
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,2],main="SE of Simple estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,1]),col="red",lwd=2)
+hist(sim[,4],main="SE of Postratified estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,3]),col="red",lwd=2)
+
+```
+
+
+
+
+<!--chapter:end:08-Calibration.Rmd-->
+
+# Imputation
+
+Dealing with item non-response
+
+Can do complete case analysis, but that risks both bias and
+loss of precision due to reduced sample size.
+
+Another option is imputation: fill in the data using a model.
+All such models involve untestable assumptions.
+
+```{r}
+surf <- read.csv("data/surf.csv")[,1:8]
+```
+
+Remove some data: marital status and income
+```{r}
+set.seed(111)
+msurf <- surf
+msurf$Marital[sample(nrow(surf),10)] <- NA
+msurf$Income[sample(nrow(surf),10)] <- NA
+table(msurf$Marital,exclude=NULL)
+sum(is.na(msurf$Income))
+```
+
+```{r message=FALSE, warning=FALSE}
+library(mice)
+library(lattice)
+```
+
+Package mice provides for multiple imputation methods, but gives some datasets
+and some visualisation tools.   It's a bit tricky to use, so we'll use a simpler
+function `impute()`.
+
+Example dataset supplied with mice is `nhanes` - note all variables are numeric
+```{r}
+mnhanes <- mice::nhanes
+mnhanes$age <- factor(mnhanes$age)
+mnhanes <- data.frame(id=factor(1:nrow(mnhanes)),mnhanes)
+dim(mnhanes) # 25 x 5
+summary(mnhanes)
+```
+
+Surf data is a mixture of numeric and categorical variables
+```{r}
+summary(msurf)
+```
+
+
+Inspect missing pattern
+```{r}
+md.pattern(mnhanes)
+md.pattern(msurf)
+```
+
+Mean, median or mode imputation
+```{r}
+dd <- impute(mnhanes, varname="bmi", method="sample")
+table(mnhanes$bmi,exclude=NULL)
+table(dd$bmi,exclude=NULL)
+```
+
+```{r}
+dx <- mnhanes
+dx$bmi[dx$age=="1"] <- NA
+dd <- impute(dx, varname="bmi", method="sample", formula=~age)
+table(mnhanes$bmi,exclude=NULL)
+table(dd$bmi,exclude=NULL)
+```
+
+
+```{r}
+varname <- "bmi"; tapply(mnhanes[,varname], mnhanes[,"age"], mean, na.rm=TRUE)
+```
+
+Overall mean and median and mode
+```{r}
+impute(mnhanes, varname="bmi", method="mean") 
+impute(mnhanes, varname="bmi", method="median") 
+impute(msurf, varname="Marital", method="mode")
+```
+
+Overall mean
+```{r}
+dd <- impute(msurf, varname="Income", method="mean")
+dd[dd$Income.imp,]
+```
+
+```{r}
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+```
+
+
+
+
+
+Overall mean imputation
+```{r}
+mnhanes.mfit1 <- mnhanes |> mice(method="mean", m=1, maxit=1)
+mnhanes.m1 <- complete(mnhanes.mfit1)
+md.pattern(mnhanes.m1) # no missing data left
+```
+
+Overall mean imputation
+```{r}
+mnhanes.grandmean <- mnhanes |>
+  mice(method="mean", m=1) |>
+  complete() 
+```
+
+Cell mean imputation
+```{r}
+mnhanes.cellmean <- do.call(rbind, 
+                            by(mnhanes, mnhanes$age,
+                               function(dsub) complete(mice(dsub, method="mean", m=1)))) 
+mnhanes.cellmean <- arrange(mnhanes.cellmean, id)
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+```
+
+Repeat cell mean imputation using the regression formulation
+
+```{r}
+allvarnames <- names(mnhanes)
+
+blocks <- as.list(allvarnames) # each variable in its own block
+names(blocks) <- allvarnames
+method <- rep("",length(allvarnames)) # method for each block: start with no imputation
+names(method) <- allvarnames
+formulas <- as.list(rep("~1", length(allvarnames)))
+names(formulas) <- allvarnames
+formulas <- lapply(formulas, formula)
+
+method["bmi"] <- "norm.predict" # we're only going to impute bmi, by regression imputation
+formulas[["bmi"]] <- formula(~age)
+
+mnhanes.cellmeanregf <- mnhanes |> 
+  mice(m=1, method=method, blocks=blocks, formulas=formulas) |>
+  complete()
+
+mnhanes.cellmeanregf
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+mnhanes.cellmeanregf[is.na(mnhanes$bmi),]
+```
+
+
+Means of numeric and modes of categorical variables
+```{r}
+getmeanmode <- function(df) {
+  as.data.frame(lapply(df, 
+       function(x) {
+         if(is.factor(x) || is.character(x)) {
+           xt <- table(x)
+           mval <- names(xt)[which.max(xt)]
+         } else if(is.numeric(x)) {
+           mval <- mean(x, na.rm=TRUE)
+         } else {
+           mval <- NA
+         }
+         return(mval)
+       }))
+}
+```
+
+
+```{r}
+getmeanmode(mnhanes)
+```
+
+```{r}
+sapply(names(mnhanes.m1), function(varname) mnhanes.m1[is.na(mnhanes[,varname]),varname])
+```
+
+Just do the numerical variables (gives a warning because Marital is categorical)
+```{r}
+msurf.mfit1 <- msurf |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # still has missing Marital data
+```
+
+Avoid the error
+```{r}
+msurf.mfit1 <- msurf[,sapply(msurf,is.numeric)] |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # this deletes the Marital column of course
+```
+
+
+
+Hot deck imputation
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+Hot deck within cells [*** not yet done ***]
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, blocks=, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+
+Regression imputation
+
+Use regressions on all available observations?
+```{r}
+mnhanes.mfit2 <- mice(mnhanes, method="norm.predict", m=1, maxit=1)
+mnhanes.m2 <- complete(mnhanes.mfit2)
+mnhanes.m1[is.na(mnhanes$bmi),]
+mnhanes.m2[is.na(mnhanes$bmi),]
+```
+
+Multiple imputation
+
+Instead of imputing a **single** value for each missing observation, we impute
+several possible imputed values - we end up with multiple completed data sets.
+The variability among estimates from these separate completed data sets gives
+us additional insight into the effect of our imputations, and the uncertainty
+we have associated with having missing data.
+
+The confidence we can have regarding the true scale of the uncertainty depends
+on how strongly we believe in the model we've used to impute.  
+
+Hot deck multiple imputation
+```{r}
+mnhanes.multfit1 <- mice(mnhanes, method="sample", m=5, seed=123)
+mnhanes.mult1 <- complete(mnhanes.multfit1)
+mnhanes.mult1[is.na(mnhanes$bmi),]
+```
+
+Regression mean imputation
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+
+Stochastic regression imputation: we sample from the fitted distribution
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+
+
+# Package mice
+
+Don't impute a column by setting the method="" for that column
+
+'blocks' are sets of variables, treated similarly
+```{r}
+mice(msurf, m=5, 
+     method=,
+     blocks=)
+```
+
+Mean imputation/cell mean imputation: method = 'mean'
+Median imputation/cell median imputation: 
+Hot deck cell imputation: method = 'sample' within cells
+Regression imputation
+
+
+
+<!--chapter:end:09-Imputation.Rmd-->
+
+# Designing Surveys
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
+$\\newcommand{\\estm}{\\widehat}$'`
+
+The design of surveys is a massive topic, and we can't cover much here.
+The key principle is that everything that is done in the design of a survey
+should be done to meet the Objectives (the research goals) of the survey. Nothing
+else matters.
+
+For our purposes calculation of the sample size required when designing 
+a survey is the most significant single decision to make since it determines
+the standard errors for the survey estimates.  In real life the decision
+about sample size is often severely constrained by available resources.  
+
+## Another interpretation of the Deff
+
+Assume that for sample size $n$ the variance of an estimator 
+in a specific design has the approximate formula 
+\[
+    \bfa{Var}{\widehat{T}_\text{design}} = \frac{c_\text{design}}{n}
+\]
+then using the definition of the Deff, the ratio of the variance with respect to
+SRSWOR, then
+\begin{eqnarray}
+   \bfa{Deff}{\widehat{T}_{\text{design}}} 
+       &=& \frac{\bfa{Var}{\widehat{T}_{\text{design}}}}{\bfa{Var}{\widehat{T}_{\text{SRSWOR}}}}\\
+       &=& \frac{c_\text{design}/n}{c_\text{SRSWOR}/n}\\ 
+       &=& \frac{c_\text{design}}{c_\text{SRSWOR}}
+\end{eqnarray}
+So if we want to find the sample sizes at which the variances
+in the design of interest and SRSWOR are equal, then we set
+\begin{eqnarray}
+   V_\text{design} &=& V_\text{SRSWOR}\\
+   \frac{c_\text{design}}{n_\text{design}} &=& \frac{c_\text{SRSWOR}}{n_\text{SRSWOR}}\\
+   n_\text{design} &=& \frac{c_\text{design}}{c_\text{SRSWOR}}n_\text{SRSWOR}\\
+                   &=& \bfa{Deff}{\widehat{T}_\text{design}} n_\text{SRSWOR}
+\end{eqnarray}
+This means that a rough way to compute the sample size required in a complex design
+is to first calculate the sample size we'd need in SRSWOR, and then scale it by
+the Deff for the complex design.
+
+If the Deff is 2 (as it may be in a cluster design for example), then we need twice
+the sample size an SRSWOR would need in order to achieve the same standard error.
+
+## Computing the Required Sample Size
+
+  1. Identify your **design estimate** -- this is the estimate that will
+     underlie a headline you could imagine being written about your survey.
+
+  1. Identify the desired MOE, $m$, for this design estimate, noting whether
+     you want this MOE to apply to the overall estimate, or for that estimate in
+     each of, say, $H$ subgroups/strata.
+
+  1. Compute the sample size required, $n_1$, assuming that you're going to select a
+     Simple Random Sample and ignoring the fpc.  
+
+     For estimation of a mean $\bar{Y}$ of some characteristic $y$:
+     \[
+      n_1 = \left(\frac{Z}{MOE}\right)^2 s^2
+     \]
+     where $Z$ is appropriate for the desired level of confidence and $s$ is the
+     estimated population standard deviation of the characteristic $y$.
+
+     For estimation of a proportion $P$:
+     \[
+      n_1 = \left(\frac{Z}{MOE}\right)^2 p(1-p)
+     \]
+     where $p$ is the estimated proportion, or 0.5 if really unknown.
+
+  1. If the sample size is a substantial proportion of the population or
+     subgroup size $N$, then apply the fpc adjustment:
+     \[
+        n_2 = \frac{n_1}{1+\frac{n_1}{N}}
+     \]
+
+  1. If you have $H$ subgroups and are using equal allocation then multiply by $H$
+     \[
+        n_3 = Hn_2
+     \]
+     or alternatively sum over the $n_2$ values in each of the strata you've
+     defined.
+
+  1. Apply the design effect (Deff) appropriate for the actual design you'll
+     be using.
+     \[
+        n_4 = \text{Deff}\times n_3
+     \]
+
+  1. Adjust for anticipated non-response: if response rate $\phi$ is expected
+     then 
+     \[
+        n_5 = \frac{n_4}{\phi}
+     \]
+     (If non-response is likely to vary between strata, then apply this correction 
+     to $n_2$, within each stratum.)
+     
+
+<!--chapter:end:10-DesigningSurveys.Rmd-->
+
+# References {-}
+
+<div id="refs"></div>
+
+# (APPENDIX) &nbsp; {-}
+
+
+
+<!--chapter:end:90-BackMatter.Rmd-->
+
+# Placeholder Appendix
+
+Nothing to see here. 
+
+<!--chapter:end:91-PlaceholderAppendix.Rmd-->
+
