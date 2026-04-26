@@ -145,7 +145,7 @@ library(jtools)
 svysd(~api00, design=apiclus2.des)
 
 ```
-(Pause a minute and remind yourself of the difference between a standard deviation and
+(**Pause a minute** and remind yourself of the difference between a standard deviation and
 a standard error.)
 
 We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:
@@ -216,6 +216,9 @@ The standard errors can be directly extracted using `SE()`
 ```{r}
 SE(svyby(~api00, by=~stype, svymean, design=apiclus2.des))
 ```
+
+### Relative Sampling Errors (RSEs)
+
 The **relative standard errors**, also known as **relative sampling errors** 
 (RSEs) can be extracted by `cv()`:
 ```{r}

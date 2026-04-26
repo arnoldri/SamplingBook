@@ -8,9 +8,11 @@ $\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
 $\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$
 $\\newcommand{\\estm}{\\widehat}$'`
 
+## Weight Calibration
+
 At the end of a survey we may find ourselves in the undesirable situation that
 
- * Purely by chance, the sample is somewhat unbalanced: e.g. by chance we may have 
+ * **Purely by chance**, the sample is somewhat unbalanced: e.g. by chance we may have 
    selected many more males than females, or more large households than small ones, or
  * We may have had **unit nonresponse** - i.e. there may be selected units from
    which we have collected no data.  In the case of human subjects this may have
@@ -20,12 +22,48 @@ At the end of a survey we may find ourselves in the undesirable situation that
 In both cases we are in the situation that our sample, even when weighted, is
 not a good representation of the population from which it is drawn.  
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+nzpop <- read.csv("data/year-age-sex.csv")
+nzpop <- nzpop |>
+  filter(Year==2018)
+nzpop <- nzpop[nzpop$Age>=15 & nzpop$Age<=45,]
+idx <- nzpop$Age==45
+nzpop$count[idx] <- (1/5)*nzpop$count[idx]
+nzpop <- nzpop |>
+  mutate(AgeGrp=case_when(Age<=20 ~ "15-24",
+                          Age<=30 ~ "25-34",
+                          Age<=45 ~ "35-45"))
+nzpop <- nzpop |>
+  mutate(count=round(count)) |>
+  group_by(AgeGrp,Sex) |>
+  summarise(count=sum(count)) |>
+  as.data.frame()
+nzpop <- nzpop |> rename(Gender=Sex)
+nzpop$Gender <- factor(nzpop$Gender,levels=c("Male","Female"))
+levels(nzpop$Gender) <- tolower(levels(nzpop$Gender))
+total <- sum(nzpop$count)
+total.Gender <- tapply(nzpop$count, nzpop$Gender, sum)
+total.AgeGrp <- tapply(nzpop$count, nzpop$AgeGrp, sum)
+total.AgeGrp <- data.frame(AgeGrp=names(total.AgeGrp),Nh=total.AgeGrp)
+```
+
 ```{r echo=FALSE}
 surf <- read.csv("data/surf.csv")[,1:8]
+bigN <- total
+n <- nrow(surf)
+surf$Gender <- factor(surf$Gender, levels=c("male","female"))
+surf <- surf |>
+  mutate(AgeGrp=case_when(Age<=24 ~ "15-24",
+                          Age<=34 ~ "25-34",
+                          Age<=45 ~ "35-45"))
+surf$bigN <- bigN
+surf$weight <- bigN/n
+n.Gender <- tapply(surf$Gender, surf$Gender, length)
+sampweight <- bigN/n
 ```
 
 For example consider the SURF dataset, which is a synthetic sample of 200 individuals
-between the ages of 15 and 45.  The first 10 rows are shown below.
+between the ages of 15 and 45.  The first 10 rows are shown below.  
 
 ```{r echo=FALSE}
 surf |> slice_head(n=10) |>
@@ -36,45 +74,299 @@ surf |> slice_head(n=10) |>
 The dataset contains a mixture of numerical and categorical variables, all with very
 self explanatory names (except note that `Income` and `Hours` are weekly quantities, 
 and also that the income values are somewhat old!).  We'll treat it as a SRSWOR from
-the New Zealand population.  
+the New Zealand population between the ages of 15 and 45.  
+
+The total population in this age range is $N=`r total`$, the sample size is $n=`r n`$, 
+and so the weight of each sampled individual is 
+\[
+   w = \frac{N}{n} = {`r bigN`}{`r n`} = `r sprintf("%.1f",bigN/n)`
+\]
+Let's specify this simple random sampling design to R:
+```{r}
+surf.des <- svydesign(id=~1, fpc=~bigN, data=surf)
+```
+and then estimate the mean income:
+```{r}
+svymean(~Income, design=surf.des)
+```
+We should note that the mean income differs considerably between males and females.
+```{r}
+svyby(~Income, by=~Gender, design=surf.des, svymean)
+```
+
+```{r echo=FALSE}
+svyboxplot(Income~Gender, design=surf.des, main="Income by Gender", ylab="Weekly income")
+```
+
+Let's also note the distribution of the population by age and sex, as measured
+by the most recent census:
+```{r echo=FALSE}
+nzpoptab <- nzpop |> 
+  arrange(Gender) |>
+  pivot_wider(names_from="Gender", values_from="count") |>
+  as.data.frame()
+nzpoptab$Total <- apply(nzpoptab[,-1],1,sum)
+nzpoptab <- rbind(nzpoptab, 
+                  data.frame(AgeGrp="Total", rbind(apply(as.matrix(nzpoptab[,-1]),2,sum))))
+nzpoptab.pct <- as.data.frame(lapply(nzpoptab,
+  function(x) {
+    if(is.numeric(x)) return(sprintf("%.1f%%",100*x/total)) else (return(x))
+  }))
+nzpoptab |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+Or we can express these counts as percentages:
+```{r echo=FALSE}
+nzpoptab.pct |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+The proportions of males and females in the population are roughly equal in the population, 
+but in the sample they're not quite equal:
+```{r}
+svymean(~Gender, design=surf.des)
+```
+This has been caused by our having, by chance, sampled slightly more females than males.
+```{r}
+table(surf$Gender)
+```
+
+The consequence of this is that our estimate of the population mean income is 
+and underestimate, due to females earning less than males, and their being 
+slightly overrepresented in the sample.
+
+One obvious solution to this situation is to slightly upweight the males in the sample, and downweight
+the females, to take care of the imbalance.  Of course we only **know** about the 
+imbalance because we have the census counts which tell us that the proportions of
+males and females are roughly equal: otherwise we'd have no idea that there might be a problem.
+
+These external counts (external to the survey that is) are called **population benchmarks**, 
+and the weight adjustment that makes the weights match the benchmarks is called
+**poststratification**.  It's 'post-' here because we're making the stratification 
+(breaking into groups) **after** the survey has taken place.  Breaking the sample into 
+groups **beforehand**, and taking separate samples within each group is called stratified
+sampling.  But that is only possible if we know the group membership of sample members before
+we sample them - i.e. if the group membership information is available on the frame.  
+
+We have $n=`r n`$ individuals in a SRSWOR drawn from a population
+of size $N=`r bigN`$, with weights $w=`r bigN`/`r n`=`r sprintf("%.1f",bigN/n)`$.  These
+correctly add up to the population total
+\[
+   n \times w = n \times \frac{N}{n} = `r n`\times `r sprintf("%.1f",bigN/n)` = `r bigN`
+\]
+What we want is different weights for the males and females, so that they separately 
+add up to the total numbers of males $N_1=`r total.Gender[1]`$ and the total
+numbers of females $N_2=`r total.Gender[2]`$ in the population.  We can achieve this
+by computing new post-stratified weights using the known benchmarks $N_h$ and sample
+sizes $n_h$ in each of the post-strata, and computing new weights
+\[
+   w_h = \frac{N_h}{n_h}
+\]
+i.e. these are the weights we'd have used if we had actually carried out a
+stratified sample in the first place.
+
+```{r echo=FALSE}
+pstab <- data.frame(Gender=c("male","female"),
+                    SampWeight=sampweight,
+                    nh=n.Gender,
+                    Nh=total.Gender,
+                    PostStratWeight=total.Gender/n.Gender)
+rownames(pstab) <- NULL
+pstab |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+These new weights are now appropriately higher for males and lower for females.
+
+```{r echo=FALSE}
+Gender.benchmarks <- pstab[,c("Gender","Nh")]
+```
 
 
-
-## Calibration
+In R we can modify the weights in the design object using the `postStratify()` function. 
+We first need to create a data frame storing the benchmarks:
+```{r}
+Gender.benchmarks
+```
 
 ```{r}
+surf.des.ps <- postStratify(surf.des, strata=~Gender, population=Gender.benchmarks)
+```
+
+The orignal estimate of the proportions of males and females
+```{r}
+svymean(~Gender, design=surf.des)
+```
+has been modified to
+```{r}
+svymean(~Gender, design=surf.des.ps)
+```
+Notice that the Standard Errors here are zero: these proportions are no longer
+estimates, they have been imposed by our benchmarks.
+
+Then we can compare the orginal estimate of mean income
+```{r}
+svymean(~Income, surf.des)
+```
+with the post-stratified estimate
+```{r}
+svymean(~Income, surf.des.ps)
+```
+The estimate has been increased slightly as expected.  Also note that 
+the Standard Error has been reduced: this is often the case with
+post-stratified estimates: post-stratification makes the properties
+of different samples differ less than they otherwise would, and thereby 
+reduces our overall uncertainty.  
+
+Non-response can make these small chance differences even worse.
+Males and young people tend to have the lowest response rates in surveys.
+So let's see what happens to our mean estimate if we take our sample of 200 individuals
+and filter out 20% of the male respondents:
+```{r}
+set.seed(234)
+surf.nonresp <- surf
+surf.nonresp$Responds <- rbinom(nrow(surf),1,prob=ifelse(surf$Gender=="male",0.8,1.0))
+surf.nonresp <- surf.nonresp[surf.nonresp$Responds==1,]
+surf.nonresp$weight <- bigN/nrow(surf.nonresp)
+table(surf.nonresp$Gender)
+```
+
+We've now got a lot fewer males than females.  Let's see what this does to the 
+simple estimate of the population mean income:
+```{r}
+surf.nonresp.des <- svydesign(id=~1, fpc=~bigN, data=surf.nonresp)
+svymean(~Income, design=surf.nonresp.des)
+```
+
+The introduction of the non-response has led to a reduction in our original estimate
+from `r round(svymean(~Income, surf.des),2)` to `r round(svymean(~Income, surf.nonresp.des),2)`.
+
+Post-stratifying however
+```{r}
+surf.nonresp.des.ps <- postStratify(surf.nonresp.des, strata=~Gender, 
+                                    population=Gender.benchmarks)
+```
+leads to a dramatically improved estimate
+```{r}
+svymean(~Income, design=surf.nonresp.des.ps)
+```
+
+We know more than just the distribution of the population over Gender, we also know it over the
+three age groups.  So we can post-stratify by these variables too.
+
+```{r echo=FALSE}
+AgeGrp.Gender.benchmarks <- nzpop
+```
+
+We can store the AgeGrp/Gender benchmarks in a data frame `AgeGrp.Gender.benchmarks`:
+```{r echo=FALSE}
+AgeGrp.Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+and then post-stratify
+```{r}
+surf.nonresp.des.ps2 <- postStratify(surf.nonresp.des, strata=~AgeGrp*Gender, 
+                                     population=AgeGrp.Gender.benchmarks)
+svymean(~Income, design=surf.nonresp.des.ps2)
+```
+And this is estimate is going to be even better than before.
+
+However where should we stop?  Should we post-stratify by as many variables as we 
+possibly can?
+
+In general we need to ensure that we have enough individuals in the sample 
+in every cross-classified cell (in this case AgeGroup by Gender) to be able to 
+recalculate the weight.  Empty cells are going to cause us a problem, 
+since we'll be discarding the population weight associated
+with people of that type in the population who happen not to have turned up in the sample.
+
+In population surveys run by Statistics NZ we'll often see post-stratification by age 
+(in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.  
+
+### Poststratfication as a treatment for non-response {-}
+
+A warning here: post-stratification is often used to modify weights in the presence
+of non-response.  
+
+### Raking {-}
+
+We may not have full cross-classified benchmarks, for example we might know the
+totals by AgeGrp and totals by Gender, but not totals by AgeGrp and Gender simultaneously.
+In that case we can proceed iteratively: we post-stratify first by one variable, and
+then by other.  Each post-stratification on one variable messes up the post-stratification
+on the other.  But eventually the weights will converge to approximately match both sets
+of benchmarks.  This iteration is called **raking** (like raking a lawn one way, then other other), 
+or **Iterative Proportional Fitting**. 
+
+```{r echo=FALSE}
+AgeGrp.benchmarks <- total.AgeGrp
+```
+
+R implements raking in with the `rake()` function. We need a separate set of benchmarks
+for AgeGrp
+```{r echo=FALSE}
+AgeGrp.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+and for Gender
+```{r echo-FALSE}
+Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+With these we can rake the design:
+```{r}
+surf.nonresp.des.rake <- rake(surf.nonresp.des, 
+                              sample=list(~AgeGrp, ~Gender), 
+                              population=list(AgeGrp.benchmarks, Gender.benchmarks))
+```
+and then calculate our estimates
+```{r}
+svymean(~Income, design=surf.nonresp.des.rake)
+```
+
+
+### Another example {-}
+
+In the Academic Performance Indicator dataset we have full population information
+on types of School (`stype`=Elementary/Middle/High) and whether or not they
+met their year round performance indicators (`yr.rnd`=Yes/No).  These counts
+will be our benchmarks for post-stratification.
+
+```{r echo=FALSE}
 apipopc <- apipop[!is.na(apipop$enroll),]
 apipopc$stype <- factor(as.character(apipopc$stype),levels=c("E","M","H"))
 levels(apipopc$stype) <- c("Elementary","Middle","High")
 apipopc$yr.rnd[is.na(apipopc$yr.rnd)] <- "Yes"
 ```
 
-
-```{r}
-mean(apipopc$enroll)
-tapply(apipopc$enroll, apipopc$stype, mean)
-table(apipopc$stype)
-table(apipopc$stype)/nrow(apipopc)
-```
-
-
-```{r}
+The numbers of schools by type are in `stype.benchmnarks`
+```{r echo=FALSE}
 stype.benchmarks <- as.data.frame(table(apipopc$stype))
 names(stype.benchmarks) <- c("stype","Freq")
-stype.benchmarks
-sum(stype.benchmarks$Freq) # 6157
-
-yr.rnd.benchmarks <- as.data.frame(table(apipopc$yr.rnd))
-names(yr.rnd.benchmarks) <- c("yr.rnd","Freq")
-yr.rnd.benchmarks
-sum(yr.rnd.benchmarks$Freq) # 6157
-
-stype.yr.rnd.benchmarks <- as.data.frame(table(apipopc$stype, apipopc$yr.rnd))
-names(stype.yr.rnd.benchmarks) <- c("stype","yr.rnd","Freq")
-stype.yr.rnd.benchmarks
+stype.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+#sum(stype.benchmarks$Freq) # 6157
 ```
 
-Select a two stage cluster sample - make estimates
+The number of schools by achievement of year round objectives are in `yr.rnd.benchmarks`
+```{r echo=FALSE}
+yr.rnd.benchmarks <- as.data.frame(table(apipopc$yr.rnd))
+names(yr.rnd.benchmarks) <- c("yr.rnd","Freq")
+yr.rnd.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+#sum(yr.rnd.benchmarks$Freq) # 6157
+```
+
+and we also have these counts **cross-classified**, i.e. numbers of schools for 
+each combination of `stype` and `yr.rnd`:
+```{r echo=FALSE}
+stype.yr.rnd.benchmarks <- as.data.frame(table(apipopc$stype, apipopc$yr.rnd))
+names(stype.yr.rnd.benchmarks) <- c("stype","yr.rnd","Freq")
+stype.yr.rnd.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+Select a two stage cluster sample - and then make estimates of the mean school 
+size (`enroll`)
 ```{r}
 set.seed(111)
 api2sc <- apipopc |> 
@@ -93,13 +385,15 @@ api2sc.des.ps <- postStratify(api2sc.des, strata=~stype, population=stype.benchm
 svymean(~enroll, api2sc.des.ps)
 ```
 
-Postratify by stype x yr.rnd and reestimate
+Postratify by stype by yr.rnd and reestimate
 ```{r}
-api2sc.des.ps2 <- postStratify(api2sc.des, strata=~stype+yr.rnd, population=stype.yr.rnd.benchmarks)
+api2sc.des.ps2 <- postStratify(api2sc.des, strata=~stype+yr.rnd, 
+                               population=stype.yr.rnd.benchmarks)
 svymean(~enroll, api2sc.des.ps2)
 ```
 
-Poststratify by stype + yr.rnd (i.e. we only have the marginals) and reestimate
+Poststratify by stype + yr.rnd (i.e. we only have the marginals so we need to rake) 
+and reestimate
 ```{r}
 api2sc.des.rake <- rake(api2sc.des, 
                         sample=list(~stype, ~yr.rnd), 
@@ -107,13 +401,13 @@ api2sc.des.rake <- rake(api2sc.des,
 svymean(~enroll, api2sc.des.rake)
 ```
 
-```{r}
+```{r echo=FALSE}
 ff <- function(x) c(as.numeric(x), SE(x))
 ```
 
 
 Compare
-```{r}
+```{r echo=FALSE}
 ss <- rbind(
   c(mean(apipopc$enroll), 0),
   ff(svymean(~enroll, api2sc.des)), 
@@ -122,21 +416,15 @@ ss <- rbind(
   ff(svymean(~enroll, api2sc.des.rake))) 
 dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)"),
                      c("Estimate","SE"))
-ss
-```
-
-With replacement: specify weights only - same as 2SC estimate, but it gets SE wrong
-```{r}
-api2sc.des.wr <- svydesign(ids=~1, data=api2sc, weight=~weight) 
-svytable(~stype, design=api2sc.des.wr)
-svytable(~stype, design=api2sc.des.wr)/sum(api2sc$weight)
-svymean(~enroll, design=api2sc.des.wr)
-svyby(~enroll, ~stype, design=api2sc.des.wr, svymean)
+ss |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
 ## Replicate weights
 
-So we need replicate weights - generate these
+For some weight adjustments we no longer have a reliable method of computing
+the standard errors of our estimates.  This can occur when we have very 
+complex designs.  It can also be necessary when we don't have access to the frame, 
+and therefore don't have all the information we need to calculate standard errors.
 
 In such circumstances we often create multiple sets of weights in addition to the
 adjusted weights.  These **replicate weights** are what are used to estimate the
@@ -149,30 +437,37 @@ still add up to the same total.
 ```{r}
 api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
 ```
-Informative warning here: no fpc can apply at second stage or deeper.
+There is an informative warning here: no fpc can apply at second stage of selection 
+(nor any subsequent stages).  
 
+(Also note that the method "JK1" is used for unstratified designs.  For stratified
+designs the jackknife is specified by "JKn": we don't just drop out one PSU over 
+the whole sample in each replicate, instead we drop out a PSU from every stratum.)
+
+Here are the first 3 rows and 8 columns: each row refers to a district `dnum`
+and each column is a replicate.
 ```{r}
-names(api2sc.jkdes)
-api2sc.jkdes$repweights$weights[1:3,]  # an n x n matrix of weights: each column is a replicate, each row is a first stage unit
+api2sc.jkdes$repweights$weights[1:3,1:8]
 ```
-Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one `dnum` out for each replicate.
-These need to be multiplied by the original sampling weight to get the actual weights.
+Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one of the 40 districts `dnum` out for 
+each replicate, setting all units in that district to zero.
+These are scaling weights, and theyneed to be multiplied by the original sampling weight 
+to get the actual weights.
 
-Use JK1 for unstratified designs, JKn for stratified designs
 
 ```{r}
 svymean(~enroll, design=api2sc.jkdes)
 ```
-Better estimate of the SE.
+This gives us a better estimate of the SE.
 
-We can poststratify these weights by the way: we poststratify each
-replicate weight set in addition to the probability weights themselves.
+If we are needing to post-stratify our weights to account for non-response, then
+we need also to poststratify each set of replicate weights.
 
 ```{r}
 api2sc.jkdes.ps <- postStratify(api2sc.jkdes, strata=~stype, population=stype.benchmarks)
 svymean(~enroll, design=api2sc.jkdes.ps)
 ```
-We get immediate reduction of the standard errors
+Here post-stratification gives us a strong reduction of the standard errors
 
 Comparison
 ```{r}
@@ -188,15 +483,19 @@ ss <- rbind(
 dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
                        "JK1","JK1+PS(stype)"),
                      c("Estimate","SE"))
-ss
-```
-Take a look at the replicate weights after post-stratification
-```{r}
-api2sc.jkdes.ps$repweights[1:3,]
+ss |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
-We might have been **supplied** these weights, someone else might have
-created them.  In which case our dataset would look like this
+Let's take a look at the replicate weights after post-stratification
+```{r}
+api2sc.jkdes.ps$repweights$weights[1:3,1:8]
+```
+
+We might have been **supplied** replicate weights, i.e. someone else might have
+created them.  This is commonly the case when we have been granted access
+to a data set collected by a government department.
+
+In which case our dataset would look like this
 ```{r}
 fwmat <- api2sc.jkdes.ps$repweights$weights[api2sc.jkdes.ps$repweights$index,]
 colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
@@ -268,7 +567,7 @@ There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication.  Some
 of these have multiple variants.  We don't need to worry about these.
 
-## Demonstration of ps SE improvement
+### Demonstration of ps SE improvement
 
 ```{r}
 set.seed(222)

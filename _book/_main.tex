@@ -161,7 +161,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-24}
+\date{2026-04-26}
 
 \begin{document}
 \maketitle
@@ -204,6 +204,17 @@
 
 \begin{verbatim}
 ## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Matrix'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:tidyr':
+## 
+##     expand, pack, unpack
 \end{verbatim}
 
 \begin{verbatim}
@@ -382,8 +393,8 @@ Use of \texttt{sample()} and other simulation methods in R for a variety of desi
   Analyse data and present results from a survey
 \end{itemize}
 
-\subsection*{Test 2 (30\%) {[}assessment period{]} {[}1.5 hours, closed book{]}}\label{test-2-30-assessment-period-1.5-hours-closed-book}
-\addcontentsline{toc}{subsection}{Test 2 (30\%) {[}assessment period{]} {[}1.5 hours, closed book{]}}
+\subsection*{Test 2 (25\%) {[}assessment period{]} {[}1.5 hours, closed book{]}}\label{test-2-25-assessment-period-1.5-hours-closed-book}
+\addcontentsline{toc}{subsection}{Test 2 (25\%) {[}assessment period{]} {[}1.5 hours, closed book{]}}
 
 \begin{itemize}
 \tightlist
@@ -1325,6 +1336,11 @@ long time.
 A simpler way to solve this is to assign each house a distinct random number
 between 0 and 1, and then sort the frame in order of the random numbers.
 
+Our sample of \(n\) units is just the first \(n\) units in the sorted frame.
+Since the random numbers assigned have no correlation with any property of the
+units on the frame, then the top \(n\) units of of the sorted frame are a
+simple random sample from the frame.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{bigN }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# population size}
@@ -1493,7 +1509,7 @@ unit is selected.
 
 In this sample we've drawn Unit 3 twice.
 
-If \(n\) is small and \(bigN\) is large the probability of repeats is small. But if a repeat
+If \(n\) is small and \(N\) is large the probability of repeats is small. But if a repeat
 happens we of course do not make our selected household repeat the questionnaire, instead
 we count them twice (or as many times as they are selected) in our analysis.
 
@@ -2141,7 +2157,20 @@ Here \texttt{(Intercept)} is the estimate for \(\mu\), the population mean.\\
 The `residual standard error' in the R output is actually what we'd rather
 call \(\widehat{\sigma}\), our estimate of the standard deivation \(\sigma\).
 
-The confidence interval is only valid if the model in equation \eqref{eq:simplelinearmodel}
+We can get hold of this value from a fitted \texttt{lm()} object using the \texttt{sigma()}
+function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sigma}\NormalTok{(lm1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 31.13147
+\end{verbatim}
+
+The confidence interval anove is only valid if the model in equation \eqref{eq:simplelinearmodel}
 holds: i.e.~if the data are normally distributed about the mean. The histogram
 in Figure \ref{fig:starwarssample} suggests that this is not the case however, since
 there is a clear outlier at low height.
@@ -2181,6 +2210,15 @@ if we draw a simple random sample without replacement of size \(n\) there are
 possible samples: i.e.~the number of ways it is possible to draw \(n\) objects
 from a collection of \(N\) without regard to the order they are selected.
 
+\begin{quote}
+Recall that \(n!\) is the factorial of \(n\): the product of all integers
+from \(n\) down to \(1\):
+\[
+    n! = n\times(n-1)\times(n-2)\times ... \times 2 \times 1
+\]
+So \(5!=5\times 4\times 3\times 2\times 1=120\).
+\end{quote}
+
 In our example of selecting \(n=20\) from \(N=87\) there are an astronomical
 number of possible samples:
 \[
@@ -2190,7 +2228,7 @@ There is of course only one way to select a census though:
 \[  
    \binom{87}{87} = \frac{87!}{87!0!} = 1
 \]
-(using the at first face slightly annoying definition 0!=1). Since there's only
+(using the at first face slightly annoying convention that 0!=1). Since there's only
 one possible sample when we're drawing a census the variation among sample estimates
 from different samples is zero: i.e.~the standard error is zero.
 
@@ -2273,7 +2311,7 @@ Sampling begins with the sample frame - usually this is a \textbf{list} of the
 members, or \textbf{units}, which make up the population.
 
 The list contains at minimum some \textbf{identifier} of each unit, which enables
-it to be found/contacted/measured once it has been selected, and possibly
+it to be found/contacted/measured once it has been selected, and may contain
 a lot of other information too.
 
 Data that we have on the frame is called \textbf{auxiliary information}: it is
@@ -2365,7 +2403,7 @@ The \textbf{expected value} of each indicator variable is \(\pi_i\)
 \end{eqnarray}
 Each selected sample member carries a \textbf{sample weight} which is the number of units
 in the population that that unit represents. These weights are defined as the
-inverses of the selection probabilities.
+\textbf{inverses of the selection probabilities}.
 \[
    W_i = \frac{1}{\pi_i}
 \]
@@ -2598,9 +2636,9 @@ sample designs, and it appears nested inside many more complex designs as we'll 
 We have a population of size \(N\) which is fully enumerated (i.e.~fully listed), and
 we want to select a sample of size \(n\).
 
-The defining property of a SRSWOR is that all samples of size \(n\) have an equal chance
-of selection. A \textbf{consequence} of this definition is that all population units have
-the same chance of selection.
+The defining property of a SRSWOR is that \textbf{all samples of size \(n\)} have an equal chance
+of selection. A \textbf{consequence} of this definition is that \textbf{all population units} have
+an equal chance of selection.
 
 There are
 \[
@@ -2737,7 +2775,7 @@ And here is a SRSWOR of \(n=5\) airports
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-64}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-65}Sample of airports (SRSWOR)}
 \centering
 \begin{tabular}[t]{r|l|l|l|l|r|r|r|r}
 \hline
@@ -2773,7 +2811,7 @@ If \(n\) is tiny compared to \(N\), \(p_i\) is approximately \(n/N\) which is th
 probability. In practice we assign a weight of \(N/n\) to each unit as it is selected, so if unit
 \(i\) is selected \(m_i\) times then it ends up with a weight of
 \[
-   w_i = m_\frac{N}{n}
+   w_i = m\frac{N}{n}
 \]\\
 If we use the approximate weights calculated in this way we have what is known as the
 Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator. However we think of
@@ -2833,7 +2871,7 @@ or as a function
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-68}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-69}Sample of airports (SRSWOR)}
 \centering
 \begin{tabular}[t]{r|l|l|l|l|r|r|r|r}
 \hline
@@ -3002,7 +3040,7 @@ United States & USA & 2023 & 343477330 & 0.0424625 & 236 & 2 & 47.2\\
 \section{Linear Systematic Random Sample (LSRS)}\label{linear-systematic-random-sample-lsrs}
 
 This design is often used in cases where the population is not fully enumerated, but is
-presented to us in the form of a queue. For example we might want to select one in ten
+presented to us in the form of an ordered list or a queue. For example we might want to select one in ten
 passengers cars checking in for a ferry crossing. Another example is where there is information
 in the ordering of a list: for example a list might be sorted from youngest to oldest, or
 sorted from north to south. We can space out our sample down the list, avoiding the chance
@@ -3032,7 +3070,7 @@ but in fact this is a special case of a one-stage cluster sample (1SC, see below
 
 }
 
-\caption{Linear Systematic Random Sample (LSRS)}\label{fig:lsrs}
+\caption{Linear Systematic Random Sample (LSRS).  Note that the sample is spaced out a regular intervals.}\label{fig:lsrs}
 \end{figure}
 
 Note that if there are \(N\) units but \(N\) is not an exact multiple of the skip \(k\), then
@@ -3155,7 +3193,7 @@ take a LSRS of \(n=5\) units.
 
 \begin{table}
 \centering
-\caption{\label{tab:unnamed-chunk-78}Sample of airports (SRSWOR)}
+\caption{\label{tab:unnamed-chunk-79}Sample of airports (SRSWOR)}
 \centering
 \begin{tabular}[t]{r|l|l|l|l|r|r|r}
 \hline
@@ -3235,8 +3273,9 @@ Stratified sampling is done for a number of reasons
   they are selected with low probability: since they resemble each other more, and
   one can stand in for another.
 
-  Having a strata designed so that the units within the strata resemble each other
-  strongly (one can stand in for another easily), but where units in different
+  The best stratified designs have strata designed so that the units within each
+  stratum resemble each other strongly (one can stand in for another easily),
+  but where units in different
   strata differ strongly from each other. For the same sample size as a SRSWOR
   stratified designs can sometimes achieve much much smaller standard errors.
 \item
@@ -3474,7 +3513,8 @@ Wellington & 13 & 281 & 21.61538 & 237;258;1189;1651;2669;2818;2876;2911;3015;30
 \end{tabular}
 \end{table}
 
-PPSWR with Equal Allocation
+PPSWR with Equal Allocation (Schools are selected within strata with probability
+propotional to the number of enrolled students \texttt{Total}.)
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3555,10 +3595,10 @@ additional house you survey in a street you're not really getting as much new
 information as if you were to survey an additional house somewhere else in the
 city.
 
-For that reason cluster samples have to be larger than SRS to achieve the
+For that reason cluster samples have to have larger sample sizes than SRS to achieve the
 same accuracy of their estimates.
 
-Note that it makes no sense to cluster if there is no saving to be made regarding
+\textbf{Note} that it makes no sense to cluster if there is no saving to be made regarding
 cost or some other equivalent operational consideration. If we are doing a phone
 survey, where no travel at all is involved, then clustering doesn't make any sense.
 
@@ -3610,7 +3650,8 @@ sample size: we might select by chance a set of very large
 clusters, or a set of very small clusters.
 
 In stratified sampling we want to make the strata as different from
-one another as possible, and to be as internally homogeneous.\\
+one another as possible, and to be as internally homogeneous.
+
 In cluster sampling it's the reverse situation: we want our clusters to be internally
 diverse, and for that diversity to be present as far as possible within
 every cluster. This is because we're only selecting a few clusters, and
@@ -3700,7 +3741,7 @@ Whau Local Board Area & 24 & 42;78;83;84;781;941;1206;1212 ...\\
 \section{Two stage cluster sampling (2SC)}\label{two-stage-cluster-sampling-2sc}
 
 The obvious drawback of the One Stage cluster design is that we are getting
-a lot of information from clusters which may be very homogeneous. This drives
+a lot of information from clusters which may be very internally homogeneous. This drives
 the inefficiency of the design: we're wasting a lot of our sampling effort.
 
 An obvious solution is to select a set of clusters, and then only take a sample of units
@@ -3729,7 +3770,7 @@ Sampling at both stages can be by any method, though SRSWOR or PPSWR are the mos
 \end{figure}
 
 We use the same notation as in one stage clustering: there are \(N\) PSUS of
-which select \(n\), and in PSU \(i\) there are \(M_i\) PSUs, of which we select \(m_i\).
+which select \(n\), and in PSU \(i\) there are \(M_i\) SSUs, of which we select \(m_i\).
 The total number of SSUs is in all of the PSUs in the population is
 \[
    M = \sum_{i=1}^N M_i
@@ -4155,11 +4196,11 @@ Our data aren't clustered, so the \texttt{id} variable (which identifies cluster
 
 The estimated mean is 334.48, which is of course
 exactly equal to the population mean - and note that the standard error is zero:
-censuses have no sampling error. We've measured everything there is to measure
+\textbf{censuses have no sampling error}. We've measured everything there is to measure
 so we have no uncertainty.
 
 We've requested \texttt{Deff=TRUE}, and have got a Deff value of NaN, which means
-not able to be calculated. We'll discuss what this means later on.
+the Deff was not able to be calculated. We'll discuss what this means later on.
 
 If we had left out the \texttt{fpc} command
 
@@ -4218,6 +4259,27 @@ Let's draw a sample of \(n=60\) schools from the population by SRSWOR.
 \end{Highlighting}
 \end{Shaded}
 
+Here are the top 5 rows of the 60 in the sample
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l|l|l|r|r}
+\hline
+School\_Id & Org\_Name & Add2\_City & Regional\_Council & bigN & weight\\
+\hline
+3193 & Hampden Street School & Nelson & Nelson Region & 2503 & 41.71667\\
+\hline
+1519 & Sunnyvale School & Waitakere & Auckland Region & 2503 & 41.71667\\
+\hline
+202 & Palmerston North Boys' High School & Palmerston North & Manawatū-Whanganui Region & 2503 & 41.71667\\
+\hline
+1234 & Bombay School & Bombay & Auckland Region & 2503 & 41.71667\\
+\hline
+3396 & Kahikatea Kirkwood Intermediate & Christchurch & Canterbury Region & 2503 & 41.71667\\
+\hline
+\end{tabular}
+\end{table}
+
 To specify the design we use the same syntax as above:
 
 \begin{Shaded}
@@ -4240,7 +4302,7 @@ Estimating the mean school size is also just the same:
 \end{verbatim}
 
 This is the mean of a genuine sample now, so we have an estimated mean value that
-differs from the truth, and the standard error is gauge of its accuracy.
+differs from the truth, and the standard error is the gauge of its accuracy.
 
 The standard error comes from the finite population corrected formula:
 
@@ -4429,6 +4491,8 @@ We can now return to estimating the mean school size
 ## Total 337.235  39.972 0.6816
 \end{verbatim}
 
+\subsection{Design Effect}\label{design-effect}
+
 Now it's finally time to talk about the \textbf{Design Effect}, or the Deff for short.
 
 The Deff of an estimator \(\widehat{T}\) of a population characteristic \(T\) in
@@ -4454,15 +4518,15 @@ Note that
 \item
   We have a different Deff for every estimate we make from a survey.
 \item
-  A Deff\$\textless\$1 means that the Standard Errors are smaller than what
+  A Deff\textless1 means that the Standard Errors are smaller than what
   we'd get in SRSWOR. A small Deff indicates a \textbf{more efficient} design.
 \item
   A Deff of 1 means the design is no better than SRSWOR - and of course
   (look back above) the Deffs of all estimates in SRSWOR are 1 by definition.
 \item
-  If we're dealing with a census, then the Standard Error is zero,
+  If we're dealing with a \textbf{census}, then the Standard Error is zero,
   and in any case there's no difference between designs, so the Deff
-  isn't defined.
+  isn't defined. (That's why it was \texttt{NaN} or \texttt{Inf} in our census examples.)
 \item
   \textbf{Stratified designs} can achieve Deffs much much less than 1 if their strata
   are well defined to be informative about the estimates of interest. e.g.
@@ -4549,6 +4613,32 @@ and the second stage units (the SSUs: these are Schools).
 ## Total 486.981  84.261 2.1739
 \end{verbatim}
 
+This design specification has the fpc specified at both stages of selection,
+and assumes SRSWOR at both stages. The \texttt{survey} package currently only allows for the analysis
+of two stage cluster designs with PPSWR at the first stage of selection. We'll stick
+to considering designs with SRSWOR at both stages.
+
+For the record, this is how to select a two stage cluster sample with PPSWR at the
+first stage, and how to specify its sample design in R:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.ppswr }\OtherTok{\textless{}{-}}\NormalTok{ schools }\SpecialCharTok{|\textgreater{}} \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }
+                                           \AttributeTok{method1=}\StringTok{"PPSWR"}\NormalTok{, }\AttributeTok{sizevar1=}\StringTok{"Total"}\NormalTok{,}
+                                           \AttributeTok{cfraction=}\FloatTok{0.20}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }
+                                     \AttributeTok{clustervar=}\StringTok{"Territorial\_Authority"}\NormalTok{)}
+\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.ppswr.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority}\SpecialCharTok{+}\NormalTok{School\_Id, }\AttributeTok{data=}\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.ppswr, }
+                                   \AttributeTok{weight=}\SpecialCharTok{\textasciitilde{}}\NormalTok{weight,}
+                                   \AttributeTok{survey.lonely.psu=}\StringTok{"remove"}\NormalTok{)}
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Total, }\AttributeTok{design=}\NormalTok{schools}\FloatTok{.2}\NormalTok{sc.ppswr.des, }\AttributeTok{deff=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean      SE   DEff
+## Total 437.854  80.806 1.6635
+\end{verbatim}
+
 \section{Stratified two stage cluster design}\label{stratified-two-stage-cluster-design}
 
 Finally here is a stratified two stage sample of schools within TA's with Regions.
@@ -4566,7 +4656,8 @@ The design is the same as the two stage cluster sample, except we add the stratu
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{schools.st2sc.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority}\SpecialCharTok{+}\NormalTok{School\_Id, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Region, }\AttributeTok{data=}\NormalTok{schools.st2sc, }
+\NormalTok{schools.st2sc.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Territorial\_Authority}\SpecialCharTok{+}\NormalTok{School\_Id, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Region, }
+                               \AttributeTok{data=}\NormalTok{schools.st2sc, }
                                \AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN1}\SpecialCharTok{+}\NormalTok{bigN2,}
                                \AttributeTok{survey.lonely.psu=}\StringTok{"remove"}\NormalTok{)}
 \end{Highlighting}
@@ -4847,11 +4938,11 @@ The basic workhorse for the display of numerical variables is the histogram
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-144-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-147-1} 
 
 }
 
-\caption{Weighted histogram of API (2000) scores}\label{fig:unnamed-chunk-144}
+\caption{Weighted histogram of API (2000) scores}\label{fig:unnamed-chunk-147}
 \end{figure}
 
 Note that this histogram differs strongly from the simple histogram
@@ -4867,11 +4958,11 @@ of the sample values:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-145-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-148-1} 
 
 }
 
-\caption{Unweighted histogram of API (2000) sample data}\label{fig:unnamed-chunk-145}
+\caption{Unweighted histogram of API (2000) sample data}\label{fig:unnamed-chunk-148}
 \end{figure}
 
 a warning to us that with survey data we can go badly astray if we ignore
@@ -4888,11 +4979,11 @@ Boxplots are an alternative to histograms:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-146-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-149-1} 
 
 }
 
-\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-146}
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-149}
 \end{figure}
 
 \ldots{} especially if we want to display variables divided by a category:
@@ -4907,11 +4998,11 @@ Boxplots are an alternative to histograms:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-147-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-150-1} 
 
 }
 
-\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-147}
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-150}
 \end{figure}
 
 If we have two continuous variables we can plot them as a scatterplot, showing
@@ -4926,11 +5017,11 @@ the weights of each observation:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-148-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-151-1} 
 
 }
 
-\caption{Distribution of API scores in 1999 and 2000}\label{fig:unnamed-chunk-148}
+\caption{Distribution of API scores in 1999 and 2000}\label{fig:unnamed-chunk-151}
 \end{figure}
 
 \subsection*{Estimation}\label{estimation}
@@ -4963,7 +5054,7 @@ The \texttt{jtools} package allows us to estimate the population standard deviat
 ## api00    136.83
 \end{verbatim}
 
-(Pause a minute and remind yourself of the difference between a standard deviation and
+(\textbf{Pause a minute} and remind yourself of the difference between a standard deviation and
 a standard error.)
 
 We can estimates means for a set of separate variables, using a perhaps uninintuitive notation:
@@ -5009,11 +5100,11 @@ A \textbf{dotchart} is a nice way of showing the estimated means and their confi
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-156-1} 
 
 }
 
-\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-153}
+\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-156}
 \end{figure}
 
 If we want to test statistical hypotheses about differences between groups
@@ -5149,6 +5240,8 @@ The standard errors can be directly extracted using \texttt{SE()}
 ## [1] 29.92660 45.09132 17.69417
 \end{verbatim}
 
+\subsection{Relative Sampling Errors (RSEs)}\label{relative-sampling-errors-rses}
+
 The \textbf{relative standard errors}, also known as \textbf{relative sampling errors}
 (RSEs) can be extracted by \texttt{cv()}:
 
@@ -5218,11 +5311,11 @@ using the \texttt{svymean()} function:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-163-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-166-1} 
 
 }
 
-\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-163}
+\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-166}
 \end{figure}
 
 \begin{Shaded}
@@ -5308,11 +5401,11 @@ These confidence intervals are symmetric about the point estimates:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-167-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-170-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-167}
+\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-170}
 \end{figure}
 
 \begin{Shaded}
@@ -5385,11 +5478,11 @@ it's somewhat fiddly with the raw \texttt{survey} package:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-169-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-172-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-169}
+\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-172}
 \end{figure}
 
 \begin{Shaded}
@@ -5455,11 +5548,11 @@ Which can be displayed with a side-by-side barplot
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-171-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-174-1} 
 
 }
 
-\caption{Counts of schools meeting targets, by school type}\label{fig:unnamed-chunk-171}
+\caption{Counts of schools meeting targets, by school type}\label{fig:unnamed-chunk-174}
 \end{figure}
 
 A test of association is given by the weighted Chi-Square test
@@ -5533,12 +5626,14 @@ Here we can see that \texttt{stype} is contributing significantly to the fit of 
 
 \chapter{Weight adjustments}\label{weight-adjustments}
 
+\section{Weight Calibration}\label{weight-calibration}
+
 At the end of a survey we may find ourselves in the undesirable situation that
 
 \begin{itemize}
 \tightlist
 \item
-  Purely by chance, the sample is somewhat unbalanced: e.g.~by chance we may have
+  \textbf{Purely by chance}, the sample is somewhat unbalanced: e.g.~by chance we may have
   selected many more males than females, or more large households than small ones, or
 \item
   We may have had \textbf{unit nonresponse} - i.e.~there may be selected units from
@@ -5551,132 +5646,537 @@ In both cases we are in the situation that our sample, even when weighted, is
 not a good representation of the population from which it is drawn.
 
 For example consider the SURF dataset, which is a synthetic sample of 200 individuals
-between the ages of
+between the ages of 15 and 45. The first 10 rows are shown below.
 
-\section{Calibration}\label{calibration}
+\begin{table}
+\centering
+\begin{tabular}[t]{r|l|l|r|r|r|l|l|l|r|r}
+\hline
+Personid & Gender & Qualification & Age & Hours & Income & Marital & Ethnicity & AgeGrp & bigN & weight\\
+\hline
+1 & female & school & 15 & 4 & 87 & never & European & 15-24 & 1972719 & 9863.595\\
+\hline
+2 & female & vocational & 40 & 42 & 596 & married & European & 35-45 & 1972719 & 9863.595\\
+\hline
+3 & male & none & 38 & 40 & 497 & married & Maori & 35-45 & 1972719 & 9863.595\\
+\hline
+4 & female & vocational & 34 & 8 & 299 & never & European & 25-34 & 1972719 & 9863.595\\
+\hline
+5 & female & school & 45 & 16 & 301 & married & European & 35-45 & 1972719 & 9863.595\\
+\hline
+6 & male & degree & 45 & 50 & 1614 & married & European & 35-45 & 1972719 & 9863.595\\
+\hline
+7 & female & none & 36 & 12 & 201 & other & European & 35-45 & 1972719 & 9863.595\\
+\hline
+8 & male & degree & 35 & 45 & 934 & previously & European & 35-45 & 1972719 & 9863.595\\
+\hline
+9 & female & vocational & 38 & 26 & 624 & married & European & 35-45 & 1972719 & 9863.595\\
+\hline
+10 & male & school & 37 & 50 & 533 & previously & European & 35-45 & 1972719 & 9863.595\\
+\hline
+\end{tabular}
+\end{table}
+
+The dataset contains a mixture of numerical and categorical variables, all with very
+self explanatory names (except note that \texttt{Income} and \texttt{Hours} are weekly quantities,
+and also that the income values are somewhat old!). We'll treat it as a SRSWOR from
+the New Zealand population between the ages of 15 and 45.
+
+The total population in this age range is \(N=\ensuremath{1.972719\times 10^{6}}\), the sample size is \(n=200\),
+and so the weight of each sampled individual is
+\[
+   w = \frac{N}{n} = {\ensuremath{1.972719\times 10^{6}}}{200} = 9863.6
+\]
+Let's specify this simple random sampling design to R:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{apipopc }\OtherTok{\textless{}{-}}\NormalTok{ apipop[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(apipop}\SpecialCharTok{$}\NormalTok{enroll),]}
-\NormalTok{apipopc}\SpecialCharTok{$}\NormalTok{stype }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype),}\AttributeTok{levels=}\FunctionTok{c}\NormalTok{(}\StringTok{"E"}\NormalTok{,}\StringTok{"M"}\NormalTok{,}\StringTok{"H"}\NormalTok{))}
-\FunctionTok{levels}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Elementary"}\NormalTok{,}\StringTok{"Middle"}\NormalTok{,}\StringTok{"High"}\NormalTok{)}
-\NormalTok{apipopc}\SpecialCharTok{$}\NormalTok{yr.rnd[}\FunctionTok{is.na}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{yr.rnd)] }\OtherTok{\textless{}{-}} \StringTok{"Yes"}
+\NormalTok{surf.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN, }\AttributeTok{data=}\NormalTok{surf)}
 \end{Highlighting}
 \end{Shaded}
 
+and then estimate the mean income:
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{mean}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{enroll)}
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{design=}\NormalTok{surf.des)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 619.0469
+##          mean     SE
+## Income 575.36 24.508
 \end{verbatim}
+
+We should note that the mean income differs considerably between males and females.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{tapply}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{enroll, apipopc}\SpecialCharTok{$}\NormalTok{stype, mean)}
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{design=}\NormalTok{surf.des, svymean)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Elementary     Middle       High 
-##   426.9616   912.0892  1349.9654
+##        Gender   Income       se
+## male     male 732.8172 37.02642
+## female female 438.5047 26.16272
 \end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-184-1.pdf}}
+
+Let's also note the distribution of the population by age and sex, as measured
+by the most recent census:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r}
+\hline
+AgeGrp & male & female & Total\\
+\hline
+15-24 & 324888 & 310032 & 634920\\
+\hline
+25-34 & 337845 & 340668 & 678513\\
+\hline
+35-45 & 321358 & 337928 & 659286\\
+\hline
+Total & 984091 & 988628 & 1972719\\
+\hline
+\end{tabular}
+\end{table}
+
+Or we can express these counts as percentages:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|l|l}
+\hline
+AgeGrp & male & female & Total\\
+\hline
+15-24 & 16.5\% & 15.7\% & 32.2\%\\
+\hline
+25-34 & 17.1\% & 17.3\% & 34.4\%\\
+\hline
+35-45 & 16.3\% & 17.1\% & 33.4\%\\
+\hline
+Total & 49.9\% & 50.1\% & 100.0\%\\
+\hline
+\end{tabular}
+\end{table}
+
+The proportions of males and females in the population are roughly equal in the population,
+but in the sample they're not quite equal:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{table}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype)}
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{design=}\NormalTok{surf.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               mean     SE
+## Gendermale   0.465 0.0354
+## Genderfemale 0.535 0.0354
+\end{verbatim}
+
+This has been caused by our having, by chance, sampled slightly more females than males.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(surf}\SpecialCharTok{$}\NormalTok{Gender)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## 
-## Elementary     Middle       High 
-##       4397       1009        751
+##   male female 
+##     93    107
+\end{verbatim}
+
+The consequence of this is that our estimate of the population mean income is
+and underestimate, due to females earning less than males, and their being
+slightly overrepresented in the sample.
+
+One obvious solution to this situation is to slightly upweight the males in the sample, and downweight
+the females, to take care of the imbalance. Of course we only \textbf{know} about the
+imbalance because we have the census counts which tell us that the proportions of
+males and females are roughly equal: otherwise we'd have no idea that there might be a problem.
+
+These external counts (external to the survey that is) are called \textbf{population benchmarks},
+and the weight adjustment that makes the weights match the benchmarks is called
+\textbf{poststratification}. It's `post-' here because we're making the stratification
+(breaking into groups) \textbf{after} the survey has taken place. Breaking the sample into
+groups \textbf{beforehand}, and taking separate samples within each group is called stratified
+sampling. But that is only possible if we know the group membership of sample members before
+we sample them - i.e.~if the group membership information is available on the frame.
+
+We have \(n=200\) individuals in a SRSWOR drawn from a population
+of size \(N=\ensuremath{1.972719\times 10^{6}}\), with weights \(w=\ensuremath{1.972719\times 10^{6}}/200=9863.6\). These
+correctly add up to the population total
+\[
+   n \times w = n \times \frac{N}{n} = 200\times 9863.6 = \ensuremath{1.972719\times 10^{6}}
+\]
+What we want is different weights for the males and females, so that they separately
+add up to the total numbers of males \(N_1=\ensuremath{9.84091\times 10^{5}}\) and the total
+numbers of females \(N_2=\ensuremath{9.88628\times 10^{5}}\) in the population. We can achieve this
+by computing new post-stratified weights using the known benchmarks \(N_h\) and sample
+sizes \(n_h\) in each of the post-strata, and computing new weights
+\[
+   w_h = \frac{N_h}{n_h}
+\]
+i.e.~these are the weights we'd have used if we had actually carried out a
+stratified sample in the first place.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+Gender & SampWeight & nh & Nh & PostStratWeight\\
+\hline
+male & 9863.595 & 93 & 984091 & 10581.624\\
+\hline
+female & 9863.595 & 107 & 988628 & 9239.514\\
+\hline
+\end{tabular}
+\end{table}
+
+These new weights are now appropriately higher for males and lower for females.
+
+In R we can modify the weights in the design object using the \texttt{postStratify()} function.
+We first need to create a data frame storing the benchmarks:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Gender.benchmarks}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Gender     Nh
+## 1   male 984091
+## 2 female 988628
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{table}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype)}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(apipopc)}
+\NormalTok{surf.des.ps }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(surf.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{population=}\NormalTok{Gender.benchmarks)}
+\end{Highlighting}
+\end{Shaded}
+
+The orignal estimate of the proportions of males and females
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{design=}\NormalTok{surf.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               mean     SE
+## Gendermale   0.465 0.0354
+## Genderfemale 0.535 0.0354
+\end{verbatim}
+
+has been modified to
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{design=}\NormalTok{surf.des.ps)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 mean SE
+## Gendermale   0.49885  0
+## Genderfemale 0.50115  0
+\end{verbatim}
+
+Notice that the Standard Errors here are zero: these proportions are no longer
+estimates, they have been imposed by our benchmarks.
+
+Then we can compare the orginal estimate of mean income
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, surf.des)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean     SE
+## Income 575.36 24.508
+\end{verbatim}
+
+with the post-stratified estimate
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, surf.des.ps)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          mean     SE
+## Income 585.32 22.651
+\end{verbatim}
+
+The estimate has been increased slightly as expected.
+
+Non-response can make these small chance differences even worse.
+Males and young people tend to have the lowest response rates in surveys.
+So let's see what happens to our mean estimate if we take our sample of 200 individuals
+and filter out 20\% of the male respondents:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{234}\NormalTok{)}
+\NormalTok{surf.nonresp }\OtherTok{\textless{}{-}}\NormalTok{ surf}
+\NormalTok{surf.nonresp}\SpecialCharTok{$}\NormalTok{Responds }\OtherTok{\textless{}{-}} \FunctionTok{rbinom}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(surf),}\DecValTok{1}\NormalTok{,}\AttributeTok{prob=}\FunctionTok{ifelse}\NormalTok{(surf}\SpecialCharTok{$}\NormalTok{Gender}\SpecialCharTok{==}\StringTok{"male"}\NormalTok{,}\FloatTok{0.8}\NormalTok{,}\FloatTok{1.0}\NormalTok{))}
+\NormalTok{surf.nonresp }\OtherTok{\textless{}{-}}\NormalTok{ surf.nonresp[surf.nonresp}\SpecialCharTok{$}\NormalTok{Responds}\SpecialCharTok{==}\DecValTok{1}\NormalTok{,]}
+\NormalTok{surf.nonresp}\SpecialCharTok{$}\NormalTok{weight }\OtherTok{\textless{}{-}}\NormalTok{ bigN}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(surf.nonresp)}
+\FunctionTok{table}\NormalTok{(surf.nonresp}\SpecialCharTok{$}\NormalTok{Gender)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## 
-## Elementary     Middle       High 
-##  0.7141465  0.1638785  0.1219750
+##   male female 
+##     75    107
 \end{verbatim}
+
+We've now got a lot fewer males than females. Let's see what this does to the
+simple estimate of the population mean income:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{stype.benchmarks }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype))}
-\FunctionTok{names}\NormalTok{(stype.benchmarks) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"stype"}\NormalTok{,}\StringTok{"Freq"}\NormalTok{)}
-\NormalTok{stype.benchmarks}
+\NormalTok{surf.nonresp.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN, }\AttributeTok{data=}\NormalTok{surf.nonresp)}
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{design=}\NormalTok{surf.nonresp.des)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##        stype Freq
-## 1 Elementary 4397
-## 2     Middle 1009
-## 3       High  751
+##          mean     SE
+## Income 555.99 24.501
 \end{verbatim}
+
+The introduction of the non-response has led to a reduction in our original estimate
+from 575.36 to 555.99.
+
+Post-stratifying however
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{sum}\NormalTok{(stype.benchmarks}\SpecialCharTok{$}\NormalTok{Freq) }\CommentTok{\# 6157}
+\NormalTok{surf.nonresp.des.ps }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(surf.nonresp.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }
+                                    \AttributeTok{population=}\NormalTok{Gender.benchmarks)}
+\end{Highlighting}
+\end{Shaded}
+
+leads to a dramatically improved estimate
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 6157
+##          mean     SE
+## Income 580.73 23.354
 \end{verbatim}
+
+We know more than just the distribution of the population over Gender, we also know it over the
+three age groups. So we can post-stratify by these variables too.
+
+We can store the AgeGrp/Gender benchmarks in a data frame \texttt{AgeGrp.Gender.benchmarks}:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r}
+\hline
+AgeGrp & Gender & count\\
+\hline
+15-24 & female & 310032\\
+\hline
+15-24 & male & 324888\\
+\hline
+25-34 & female & 340668\\
+\hline
+25-34 & male & 337845\\
+\hline
+35-45 & female & 337928\\
+\hline
+35-45 & male & 321358\\
+\hline
+\end{tabular}
+\end{table}
+
+and then post-stratify
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{yr.rnd.benchmarks }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{yr.rnd))}
-\FunctionTok{names}\NormalTok{(yr.rnd.benchmarks) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"yr.rnd"}\NormalTok{,}\StringTok{"Freq"}\NormalTok{)}
-\NormalTok{yr.rnd.benchmarks}
+\NormalTok{surf.nonresp.des.ps2 }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(surf.nonresp.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp}\SpecialCharTok{*}\NormalTok{Gender, }
+                                     \AttributeTok{population=}\NormalTok{AgeGrp.Gender.benchmarks)}
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps2)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##   yr.rnd Freq
-## 1     No  874
-## 2    Yes 5283
+##          mean    SE
+## Income 580.26 22.66
 \end{verbatim}
+
+And this is estimate is going to be even better than before.
+
+However where should we stop? Should we post-stratify by as many variables as we
+possibly can?
+
+In general we need to ensure that we have enough individuals in the sample
+in every cross-classified cell (in this case AgeGroup by Gender) to be able to
+recalculate the weight. Empty cells are going to cause us a problem,
+since we'll be discarding the population weight associated
+with people of that type in the population who happen not to have turned up in the sample.
+
+In population surveys run by Statistics NZ we'll often see post-stratification by age
+(in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.
+
+\subsection*{Raking}\label{raking}
+\addcontentsline{toc}{subsection}{Raking}
+
+We may not have full cross-classified benchmarks, for example we might know the
+totals by AgeGrp and totals by Gender, but not totals by AgeGrp and Gender simultaneously.
+In that case we can proceed iteratively: we post-stratify first by one variable, and
+then by other. Each post-stratification on one variable messes up the post-stratification
+on the other. But eventually the weights will converge to approximately match both sets
+of benchmarks. This iteration is called \textbf{raking} (like raking a lawn one way, then other other),
+or \textbf{Iterative Proportional Fitting}.
+
+R implements raking in with the \texttt{rake()} function. We need a separate set of benchmarks
+for AgeGrp
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r}
+\hline
+  & AgeGrp & Nh\\
+\hline
+15-24 & 15-24 & 634920\\
+\hline
+25-34 & 25-34 & 678513\\
+\hline
+35-45 & 35-45 & 659286\\
+\hline
+\end{tabular}
+\end{table}
+
+and for Gender
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{sum}\NormalTok{(yr.rnd.benchmarks}\SpecialCharTok{$}\NormalTok{Freq) }\CommentTok{\# 6157}
+\NormalTok{Gender.benchmarks }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+Gender & Nh\\
+\hline
+male & 984091\\
+\hline
+female & 988628\\
+\hline
+\end{tabular}
+\end{table}
+
+With these we can rake the design:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{surf.nonresp.des.rake }\OtherTok{\textless{}{-}} \FunctionTok{rake}\NormalTok{(surf.nonresp.des, }
+                              \AttributeTok{sample=}\FunctionTok{list}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender), }
+                              \AttributeTok{population=}\FunctionTok{list}\NormalTok{(AgeGrp.benchmarks, Gender.benchmarks))}
+\end{Highlighting}
+\end{Shaded}
+
+and then calculate our estimates
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Income, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.rake)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 6157
+##          mean     SE
+## Income 579.58 22.798
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{stype.yr.rnd.benchmarks }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{stype, apipopc}\SpecialCharTok{$}\NormalTok{yr.rnd))}
-\FunctionTok{names}\NormalTok{(stype.yr.rnd.benchmarks) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"stype"}\NormalTok{,}\StringTok{"yr.rnd"}\NormalTok{,}\StringTok{"Freq"}\NormalTok{)}
-\NormalTok{stype.yr.rnd.benchmarks}
-\end{Highlighting}
-\end{Shaded}
+\subsection*{Another example}\label{another-example}
+\addcontentsline{toc}{subsection}{Another example}
 
-\begin{verbatim}
-##        stype yr.rnd Freq
-## 1 Elementary     No  791
-## 2     Middle     No   60
-## 3       High     No   23
-## 4 Elementary    Yes 3606
-## 5     Middle    Yes  949
-## 6       High    Yes  728
-\end{verbatim}
+In the Academic Performance Indicator dataset we have full population information
+on types of School (\texttt{stype}=Elementary/Middle/High) and whether or not they
+met their year round performance indicators (\texttt{yr.rnd}=Yes/No). These counts
+will be our benchmarks for post-stratification.
 
-Select a two stage cluster sample - make estimates
+The numbers of schools by type are in \texttt{stype.benchmnarks}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+stype & Freq\\
+\hline
+Elementary & 4397\\
+\hline
+Middle & 1009\\
+\hline
+High & 751\\
+\hline
+\end{tabular}
+\end{table}
+
+The number of schools by achievement of year round objectives are in \texttt{yr.rnd.benchmarks}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+yr.rnd & Freq\\
+\hline
+No & 874\\
+\hline
+Yes & 5283\\
+\hline
+\end{tabular}
+\end{table}
+
+and we also have these counts \textbf{cross-classified}, i.e.~numbers of schools for
+each combination of \texttt{stype} and \texttt{yr.rnd}:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r}
+\hline
+stype & yr.rnd & Freq\\
+\hline
+Elementary & No & 791\\
+\hline
+Middle & No & 60\\
+\hline
+High & No & 23\\
+\hline
+Elementary & Yes & 3606\\
+\hline
+Middle & Yes & 949\\
+\hline
+High & Yes & 728\\
+\hline
+\end{tabular}
+\end{table}
+
+Select a two stage cluster sample - and then make estimates of the mean school
+size (\texttt{enroll})
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5756,11 +6256,12 @@ Poststratify by stype and reestimate
 ## enroll 624.35 53.142
 \end{verbatim}
 
-Postratify by stype x yr.rnd and reestimate
+Postratify by stype by yr.rnd and reestimate
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{api2sc.des.ps2 }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(api2sc.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype}\SpecialCharTok{+}\NormalTok{yr.rnd, }\AttributeTok{population=}\NormalTok{stype.yr.rnd.benchmarks)}
+\NormalTok{api2sc.des.ps2 }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(api2sc.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype}\SpecialCharTok{+}\NormalTok{yr.rnd, }
+                               \AttributeTok{population=}\NormalTok{stype.yr.rnd.benchmarks)}
 \FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.ps2)}
 \end{Highlighting}
 \end{Shaded}
@@ -5770,7 +6271,8 @@ Postratify by stype x yr.rnd and reestimate
 ## enroll 629.45 40.239
 \end{verbatim}
 
-Poststratify by stype + yr.rnd (i.e.~we only have the marginals) and reestimate
+Poststratify by stype + yr.rnd (i.e.~we only have the marginals so we need to rake)
+and reestimate
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5786,91 +6288,33 @@ Poststratify by stype + yr.rnd (i.e.~we only have the marginals) and reestimate
 ## enroll 632.04 46.705
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ff }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{c}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(x), }\FunctionTok{SE}\NormalTok{(x))}
-\end{Highlighting}
-\end{Shaded}
-
 Compare
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
-  \FunctionTok{c}\NormalTok{(}\FunctionTok{mean}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{enroll), }\DecValTok{0}\NormalTok{),}
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.ps)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.ps2)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.rake))) }
-\FunctionTok{dimnames}\NormalTok{(ss) }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Cenus"}\NormalTok{,}\StringTok{"2SC"}\NormalTok{,}\StringTok{"2SC+PS(stype)"}\NormalTok{,}\StringTok{"2SC+PS(stype x yr.rnd)"}\NormalTok{,}\StringTok{"2SC+Rake(stype+yr.rnd)"}\NormalTok{),}
-                     \FunctionTok{c}\NormalTok{(}\StringTok{"Estimate"}\NormalTok{,}\StringTok{"SE"}\NormalTok{))}
-\NormalTok{ss}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                        Estimate       SE
-## Cenus                  619.0469  0.00000
-## 2SC                    711.4530 81.05714
-## 2SC+PS(stype)          624.3485 53.14154
-## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
-## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502
-\end{verbatim}
-
-With replacement: specify weights only - same as 2SC estimate, but it gets SE wrong
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{api2sc.des.wr }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{ids=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{api2sc, }\AttributeTok{weight=}\SpecialCharTok{\textasciitilde{}}\NormalTok{weight) }
-\FunctionTok{svytable}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{api2sc.des.wr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## stype
-## Elementary     Middle       High 
-##  2972.2159   589.3841   946.0500
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svytable}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{api2sc.des.wr)}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(api2sc}\SpecialCharTok{$}\NormalTok{weight)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## stype
-## Elementary     Middle       High 
-##  0.6593715  0.1307520  0.2098765
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, }\AttributeTok{design=}\NormalTok{api2sc.des.wr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##          mean     SE
-## enroll 711.45 70.509
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, }\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{design=}\NormalTok{api2sc.des.wr, svymean)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                 stype    enroll        se
-## Elementary Elementary  415.6678  25.89762
-## Middle         Middle  834.1254 113.93267
-## High             High 1564.3007 171.61203
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & Estimate & SE\\
+\hline
+Cenus & 619.0469 & 0.00000\\
+\hline
+2SC & 711.4530 & 81.05714\\
+\hline
+2SC+PS(stype) & 624.3485 & 53.14154\\
+\hline
+2SC+PS(stype x yr.rnd) & 629.4503 & 40.23927\\
+\hline
+2SC+Rake(stype+yr.rnd) & 632.0372 & 46.70502\\
+\hline
+\end{tabular}
+\end{table}
 
 \section{Replicate weights}\label{replicate-weights}
 
-So we need replicate weights - generate these
+For some weight adjustments we no longer have a reliable method of computing
+the standard errors of our estimates. This can occur when we have very
+complex designs. It can also be necessary when we don't have access to the frame,
+and therefore don't have all the information we need to calculate standard errors.
 
 In such circumstances we often create multiple sets of weights in addition to the
 adjusted weights. These \textbf{replicate weights} are what are used to estimate the
@@ -5892,23 +6336,19 @@ still add up to the same total.
 ## corrections after first stage have been dropped
 \end{verbatim}
 
-Informative warning here: no fpc can apply at second stage or deeper.
+There is an informative warning here: no fpc can apply at second stage of selection
+(nor any subsequent stages).
+
+(Also note that the method ``JK1'' is used for unstratified designs. For stratified
+designs the jackknife is specified by ``JKn'': we don't just drop out one PSU over
+the whole sample in each replicate, instead we drop out a PSU from every stratum.)
+
+Here are the first 3 rows and 8 columns: each row refers to a district \texttt{dnum}
+and each column is a replicate.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{names}\NormalTok{(api2sc.jkdes)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  [1] "repweights"       "pweights"         "type"             "rho"             
-##  [5] "scale"            "rscales"          "call"             "combined.weights"
-##  [9] "selfrep"          "mse"              "variables"        "degf"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{api2sc.jkdes}\SpecialCharTok{$}\NormalTok{repweights}\SpecialCharTok{$}\NormalTok{weights[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,]  }\CommentTok{\# an n x n matrix of weights: each column is a replicate, each row is a first stage unit}
+\NormalTok{api2sc.jkdes}\SpecialCharTok{$}\NormalTok{repweights}\SpecialCharTok{$}\NormalTok{weights[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{8}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5917,28 +6357,12 @@ Informative warning here: no fpc can apply at second stage or deeper.
 ## [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
 ## [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
 ## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
-##          [,9]    [,10]    [,11]    [,12]    [,13]    [,14]    [,15]    [,16]
-## [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-##         [,17]    [,18]    [,19]    [,20]    [,21]    [,22]    [,23]    [,24]
-## [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-##         [,25]    [,26]    [,27]    [,28]    [,29]    [,30]    [,31]    [,32]
-## [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-##         [,33]    [,34]    [,35]    [,36]    [,37]    [,38]    [,39]    [,40]
-## [1,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [2,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [3,] 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
 \end{verbatim}
 
-Replicate Weights are \(n/(n-1)=40/39=1.025641\) - drops one \texttt{dnum} out for each replicate.
-These need to be multiplied by the original sampling weight to get the actual weights.
-
-Use JK1 for unstratified designs, JKn for stratified designs
+Replicate Weights are \(n/(n-1)=40/39=1.025641\) - drops one of the 40 districts \texttt{dnum} out for
+each replicate, setting all units in that district to zero.
+These are scaling weights, and theyneed to be multiplied by the original sampling weight
+to get the actual weights.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5951,10 +6375,10 @@ Use JK1 for unstratified designs, JKn for stratified designs
 ## enroll 711.45 82.848
 \end{verbatim}
 
-Better estimate of the SE.
+This gives us a better estimate of the SE.
 
-We can poststratify these weights by the way: we poststratify each
-replicate weight set in addition to the probability weights themselves.
+If we are needing to post-stratify our weights to account for non-response, then
+we need also to poststratify each set of replicate weights.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5968,7 +6392,7 @@ replicate weight set in addition to the probability weights themselves.
 ## enroll 624.35 60.61
 \end{verbatim}
 
-We get immediate reduction of the standard errors
+Here post-stratification gives us a strong reduction of the standard errors
 
 Comparison
 
@@ -5986,346 +6410,53 @@ Comparison
 \FunctionTok{dimnames}\NormalTok{(ss) }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Cenus"}\NormalTok{,}\StringTok{"2SC"}\NormalTok{,}\StringTok{"2SC+PS(stype)"}\NormalTok{,}\StringTok{"2SC+PS(stype x yr.rnd)"}\NormalTok{,}\StringTok{"2SC+Rake(stype+yr.rnd)"}\NormalTok{,}
                        \StringTok{"JK1"}\NormalTok{,}\StringTok{"JK1+PS(stype)"}\NormalTok{),}
                      \FunctionTok{c}\NormalTok{(}\StringTok{"Estimate"}\NormalTok{,}\StringTok{"SE"}\NormalTok{))}
-\NormalTok{ss}
+\NormalTok{ss }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##                        Estimate       SE
-## Cenus                  619.0469  0.00000
-## 2SC                    711.4530 81.05714
-## 2SC+PS(stype)          624.3485 53.14154
-## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
-## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502
-## JK1                    711.4530 82.84780
-## JK1+PS(stype)          624.3485 60.60973
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+  & Estimate & SE\\
+\hline
+Cenus & 619.0469 & 0.00000\\
+\hline
+2SC & 711.4530 & 81.05714\\
+\hline
+2SC+PS(stype) & 624.3485 & 53.14154\\
+\hline
+2SC+PS(stype x yr.rnd) & 629.4503 & 40.23927\\
+\hline
+2SC+Rake(stype+yr.rnd) & 632.0372 & 46.70502\\
+\hline
+JK1 & 711.4530 & 82.84780\\
+\hline
+JK1+PS(stype) & 624.3485 & 60.60973\\
+\hline
+\end{tabular}
+\end{table}
 
-Take a look at the replicate weights after post-stratification
+Let's take a look at the replicate weights after post-stratification
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{api2sc.jkdes.ps}\SpecialCharTok{$}\NormalTok{repweights[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,]}
+\NormalTok{api2sc.jkdes.ps}\SpecialCharTok{$}\NormalTok{repweights}\SpecialCharTok{$}\NormalTok{weights[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{8}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## $weights
-##      [,1]    [,2]     [,3]     [,4]     [,5] [,6]    [,7]     [,8]     [,9]
-## 1 0.00000 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 0.00000 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 0.00000 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 0.000000 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 0.000000 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 0.000000 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 0.000000 1.00 1.00000 1.067176 1.000000
-## 2 1.00000 1.00000 1.077465 1.000000 0.000000 1.02 1.00000 1.000000 1.030303
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 0.00 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 0.00000 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 0.000000 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 0.000000 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 0.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 0.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 3 1.04955 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176 1.000000
-## 2 1.00000 1.00000 1.077465 1.000000 1.030303 1.02 1.00000 1.000000 1.030303
-## 1 1.00945 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640 1.009450
-##      [,10]    [,11]  [,12]    [,13]   [,14]    [,15]  [,16]    [,17]    [,18]
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 0.000000 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 0.000000 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 2 1.062500 0.000000 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 2 1.062500 1.243902 0.0000 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 0.000000 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 0.000000 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 0.00000 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 0.000000 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 0.000000 1.0000 1.000000 1.032496
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 0.0000 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 0.000000 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 0.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 0.000000
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 3 1.000000 1.000000 1.0000 1.114833 1.00000 1.085404 1.0000 1.000000 1.032496
-## 2 1.062500 1.243902 1.0625 1.000000 1.00000 1.000000 1.0625 1.000000 1.000000
-## 1 1.059513 1.000000 1.0000 1.256684 1.00628 1.015850 1.0000 1.052553 1.006280
-##      [,19]    [,20]    [,21]    [,22]   [,23] [,24]    [,25]    [,26]   [,27]
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 0.000000 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 0.000000 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 0.000000 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 0.000000 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 0.000000 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 0.000000 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 0.00000  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  0.00 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 0.000000 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 0.000000 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 0.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 0.00000
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 3 1.000000 1.104265 1.067176 1.000000 1.00000  1.00 1.000000 1.000000 1.00000
-## 2 1.040816 1.000000 1.000000 1.000000 1.00000  1.02 1.000000 1.159091 1.00000
-## 1 1.000000 1.059513 1.012640 1.066566 1.00628  1.00 1.032211 1.150833 1.00628
-##      [,28]    [,29]    [,30]   [,31]   [,32] [,33]    [,34]   [,35]   [,36]
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 0.000000 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 0.000000 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 0.000000 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 1 1.047964 1.059513 0.000000 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 0.000000 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 3 1.130458 1.000000 0.000000 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 0.00000 1.00628  1.00 1.006280 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 0.00000 1.00000  1.00 1.032496 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 0.00000  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  0.00 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 0.000000 1.00945 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 0.000000 1.04955 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 0.00000 1.00628
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 0.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 0.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 3 1.130458 1.000000 1.117208 1.04955 1.00000  1.00 1.032496 1.04955 1.00000
-## 2 1.000000 1.000000 1.069930 1.00000 1.00000  1.02 1.000000 1.00000 1.00000
-## 1 1.047964 1.059513 1.090768 1.00945 1.00628  1.00 1.006280 1.00945 1.00628
-##     [,37]    [,38]    [,39]    [,40]
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 2 1.02000 1.108696 1.085106 1.000000
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 2 1.02000 1.108696 1.085106 1.000000
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 1.02000 1.108696 1.085106 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 3 1.00000 1.000000 1.144026 1.000000
-## 1 1.00628 1.000000 1.000000 1.019081
-## 2 0.00000 1.108696 1.085106 1.000000
-## 1 0.00000 1.000000 1.000000 1.019081
-## 2 1.02000 0.000000 1.085106 1.000000
-## 3 1.00000 1.000000 0.000000 1.000000
-## 2 1.02000 1.108696 0.000000 1.000000
-## 1 1.00628 1.000000 1.000000 0.000000
-## 
-## $index
-## [1] 1 2 3
-## 
-## attr(,"class")
-## [1] "repweights_compressed" "repweights"
+##      [,1]    [,2]     [,3]     [,4]    [,5] [,6]    [,7]     [,8]
+## 1 0.00000 1.00628 1.047964 1.019081 1.00000    1 1.00628 1.012640
+## 3 0.00000 1.00000 1.000000 1.000000 1.04955    1 1.00000 1.067176
+## 1 1.00945 0.00000 1.047964 1.019081 1.00000    1 1.00628 1.012640
 \end{verbatim}
 
-We might have been \textbf{supplied} these weights, someone else might have
-created them. In which case our dataset would look like this
+We might have been \textbf{supplied} replicate weights, i.e.~someone else might have
+created them. This is commonly the case when we have been granted access
+to a data set collected by a government department.
+
+In which case our dataset would look like this
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6505,7 +6636,7 @@ There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication. Some
 of these have multiple variants. We don't need to worry about these.
 
-\section{Demonstration of ps SE improvement}\label{demonstration-of-ps-se-improvement}
+\subsection{Demonstration of ps SE improvement}\label{demonstration-of-ps-se-improvement}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6534,7 +6665,7 @@ of these have multiple variants. We don't need to worry about these.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-198-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-230-1.pdf}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6546,7 +6677,7 @@ of these have multiple variants. We don't need to worry about these.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-199-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-231-1.pdf}}
 
 \chapter{Imputation}\label{imputation}
 
@@ -6670,7 +6801,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-205-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-237-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   
@@ -6688,7 +6819,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-205-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-237-2.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -7625,7 +7756,7 @@ Overall mean imputation
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-212-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-244-1.pdf}}
 
 \begin{verbatim}
 ##    id age bmi hyp chl  
@@ -7964,7 +8095,7 @@ Just do the numerical variables (gives a warning because Marital is categorical)
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-221-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-253-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Income Ethnicity Marital   
@@ -8003,7 +8134,7 @@ Avoid the error
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-222-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-254-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Age Hours Income  

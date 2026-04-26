@@ -561,7 +561,12 @@ just a few more.   If $n$ is close to $N$ and $N$ is large, it could take a very
 long time.
 
 A simpler way to solve this is to assign each house a distinct random number
-between 0 and 1, and then sort the frame in order of the random numbers.  
+between 0 and 1, and then sort the frame in order of the random numbers. 
+
+Our sample of $n$ units is just the first $n$ units in the sorted frame.
+Since the random numbers assigned have no correlation with any property of the
+units on the frame, then the top $n$ units of of the sorted frame are a 
+simple random sample from the frame.
 
 ```{r}
 bigN <- 10 # population size
@@ -648,7 +653,7 @@ replicate(n, sample(bigN, 1))
 ```
 In this sample we've drawn Unit 3 twice.
 
-If $n$ is small and $bigN$ is large the probability of repeats is small.  But if a repeat
+If $n$ is small and $N$ is large the probability of repeats is small.  But if a repeat
 happens we of course do not make our selected household repeat the questionnaire, instead
 we count them twice (or as many times as they are selected) in our analysis.  
 

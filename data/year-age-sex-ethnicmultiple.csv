@@ -1,0 +1,1135 @@
+"Year","Age","Ethnic","Sex","count"
+2018,0,"European","Male",100023
+2018,0,"European","Female",95328
+2018,0,"Maori","Male",41715
+2018,0,"Maori","Female",39624
+2018,0,"Pacific Peoples","Male",21885
+2018,0,"Pacific Peoples","Female",20523
+2018,0,"Asian","Male",27597
+2018,0,"Asian","Female",26565
+2018,0,"MELAA","Male",3336
+2018,0,"MELAA","Female",3252
+2018,0,"Other","Male",1794
+2018,0,"Other","Female",1656
+2018,0,"Not Elsewhere Included","Male",42
+2018,0,"Not Elsewhere Included","Female",27
+2018,5,"European","Male",111546
+2018,5,"European","Female",106164
+2018,5,"Maori","Male",45246
+2018,5,"Maori","Female",42636
+2018,5,"Pacific Peoples","Male",23553
+2018,5,"Pacific Peoples","Female",22068
+2018,5,"Asian","Male",25323
+2018,5,"Asian","Female",24102
+2018,5,"MELAA","Male",3051
+2018,5,"MELAA","Female",2934
+2018,5,"Other","Male",2241
+2018,5,"Other","Female",2049
+2018,5,"Not Elsewhere Included","Male",27
+2018,5,"Not Elsewhere Included","Female",15
+2018,10,"European","Male",107295
+2018,10,"European","Female",103347
+2018,10,"Maori","Male",40914
+2018,10,"Maori","Female",38886
+2018,10,"Pacific Peoples","Male",20697
+2018,10,"Pacific Peoples","Female",19767
+2018,10,"Asian","Male",21240
+2018,10,"Asian","Female",19917
+2018,10,"MELAA","Male",2559
+2018,10,"MELAA","Female",2343
+2018,10,"Other","Male",2046
+2018,10,"Other","Female",1860
+2018,10,"Not Elsewhere Included","Male",15
+2018,10,"Not Elsewhere Included","Female",27
+2018,15,"European","Male",104415
+2018,15,"European","Female",101196
+2018,15,"Maori","Male",36294
+2018,15,"Maori","Female",34866
+2018,15,"Pacific Peoples","Male",19443
+2018,15,"Pacific Peoples","Female",19056
+2018,15,"Asian","Male",23280
+2018,15,"Asian","Female",22848
+2018,15,"MELAA","Male",2568
+2018,15,"MELAA","Female",2367
+2018,15,"Other","Male",1557
+2018,15,"Other","Female",1326
+2018,15,"Not Elsewhere Included","Male",96
+2018,15,"Not Elsewhere Included","Female",93
+2018,20,"European","Male",103293
+2018,20,"European","Female",101961
+2018,20,"Maori","Male",31641
+2018,20,"Maori","Female",31629
+2018,20,"Pacific Peoples","Male",17991
+2018,20,"Pacific Peoples","Female",17631
+2018,20,"Asian","Male",35103
+2018,20,"Asian","Female",29265
+2018,20,"MELAA","Male",2844
+2018,20,"MELAA","Female",2787
+2018,20,"Other","Male",1770
+2018,20,"Other","Female",1293
+2018,20,"Not Elsewhere Included","Male",168
+2018,20,"Not Elsewhere Included","Female",228
+2018,25,"European","Male",104652
+2018,25,"European","Female",106950
+2018,25,"Maori","Male",28827
+2018,25,"Maori","Female",30228
+2018,25,"Pacific Peoples","Male",16107
+2018,25,"Pacific Peoples","Female",15516
+2018,25,"Asian","Male",43326
+2018,25,"Asian","Female",40941
+2018,25,"MELAA","Male",4059
+2018,25,"MELAA","Female",4221
+2018,25,"Other","Male",2367
+2018,25,"Other","Female",1659
+2018,25,"Not Elsewhere Included","Male",207
+2018,25,"Not Elsewhere Included","Female",201
+2018,30,"European","Male",92730
+2018,30,"European","Female",97629
+2018,30,"Maori","Male",22719
+2018,30,"Maori","Female",24918
+2018,30,"Pacific Peoples","Male",12837
+2018,30,"Pacific Peoples","Female",12288
+2018,30,"Asian","Male",39747
+2018,30,"Asian","Female",42327
+2018,30,"MELAA","Male",4455
+2018,30,"MELAA","Female",4626
+2018,30,"Other","Male",2220
+2018,30,"Other","Female",1602
+2018,30,"Not Elsewhere Included","Male",159
+2018,30,"Not Elsewhere Included","Female",132
+2018,35,"European","Male",88686
+2018,35,"European","Female",95196
+2018,35,"Maori","Male",20658
+2018,35,"Maori","Female",22407
+2018,35,"Pacific Peoples","Male",11448
+2018,35,"Pacific Peoples","Female",11091
+2018,35,"Asian","Male",33723
+2018,35,"Asian","Female",34962
+2018,35,"MELAA","Male",3864
+2018,35,"MELAA","Female",3768
+2018,35,"Other","Male",2262
+2018,35,"Other","Female",1575
+2018,35,"Not Elsewhere Included","Male",99
+2018,35,"Not Elsewhere Included","Female",66
+2018,40,"European","Male",96072
+2018,40,"European","Female",104277
+2018,40,"Maori","Male",20586
+2018,40,"Maori","Female",22548
+2018,40,"Pacific Peoples","Male",10398
+2018,40,"Pacific Peoples","Female",10401
+2018,40,"Asian","Male",22941
+2018,40,"Asian","Female",25488
+2018,40,"MELAA","Male",2661
+2018,40,"MELAA","Female",2571
+2018,40,"Other","Male",2712
+2018,40,"Other","Female",1818
+2018,40,"Not Elsewhere Included","Male",96
+2018,40,"Not Elsewhere Included","Female",51
+2018,45,"European","Male",112170
+2018,45,"European","Female",120402
+2018,45,"Maori","Male",21834
+2018,45,"Maori","Female",23781
+2018,45,"Pacific Peoples","Male",10020
+2018,45,"Pacific Peoples","Female",9957
+2018,45,"Asian","Male",19527
+2018,45,"Asian","Female",23790
+2018,45,"MELAA","Male",2157
+2018,45,"MELAA","Female",1983
+2018,45,"Other","Male",3051
+2018,45,"Other","Female",2187
+2018,45,"Not Elsewhere Included","Male",81
+2018,45,"Not Elsewhere Included","Female",75
+2018,50,"European","Male",111660
+2018,50,"European","Female",117690
+2018,50,"Maori","Male",20022
+2018,50,"Maori","Female",21309
+2018,50,"Pacific Peoples","Male",8985
+2018,50,"Pacific Peoples","Female",9330
+2018,50,"Asian","Male",16686
+2018,50,"Asian","Female",20358
+2018,50,"MELAA","Male",1728
+2018,50,"MELAA","Female",1566
+2018,50,"Other","Male",2808
+2018,50,"Other","Female",2184
+2018,50,"Not Elsewhere Included","Male",84
+2018,50,"Not Elsewhere Included","Female",123
+2018,55,"European","Male",114879
+2018,55,"European","Female",120609
+2018,55,"Maori","Male",18003
+2018,55,"Maori","Female",19848
+2018,55,"Pacific Peoples","Male",6951
+2018,55,"Pacific Peoples","Female",7314
+2018,55,"Asian","Male",14256
+2018,55,"Asian","Female",18195
+2018,55,"MELAA","Male",1287
+2018,55,"MELAA","Female",1239
+2018,55,"Other","Male",2712
+2018,55,"Other","Female",2112
+2018,55,"Not Elsewhere Included","Male",129
+2018,55,"Not Elsewhere Included","Female",204
+2018,60,"European","Male",102405
+2018,60,"European","Female",107259
+2018,60,"Maori","Male",13131
+2018,60,"Maori","Female",14559
+2018,60,"Pacific Peoples","Male",5403
+2018,60,"Pacific Peoples","Female",5484
+2018,60,"Asian","Male",12900
+2018,60,"Asian","Female",16374
+2018,60,"MELAA","Male",936
+2018,60,"MELAA","Female",882
+2018,60,"Other","Male",1971
+2018,60,"Other","Female",1482
+2018,60,"Not Elsewhere Included","Male",228
+2018,60,"Not Elsewhere Included","Female",264
+2018,65,"European","Male",95001
+2018,65,"European","Female",99186
+2018,65,"Maori","Male",9717
+2018,65,"Maori","Female",10728
+2018,65,"Pacific Peoples","Male",3984
+2018,65,"Pacific Peoples","Female",4194
+2018,65,"Asian","Male",9816
+2018,65,"Asian","Female",10965
+2018,65,"MELAA","Male",660
+2018,65,"MELAA","Female",564
+2018,65,"Other","Male",1419
+2018,65,"Other","Female",1074
+2018,65,"Not Elsewhere Included","Male",237
+2018,65,"Not Elsewhere Included","Female",243
+2018,70,"European","Male",78984
+2018,70,"European","Female",83766
+2018,70,"Maori","Male",5913
+2018,70,"Maori","Female",6792
+2018,70,"Pacific Peoples","Male",2550
+2018,70,"Pacific Peoples","Female",2883
+2018,70,"Asian","Male",5862
+2018,70,"Asian","Female",6387
+2018,70,"MELAA","Male",402
+2018,70,"MELAA","Female",378
+2018,70,"Other","Male",945
+2018,70,"Other","Female",777
+2018,70,"Not Elsewhere Included","Male",219
+2018,70,"Not Elsewhere Included","Female",180
+2018,75,"European","Male",55293
+2018,75,"European","Female",62460
+2018,75,"Maori","Male",3774
+2018,75,"Maori","Female",4458
+2018,75,"Pacific Peoples","Male",1590
+2018,75,"Pacific Peoples","Female",1986
+2018,75,"Asian","Male",3756
+2018,75,"Asian","Female",4416
+2018,75,"MELAA","Male",216
+2018,75,"MELAA","Female",222
+2018,75,"Other","Male",504
+2018,75,"Other","Female",474
+2018,75,"Not Elsewhere Included","Male",93
+2018,75,"Not Elsewhere Included","Female",117
+2018,80,"European","Male",34119
+2018,80,"European","Female",42300
+2018,80,"Maori","Male",1764
+2018,80,"Maori","Female",2538
+2018,80,"Pacific Peoples","Male",762
+2018,80,"Pacific Peoples","Female",1182
+2018,80,"Asian","Male",2415
+2018,80,"Asian","Female",2616
+2018,80,"MELAA","Male",120
+2018,80,"MELAA","Female",162
+2018,80,"Other","Male",243
+2018,80,"Other","Female",225
+2018,80,"Not Elsewhere Included","Male",36
+2018,80,"Not Elsewhere Included","Female",24
+2018,85,"European","Male",20385
+2018,85,"European","Female",29592
+2018,85,"Maori","Male",711
+2018,85,"Maori","Female",1254
+2018,85,"Pacific Peoples","Male",330
+2018,85,"Pacific Peoples","Female",609
+2018,85,"Asian","Male",942
+2018,85,"Asian","Female",1170
+2018,85,"MELAA","Male",57
+2018,85,"MELAA","Female",60
+2018,85,"Other","Male",105
+2018,85,"Other","Female",162
+2018,85,"Not Elsewhere Included","Male",12
+2018,85,"Not Elsewhere Included","Female",9
+2018,90,"European","Male",7713
+2018,90,"European","Female",14865
+2018,90,"Maori","Male",171
+2018,90,"Maori","Female",390
+2018,90,"Pacific Peoples","Male",84
+2018,90,"Pacific Peoples","Female",237
+2018,90,"Asian","Male",249
+2018,90,"Asian","Female",426
+2018,90,"MELAA","Male",27
+2018,90,"MELAA","Female",42
+2018,90,"Other","Male",36
+2018,90,"Other","Female",63
+2018,90,"Not Elsewhere Included","Male",3
+2018,90,"Not Elsewhere Included","Female",0
+2018,95,"European","Male",1488
+2018,95,"European","Female",4146
+2018,95,"Maori","Male",48
+2018,95,"Maori","Female",90
+2018,95,"Pacific Peoples","Male",27
+2018,95,"Pacific Peoples","Female",48
+2018,95,"Asian","Male",57
+2018,95,"Asian","Female",96
+2018,95,"MELAA","Male",6
+2018,95,"MELAA","Female",9
+2018,95,"Other","Male",6
+2018,95,"Other","Female",18
+2018,95,"Not Elsewhere Included","Male",0
+2018,95,"Not Elsewhere Included","Female",3
+2018,100,"European","Male",105
+2018,100,"European","Female",513
+2018,100,"Maori","Male",3
+2018,100,"Maori","Female",12
+2018,100,"Pacific Peoples","Male",3
+2018,100,"Pacific Peoples","Female",3
+2018,100,"Asian","Male",3
+2018,100,"Asian","Female",12
+2018,100,"MELAA","Male",0
+2018,100,"MELAA","Female",3
+2018,100,"Other","Male",0
+2018,100,"Other","Female",3
+2018,100,"Not Elsewhere Included","Male",0
+2018,100,"Not Elsewhere Included","Female",0
+2018,0,"New Zealander","Male",1494
+2018,0,"New Zealander","Female",1365
+2018,0,"Other NEC","Male",306
+2018,0,"Other NEC","Female",294
+2018,5,"New Zealander","Male",1890
+2018,5,"New Zealander","Female",1713
+2018,5,"Other NEC","Male",357
+2018,5,"Other NEC","Female",342
+2018,10,"New Zealander","Male",1707
+2018,10,"New Zealander","Female",1512
+2018,10,"Other NEC","Male",345
+2018,10,"Other NEC","Female",354
+2018,15,"New Zealander","Male",1194
+2018,15,"New Zealander","Female",948
+2018,15,"Other NEC","Male",366
+2018,15,"Other NEC","Female",381
+2018,20,"New Zealander","Male",1167
+2018,20,"New Zealander","Female",711
+2018,20,"Other NEC","Male",600
+2018,20,"Other NEC","Female",582
+2018,25,"New Zealander","Male",1578
+2018,25,"New Zealander","Female",891
+2018,25,"Other NEC","Male",792
+2018,25,"Other NEC","Female",768
+2018,30,"New Zealander","Male",1452
+2018,30,"New Zealander","Female",912
+2018,30,"Other NEC","Male",765
+2018,30,"Other NEC","Female",690
+2018,35,"New Zealander","Male",1641
+2018,35,"New Zealander","Female",996
+2018,35,"Other NEC","Male",621
+2018,35,"Other NEC","Female",585
+2018,40,"New Zealander","Male",2073
+2018,40,"New Zealander","Female",1305
+2018,40,"Other NEC","Male",639
+2018,40,"Other NEC","Female",513
+2018,45,"New Zealander","Male",2484
+2018,45,"New Zealander","Female",1638
+2018,45,"Other NEC","Male",570
+2018,45,"Other NEC","Female",549
+2018,50,"New Zealander","Male",2313
+2018,50,"New Zealander","Female",1728
+2018,50,"Other NEC","Male",495
+2018,50,"Other NEC","Female",456
+2018,55,"New Zealander","Male",2346
+2018,55,"New Zealander","Female",1776
+2018,55,"Other NEC","Male",366
+2018,55,"Other NEC","Female",333
+2018,60,"New Zealander","Male",1785
+2018,60,"New Zealander","Female",1284
+2018,60,"Other NEC","Male",186
+2018,60,"Other NEC","Female",195
+2018,65,"New Zealander","Male",1314
+2018,65,"New Zealander","Female",954
+2018,65,"Other NEC","Male",105
+2018,65,"Other NEC","Female",123
+2018,70,"New Zealander","Male",882
+2018,70,"New Zealander","Female",696
+2018,70,"Other NEC","Male",66
+2018,70,"Other NEC","Female",84
+2018,75,"New Zealander","Male",477
+2018,75,"New Zealander","Female",435
+2018,75,"Other NEC","Male",30
+2018,75,"Other NEC","Female",42
+2018,80,"New Zealander","Male",225
+2018,80,"New Zealander","Female",198
+2018,80,"Other NEC","Male",15
+2018,80,"Other NEC","Female",27
+2018,85,"New Zealander","Male",93
+2018,85,"New Zealander","Female",150
+2018,85,"Other NEC","Male",9
+2018,85,"Other NEC","Female",9
+2018,90,"New Zealander","Male",36
+2018,90,"New Zealander","Female",57
+2018,90,"Other NEC","Male",0
+2018,90,"Other NEC","Female",3
+2018,95,"New Zealander","Male",6
+2018,95,"New Zealander","Female",18
+2018,95,"Other NEC","Male",0
+2018,95,"Other NEC","Female",0
+2018,100,"New Zealander","Male",0
+2018,100,"New Zealander","Female",3
+2018,100,"Other NEC","Male",0
+2018,100,"Other NEC","Female",0
+2013,0,"European","Male",101346
+2013,0,"European","Female",96666
+2013,0,"Maori","Male",36498
+2013,0,"Maori","Female",34722
+2013,0,"Pacific Peoples","Male",19476
+2013,0,"Pacific Peoples","Female",18519
+2013,0,"Asian","Male",18555
+2013,0,"Asian","Female",17670
+2013,0,"MELAA","Male",2382
+2013,0,"MELAA","Female",2319
+2013,0,"Other","Male",2280
+2013,0,"Other","Female",2136
+2013,0,"Not Elsewhere Included","Male",7593
+2013,0,"Not Elsewhere Included","Female",7878
+2013,5,"European","Male",99444
+2013,5,"European","Female",95826
+2013,5,"Maori","Male",34431
+2013,5,"Maori","Female",32763
+2013,5,"Pacific Peoples","Male",17730
+2013,5,"Pacific Peoples","Female",16908
+2013,5,"Asian","Male",15990
+2013,5,"Asian","Female",15048
+2013,5,"MELAA","Male",1986
+2013,5,"MELAA","Female",1911
+2013,5,"Other","Male",2409
+2013,5,"Other","Female",2217
+2013,5,"Not Elsewhere Included","Male",7107
+2013,5,"Not Elsewhere Included","Female",7233
+2013,10,"European","Male",98658
+2013,10,"European","Female",94380
+2013,10,"Maori","Male",32922
+2013,10,"Maori","Female",31248
+2013,10,"Pacific Peoples","Male",16854
+2013,10,"Pacific Peoples","Female",16377
+2013,10,"Asian","Male",15822
+2013,10,"Asian","Female",15108
+2013,10,"MELAA","Male",1815
+2013,10,"MELAA","Female",1677
+2013,10,"Other","Male",1944
+2013,10,"Other","Female",1764
+2013,10,"Not Elsewhere Included","Male",7092
+2013,10,"Not Elsewhere Included","Female",7146
+2013,15,"European","Male",99540
+2013,15,"European","Female",97488
+2013,15,"Maori","Male",29745
+2013,15,"Maori","Female",28950
+2013,15,"Pacific Peoples","Male",15660
+2013,15,"Pacific Peoples","Female",15558
+2013,15,"Asian","Male",20262
+2013,15,"Asian","Female",19527
+2013,15,"MELAA","Male",2226
+2013,15,"MELAA","Female",2055
+2013,15,"Other","Male",1635
+2013,15,"Other","Female",1176
+2013,15,"Not Elsewhere Included","Male",8727
+2013,15,"Not Elsewhere Included","Female",8619
+2013,20,"European","Male",91962
+2013,20,"European","Female",96528
+2013,20,"Maori","Male",22956
+2013,20,"Maori","Female",25509
+2013,20,"Pacific Peoples","Male",13059
+2013,20,"Pacific Peoples","Female",13590
+2013,20,"Asian","Male",25725
+2013,20,"Asian","Female",23286
+2013,20,"MELAA","Male",2712
+2013,20,"MELAA","Female",2304
+2013,20,"Other","Male",2226
+2013,20,"Other","Female",1446
+2013,20,"Not Elsewhere Included","Male",11250
+2013,20,"Not Elsewhere Included","Female",10533
+2013,25,"European","Male",76941
+2013,25,"European","Female",84255
+2013,25,"Maori","Male",16746
+2013,25,"Maori","Female",20457
+2013,25,"Pacific Peoples","Male",10212
+2013,25,"Pacific Peoples","Female",10413
+2013,25,"Asian","Male",25272
+2013,25,"Asian","Female",26646
+2013,25,"MELAA","Male",2757
+2013,25,"MELAA","Female",2676
+2013,25,"Other","Male",2262
+2013,25,"Other","Female",1395
+2013,25,"Not Elsewhere Included","Male",9768
+2013,25,"Not Elsewhere Included","Female",8994
+2013,30,"European","Male",76167
+2013,30,"European","Female",86064
+2013,30,"Maori","Male",15510
+2013,30,"Maori","Female",18924
+2013,30,"Pacific Peoples","Male",9288
+2013,30,"Pacific Peoples","Female",9642
+2013,30,"Asian","Male",23205
+2013,30,"Asian","Female",25413
+2013,30,"MELAA","Male",2727
+2013,30,"MELAA","Female",2820
+2013,30,"Other","Male",2433
+2013,30,"Other","Female",1542
+2013,30,"Not Elsewhere Included","Male",8361
+2013,30,"Not Elsewhere Included","Female",8031
+2013,35,"European","Male",85434
+2013,35,"European","Female",96972
+2013,35,"Maori","Male",16230
+2013,35,"Maori","Female",19581
+2013,35,"Pacific Peoples","Male",8745
+2013,35,"Pacific Peoples","Female",9270
+2013,35,"Asian","Male",16830
+2013,35,"Asian","Female",19857
+2013,35,"MELAA","Male",2079
+2013,35,"MELAA","Female",2148
+2013,35,"Other","Male",2985
+2013,35,"Other","Female",1941
+2013,35,"Not Elsewhere Included","Male",7833
+2013,35,"Not Elsewhere Included","Female",7257
+2013,40,"European","Male",100950
+2013,40,"European","Female",114027
+2013,40,"Maori","Male",17358
+2013,40,"Maori","Female",20568
+2013,40,"Pacific Peoples","Male",8529
+2013,40,"Pacific Peoples","Female",9120
+2013,40,"Asian","Male",15561
+2013,40,"Asian","Female",20298
+2013,40,"MELAA","Male",1863
+2013,40,"MELAA","Female",1728
+2013,40,"Other","Male",3759
+2013,40,"Other","Female",2499
+2013,40,"Not Elsewhere Included","Male",8595
+2013,40,"Not Elsewhere Included","Female",8109
+2013,45,"European","Male",102915
+2013,45,"European","Female",112230
+2013,45,"Maori","Male",16377
+2013,45,"Maori","Female",18669
+2013,45,"Pacific Peoples","Male",7800
+2013,45,"Pacific Peoples","Female",8502
+2013,45,"Asian","Male",14691
+2013,45,"Asian","Female",18240
+2013,45,"MELAA","Male",1506
+2013,45,"MELAA","Female",1470
+2013,45,"Other","Male",3570
+2013,45,"Other","Female",2613
+2013,45,"Not Elsewhere Included","Male",8172
+2013,45,"Not Elsewhere Included","Female",7950
+2013,50,"European","Male",106680
+2013,50,"European","Female",115122
+2013,50,"Maori","Male",15255
+2013,50,"Maori","Female",17769
+2013,50,"Pacific Peoples","Male",6309
+2013,50,"Pacific Peoples","Female",6876
+2013,50,"Asian","Male",12681
+2013,50,"Asian","Female",15828
+2013,50,"MELAA","Male",1191
+2013,50,"MELAA","Female",1134
+2013,50,"Other","Male",3654
+2013,50,"Other","Female",2646
+2013,50,"Not Elsewhere Included","Male",8400
+2013,50,"Not Elsewhere Included","Female",8148
+2013,55,"European","Male",96516
+2013,55,"European","Female",102570
+2013,55,"Maori","Male",11664
+2013,55,"Maori","Female",13500
+2013,55,"Pacific Peoples","Male",4896
+2013,55,"Pacific Peoples","Female",5193
+2013,55,"Asian","Male",10575
+2013,55,"Asian","Female",13530
+2013,55,"MELAA","Male",849
+2013,55,"MELAA","Female",861
+2013,55,"Other","Male",3060
+2013,55,"Other","Female",2184
+2013,55,"Not Elsewhere Included","Male",7077
+2013,55,"Not Elsewhere Included","Female",6933
+2013,60,"European","Male",91461
+2013,60,"European","Female",96837
+2013,60,"Maori","Male",9039
+2013,60,"Maori","Female",10212
+2013,60,"Pacific Peoples","Male",3945
+2013,60,"Pacific Peoples","Female",4167
+2013,60,"Asian","Male",8232
+2013,60,"Asian","Female",9657
+2013,60,"MELAA","Male",600
+2013,60,"MELAA","Female",513
+2013,60,"Other","Male",2583
+2013,60,"Other","Female",1851
+2013,60,"Not Elsewhere Included","Male",6441
+2013,60,"Not Elsewhere Included","Female",6366
+2013,65,"European","Male",81477
+2013,65,"European","Female",85560
+2013,65,"Maori","Male",6099
+2013,65,"Maori","Female",6897
+2013,65,"Pacific Peoples","Male",2685
+2013,65,"Pacific Peoples","Female",2937
+2013,65,"Asian","Male",5493
+2013,65,"Asian","Female",6192
+2013,65,"MELAA","Male",360
+2013,65,"MELAA","Female",354
+2013,65,"Other","Male",2040
+2013,65,"Other","Female",1449
+2013,65,"Not Elsewhere Included","Male",5100
+2013,65,"Not Elsewhere Included","Female",5388
+2013,70,"European","Male",61428
+2013,70,"European","Female",66345
+2013,70,"Maori","Male",4308
+2013,70,"Maori","Female",4944
+2013,70,"Pacific Peoples","Male",1779
+2013,70,"Pacific Peoples","Female",2145
+2013,70,"Asian","Male",3894
+2013,70,"Asian","Female",4320
+2013,70,"MELAA","Male",213
+2013,70,"MELAA","Female",222
+2013,70,"Other","Male",1227
+2013,70,"Other","Female",1011
+2013,70,"Not Elsewhere Included","Male",3807
+2013,70,"Not Elsewhere Included","Female",3876
+2013,75,"European","Male",42576
+2013,75,"European","Female",48924
+2013,75,"Maori","Male",2427
+2013,75,"Maori","Female",3105
+2013,75,"Pacific Peoples","Male",1017
+2013,75,"Pacific Peoples","Female",1422
+2013,75,"Asian","Male",2679
+2013,75,"Asian","Female",2799
+2013,75,"MELAA","Male",126
+2013,75,"MELAA","Female",144
+2013,75,"Other","Male",651
+2013,75,"Other","Female",474
+2013,75,"Not Elsewhere Included","Male",2376
+2013,75,"Not Elsewhere Included","Female",2583
+2013,80,"European","Male",31566
+2013,80,"European","Female",40260
+2013,80,"Maori","Male",1170
+2013,80,"Maori","Female",1815
+2013,80,"Pacific Peoples","Male",513
+2013,80,"Pacific Peoples","Female",840
+2013,80,"Asian","Male",1230
+2013,80,"Asian","Female",1443
+2013,80,"MELAA","Male",81
+2013,80,"MELAA","Female",90
+2013,80,"Other","Male",294
+2013,80,"Other","Female",288
+2013,80,"Not Elsewhere Included","Male",1752
+2013,80,"Not Elsewhere Included","Female",1950
+2013,85,"European","Male",17289
+2013,85,"European","Female",27321
+2013,85,"Maori","Male",390
+2013,85,"Maori","Female",738
+2013,85,"Pacific Peoples","Male",180
+2013,85,"Pacific Peoples","Female",408
+2013,85,"Asian","Male",432
+2013,85,"Asian","Female",600
+2013,85,"MELAA","Male",45
+2013,85,"MELAA","Female",48
+2013,85,"Other","Male",96
+2013,85,"Other","Female",165
+2013,85,"Not Elsewhere Included","Male",969
+2013,85,"Not Elsewhere Included","Female",1248
+2013,90,"European","Male",5469
+2013,90,"European","Female",12387
+2013,90,"Maori","Male",96
+2013,90,"Maori","Female",195
+2013,90,"Pacific Peoples","Male",54
+2013,90,"Pacific Peoples","Female",120
+2013,90,"Asian","Male",108
+2013,90,"Asian","Female",228
+2013,90,"MELAA","Male",6
+2013,90,"MELAA","Female",24
+2013,90,"Other","Male",33
+2013,90,"Other","Female",72
+2013,90,"Not Elsewhere Included","Male",309
+2013,90,"Not Elsewhere Included","Female",519
+2013,95,"European","Male",984
+2013,95,"European","Female",3054
+2013,95,"Maori","Male",9
+2013,95,"Maori","Female",54
+2013,95,"Pacific Peoples","Male",0
+2013,95,"Pacific Peoples","Female",27
+2013,95,"Asian","Male",21
+2013,95,"Asian","Female",45
+2013,95,"MELAA","Male",0
+2013,95,"MELAA","Female",3
+2013,95,"Other","Male",3
+2013,95,"Other","Female",24
+2013,95,"Not Elsewhere Included","Male",60
+2013,95,"Not Elsewhere Included","Female",117
+2013,100,"European","Male",99
+2013,100,"European","Female",414
+2013,100,"Maori","Male",3
+2013,100,"Maori","Female",9
+2013,100,"Pacific Peoples","Male",0
+2013,100,"Pacific Peoples","Female",3
+2013,100,"Asian","Male",6
+2013,100,"Asian","Female",15
+2013,100,"MELAA","Male",3
+2013,100,"MELAA","Female",3
+2013,100,"Other","Male",3
+2013,100,"Other","Female",3
+2013,100,"Not Elsewhere Included","Male",12
+2013,100,"Not Elsewhere Included","Female",24
+2013,0,"New Zealander","Male",2229
+2013,0,"New Zealander","Female",2079
+2013,0,"Other NEC","Male",54
+2013,0,"Other NEC","Female",57
+2013,5,"New Zealander","Male",2346
+2013,5,"New Zealander","Female",2154
+2013,5,"Other NEC","Male",63
+2013,5,"Other NEC","Female",63
+2013,10,"New Zealander","Male",1872
+2013,10,"New Zealander","Female",1689
+2013,10,"Other NEC","Male",72
+2013,10,"Other NEC","Female",75
+2013,15,"New Zealander","Male",1554
+2013,15,"New Zealander","Female",1104
+2013,15,"Other NEC","Male",81
+2013,15,"Other NEC","Female",72
+2013,20,"New Zealander","Male",2142
+2013,20,"New Zealander","Female",1371
+2013,20,"Other NEC","Male",84
+2013,20,"Other NEC","Female",72
+2013,25,"New Zealander","Male",2184
+2013,25,"New Zealander","Female",1302
+2013,25,"Other NEC","Male",78
+2013,25,"Other NEC","Female",90
+2013,30,"New Zealander","Male",2340
+2013,30,"New Zealander","Female",1446
+2013,30,"Other NEC","Male",90
+2013,30,"Other NEC","Female",96
+2013,35,"New Zealander","Male",2892
+2013,35,"New Zealander","Female",1863
+2013,35,"Other NEC","Male",93
+2013,35,"Other NEC","Female",75
+2013,40,"New Zealander","Male",3690
+2013,40,"New Zealander","Female",2412
+2013,40,"Other NEC","Male",69
+2013,40,"Other NEC","Female",87
+2013,45,"New Zealander","Male",3498
+2013,45,"New Zealander","Female",2520
+2013,45,"Other NEC","Male",69
+2013,45,"Other NEC","Female",93
+2013,50,"New Zealander","Male",3603
+2013,50,"New Zealander","Female",2589
+2013,50,"Other NEC","Male",51
+2013,50,"Other NEC","Female",54
+2013,55,"New Zealander","Male",3024
+2013,55,"New Zealander","Female",2148
+2013,55,"Other NEC","Male",36
+2013,55,"Other NEC","Female",36
+2013,60,"New Zealander","Male",2553
+2013,60,"New Zealander","Female",1812
+2013,60,"Other NEC","Male",30
+2013,60,"Other NEC","Female",39
+2013,65,"New Zealander","Male",2016
+2013,65,"New Zealander","Female",1422
+2013,65,"Other NEC","Male",24
+2013,65,"Other NEC","Female",24
+2013,70,"New Zealander","Male",1215
+2013,70,"New Zealander","Female",996
+2013,70,"Other NEC","Male",12
+2013,70,"Other NEC","Female",12
+2013,75,"New Zealander","Male",639
+2013,75,"New Zealander","Female",468
+2013,75,"Other NEC","Male",6
+2013,75,"Other NEC","Female",6
+2013,80,"New Zealander","Male",288
+2013,80,"New Zealander","Female",282
+2013,80,"Other NEC","Male",6
+2013,80,"Other NEC","Female",6
+2013,85,"New Zealander","Male",96
+2013,85,"New Zealander","Female",162
+2013,85,"Other NEC","Male",3
+2013,85,"Other NEC","Female",3
+2013,90,"New Zealander","Male",33
+2013,90,"New Zealander","Female",72
+2013,90,"Other NEC","Male",0
+2013,90,"Other NEC","Female",0
+2013,95,"New Zealander","Male",3
+2013,95,"New Zealander","Female",24
+2013,95,"Other NEC","Male",0
+2013,95,"Other NEC","Female",0
+2013,100,"New Zealander","Male",3
+2013,100,"New Zealander","Female",3
+2013,100,"Other NEC","Male",0
+2013,100,"Other NEC","Female",0
+2006,0,"European","Male",88233
+2006,0,"European","Female",84765
+2006,0,"Maori","Male",34128
+2006,0,"Maori","Female",32406
+2006,0,"Pacific Peoples","Male",17985
+2006,0,"Pacific Peoples","Female",16998
+2006,0,"Asian","Male",12537
+2006,0,"Asian","Female",11646
+2006,0,"MELAA","Male",1821
+2006,0,"MELAA","Female",1605
+2006,0,"Other","Male",13497
+2006,0,"Other","Female",13041
+2006,0,"Not Elsewhere Included","Male",5685
+2006,0,"Not Elsewhere Included","Female",5808
+2006,5,"European","Male",90558
+2006,5,"European","Female",86232
+2006,5,"Maori","Male",34260
+2006,5,"Maori","Female",32580
+2006,5,"Pacific Peoples","Male",17139
+2006,5,"Pacific Peoples","Female",16581
+2006,5,"Asian","Male",12927
+2006,5,"Asian","Female",12393
+2006,5,"MELAA","Male",1635
+2006,5,"MELAA","Female",1560
+2006,5,"Other","Male",14562
+2006,5,"Other","Female",13611
+2006,5,"Not Elsewhere Included","Male",5379
+2006,5,"Not Elsewhere Included","Female",5613
+2006,10,"European","Male",97149
+2006,10,"European","Female",93198
+2006,10,"Maori","Male",34368
+2006,10,"Maori","Female",32421
+2006,10,"Pacific Peoples","Male",16335
+2006,10,"Pacific Peoples","Female",15663
+2006,10,"Asian","Male",14814
+2006,10,"Asian","Female",13863
+2006,10,"MELAA","Male",1542
+2006,10,"MELAA","Female",1500
+2006,10,"Other","Male",14253
+2006,10,"Other","Female",12987
+2006,10,"Not Elsewhere Included","Male",5685
+2006,10,"Not Elsewhere Included","Female",5646
+2006,15,"European","Male",95625
+2006,15,"European","Female",96522
+2006,15,"Maori","Male",29085
+2006,15,"Maori","Female",29556
+2006,15,"Pacific Peoples","Male",14082
+2006,15,"Pacific Peoples","Female",13875
+2006,15,"Asian","Male",17298
+2006,15,"Asian","Female",17286
+2006,15,"MELAA","Male",2037
+2006,15,"MELAA","Female",1740
+2006,15,"Other","Male",11586
+2006,15,"Other","Female",9141
+2006,15,"Not Elsewhere Included","Male",6357
+2006,15,"Not Elsewhere Included","Female",6009
+2006,20,"European","Male",79131
+2006,20,"European","Female",84198
+2006,20,"Maori","Male",20379
+2006,20,"Maori","Female",22482
+2006,20,"Pacific Peoples","Male",10110
+2006,20,"Pacific Peoples","Female",10824
+2006,20,"Asian","Male",23943
+2006,20,"Asian","Female",24753
+2006,20,"MELAA","Male",2307
+2006,20,"MELAA","Female",2007
+2006,20,"Other","Male",11091
+2006,20,"Other","Female",9369
+2006,20,"Not Elsewhere Included","Male",7914
+2006,20,"Not Elsewhere Included","Female",7155
+2006,25,"European","Male",70728
+2006,25,"European","Female",78792
+2006,25,"Maori","Male",17640
+2006,25,"Maori","Female",20589
+2006,25,"Pacific Peoples","Male",9021
+2006,25,"Pacific Peoples","Female",10116
+2006,25,"Asian","Male",16431
+2006,25,"Asian","Female",18105
+2006,25,"MELAA","Male",1920
+2006,25,"MELAA","Female",1854
+2006,25,"Other","Male",12336
+2006,25,"Other","Female",10953
+2006,25,"Not Elsewhere Included","Male",6987
+2006,25,"Not Elsewhere Included","Female",6435
+2006,30,"European","Male",81513
+2006,30,"European","Female",94245
+2006,30,"Maori","Male",18144
+2006,30,"Maori","Female",21441
+2006,30,"Pacific Peoples","Male",8772
+2006,30,"Pacific Peoples","Female",9531
+2006,30,"Asian","Male",12918
+2006,30,"Asian","Female",16503
+2006,30,"MELAA","Male",1836
+2006,30,"MELAA","Female",1737
+2006,30,"Other","Male",16863
+2006,30,"Other","Female",15048
+2006,30,"Not Elsewhere Included","Male",6852
+2006,30,"Not Elsewhere Included","Female",6228
+2006,35,"European","Male",89640
+2006,35,"European","Female",101553
+2006,35,"Maori","Male",17856
+2006,35,"Maori","Female",20832
+2006,35,"Pacific Peoples","Male",8658
+2006,35,"Pacific Peoples","Female",9582
+2006,35,"Asian","Male",12888
+2006,35,"Asian","Female",17352
+2006,35,"MELAA","Male",1839
+2006,35,"MELAA","Female",1500
+2006,35,"Other","Male",19116
+2006,35,"Other","Female",17076
+2006,35,"Not Elsewhere Included","Male",6933
+2006,35,"Not Elsewhere Included","Female",6372
+2006,40,"European","Male",95139
+2006,40,"European","Female",104505
+2006,40,"Maori","Male",17403
+2006,40,"Maori","Female",19950
+2006,40,"Pacific Peoples","Male",7824
+2006,40,"Pacific Peoples","Female",8397
+2006,40,"Asian","Male",14196
+2006,40,"Asian","Female",17397
+2006,40,"MELAA","Male",1485
+2006,40,"MELAA","Female",1302
+2006,40,"Other","Male",20103
+2006,40,"Other","Female",18720
+2006,40,"Not Elsewhere Included","Male",6879
+2006,40,"Not Elsewhere Included","Female",6303
+2006,45,"European","Male",92859
+2006,45,"European","Female",99195
+2006,45,"Maori","Male",15024
+2006,45,"Maori","Female",16959
+2006,45,"Pacific Peoples","Male",6201
+2006,45,"Pacific Peoples","Female",6621
+2006,45,"Asian","Male",11790
+2006,45,"Asian","Female",13908
+2006,45,"MELAA","Male",1152
+2006,45,"MELAA","Female",999
+2006,45,"Other","Male",20184
+2006,45,"Other","Female",18570
+2006,45,"Not Elsewhere Included","Male",6273
+2006,45,"Not Elsewhere Included","Female",6162
+2006,50,"European","Male",83340
+2006,50,"European","Female",87744
+2006,50,"Maori","Male",11622
+2006,50,"Maori","Female",12645
+2006,50,"Pacific Peoples","Male",5034
+2006,50,"Pacific Peoples","Female",5109
+2006,50,"Asian","Male",8811
+2006,50,"Asian","Female",10077
+2006,50,"MELAA","Male",777
+2006,50,"MELAA","Female",759
+2006,50,"Other","Male",18309
+2006,50,"Other","Female",17433
+2006,50,"Not Elsewhere Included","Male",5385
+2006,50,"Not Elsewhere Included","Female",5388
+2006,55,"European","Male",82170
+2006,55,"European","Female",86313
+2006,55,"Maori","Male",8889
+2006,55,"Maori","Female",9786
+2006,55,"Pacific Peoples","Male",3762
+2006,55,"Pacific Peoples","Female",3939
+2006,55,"Asian","Male",6414
+2006,55,"Asian","Female",7308
+2006,55,"MELAA","Male",543
+2006,55,"MELAA","Female",480
+2006,55,"Other","Male",17481
+2006,55,"Other","Female",16740
+2006,55,"Not Elsewhere Included","Male",5067
+2006,55,"Not Elsewhere Included","Female",5088
+2006,60,"European","Male",66678
+2006,60,"European","Female",70440
+2006,60,"Maori","Male",6120
+2006,60,"Maori","Female",6738
+2006,60,"Pacific Peoples","Male",2712
+2006,60,"Pacific Peoples","Female",2934
+2006,60,"Asian","Male",4377
+2006,60,"Asian","Female",5130
+2006,60,"MELAA","Male",324
+2006,60,"MELAA","Female",333
+2006,60,"Other","Male",12771
+2006,60,"Other","Female",12051
+2006,60,"Not Elsewhere Included","Male",3963
+2006,60,"Not Elsewhere Included","Female",4110
+2006,65,"European","Male",56244
+2006,65,"European","Female",60027
+2006,65,"Maori","Male",4863
+2006,65,"Maori","Female",5331
+2006,65,"Pacific Peoples","Male",2037
+2006,65,"Pacific Peoples","Female",2340
+2006,65,"Asian","Male",3852
+2006,65,"Asian","Female",4125
+2006,65,"MELAA","Male",183
+2006,65,"MELAA","Female",246
+2006,65,"Other","Male",9369
+2006,65,"Other","Female",8859
+2006,65,"Not Elsewhere Included","Male",3339
+2006,65,"Not Elsewhere Included","Female",3495
+2006,70,"European","Male",45033
+2006,70,"European","Female",49707
+2006,70,"Maori","Male",3045
+2006,70,"Maori","Female",3483
+2006,70,"Pacific Peoples","Male",1191
+2006,70,"Pacific Peoples","Female",1578
+2006,70,"Asian","Male",2538
+2006,70,"Asian","Female",2601
+2006,70,"MELAA","Male",144
+2006,70,"MELAA","Female",171
+2006,70,"Other","Male",6093
+2006,70,"Other","Female",5664
+2006,70,"Not Elsewhere Included","Male",2463
+2006,70,"Not Elsewhere Included","Female",2586
+2006,75,"European","Male",39423
+2006,75,"European","Female",46728
+2006,75,"Maori","Male",1623
+2006,75,"Maori","Female",2199
+2006,75,"Pacific Peoples","Male",744
+2006,75,"Pacific Peoples","Female",1005
+2006,75,"Asian","Male",1299
+2006,75,"Asian","Female",1437
+2006,75,"MELAA","Male",99
+2006,75,"MELAA","Female",93
+2006,75,"Other","Male",3774
+2006,75,"Other","Female",4020
+2006,75,"Not Elsewhere Included","Male",1962
+2006,75,"Not Elsewhere Included","Female",2253
+2006,80,"European","Male",25464
+2006,80,"European","Female",37719
+2006,80,"Maori","Male",693
+2006,80,"Maori","Female",1071
+2006,80,"Pacific Peoples","Male",330
+2006,80,"Pacific Peoples","Female",570
+2006,80,"Asian","Male",564
+2006,80,"Asian","Female",777
+2006,80,"MELAA","Male",45
+2006,80,"MELAA","Female",69
+2006,80,"Other","Male",1830
+2006,80,"Other","Female",2652
+2006,80,"Not Elsewhere Included","Male",1281
+2006,80,"Not Elsewhere Included","Female",1665
+2006,85,"European","Male",11406
+2006,85,"European","Female",22413
+2006,85,"Maori","Male",204
+2006,85,"Maori","Female",429
+2006,85,"Pacific Peoples","Male",108
+2006,85,"Pacific Peoples","Female",237
+2006,85,"Asian","Male",216
+2006,85,"Asian","Female",345
+2006,85,"MELAA","Male",9
+2006,85,"MELAA","Female",21
+2006,85,"Other","Male",648
+2006,85,"Other","Female",1428
+2006,85,"Not Elsewhere Included","Male",579
+2006,85,"Not Elsewhere Included","Female",951
+2006,90,"European","Male",3564
+2006,90,"European","Female",9648
+2006,90,"Maori","Male",57
+2006,90,"Maori","Female",132
+2006,90,"Pacific Peoples","Male",18
+2006,90,"Pacific Peoples","Female",78
+2006,90,"Asian","Male",51
+2006,90,"Asian","Female",120
+2006,90,"MELAA","Male",6
+2006,90,"MELAA","Female",9
+2006,90,"Other","Male",186
+2006,90,"Other","Female",585
+2006,90,"Not Elsewhere Included","Male",180
+2006,90,"Not Elsewhere Included","Female",372
+2006,95,"European","Male",615
+2006,95,"European","Female",2253
+2006,95,"Maori","Male",12
+2006,95,"Maori","Female",42
+2006,95,"Pacific Peoples","Male",6
+2006,95,"Pacific Peoples","Female",21
+2006,95,"Asian","Male",18
+2006,95,"Asian","Female",39
+2006,95,"MELAA","Male",3
+2006,95,"MELAA","Female",3
+2006,95,"Other","Male",30
+2006,95,"Other","Female",141
+2006,95,"Not Elsewhere Included","Male",42
+2006,95,"Not Elsewhere Included","Female",78
+2006,100,"European","Male",102
+2006,100,"European","Female",369
+2006,100,"Maori","Male",3
+2006,100,"Maori","Female",9
+2006,100,"Pacific Peoples","Male",3
+2006,100,"Pacific Peoples","Female",6
+2006,100,"Asian","Male",15
+2006,100,"Asian","Female",12
+2006,100,"MELAA","Male",0
+2006,100,"MELAA","Female",3
+2006,100,"Other","Male",9
+2006,100,"Other","Female",21
+2006,100,"Not Elsewhere Included","Male",6
+2006,100,"Not Elsewhere Included","Female",12
+2006,0,"New Zealander","Male",13434
+2006,0,"New Zealander","Female",12999
+2006,0,"Other NEC","Male",63
+2006,0,"Other NEC","Female",48
+2006,5,"New Zealander","Male",14496
+2006,5,"New Zealander","Female",13530
+2006,5,"Other NEC","Male",66
+2006,5,"Other NEC","Female",87
+2006,10,"New Zealander","Male",14187
+2006,10,"New Zealander","Female",12930
+2006,10,"Other NEC","Male",69
+2006,10,"Other NEC","Female",60
+2006,15,"New Zealander","Male",11520
+2006,15,"New Zealander","Female",9081
+2006,15,"Other NEC","Male",66
+2006,15,"Other NEC","Female",63
+2006,20,"New Zealander","Male",11019
+2006,20,"New Zealander","Female",9297
+2006,20,"Other NEC","Male",72
+2006,20,"Other NEC","Female",75
+2006,25,"New Zealander","Male",12255
+2006,25,"New Zealander","Female",10881
+2006,25,"Other NEC","Male",81
+2006,25,"Other NEC","Female",75
+2006,30,"New Zealander","Male",16794
+2006,30,"New Zealander","Female",14979
+2006,30,"Other NEC","Male",72
+2006,30,"Other NEC","Female",72
+2006,35,"New Zealander","Male",19047
+2006,35,"New Zealander","Female",17007
+2006,35,"Other NEC","Male",72
+2006,35,"Other NEC","Female",72
+2006,40,"New Zealander","Male",20019
+2006,40,"New Zealander","Female",18648
+2006,40,"Other NEC","Male",84
+2006,40,"Other NEC","Female",72
+2006,45,"New Zealander","Male",20136
+2006,45,"New Zealander","Female",18522
+2006,45,"Other NEC","Male",51
+2006,45,"Other NEC","Female",48
+2006,50,"New Zealander","Male",18267
+2006,50,"New Zealander","Female",17394
+2006,50,"Other NEC","Male",42
+2006,50,"Other NEC","Female",42
+2006,55,"New Zealander","Male",17451
+2006,55,"New Zealander","Female",16701
+2006,55,"Other NEC","Male",33
+2006,55,"Other NEC","Female",42
+2006,60,"New Zealander","Male",12753
+2006,60,"New Zealander","Female",12033
+2006,60,"Other NEC","Male",21
+2006,60,"Other NEC","Female",18
+2006,65,"New Zealander","Male",9354
+2006,65,"New Zealander","Female",8847
+2006,65,"Other NEC","Male",18
+2006,65,"Other NEC","Female",9
+2006,70,"New Zealander","Male",6087
+2006,70,"New Zealander","Female",5658
+2006,70,"Other NEC","Male",6
+2006,70,"Other NEC","Female",6
+2006,75,"New Zealander","Male",3771
+2006,75,"New Zealander","Female",4017
+2006,75,"Other NEC","Male",3
+2006,75,"Other NEC","Female",3
+2006,80,"New Zealander","Male",1827
+2006,80,"New Zealander","Female",2649
+2006,80,"Other NEC","Male",3
+2006,80,"Other NEC","Female",0
+2006,85,"New Zealander","Male",648
+2006,85,"New Zealander","Female",1425
+2006,85,"Other NEC","Male",3
+2006,85,"Other NEC","Female",3
+2006,90,"New Zealander","Male",186
+2006,90,"New Zealander","Female",585
+2006,90,"Other NEC","Male",0
+2006,90,"Other NEC","Female",0
+2006,95,"New Zealander","Male",30
+2006,95,"New Zealander","Female",141
+2006,95,"Other NEC","Male",0
+2006,95,"Other NEC","Female",0
+2006,100,"New Zealander","Male",9
+2006,100,"New Zealander","Female",21
+2006,100,"Other NEC","Male",0
+2006,100,"Other NEC","Female",0

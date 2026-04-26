@@ -144,11 +144,11 @@ svymean(~Total, design=schools.census.des, deff=TRUE)
 ```
 The estimated mean is `r sprintf("%.2f", ybar)`, which is of course
 exactly equal to the population mean - and note that the standard error is zero:
-censuses have no sampling error.  We've measured everything there is to measure
+**censuses have no sampling error**.  We've measured everything there is to measure
 so we have no uncertainty.  
 
 We've requested `Deff=TRUE`, and have got a Deff value of NaN, which means
-not able to be calculated.  We'll discuss what this means later on.  
+the Deff was not able to be calculated.  We'll discuss what this means later on.  
 
 If we had left out the `fpc` command 
 ```{r}
@@ -188,6 +188,16 @@ Let's draw a sample of $n=60$ schools from the population by SRSWOR.
 schools.srswor <- schools |> select.srswor(n=60)
 ```
 
+Here are the top 5 rows of the 60 in the sample
+```{r echo=FALSE}
+schools.srswor |>
+  slice_head(n=5) |>
+  select(School_Id,Org_Name,Add2_City,Regional_Council,bigN,weight) |>
+  kbl() |>
+  kable_styling(full_width=FALSE)
+```
+
+
 To specify the design we use the same syntax as above:
 ```{r}
 schools.srswor.des <- svydesign(id=~1, data=schools.srswor, fpc=~bigN)
@@ -199,7 +209,7 @@ svymean(~Total, design=schools.srswor.des, deff=TRUE)
 ```
 
 This is the mean of a genuine sample now, so we have an estimated mean value that
-differs from the truth, and the standard error is gauge of its accuracy.
+differs from the truth, and the standard error is the gauge of its accuracy.
 
 The standard error comes from the finite population corrected formula:
 ```{r}
@@ -305,6 +315,8 @@ We can now return to estimating the mean school size
 svymean(~Total, design=schools.stsrs.des, deff=TRUE)
 ```
 
+### Design Effect
+
 Now it's finally time to talk about the **Design Effect**, or the Deff for short.
 
 The Deff of an estimator $\widehat{T}$ of a population characteristic $T$ in
@@ -326,13 +338,13 @@ interest and a SRSWOR of the same sample size.
 Note that
 
 * We have a different Deff for every estimate we make from a survey.
-* A Deff$<$1 means that the Standard Errors are smaller than what
+* A Deff<1 means that the Standard Errors are smaller than what
   we'd get in SRSWOR.  A small Deff indicates a **more efficient** design.
 * A Deff of 1 means the design is no better than SRSWOR - and of course
   (look back above) the Deffs of all estimates in SRSWOR are 1 by definition.
-* If we're dealing with a census, then the Standard Error is zero, 
+* If we're dealing with a **census**, then the Standard Error is zero, 
   and in any case there's no difference between designs, so the Deff
-  isn't defined.
+  isn't defined. (That's why it was `NaN` or `Inf` in our census examples.)
 * **Stratified designs** can achieve Deffs much much less than 1 if their strata
   are well defined to be informative about the estimates of interest.  e.g.
   in business surveys where the strata are defined by business size we 
@@ -402,6 +414,25 @@ schools.2sc.des <- svydesign(id=~Territorial_Authority+School_Id, data=schools.2
 svymean(~Total, design=schools.2sc.des, deff=TRUE)
 ```
 
+This design specification has the fpc specified at both stages of selection, 
+and assumes SRSWOR at both stages.  The `survey` package currently only allows for the analysis
+of two stage cluster designs with PPSWR at the first stage of selection.  We'll stick 
+to considering designs with SRSWOR at both stages. 
+
+For the record, this is how to select a two stage cluster sample with PPSWR at the
+first stage, and how to specify its sample design in R:
+```{r}
+schools.2sc.ppswr <- schools |> select.2sc(n=10, 
+                                           method1="PPSWR", sizevar1="Total",
+                                           cfraction=0.20, mmin=2, 
+                                     clustervar="Territorial_Authority")
+schools.2sc.ppswr.des <- svydesign(id=~Territorial_Authority+School_Id, data=schools.2sc.ppswr, 
+                                   weight=~weight,
+                                   survey.lonely.psu="remove")
+svymean(~Total, design=schools.2sc.ppswr.des, deff=TRUE)
+```
+
+
 ## Stratified two stage cluster design
 
 ```{r echo=FALSE}
@@ -418,7 +449,8 @@ schools.st2sc <- schools |> select.st2sc(n=30, stratumvar="Region", allocation="
 
 The design is the same as the two stage cluster sample, except we add the stratum specification.
 ```{r}
-schools.st2sc.des <- svydesign(id=~Territorial_Authority+School_Id, strata=~Region, data=schools.st2sc, 
+schools.st2sc.des <- svydesign(id=~Territorial_Authority+School_Id, strata=~Region, 
+                               data=schools.st2sc, 
                                fpc=~bigN1+bigN2,
                                survey.lonely.psu="remove")
 ```
