@@ -415,3 +415,199 @@ sr <- svyglm(I(sch.wide=="Yes")~stype, family=quasibinomial(link="logit"),
 regTermTest(sr, ~stype)
 ```
 Here we can see that `stype` is contributing significantly to the fit of the model. 
+
+## Ratio estimation
+
+```{r echo=FALSE}
+pop <- read.csv("data/population.csv")
+pop <- pop |> filter(Year==2023) |> 
+  rename(Country=Entity, Population=all.years) |>
+  arrange(Country) 
+pop <- pop[!grepl("^OWID_",pop$Code),]
+pop <- pop[!grepl("^UN_",pop$Code),]
+pop <- pop[pop$Code!="",]
+pop$Prob <- pop$Population/sum(pop$Population)
+row.names(pop) <- NULL
+
+gdp <- read.csv("data/government-expenditure-vs-gdp.csv")
+gdp <- gdp |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(GovtSpend="Government.expenditure") |>
+  arrange(Country) 
+gdp <- gdp[!grepl("^OWID_",pop$Code),]
+gdp <- gdp[!grepl("^UN_",pop$Code),]
+gdp <- gdp[gdp$Code!="",]
+row.names(gdp) <- NULL
+
+gdp <- merge(gdp,pop)
+gdp$Prob <- gdp$Population/sum(gdp$Population)
+gdp$GDPPerCapita <- gdp$GDP/gdp$Population
+
+mil <- read.csv("data/military-spending-sipri.csv")
+#mil <- read.csv("data/military-expenditure-as-a-share-of-government-spending.csv")
+mil <- mil |> filter(Year==2023) |> 
+  rename(Country=Entity, Region="World.region.according.to.OWID") |>
+  rename(MilSpend=Military.expenditure) |>
+  select(-Region) |>
+  arrange(Country) 
+mil <- mil[!grepl("^OWID_",pop$Code),]
+mil <- mil[!grepl("^UN_",pop$Code),]
+mil <- mil[pop$Code!="",]
+row.names(mil) <- NULL
+
+mil <- merge(gdp,mil)
+
+gdpdata <- mil
+gdpdata$GDP <- gdpdata$GDP/1e9
+gdpdata$Population <- gdpdata$Population/1e6
+gdptotal <- sum(gdpdata$GDP)
+poptotal <- sum(gdpdata$Population)
+```
+
+There often arise circumstances in survey analysis where we can expect one variable
+to be proportional to another: for example population and GDP are likely to move together.
+
+```{r echo=FALSE}
+#| fig.cap="Population and GDP (2023) (Source: Our World in Data)",
+#| fig.align="center",
+#| fig.width=5
+plot(gdpdata$Population, gdpdata$GDP, 
+     xlab="Population (Millions)", ylab="GDP ($Billions)")
+idx <- gdpdata$Population>300
+text(gdpdata$Population[idx], gdpdata$GDP[idx], lab=gdpdata$Country[idx], pos=2, cex=0.7)
+```
+
+The are three clear outliers here are the US, China and India.  
+
+We have full data on $N=150$ countries, and the total GDP of the world 
+in 2023 was $Y=`r round(sum(gdpdata$GDP))`$ in billions of US dollars. 
+
+Let's imagine though that we only had a sample of $n=40$ countries out of the 
+$N=150$ and wanted to estimate the total GDP $Y$.  The first 10 rows of our sample
+are shown below.
+
+```{r echo=FALSE}
+set.seed(113)
+gdp.sample <- gdpdata |> select.srswor(n=40)
+row.names(gdp.sample) <- NULL
+gdp.sample |>
+  slice_head(n=10) |>
+  select(Country,Population,GDP,bigN,weight) |>
+  kbl() |> kable_styling(full_width=FALSE)
+```
+
+```{r echo=FALSE}
+#| fig.cap="Sample of 40 countries: Population and GDP (2023) (Source: Our World in Data)",
+#| fig.align="center",
+#| fig.width=5
+plot(gdp.sample$Population, gdp.sample$GDP, 
+     xlab="Population (Millions)", ylab="GDP ($Billions)")
+idx <- gdp.sample$Population>300
+if(sum(idx)>0) text(gdp.sample$Population[idx], gdp.sample$GDP[idx], lab=gdp.sample$Country[idx], pos=2, cex=0.7)
+```
+Our sample happens to miss out on all three of the big countries here. 
+Note that there are some mid-size countries with low GDP visible in the
+plot, so that the relationship between population and GDP isn't simple. 
+
+Our design specification is:
+```{r}
+gdp.sample.des <- svydesign(id=~1, fpc=~bigN, data=gdp.sample)
+```
+and our total GDP estimate is
+```{r}
+ss1 <- svytotal(~GDP, gdp.sample.des)
+ss1
+```
+This estimate has a very high SE due to the high variability among
+countries in GDP, and leads to a very wide confidence interval
+```{r}
+ci1 <- confint(ss1)
+ci1
+```
+with a very high RSE
+```{r}
+cv(ss1)
+```
+indicating an estimate of low quality.
+
+We could use the correlation between population $x_i$ and GDP $y_i$ and 
+fit a standard regression model
+\[
+   y_i = \beta x_i + \varepsilon_i\qquad \varepsilon_i\sim N(0,\sigma^2)
+\]
+omitting the intercept since we want GDP to be proportional to population.  
+
+```{r}
+lmfit <- svyglm(GDP ~ -1 + Population, design=gdp.sample.des)
+summary(lmfit)
+```
+The coefficient $\beta$ is the GDP ($Billions) per million people in the population.
+A 95% confidence interval for $\beta$ is
+```{r}
+confint(lmfit)
+```
+It does have a better RSE than our earlier estimate
+```{r}
+cv(lmfit)
+```
+Scaling the estimated GDP per million by the total population of the world ($X=`r poptotal`$ million) we
+still get a rather wide confidence interval
+```{r}
+ci2 <- confint(lmfit)*poptotal
+ci2
+```
+
+The reason we're still not doing very well is that the regression model isn't a good representation of
+the situation.  Take a look at the residual plot:
+
+```{r echo=FALSE}
+#| fig.cap="Residual plot",
+#| fig.width=5,
+#| fig.align="center"
+plot(gdp.sample$Population, resid(lmfit),
+     xlab="Population (millions)", ylab="GDP residuals ($Billion)",
+     ylim=c(-1,1)*1.2*max(abs(resid(lmfit))))
+abline(h=0)
+```
+This is a terrible looking residual plot, not least because the variance
+so clearly isn't constant: there is clear **funnelling** of the residuals.
+The variance is increasing with population.  That isn't surprising in that
+there is enormous variety in GDP per capita among the larger countries.
+
+An improvement on the model is to have a residual variance which
+scales with population $x_i$:
+\[
+   y_i = \beta x_i + \varepsilon_i\qquad \varepsilon_i\sim N(0,\sigma^2x_i)
+\]
+We can estimate this ratio of the total of $Y$ to the total of $X$ 
+directly using the `svyratio()` function:
+```{r}
+ss3 <- svyratio(~GDP, ~Population, design=gdp.sample.des)
+ss3
+```
+
+The SE is slightly larger than in our first regression model, but we have more
+confidence in this model due to its better treatment of the variance.  The confidence
+interval for the GDP per capita is now
+```{r}
+confint(ss3)
+```
+leading to the following confidence interval for the total GDP of the world in 2023:
+```{r}
+ci3 <- confint(ss3)*poptotal
+ci3
+```
+
+Collecting all of these results together we see the improvement in our estimate
+by using the additional information of population size alongside each country's GDP.
+```{r echo=FALSE}
+cimat <- round(rbind(ci1,ci2,ci3))
+sdat <- data.frame(Method=c("Simple","Regression","Ratio"),
+                   Estimate=round(c(ss1,coef(lmfit)*poptotal,as.numeric(ss3)[1]*poptotal)),
+                   RSE=round(c(cv(ss1),cv(lmfit),cv(ss3)),2),
+                   CI=paste0("(",cimat[,1],",",cimat[,2],")"))
+rownames(sdat) <- NULL
+sdat |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+

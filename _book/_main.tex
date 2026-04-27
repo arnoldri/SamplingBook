@@ -161,7 +161,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-26}
+\date{2026-04-27}
 
 \begin{document}
 \maketitle
@@ -499,6 +499,8 @@ Data
   List of NZ schools \url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools}
 \item
   Data on Population, GDP and Military Expenditure from `Our World in Data' \url{https://ourworldindata.org/}
+\item
+  And this list of survey data sources with suggestions for analysis \url{https://asdfree.com/}
 \end{itemize}
 
 \section{R Packages}\label{r-packages}
@@ -5624,6 +5626,287 @@ can be done to test for the inclusion of specific terms using \texttt{regTermTes
 
 Here we can see that \texttt{stype} is contributing significantly to the fit of the model.
 
+\section{Ratio estimation}\label{ratio-estimation}
+
+There often arise circumstances in survey analysis where we can expect one variable
+to be proportional to another: for example population and GDP are likely to move together.
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-179-1} 
+
+}
+
+\caption{Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-179}
+\end{figure}
+
+The are three clear outliers here are the US, China and India.
+
+We have full data on \(N=150\) countries, and the total GDP of the world
+in 2023 was \(Y=\ensuremath{9.1046\times 10^{4}}\) in billions of US dollars.
+
+Let's imagine though that we only had a sample of \(n=40\) countries out of the
+\(N=150\) and wanted to estimate the total GDP \(Y\). The first 10 rows of our sample
+are shown below.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+Country & Population & GDP & bigN & weight\\
+\hline
+Zambia & 20.723967 & 27.580696 & 150 & 3.75\\
+\hline
+Saudi Arabia & 33.264289 & 863.963569 & 150 & 3.75\\
+\hline
+Mauritius & 1.273591 & 14.170188 & 150 & 3.75\\
+\hline
+Bahrain & 1.569674 & 39.966811 & 150 & 3.75\\
+\hline
+Benin & 14.111035 & 17.831007 & 150 & 3.75\\
+\hline
+Myanmar & 54.133800 & 63.756974 & 150 & 3.75\\
+\hline
+Mozambique & 33.635163 & 20.532020 & 150 & 3.75\\
+\hline
+Bosnia and Herzegovina & 3.185072 & 20.681711 & 150 & 3.75\\
+\hline
+Montenegro & 0.633553 & 5.161591 & 150 & 3.75\\
+\hline
+Japan & 124.370947 & 4601.203386 & 150 & 3.75\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-181-1} 
+
+}
+
+\caption{Sample of 40 countries: Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-181}
+\end{figure}
+
+Our sample happens to miss out on all three of the big countries here.
+Note that there are some mid-size countries with low GDP visible in the
+plot, so that the relationship between population and GDP isn't simple.
+
+Our design specification is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gdp.sample.des }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{id=}\SpecialCharTok{\textasciitilde{}}\DecValTok{1}\NormalTok{, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN, }\AttributeTok{data=}\NormalTok{gdp.sample)}
+\end{Highlighting}
+\end{Shaded}
+
+and our total GDP estimate is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss1 }\OtherTok{\textless{}{-}} \FunctionTok{svytotal}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{GDP, gdp.sample.des)}
+\NormalTok{ss1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     total    SE
+## GDP 81890 22980
+\end{verbatim}
+
+This estimate has a very high SE due to the high variability among
+countries in GDP, and leads to a very wide confidence interval
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci1 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss1)}
+\NormalTok{ci1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        2.5 %   97.5 %
+## GDP 36850.06 126930.8
+\end{verbatim}
+
+with a very high RSE
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cv}\NormalTok{(ss1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           GDP
+## GDP 0.2806213
+\end{verbatim}
+
+indicating an estimate of low quality.
+
+We could use the correlation between population \(x_i\) and GDP \(y_i\) and
+fit a standard regression model
+\[
+   y_i = \beta x_i + \varepsilon_i\qquad \varepsilon_i\sim N(0,\sigma^2)
+\]
+omitting the intercept since we want GDP to be proportional to population.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lmfit }\OtherTok{\textless{}{-}} \FunctionTok{svyglm}\NormalTok{(GDP }\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{{-}}\DecValTok{1} \SpecialCharTok{+}\NormalTok{ Population, }\AttributeTok{design=}\NormalTok{gdp.sample.des)}
+\FunctionTok{summary}\NormalTok{(lmfit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## svyglm(formula = GDP ~ -1 + Population, design = gdp.sample.des)
+## 
+## Survey design:
+## svydesign(id = ~1, fpc = ~bigN, data = gdp.sample)
+## 
+## Coefficients:
+##            Estimate Std. Error t value Pr(>|t|)    
+## Population   27.870      4.117    6.77 4.44e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 423229.9)
+## 
+## Number of Fisher Scoring iterations: 2
+\end{verbatim}
+
+The coefficient \(\beta\) is the GDP (\$Billions) per million people in the population.
+A 95\% confidence interval for \(\beta\) is
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(lmfit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               2.5 %   97.5 %
+## Population 19.54262 36.19642
+\end{verbatim}
+
+It does have a better RSE than our earlier estimate
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cv}\NormalTok{(lmfit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Population 
+##  0.1477149
+\end{verbatim}
+
+Scaling the estimated GDP per million by the total population of the world (\(X=7646.716928\) million) we
+still get a rather wide confidence interval
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci2 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(lmfit)}\SpecialCharTok{*}\NormalTok{poptotal}
+\NormalTok{ci2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               2.5 %   97.5 %
+## Population 149436.9 276783.8
+\end{verbatim}
+
+The reason we're still not doing very well is that the regression model isn't a good representation of
+the situation. Take a look at the residual plot:
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-190-1} 
+
+}
+
+\caption{Residual plot}\label{fig:unnamed-chunk-190}
+\end{figure}
+
+This is a terrible looking residual plot, not least because the variance
+so clearly isn't constant: there is clear \textbf{funnelling} of the residuals.
+The variance is increasing with population. That isn't surprising in that
+there is enormous variety in GDP per capita among the larger countries.
+
+An improvement on the model is to have a residual variance which
+scales with population \(x_i\):
+\[
+   y_i = \beta x_i + \varepsilon_i\qquad \varepsilon_i\sim N(0,\sigma^2x_i)
+\]
+We can estimate this ratio of the total of \(Y\) to the total of \(X\)
+directly using the \texttt{svyratio()} function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ss3 }\OtherTok{\textless{}{-}} \FunctionTok{svyratio}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{GDP, }\SpecialCharTok{\textasciitilde{}}\NormalTok{Population, }\AttributeTok{design=}\NormalTok{gdp.sample.des)}
+\NormalTok{ss3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ratio estimator: svyratio.survey.design2(~GDP, ~Population, design = gdp.sample.des)
+## Ratios=
+##     Population
+## GDP   21.55548
+## SEs=
+##     Population
+## GDP   3.809595
+\end{verbatim}
+
+The SE is slightly larger than in our first regression model, but we have more
+confidence in this model due to its better treatment of the variance. The confidence
+interval for the GDP per capita is now
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(ss3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   2.5 %   97.5 %
+## GDP/Population 14.08881 29.02215
+\end{verbatim}
+
+leading to the following confidence interval for the total GDP of the world in 2023:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci3 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(ss3)}\SpecialCharTok{*}\NormalTok{poptotal}
+\NormalTok{ci3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   2.5 %   97.5 %
+## GDP/Population 107733.2 221924.2
+\end{verbatim}
+
+Collecting all of these results together we see the improvement in our estimate
+by using the additional information of population size alongside each country's GDP.
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|l}
+\hline
+Method & Estimate & RSE & CI\\
+\hline
+Simple & 81890 & 0.28 & (36850,126931)\\
+\hline
+Regression & 213110 & 0.15 & (149437,276784)\\
+\hline
+Ratio & 164829 & 0.18 & (107733,221924)\\
+\hline
+\end{tabular}
+\end{table}
+
 \chapter{Weight adjustments}\label{weight-adjustments}
 
 \section{Weight Calibration}\label{weight-calibration}
@@ -5722,7 +6005,7 @@ We should note that the mean income differs considerably between males and femal
 ## female female 438.5047 26.16272
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-184-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-201-1.pdf}}
 
 Let's also note the distribution of the population by age and sex, as measured
 by the most recent census:
@@ -5844,17 +6127,18 @@ These new weights are now appropriately higher for males and lower for females.
 In R we can modify the weights in the design object using the \texttt{postStratify()} function.
 We first need to create a data frame storing the benchmarks:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Gender.benchmarks}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##   Gender     Nh
-## 1   male 984091
-## 2 female 988628
-\end{verbatim}
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+Gender & Nh\\
+\hline
+male & 984091\\
+\hline
+female & 988628\\
+\hline
+\end{tabular}
+\end{table}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5891,7 +6175,7 @@ has been modified to
 \end{verbatim}
 
 Notice that the Standard Errors here are zero: these proportions are no longer
-estimates, they have been imposed by our benchmarks.
+estimates, they have been \textbf{imposed} by our benchmarks.
 
 Then we can compare the orginal estimate of mean income
 
@@ -5919,11 +6203,19 @@ with the post-stratified estimate
 ## Income 585.32 22.651
 \end{verbatim}
 
-The estimate has been increased slightly as expected.
+The estimate has been increased slightly as expected. Also note that
+the Standard Error has been reduced: this is often the case with
+post-stratified estimates: post-stratification makes the properties
+of different samples differ less than they otherwise would, and thereby
+reduces our overall uncertainty.
 
-Non-response can make these small chance differences even worse.
-Males and young people tend to have the lowest response rates in surveys.
-So let's see what happens to our mean estimate if we take our sample of 200 individuals
+\subsection*{Poststratfication as a treatment for non-response}\label{poststratfication-as-a-treatment-for-non-response}
+\addcontentsline{toc}{subsection}{Poststratfication as a treatment for non-response}
+
+Non-response can make the small chance differences in the previous section even worse.
+
+In population surveys males and young people tend to have the lowest response rates.
+So let's see what happens to our mean income estimate if we take our sample of 200 individuals
 and filter out 20\% of the male respondents:
 
 \begin{Shaded}
@@ -6038,6 +6330,29 @@ with people of that type in the population who happen not to have turned up in t
 In population surveys run by Statistics NZ we'll often see post-stratification by age
 (in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.
 
+\subsubsection{A warning}\label{a-warning}
+
+Post-stratification is often used to modify weights in the presence of non-response.
+The idea is that in each post-stratum the people who respond represent well the people
+who don't respond.
+
+This is a very big and untestable assumption.
+
+The reasons that people do or don't respond are complicated. The greatest risk to a
+survey is that the non-respondents differ from the respondents on the characteristic
+of interest.
+
+For example if we're doing a survey of incomes, perhaps all the high income
+people don't respond - there's no way to adjust for this, because the only way to know about
+income is to have them answer the survey. So we'll never find out about high income people,
+nor find out what their incomes actually are.
+
+Post-stratifying the income survey above by age and sex means that we're assuming that
+the respondents in each age-sex category are a simple random sample from all of the
+sample members selected into the survey. We can cope with, and adjust for, differing response rates
+\textbf{between} the post-strata, but we can never adjust for different likelihoods of response
+\textbf{within} the post-strata.
+
 \subsection*{Raking}\label{raking}
 \addcontentsline{toc}{subsection}{Raking}
 
@@ -6110,6 +6425,166 @@ and then calculate our estimates
 ##          mean     SE
 ## Income 579.58 22.798
 \end{verbatim}
+
+We can compare estimated population totals with the Population benchmarks:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nzpoptab }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r|r}
+\hline
+AgeGrp & male & female & Total\\
+\hline
+15-24 & 324888 & 310032 & 634920\\
+\hline
+25-34 & 337845 & 340668 & 678513\\
+\hline
+35-45 & 321358 & 337928 & 659286\\
+\hline
+Total & 984091 & 988628 & 1972719\\
+\hline
+\end{tabular}
+\end{table}
+
+Estimated counts with no weight adjustments
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r}
+\hline
+  & AgeGrp & male & female & SE(male) & SE(female)\\
+\hline
+15-24 & 15-24 & 270977.9 & 357690.8 & 50472.45 & 56491.70\\
+\hline
+25-34 & 25-34 & 260138.8 & 346851.7 & 49609.94 & 55815.54\\
+\hline
+35-45 & 35-45 & 281817.0 & 455242.8 & 51307.81 & 61776.48\\
+\hline
+\end{tabular}
+\end{table}
+
+Post-stratified by Gender
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps)  }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r}
+\hline
+  & AgeGrp & male & female & SE(male) & SE(female)\\
+\hline
+15-24 & 15-24 & 328030.3 & 304904.0 & 53712.42 & 44259.49\\
+\hline
+25-34 & 25-34 & 314909.1 & 295664.4 & 53150.88 & 43877.23\\
+\hline
+35-45 & 35-45 & 341151.5 & 388059.6 & 54225.61 & 46796.67\\
+\hline
+\end{tabular}
+\end{table}
+
+Post-stratified by Age Group cross classified with Gender: exact match to benchmarks
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps2)  }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r}
+\hline
+  & AgeGrp & male & female & SE(male) & SE(female)\\
+\hline
+15-24 & 15-24 & 324888 & 310032 & 0 & 0\\
+\hline
+25-34 & 25-34 & 337845 & 340668 & 0 & 0\\
+\hline
+35-45 & 35-45 & 321358 & 337928 & 0 & 0\\
+\hline
+\end{tabular}
+\end{table}
+
+Post-stratified by raking to Age Group and Gender marginal totals: approximate
+match to benchmarks
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.rake)  }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r}
+\hline
+  & AgeGrp & male & female & SE(male) & SE(female)\\
+\hline
+15-24 & 15-24 & 327978.3 & 306941.7 & 36276.56 & 36276.56\\
+\hline
+25-34 & 25-34 & 348793.8 & 329719.2 & 38089.76 & 38089.76\\
+\hline
+35-45 & 35-45 & 307318.9 & 351967.1 & 36046.49 & 36046.49\\
+\hline
+\end{tabular}
+\end{table}
+
+Finally compare the estimates of mean income
+
+\begin{table}
+\centering
+\begin{tabular}[t]{l|r|r}
+\hline
+Method & Estimate & SE\\
+\hline
+True & 575.3600 & 0.00000\\
+\hline
+No adjustment & 555.9945 & 24.50130\\
+\hline
+PS(Gender) & 580.7311 & 23.35388\\
+\hline
+PS(AgeGrp*Gender) & 580.2640 & 22.65980\\
+\hline
+Rake(Age+Gender) & 579.5795 & 22.79842\\
+\hline
+\end{tabular}
+\end{table}
+
+The Standard Errors are all similar, though we do get a small reduction in SE
+with post-stratification. However it is the reduction in the biasing
+effect of non-response that is most striking.
+
+\begin{figure}
+
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-232-1} 
+
+}
+
+\caption{Estimates of mean income by adjustment method}\label{fig:unnamed-chunk-232}
+\end{figure}
 
 \subsection*{Another example}\label{another-example}
 \addcontentsline{toc}{subsection}{Another example}
@@ -6339,10 +6814,6 @@ still add up to the same total.
 There is an informative warning here: no fpc can apply at second stage of selection
 (nor any subsequent stages).
 
-(Also note that the method ``JK1'' is used for unstratified designs. For stratified
-designs the jackknife is specified by ``JKn'': we don't just drop out one PSU over
-the whole sample in each replicate, instead we drop out a PSU from every stratum.)
-
 Here are the first 3 rows and 8 columns: each row refers to a district \texttt{dnum}
 and each column is a replicate.
 
@@ -6557,7 +7028,9 @@ and the set of replicate weights \texttt{repweight001-repweight040}.
 ## JK1+PS(stype)          624.3485 62.31259
 \end{verbatim}
 
-JKn is used with stratified designs
+The method ``JK1'' is used for unstratified designs. For stratified
+designs the jackknife is specified by ``JKn'': we don't just drop out one PSU over
+the whole sample in each replicate, instead we drop out a PSU from every stratum.
 
 E.g. draw a two stage cluster sample within two strata: schools which are or are
 not eligible for an awards programme:
@@ -6635,49 +7108,6 @@ I.e. it is the \textbf{combination} of \texttt{awards} and \texttt{dnum} that ac
 There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication. Some
 of these have multiple variants. We don't need to worry about these.
-
-\subsection{Demonstration of ps SE improvement}\label{demonstration-of-ps-se-improvement}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{222}\NormalTok{)}
-\NormalTok{R }\OtherTok{\textless{}{-}} \DecValTok{100}
-\NormalTok{sim }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{R, }
-              \ControlFlowTok{function}\NormalTok{(i) \{}
-\NormalTok{  ss }\OtherTok{\textless{}{-}}\NormalTok{ apipopc }\SpecialCharTok{|\textgreater{}} 
-    \FunctionTok{select.2sc}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{cfraction=}\FloatTok{0.30}\NormalTok{, }\AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\AttributeTok{clustervar=}\StringTok{"dnum"}\NormalTok{) }
-\NormalTok{  d1 }\OtherTok{\textless{}{-}} \FunctionTok{svydesign}\NormalTok{(}\AttributeTok{ids=}\SpecialCharTok{\textasciitilde{}}\NormalTok{dnum}\SpecialCharTok{+}\NormalTok{snum, }\AttributeTok{fpc=}\SpecialCharTok{\textasciitilde{}}\NormalTok{bigN1}\SpecialCharTok{+}\NormalTok{bigN2, }\AttributeTok{data=}\NormalTok{ss)  }
-\NormalTok{  d2 }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(d1, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{stype, }\AttributeTok{population=}\NormalTok{stype.benchmarks)}
-\NormalTok{  e1 }\OtherTok{\textless{}{-}} \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{d1))}
-\NormalTok{  e2 }\OtherTok{\textless{}{-}} \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{api00, }\AttributeTok{design=}\NormalTok{d2))}
-  \FunctionTok{return}\NormalTok{(}\FunctionTok{c}\NormalTok{(e1,e2))}
-\NormalTok{\}))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
-\FunctionTok{hist}\NormalTok{(sim[,}\DecValTok{1}\NormalTok{],}\AttributeTok{main=}\StringTok{"Simple estimates"}\NormalTok{,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.9}\NormalTok{,}\FloatTok{1.1}\NormalTok{)}\SpecialCharTok{*}\FunctionTok{range}\NormalTok{(sim[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]))}
-\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{mean}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{api00),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
-\FunctionTok{hist}\NormalTok{(sim[,}\DecValTok{3}\NormalTok{],}\AttributeTok{main=}\StringTok{"Postratified estimates"}\NormalTok{,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.9}\NormalTok{,}\FloatTok{1.1}\NormalTok{)}\SpecialCharTok{*}\FunctionTok{range}\NormalTok{(sim[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]))}
-\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{mean}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{api00),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-230-1.pdf}}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
-\FunctionTok{hist}\NormalTok{(sim[,}\DecValTok{2}\NormalTok{],}\AttributeTok{main=}\StringTok{"SE of Simple estimates"}\NormalTok{,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.8}\NormalTok{,}\FloatTok{1.2}\NormalTok{)}\SpecialCharTok{*}\FunctionTok{range}\NormalTok{(sim[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{)]))}
-\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{sd}\NormalTok{(sim[,}\DecValTok{1}\NormalTok{]),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
-\FunctionTok{hist}\NormalTok{(sim[,}\DecValTok{4}\NormalTok{],}\AttributeTok{main=}\StringTok{"SE of Postratified estimates"}\NormalTok{,}\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\FloatTok{0.8}\NormalTok{,}\FloatTok{1.2}\NormalTok{)}\SpecialCharTok{*}\FunctionTok{range}\NormalTok{(sim[,}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{)]))}
-\FunctionTok{abline}\NormalTok{(}\AttributeTok{v=}\FunctionTok{sd}\NormalTok{(sim[,}\DecValTok{3}\NormalTok{]),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{,}\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-231-1.pdf}}
 
 \chapter{Imputation}\label{imputation}
 
@@ -6801,7 +7231,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-237-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-259-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   
@@ -6819,7 +7249,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-237-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-259-2.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -7756,7 +8186,7 @@ Overall mean imputation
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-244-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-266-1.pdf}}
 
 \begin{verbatim}
 ##    id age bmi hyp chl  
@@ -8095,7 +8525,7 @@ Just do the numerical variables (gives a warning because Marital is categorical)
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-253-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-275-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Income Ethnicity Marital   
@@ -8134,7 +8564,7 @@ Avoid the error
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-254-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-276-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Age Hours Income  

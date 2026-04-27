@@ -1,0 +1,37 @@
+### Demonstration of ps SE improvement
+
+```{r}
+set.seed(222)
+R <- 100
+sim <- t(sapply(1:R, 
+              function(i) {
+  ss <- apipopc |> 
+    select.2sc(n=100, cfraction=0.30, mmin=2, clustervar="dnum") 
+  d1 <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=ss)  
+  d2 <- postStratify(d1, strata=~stype, population=stype.benchmarks)
+  e1 <- ff(svymean(~api00, design=d1))
+  e2 <- ff(svymean(~api00, design=d2))
+  return(c(e1,e2))
+}))
+```
+
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,1],main="Simple estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+hist(sim[,3],main="Postratified estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
+abline(v=mean(apipopc$api00),col="red",lwd=2)
+```
+
+```{r}
+par(mfrow=c(1,2))
+hist(sim[,2],main="SE of Simple estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,1]),col="red",lwd=2)
+hist(sim[,4],main="SE of Postratified estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
+abline(v=sd(sim[,3]),col="red",lwd=2)
+
+```
+
+
+

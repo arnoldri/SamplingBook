@@ -1,0 +1,152 @@
+# Introduction
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`
+
+These are notes for the Sampling section of STAT395/455.  The course
+overlaps to some extent with STAT392/439, but there is a greater 
+emphasis on R coding, computation, summary and display. 
+
+## Lecture Plan
+
+Course Learning Objectives
+
+-	Describe the steps in the survey process, including the sources of survey error;
+-	Draw samples from a sample frame under a variety of sample designs, and compute survey weights;
+-	Carry out, interpret and present statistical inference procedures on survey data, including adjustments for non-response.
+
+Lecture plan (3 lectures + 1 tutorial per week)
+
+Bring a laptop to the Friday (tutorial) lecture.
+
+### Week 1 – The Survey Process {-}
+
+* The survey process, sources of survey error
+* Populations and Frames
+* Sampling in finite and infinite populations;
+  Basics of SRSWOR inference; sample weights;
+* **Tutorial:** Sampling basics; Population and Frames
+
+### Week 2 – Sampling {-}
+
+Use of `sample()` and other simulation methods in R for a variety of designs 
+[`sampler` package (does power calculations, allocation, SRS and STSRS, but not cluster)] 
+[`sampling` package – can do cluster samples]
+
+*	Simple random sampling, with and without replacement
+* Stratified sampling
+* Cluster sampling
+* Sampling in complex designs
+* Sample size calculation and allocation
+* Survey weights – create estimates from weights without standard errors
+* **Tutorial:** using R to draw samples and compute survey weights
+
+### Week 3 - Inference with the R survey package {-}
+
+* Inference in simple and complex designs, including regression
+* Variance estimation 
+* Definition and interpretation of the design effect
+* **Tutorial:** using R to specify designs and draw inferences
+
+### Week 4 – Non-response and complex designs {-}
+
+*	Post-stratification for non-response adjustment
+* Imputation (`simputation` package)
+*	Jackknife and bootstrap inference
+* **Tutorial:** raking adjustments to weights; imputation; jackknife inference
+
+### Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11] {-}
+
+*	Survey process, populations and frames
+*	Describe a real survey, comment on design
+*	Propose a sample design, frame, comment on scope and coverage
+*	Draw and analyse a sample under various designs
+*	Compute sample sizes and allocate samples in stratified sampling
+*	Compute and interpret the design effect
+* Analyse data and present results from a survey
+
+### Test 2 (25%) [assessment period] [1.5 hours, closed book] {-}
+
+*	Survey process, populations and frames
+* Describe sample designs
+* Compute and interpret sample weights
+* Use sample weights for point estimates
+* Interpret output from survey inference in R
+* Compare results, interpret design effect
+* Describe methods for non-response adjustment (imputation and post-stratification); comment on bias reduction and assumptions being made
+* Describe the jackknife method of variance estimation
+
+## Recommended reading
+
+There are lots of books on sample surveys.
+
+ * Thomas Lumley's book 'Complex Surveys' (@Lumley2010) is a good introduction to sample survey analysis with R,
+   and accompanies the `survey` package (@survey2004).
+ * Groves et al. 'Survey Methodology' (groves.etal) is a good general summary of the important issues in survey design.
+ * Sarndal, Swensson and Wretman is a classic in the field of the theory of sampling (@ssw)
+ * Likewise the books by @cochran and @kish
+ * Little and Rubin have a great book on missing data (@littlerubin)
+ * More recent are the books by @lohr and @scheaffer.mendenhall.ott
+ * And in 1994 StatsNZ published 'A Guide to Good Survey Design' (@statsnz)
+ * Notes from the STAT392 course on Sample Surveys 
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/SampleSurveysBook/_book/index.html
+ * A crash guide to using iNZight for sample surveys
+   https://homepages.ecs.vuw.ac.nz/~rarnold/STAT392/iNZightManual/_book/index.html
+   (iNZight is free software, using the `survey` package in the back end.)
+
+And also
+ 
+ * CRAN site on R resources for Official Statistics https://cran.r-project.org/web/views/OfficialStatistics.html
+ * Online book on using R for survey analysis:
+   https://bookdown.org/jimr1603/Intermediate_R_-_R_for_Survey_Analysis/
+ * This gallery of R graphs https://r-graph-gallery.com/
+ 
+Some simple lectures on Sample Surveys
+
+ * https://r-project.ro/conference2017/presentations/Camelia_Goga_sondages.pdf
+ * Notes for epidemiologists: https://www.epirhandbook.com/en/new_pages/survey_analysis.html
+ * Notes on imputation: https://www.r-bloggers.com/2023/01/imputation-in-r-top-3-ways-for-imputing-missing-data/
+ * An online book about spatial sampling https://dickbrus.github.io/SpatialSamplingwithR/
+ * From Qualtrics https://www.qualtrics.com/articles/strategy-research/sampling-methods/
+
+Data
+
+ * UC Irvine Machine Learning data repository: http://archive.ics.uci.edu/
+ * Some free microdata sets: https://asdfree.com/
+ * Kaggle data repository: https://www.kaggle.com/
+   * Airline dataset from Kaggle:
+     https://www.kaggle.com/datasets/thedevastator/airlines-traffic-passenger-statistics
+     [distributed under the Creative Commons Licence 4.0: https://creativecommons.org/licenses/by-nc-sa/4.0/]
+ * Address file from LINZ: https://data.linz.govt.nz/layer/123113-nz-addresses/
+ * List of NZ schools https://www.educationcounts.govt.nz/directories/list-of-nz-schools
+ * Data on Population, GDP and Military Expenditure from 'Our World in Data' https://ourworldindata.org/
+ * And this list of survey data sources with suggestions for analysis https://asdfree.com/
+ 
+## R Packages
+
+* `survey` package (@survey2004) with this handy summary of command uses
+   https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
+* `srvyr` a dplyr wrapper for the `survey` package and `jtools` which also provides some extensions
+* `gtsummary` creates outputs ready for publication (difficult to build/load)
+* `sampling` package for drawing samples according to various designs
+* `mice` package for imputation
+* `simputation` package for imputation (difficult to build/load)
+* `haven` package to import `SAS`, `Stata` and `SPSS` data files
+ 
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'survey'
+), 'packages.bib')
+```
+
+<!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
+`r if (!knitr:::is_latex_output()) '
+$\\DeclareMathOperator*{\\argmin}{argmin}$
+$\\newcommand{\\var}{\\mathrm{Var}}$
+$\\newcommand{\\bfa}[2]{{\\rm\\bf #1}[#2]}$
+$\\newcommand{\\rma}[2]{{\\rm     #1}[#2]}$'`

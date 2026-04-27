@@ -189,8 +189,8 @@ Gender.benchmarks <- pstab[,c("Gender","Nh")]
 
 In R we can modify the weights in the design object using the `postStratify()` function. 
 We first need to create a data frame storing the benchmarks:
-```{r}
-Gender.benchmarks
+```{r echo=FALSE}
+Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
 ```{r}
@@ -206,7 +206,7 @@ has been modified to
 svymean(~Gender, design=surf.des.ps)
 ```
 Notice that the Standard Errors here are zero: these proportions are no longer
-estimates, they have been imposed by our benchmarks.
+estimates, they have been **imposed** by our benchmarks.
 
 Then we can compare the orginal estimate of mean income
 ```{r}
@@ -222,9 +222,12 @@ post-stratified estimates: post-stratification makes the properties
 of different samples differ less than they otherwise would, and thereby 
 reduces our overall uncertainty.  
 
-Non-response can make these small chance differences even worse.
-Males and young people tend to have the lowest response rates in surveys.
-So let's see what happens to our mean estimate if we take our sample of 200 individuals
+### Poststratfication as a treatment for non-response {-}
+
+Non-response can make the small chance differences in the previous section even worse.
+
+In population surveys males and young people tend to have the lowest response rates.
+So let's see what happens to our mean income estimate if we take our sample of 200 individuals
 and filter out 20% of the male respondents:
 ```{r}
 set.seed(234)
@@ -286,10 +289,28 @@ with people of that type in the population who happen not to have turned up in t
 In population surveys run by Statistics NZ we'll often see post-stratification by age 
 (in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.  
 
-### Poststratfication as a treatment for non-response {-}
+#### A warning {-}
 
-A warning here: post-stratification is often used to modify weights in the presence
-of non-response.  
+Post-stratification is often used to modify weights in the presence of non-response.
+The idea is that in each post-stratum the people who respond represent well the people
+who don't respond.  
+
+This is a very big and untestable assumption.
+
+The reasons that people do or don't respond are complicated.  The greatest risk to a
+survey is that the non-respondents differ from the respondents on the characteristic 
+of interest.  
+
+For example if we're doing a survey of incomes, perhaps all the high income
+people don't respond - there's no way to adjust for this, because the only way to know about
+income is to have them answer the survey.  So we'll never find out about high income people,
+nor find out what their incomes actually are.
+
+Post-stratifying the income survey above by age and sex means that we're assuming that 
+the respondents in each age-sex category are a simple random sample from all of the
+sample members selected into the survey.  We can cope with, and adjust for, differing response rates
+**between** the post-strata, but we can never adjust for different likelihoods of response
+**within** the post-strata.  
 
 ### Raking {-}
 
@@ -326,6 +347,71 @@ and then calculate our estimates
 svymean(~Income, design=surf.nonresp.des.rake)
 ```
 
+We can compare estimated population totals with the Population benchmarks:
+```{r echo=FALSE}
+nzpoptab |> kbl() |> kable_styling(full_width=FALSE)
+```
+
+Estimated counts with no weight adjustments
+```{r echo=FALSE}
+svyby(~Gender, by=~AgeGrp, FUN=svytotal, design=surf.nonresp.des) |>
+  kbl(col.names=c("AgeGrp","male","female","SE(male)","SE(female)")) |> 
+  kable_styling(full_width=FALSE)
+```
+
+Post-stratified by Gender
+```{r echo=FALSE}
+svyby(~Gender, by=~AgeGrp, FUN=svytotal, design=surf.nonresp.des.ps)  |>
+  kbl(col.names=c("AgeGrp","male","female","SE(male)","SE(female)")) |> 
+  kable_styling(full_width=FALSE)
+```
+
+Post-stratified by Age Group cross classified with Gender: exact match to benchmarks
+```{r echo=FALSE}
+svyby(~Gender, by=~AgeGrp, FUN=svytotal, design=surf.nonresp.des.ps2)  |>
+  kbl(col.names=c("AgeGrp","male","female","SE(male)","SE(female)")) |> 
+  kable_styling(full_width=FALSE)
+```
+
+Post-stratified by raking to Age Group and Gender marginal totals: approximate
+match to benchmarks
+```{r echo=FALSE}
+svyby(~Gender, by=~AgeGrp, FUN=svytotal, design=surf.nonresp.des.rake)  |>
+  kbl(col.names=c("AgeGrp","male","female","SE(male)","SE(female)")) |> 
+  kable_styling(full_width=FALSE)
+```
+
+```{r echo=FALSE}
+ff <- function(x) c(as.numeric(x), SE(x))
+```
+
+Finally compare the estimates of mean income
+```{r echo=FALSE}
+dd <- data.frame(Method=c("True","No adjustment","PS(Gender)","PS(AgeGrp*Gender)","Rake(Age+Gender)"),
+                 rbind(c(mean(surf$Income), 0),
+                       ff(svymean(~Income, design=surf.nonresp.des)),
+                       ff(svymean(~Income, design=surf.nonresp.des.ps)),
+                       ff(svymean(~Income, design=surf.nonresp.des.ps2)),
+                       ff(svymean(~Income, design=surf.nonresp.des.rake))))
+dd |>
+  rename(Estimate=X1, SE=X2) |> 
+  kbl() |> kable_styling(full_width=FALSE)
+```
+The Standard Errors are all similar, though we do get a small reduction in SE
+with post-stratification.  However it is the reduction in the biasing
+effect of non-response that is most striking. 
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+#| fig.width=5,
+#| fig.align="center",
+#| fig.cap="Estimates of mean income by adjustment method"
+par(mar=c(5.1,8.1,4.1,2.1))
+sc <- cbind(dd$X1-1.96*dd$X2, dd$X1+1.96*dd$X2)
+ns <- nrow(sc)
+dotchart(dd$X1, xlim=range(sc), xlab="Mean Income")
+arrows(sc[,1], 1:ns, sc[,2], 1:ns, angle=90, code=3, length=0.1)
+axis(2, at=1:ns, lab=dd$Method, las=2, cex=0.45)
+```
 
 ### Another example {-}
 
@@ -405,7 +491,6 @@ svymean(~enroll, api2sc.des.rake)
 ff <- function(x) c(as.numeric(x), SE(x))
 ```
 
-
 Compare
 ```{r echo=FALSE}
 ss <- rbind(
@@ -440,10 +525,6 @@ api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
 There is an informative warning here: no fpc can apply at second stage of selection 
 (nor any subsequent stages).  
 
-(Also note that the method "JK1" is used for unstratified designs.  For stratified
-designs the jackknife is specified by "JKn": we don't just drop out one PSU over 
-the whole sample in each replicate, instead we drop out a PSU from every stratum.)
-
 Here are the first 3 rows and 8 columns: each row refers to a district `dnum`
 and each column is a replicate.
 ```{r}
@@ -470,7 +551,7 @@ svymean(~enroll, design=api2sc.jkdes.ps)
 Here post-stratification gives us a strong reduction of the standard errors
 
 Comparison
-```{r}
+```{r echo=FALSE}
 ss <- rbind(
   c(mean(apipopc$enroll), 0),
   ff(svymean(~enroll, api2sc.des)), 
@@ -539,7 +620,9 @@ dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2
 ss
 ```
 
-JKn is used with stratified designs
+The method "JK1" is used for unstratified designs.  For stratified
+designs the jackknife is specified by "JKn": we don't just drop out one PSU over 
+the whole sample in each replicate, instead we drop out a PSU from every stratum.
 
 E.g. draw a two stage cluster sample within two strata: schools which are or are
 not eligible for an awards programme:
@@ -566,41 +649,4 @@ svymean(~enroll, design=apist2sc.jkdes.ps)
 There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication.  Some
 of these have multiple variants.  We don't need to worry about these.
-
-### Demonstration of ps SE improvement
-
-```{r}
-set.seed(222)
-R <- 100
-sim <- t(sapply(1:R, 
-              function(i) {
-  ss <- apipopc |> 
-    select.2sc(n=100, cfraction=0.30, mmin=2, clustervar="dnum") 
-  d1 <- svydesign(ids=~dnum+snum, fpc=~bigN1+bigN2, data=ss)  
-  d2 <- postStratify(d1, strata=~stype, population=stype.benchmarks)
-  e1 <- ff(svymean(~api00, design=d1))
-  e2 <- ff(svymean(~api00, design=d2))
-  return(c(e1,e2))
-}))
-```
-
-
-```{r}
-par(mfrow=c(1,2))
-hist(sim[,1],main="Simple estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
-abline(v=mean(apipopc$api00),col="red",lwd=2)
-hist(sim[,3],main="Postratified estimates",xlim=c(0.9,1.1)*range(sim[,c(1,3)]))
-abline(v=mean(apipopc$api00),col="red",lwd=2)
-```
-
-```{r}
-par(mfrow=c(1,2))
-hist(sim[,2],main="SE of Simple estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
-abline(v=sd(sim[,1]),col="red",lwd=2)
-hist(sim[,4],main="SE of Postratified estimates",xlim=c(0.8,1.2)*range(sim[,c(2,4)]))
-abline(v=sd(sim[,3]),col="red",lwd=2)
-
-```
-
-
 
