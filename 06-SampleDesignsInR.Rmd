@@ -38,43 +38,7 @@ from the 'Our World in Data' website.
 
 
 ```{r echo=FALSE}
-pop <- read.csv("data/population.csv")
-pop <- pop |> filter(Year==2023) |> 
-  rename(Country=Entity, Population=all.years) |>
-  arrange(Country) 
-pop <- pop[!grepl("^OWID_",pop$Code),]
-pop <- pop[!grepl("^UN_",pop$Code),]
-pop <- pop[pop$Code!="",]
-pop$Prob <- pop$Population/sum(pop$Population)
-row.names(pop) <- NULL
-
-gdp <- read.csv("data/government-expenditure-vs-gdp.csv")
-gdp <- gdp |> filter(Year==2023) |> 
-  rename(Country=Entity, Region="World.region.according.to.OWID") |>
-  rename(GovtSpend="Government.expenditure") |>
-  arrange(Country) 
-gdp <- gdp[!grepl("^OWID_",pop$Code),]
-gdp <- gdp[!grepl("^UN_",pop$Code),]
-gdp <- gdp[gdp$Code!="",]
-row.names(gdp) <- NULL
-
-gdp <- merge(gdp,pop)
-gdp$Prob <- gdp$Population/sum(gdp$Population)
-gdp$GDPPerCapita <- gdp$GDP/gdp$Population
-
-mil <- read.csv("data/military-spending-sipri.csv")
-#mil <- read.csv("data/military-expenditure-as-a-share-of-government-spending.csv")
-mil <- mil |> filter(Year==2023) |> 
-  rename(Country=Entity, Region="World.region.according.to.OWID") |>
-  rename(MilSpend=Military.expenditure) |>
-  select(-Region) |>
-  arrange(Country) 
-mil <- mil[!grepl("^OWID_",pop$Code),]
-mil <- mil[!grepl("^UN_",pop$Code),]
-mil <- mil[pop$Code!="",]
-row.names(mil) <- NULL
-
-mil <- merge(gdp,mil)
+mil <- read.csv("data/military-govt-gdp-2023.csv")
 ```
 
 ```{r echo=FALSE}

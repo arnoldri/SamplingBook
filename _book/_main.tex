@@ -77,7 +77,6 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -161,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-04-27}
+\date{2026-04-28}
 
 \begin{document}
 \maketitle
@@ -258,6 +257,13 @@
 ## The following objects are masked from 'package:survival':
 ## 
 ##     cluster, strata
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 methods overwritten by 'broom':
+##   method            from  
+##   tidy.glht         jtools
+##   tidy.summary.glht jtools
 \end{verbatim}
 
 \begin{verbatim}
@@ -6005,7 +6011,7 @@ We should note that the mean income differs considerably between males and femal
 ## female female 438.5047 26.16272
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-201-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-201-1.pdf}}
 
 Let's also note the distribution of the population by age and sex, as measured
 by the most recent census:
@@ -6330,7 +6336,8 @@ with people of that type in the population who happen not to have turned up in t
 In population surveys run by Statistics NZ we'll often see post-stratification by age
 (in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.
 
-\subsubsection{A warning}\label{a-warning}
+\subsubsection*{A warning}\label{a-warning}
+\addcontentsline{toc}{subsubsection}{A warning}
 
 Post-stratification is often used to modify weights in the presence of non-response.
 The idea is that in each post-stratum the people who respond represent well the people
@@ -6428,12 +6435,6 @@ and then calculate our estimates
 
 We can compare estimated population totals with the Population benchmarks:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{nzpoptab }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 \centering
 \begin{tabular}[t]{l|r|r|r}
@@ -6453,14 +6454,6 @@ Total & 984091 & 988628 & 1972719\\
 
 Estimated counts with no weight adjustments
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
-  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 \centering
 \begin{tabular}[t]{l|l|r|r|r|r}
@@ -6477,14 +6470,6 @@ Estimated counts with no weight adjustments
 \end{table}
 
 Post-stratified by Gender
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps)  }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
-  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 \centering
@@ -6503,14 +6488,6 @@ Post-stratified by Gender
 
 Post-stratified by Age Group cross classified with Gender: exact match to benchmarks
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.ps2)  }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
-  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 \centering
 \begin{tabular}[t]{l|l|r|r|r|r}
@@ -6528,14 +6505,6 @@ Post-stratified by Age Group cross classified with Gender: exact match to benchm
 
 Post-stratified by raking to Age Group and Gender marginal totals: approximate
 match to benchmarks
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{svyby}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{by=}\SpecialCharTok{\textasciitilde{}}\NormalTok{AgeGrp, }\AttributeTok{FUN=}\NormalTok{svytotal, }\AttributeTok{design=}\NormalTok{surf.nonresp.des.rake)  }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"AgeGrp"}\NormalTok{,}\StringTok{"male"}\NormalTok{,}\StringTok{"female"}\NormalTok{,}\StringTok{"SE(male)"}\NormalTok{,}\StringTok{"SE(female)"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}} 
-  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 \centering
@@ -6866,24 +6835,6 @@ we need also to poststratify each set of replicate weights.
 Here post-stratification gives us a strong reduction of the standard errors
 
 Comparison
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ss }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
-  \FunctionTok{c}\NormalTok{(}\FunctionTok{mean}\NormalTok{(apipopc}\SpecialCharTok{$}\NormalTok{enroll), }\DecValTok{0}\NormalTok{),}
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.ps)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.ps2)), }
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.des.rake)),}
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.jkdes)),}
-  \FunctionTok{ff}\NormalTok{(}\FunctionTok{svymean}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{enroll, api2sc.jkdes.ps))}
-\NormalTok{  ) }
-\FunctionTok{dimnames}\NormalTok{(ss) }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Cenus"}\NormalTok{,}\StringTok{"2SC"}\NormalTok{,}\StringTok{"2SC+PS(stype)"}\NormalTok{,}\StringTok{"2SC+PS(stype x yr.rnd)"}\NormalTok{,}\StringTok{"2SC+Rake(stype+yr.rnd)"}\NormalTok{,}
-                       \StringTok{"JK1"}\NormalTok{,}\StringTok{"JK1+PS(stype)"}\NormalTok{),}
-                     \FunctionTok{c}\NormalTok{(}\StringTok{"Estimate"}\NormalTok{,}\StringTok{"SE"}\NormalTok{))}
-\NormalTok{ss }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 \centering
@@ -7231,7 +7182,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-259-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-259-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   
@@ -7249,7 +7200,7 @@ Inspect missing pattern
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-259-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-259-2.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -8186,7 +8137,7 @@ Overall mean imputation
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-266-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-266-1.pdf}}
 
 \begin{verbatim}
 ##    id age bmi hyp chl  
@@ -8525,7 +8476,7 @@ Just do the numerical variables (gives a warning because Marital is categorical)
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-275-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-275-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Income Ethnicity Marital   
@@ -8564,7 +8515,7 @@ Avoid the error
 ##   `-----'
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-276-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-276-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Age Hours Income  
@@ -8881,10 +8832,10 @@ Regression mean imputation
 ## 6  1  1 chl norm.nob
 ##                                                                                                                                                                                                                                                        out
 ## 1                                                                                                                                                                                                      df set to 1. # observed cases: 16  # predictors: 29
-## 2                                                                                                                                                                                              id3, id4, id6, id9, id10, id11, id12, id16, id21, age3, hyp
+## 2                                                                                                                                                                                       id3, id4, id6, id10, id11, id12, id16, id20, id21, age2, age3, hyp
 ## 3 mice detected that your data are (nearly) multi-collinear.\nIt applied a ridge penalty to continue calculations, but the results can be unstable.\nDoes your dataset contain duplicates, linear transformation, or factors with unique respondent names?
 ## 4                                                                                                                                                                                                      df set to 1. # observed cases: 13  # predictors: 29
-## 5                                                                                                                                                                                 id3, id4, id6, id10, id11, id12, id15, id16, id20, id21, id24, age2, bmi
+## 5                                                                                                                                                                      id3, id4, id6, id9, id10, id11, id12, id15, id16, id17, id20, id21, id24, age2, bmi
 ## 6 mice detected that your data are (nearly) multi-collinear.\nIt applied a ridge penalty to continue calculations, but the results can be unstable.\nDoes your dataset contain duplicates, linear transformation, or factors with unique respondent names?
 \end{verbatim}
 
@@ -8929,10 +8880,10 @@ Stochastic regression imputation: we sample from the fitted distribution
 ## 6  1  1 chl norm.nob
 ##                                                                                                                                                                                                                                                        out
 ## 1                                                                                                                                                                                                      df set to 1. # observed cases: 16  # predictors: 29
-## 2                                                                                                                                                                                              id3, id4, id6, id9, id10, id11, id12, id16, id21, age3, hyp
+## 2                                                                                                                                                                                       id3, id4, id6, id10, id11, id12, id16, id20, id21, age2, age3, hyp
 ## 3 mice detected that your data are (nearly) multi-collinear.\nIt applied a ridge penalty to continue calculations, but the results can be unstable.\nDoes your dataset contain duplicates, linear transformation, or factors with unique respondent names?
 ## 4                                                                                                                                                                                                      df set to 1. # observed cases: 13  # predictors: 29
-## 5                                                                                                                                                                                 id3, id4, id6, id10, id11, id12, id15, id16, id20, id21, id24, age2, bmi
+## 5                                                                                                                                                                      id3, id4, id6, id9, id10, id11, id12, id15, id16, id17, id20, id21, id24, age2, bmi
 ## 6 mice detected that your data are (nearly) multi-collinear.\nIt applied a ridge penalty to continue calculations, but the results can be unstable.\nDoes your dataset contain duplicates, linear transformation, or factors with unique respondent names?
 \end{verbatim}
 
