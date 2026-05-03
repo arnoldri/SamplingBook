@@ -10,18 +10,6 @@ link-citations: yes
 description: "Sampling notes."
 output: 
   bookdown::html_document2: default
-  bookdown::pdf_book: 
-    documentclass: krantz
-    latex_engine: xelatex
-    keep_tex: true
-    includes:
-      in_header: preamble.tex
-  bookdown::pdf_document2: 
-    documentclass: krantz
-    latex_engine: xelatex
-    keep_tex: true
-    includes:
-      in_header: preamble.tex
 ---
 
 <!--- For HTML Only --- Equivalent code for .pdf must be included in preamble.tex -->
@@ -46,6 +34,7 @@ library(srvyr)
 library(sampling)
 library(jtools)
 library(mice)
+library(lattice)
 library(scales)
 source("utils.R")
 ```

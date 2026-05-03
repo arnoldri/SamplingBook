@@ -289,7 +289,7 @@ with people of that type in the population who happen not to have turned up in t
 In population surveys run by Statistics NZ we'll often see post-stratification by age 
 (in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.  
 
-#### A warning {-}
+#### The origin and nature of nonresponse {-}
 
 Post-stratification is often used to modify weights in the presence of non-response.
 The idea is that in each post-stratum the people who respond represent well the people
@@ -311,6 +311,53 @@ the respondents in each age-sex category are a simple random sample from all of 
 sample members selected into the survey.  We can cope with, and adjust for, differing response rates
 **between** the post-strata, but we can never adjust for different likelihoods of response
 **within** the post-strata.  
+
+A helpful approach to missing data has a typology with three types of missingness.  
+If we have auxliary data ${\bf X}_i$ for each unit, and are interested in an outcome
+variable $Y_i$ for each unit, then we are interested in the **probability that unit $i$ 
+will respond if selected**
+\[
+   \phi_i = \Pr(\text{Unit $i$ responds} | \text{Unit $i$ is selected})
+\]
+
+1. **Missing Completely at Random (MCAR)**. This is when the probability of 
+   response $\phi_i$ is the same for all units, no matter what their value of 
+   $Y_i$ and ${\bf X}_i$.
+
+   This is the best situation: the respondents and nonrespondents do not 
+   differ in any important way, and it is as if the nonrespondents had been 
+   selected at random from the sample. To analyse data where we have MCAR, 
+   we can simply ignore the non-responding units.  
+   
+2. **Missing at Random (MAR)**. This is also known as 'missing at random given 
+   covariates' or alternatively 'ignorable nonresponse.'  This occurs when 
+   the probability of response $\phi_i$ depends **only on known quantities**: 
+   the auxiliary covariates ${\bf X}_i$, but not on the unknown $Y_i$. 
+   We therefore assume that if two units have the same values of ${\bf X}$, then their 
+   likelihood of response is the same.
+
+   This is a slightly more complex situation than MCAR, but we can still 
+   fully account for nonresponse.  This is the approach that post-stratification
+   implements: we treat all respondents as equally likely to respond within
+   the post-strata.
+
+3. **Nonignorable Nonresponse.** This is the unfortunate situation where the 
+   probability of response $\phi_i$ depends on the outcome of interest $Y_i$ 
+   (as well, possibly, as ${\bf X}_i$).
+
+MAR and MCAR are **strong assumptions**. If the data are MAR we can test whether 
+they are MCAR by comparing nonresponse rates in subgroups defined by ${\bf X}$ (or by 
+logistic regression if any of the X variables are continuous) and test for 
+any dependence on ${\bf X}$. 
+
+However it is in general impossible to distinguish whether the data are MAR or 
+whether there is nonignorable response.  
+
+We of course exclude from consideration any data which is **missing by design.**
+There are individuals who if selected turn out to be out of scope (ineligible to 
+participate).  These may also be data items which are missing because the respondent 
+is not asked that particular question (e.g. we do not ask for the voting 
+record of children who are not entitled to vote.)
 
 ### Raking {-}
 
@@ -509,37 +556,141 @@ ss |> kbl() |> kable_styling(full_width=FALSE)
 For some weight adjustments we no longer have a reliable method of computing
 the standard errors of our estimates.  This can occur when we have very 
 complex designs.  It can also be necessary when we don't have access to the frame, 
-and therefore don't have all the information we need to calculate standard errors.
+and therefore don't have all the information we need (such as population sizes in clusters)
+to calculate standard errors.  
 
 In such circumstances we often create multiple sets of weights in addition to the
 adjusted weights.  These **replicate weights** are what are used to estimate the
 standard errors, and they have the advantage that they can create standard errors
-for a wider range of estimators than the usual means and totals.  
+for a wider range of estimators than the usual means and totals.
 
-**Jacknife** weights are calculated by systematically deleting PSUs at the first
-stage of selection, and then scaling the weights on the remaining rows so that they 
-still add up to the same total.
+The basic idea comes from recalling what standard errors are: they are the
+variability we'd see in an estimate across all possible samples from the population
+using the chosen sample design and sample size (Figure \@ref(fig:sampling-from-population)).
+
+```{r sampling-from-population, echo=FALSE}
+#| fig.cap="Sampling error is the variation among the estimates that would be calculated from all possible samples from the population.",
+#| fig.width=5,
+#| fig.align='center'
+knitr::include_graphics('include-files/fig/SamplingFromPopulation.png')
+```
+
+Once we've completed a survey we obviously can't take any more samples from the 
+population.  Instead we use the variability we see within the **sample** to capture
+and estimate the variability we'd see in different samples from the **population**
+(Figrue \@ref(fig:pseudo-sampling)).
+
+```{r pseudo-sampling, echo=FALSE}
+#| fig.cap="In Jacknife estimation sampling error can be estimated by calculating the variability among estimates from subsets taken from the sample.  This variability needs to be scaled up to get the true population variability, because the pseudo-samples resemble one another strongly, though not exactly.",
+#| fig.width=5,
+#| fig.align='center'
+knitr::include_graphics('include-files/fig/PseudoSampling.png')
+```
+
+Instead of actually resampling from our sample, we instead just vary the weights
+on some or all of the unit, and create new sets of weights according to a well defined
+method.  We do this multiple times, which is equivalent to taking multiple re-samples
+of our actual sample.  Each re-sample is called a **replicate** and has its own set of 
+weights for all of the units in the sample. e.g. we might have 100 additional sets of 
+replicate weights attached to our survey data set, as well as the actual weights.  
+
+We then use these replicate weights to calculate a set of alternative
+values for our estimate of interest.  The variability among these replicate 
+estimates is then used to determine the standard error.  
+
+There are a number of different ways to create replicate weights: we'll consider just one
+known as the **Jackknife**.
+
+Each Jacknife replicate set of weights is calculated by deleting one or more PSUs at 
+the first stage of selection by setting their weights to zero.  We then rescale the 
+weights  of the remaining units so that they still add up to the same total weight (i.e so 
+they weights still add up to the population size).  Table \@ref(tab:examplejk) shows an example.
+
+```{r echo=FALSE}
+exdat <- data.frame(id=1:12, psu=rep(LETTERS[1:4],c(3,4,2,3)),
+                    weight=rep(c(100,80,120,100),c(3,4,2,3)))
+ss <- sum(exdat$weight)
+exdat$rep01 <- rep(c(0,1,1,1),c(3,4,2,3))
+exdat$rep02 <- rep(c(1,0,1,1),c(3,4,2,3))
+exdat$rep03 <- rep(c(1,1,0,1),c(3,4,2,3))
+exdat$rep04 <- rep(c(1,1,1,0),c(3,4,2,3))
+exdat$rep01 <- exdat$rep01*exdat$weight*ss/sum(exdat$rep01*exdat$weight)
+exdat$rep02 <- exdat$rep02*exdat$weight*ss/sum(exdat$rep02*exdat$weight)
+exdat$rep03 <- exdat$rep03*exdat$weight*ss/sum(exdat$rep03*exdat$weight)
+exdat$rep04 <- exdat$rep04*exdat$weight*ss/sum(exdat$rep04*exdat$weight)
+exdat$col01 <- ifelse(exdat$rep01==0, "#FDD","")
+exdat$col02 <- ifelse(exdat$rep02==0, "#FDD","")
+exdat$col03 <- ifelse(exdat$rep03==0, "#FDD","")
+exdat$col04 <- ifelse(exdat$rep04==0, "#FDD","")
+```
+
+
+```{r examplejk, echo=FALSE}
+#exdat$rep01 <- cell_spec(exdat$rep01, color = ifelse(exdat$rep01==0, "light blue", ""))
+exdat <- rbind(exdat,
+               data.frame(id="Total",
+                          psu="",
+                          weight=sum(exdat$weight),
+                          rep01=sum(exdat$rep01),
+                          rep02=sum(exdat$rep01),
+                          rep03=sum(exdat$rep01),
+                          rep04=sum(exdat$rep01),
+                          col01="",col02="",col03="",col04=""
+                          ))
+tab.caption <- "Example of Jacknife replicate weights: a sample of 4 clusters (PSUs) with sets of replicate weights, each one deleting the weight of a single PSU, and rescaling to maintain the total of the weights."
+if(knitr::is_latex_output()) {
+  exdat |> 
+    select(id:rep04) |>
+    mutate(across(rep01:rep04, \(x) round(x, digits=1))) |> 
+    kbl(caption=tab.caption, escape=FALSE) |> 
+    kable_styling(full_width=FALSE) 
+} else {
+  exdat |> 
+    select(id:rep04) |>
+    mutate(across(rep01:rep04, \(x) round(x, digits=1))) |> 
+    kbl(caption=tab.caption, escape=FALSE) |> 
+    kable_styling(full_width=FALSE) |>
+    column_spec(3+0, background="#DDF") |>
+    column_spec(3+1, background=exdat$col01) |>
+    column_spec(3+2, background=exdat$col02) |>
+    column_spec(3+3, background=exdat$col03) |>
+    column_spec(3+4, background=exdat$col04) 
+}
+```
+
+We can create a set of replicate weights for the two stage cluster sample from the API
+data set as follows:
 ```{r}
 api2sc.jkdes <- as.svrepdesign(api2sc.des, type="JK1")
 ```
 There is an informative warning here: no fpc can apply at second stage of selection 
 (nor any subsequent stages).  
 
-Here are the first 3 rows and 8 columns: each row refers to a district `dnum`
-and each column is a replicate.
+The specification **JK1** here indicates that the design is not stratified.
+
+Here are the first 5 rows and 8 columns of replicate weights: each row refers to a PSU 
+(i.e. a district `dnum`) and each column is a replicate.
 ```{r}
-api2sc.jkdes$repweights$weights[1:3,1:8]
+api2sc.jkdes$repweights$weights[1:5,1:8]
 ```
-Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one of the 40 districts `dnum` out for 
-each replicate, setting all units in that district to zero.
-These are scaling weights, and theyneed to be multiplied by the original sampling weight 
-to get the actual weights.
+Replicate Weights are $n/(n-1)=40/39=1.025641$ - drops one of the 40 selected districts 
+`dnum` out for each replicate, setting the weight for all units selected in that district to zero.
 
+These are called **scaling weights**, and they need to be multiplied by the 
+original sampling weight to get the actual replicate weights.
 
+We can use this design just as in earlier examples to get estimates and standard errors:  
 ```{r}
 svymean(~enroll, design=api2sc.jkdes)
 ```
-This gives us a better estimate of the SE.
+This gives us a good estimate of the SE, similar to what we get from the original
+sample design specification:
+
+```{r}
+svymean(~enroll, design=api2sc.des)
+```
+Note that the estimate itself is identical: in both cases they come from the same single set
+of sample weights.
 
 If we are needing to post-stratify our weights to account for non-response, then
 we need also to poststratify each set of replicate weights.
@@ -548,9 +699,11 @@ we need also to poststratify each set of replicate weights.
 api2sc.jkdes.ps <- postStratify(api2sc.jkdes, strata=~stype, population=stype.benchmarks)
 svymean(~enroll, design=api2sc.jkdes.ps)
 ```
-Here post-stratification gives us a strong reduction of the standard errors
+Here post-stratification gives us a strong reduction of the standard errors, as we saw 
+earlier.
 
-Comparison
+Here's a comparison of the various estimates and standard errors from the 
+various methods we've seen so far:
 ```{r echo=FALSE}
 ss <- rbind(
   c(mean(apipopc$enroll), 0),
@@ -566,29 +719,53 @@ dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2
                      c("Estimate","SE"))
 ss |> kbl() |> kable_styling(full_width=FALSE)
 ```
+Important points to note:
+
+* the SE is reduced by post-stratification, and
+* we get similar SEs when we use the jacknife estimation method.
 
 Let's take a look at the replicate weights after post-stratification
 ```{r}
-api2sc.jkdes.ps$repweights$weights[1:3,1:8]
+api2sc.jkdes.ps$repweights$weights[1:5,1:8]
 ```
+They're no longer the same in the different PSUs.
 
-We might have been **supplied** replicate weights, i.e. someone else might have
-created them.  This is commonly the case when we have been granted access
-to a data set collected by a government department.
+**This seems to be a lot of additional work:** we get the same SEs and estimates
+using the standard formula-based estimation methods for SEs.  Why bother
+with replicate weights in that case?
 
-In which case our dataset would look like this
-```{r}
+There are three reasons:
+
+* For some very **complex designs** there are no formula based estimation methods
+  that can be used;
+* For some **estimates**, such as medians and quartiles, replicate methods are
+  more reliable than formula based methods;
+* Replicate based methods are robust in the presence of small samples and outliers, 
+  and can also be used to estimate bias (as well as standard errors).
+
+It's commonly the case that rather than calculating them for ourselves we might 
+inestead have been **supplied** replicate weights, i.e. someone else might have
+created them.  This often happens when we have been granted access
+to a data set collected by a government department or agency concerned about
+confidentiality, and in those instances we are not given access to the frame. 
+
+In which case the weights in the first 10 rows of our API two stage cluster dataset would look like this
+```{r echo=FALSE}
 fwmat <- api2sc.jkdes.ps$repweights$weights[api2sc.jkdes.ps$repweights$index,]
 colnames(fwmat) <- paste0("repweight",sprintf("%0.3d",1:ncol(fwmat)))
 pweight <- api2sc.jkdes.ps$pweights
 fwmat <- diag(pweight)%*%fwmat
-sum(pweight)
-apply(fwmat,2,sum)
 api2sc.withrep.ps <- cbind(api2sc, pweight, fwmat)
+row.names(api2sc.withrep.ps) <- NULL
+api2sc.withrep.ps[1:10 ,c(1,47,48:55),] |> kbl() |> kable_styling(full_width=FALSE)
 ```
-We create the design using the probability weights `pweight`
-and the set of replicate weights `repweight001-repweight040`.
+Unlike the example earlier, these replicate weights are **combined weights** - 
+i.e. they do not need to be multiplied by the original weight, and they
+each separately add up to the same value: the population size.  
 
+We use a data set like this to specify the sample design to R using just 
+the probability weights `pweight`and the set of replicate weights `repweight001-repweight040`.
+We don't specify the cluster variables when specifying the design.  
 ```{r}
 pweightcol <- match("pweight",names(api2sc.withrep.ps)) # which column name is exactly equal to pweight
 repweightcols <- grep("^repweight",names(api2sc.withrep.ps)) # which columnnames start with repweight?
@@ -603,7 +780,7 @@ api2sc.repdes.ps <- svrepdesign(variables=api2sc.withrep.ps[,varcols],
                                 type="JK1")
 svymean(~enroll, api2sc.repdes.ps)
 ```
-```{r}
+```{r echo=FALSE}
 ss <- rbind(
   c(mean(apipopc$enroll), 0),
   ff(svymean(~enroll, api2sc.des)), 
@@ -615,14 +792,18 @@ ss <- rbind(
   ff(svymean(~enroll, api2sc.repdes.ps))
   ) 
 dimnames(ss) <- list(c("Cenus","2SC","2SC+PS(stype)","2SC+PS(stype x yr.rnd)","2SC+Rake(stype+yr.rnd)",
-                       "JK1","JK1+PS(stype)","JK1+PS(stype)"),
+                       "JK1","JK1+PS(stype)","JK1+PS(stype); weights only"),
                      c("Estimate","SE"))
-ss
+ss |> kbl() |> kable_styling(full_width=FALSE)
 ```
+The consequence of only being given the weights (rather than the full clustering
+information) means that the first stage design is treated as PPSWR rather than SRSWOR, 
+and there is no adjustment for the fpc.  That means the SEs are slightly larger. 
 
 The method "JK1" is used for unstratified designs.  For stratified
 designs the jackknife is specified by "JKn": we don't just drop out one PSU over 
-the whole sample in each replicate, instead we drop out a PSU from every stratum.
+the whole sample in each replicate, instead we drop out a PSU from every stratum
+simultaneously.
 
 E.g. draw a two stage cluster sample within two strata: schools which are or are
 not eligible for an awards programme:
@@ -648,5 +829,6 @@ svymean(~enroll, design=apist2sc.jkdes.ps)
 
 There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication.  Some
-of these have multiple variants.  We don't need to worry about these.
+of these have multiple variants, and there are settings in which one outperforms
+the others.  Jackknife variance estimation is the most common however.  
 

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Weight adjustments | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Weight adjustments | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-28" />
+<meta name="date" content="2026-05-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,7 +131,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -170,12 +169,10 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#lecture-plan"><i class="fa fa-check"></i><b>1.1</b> Lecture Plan</a>
 <ul>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-1-the-survey-process"><i class="fa fa-check"></i>Week 1 – The Survey Process</a></li>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-2-sampling"><i class="fa fa-check"></i>Week 2 – Sampling</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-1-sampling-and-the-survey-process"><i class="fa fa-check"></i>Week 1 – Sampling and The Survey Process</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-2-sample-designs"><i class="fa fa-check"></i>Week 2 – Sample Designs</a></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-3---inference-with-the-r-survey-package"><i class="fa fa-check"></i>Week 3 - Inference with the R survey package</a></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#week-4-non-response-and-complex-designs"><i class="fa fa-check"></i>Week 4 – Non-response and complex designs</a></li>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#assignment-4-10-due-end-of-week-12-covers-material-from-weeks-9-11"><i class="fa fa-check"></i>Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11]</a></li>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#test-2-25-assessment-period-1.5-hours-closed-book"><i class="fa fa-check"></i>Test 2 (25%) [assessment period] [1.5 hours, closed book]</a></li>
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#recommended-reading"><i class="fa fa-check"></i><b>1.2</b> Recommended reading</a></li>
 <li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#r-packages"><i class="fa fa-check"></i><b>1.3</b> R Packages</a></li>
@@ -291,16 +288,20 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="weight-adjustments.html"><a href="weight-adjustments.html#replicate-weights"><i class="fa fa-check"></i><b>8.2</b> Replicate weights</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a></li>
-<li class="chapter" data-level="10" data-path="package-mice.html"><a href="package-mice.html"><i class="fa fa-check"></i><b>10</b> Package mice</a></li>
-<li class="chapter" data-level="11" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>11</b> Designing Surveys</a>
+<li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>11.1</b> Another interpretation of the Deff</a></li>
-<li class="chapter" data-level="11.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>11.2</b> Computing the Required Sample Size</a></li>
+<li class="chapter" data-level="9.1" data-path="imputation.html"><a href="imputation.html#mean-median-or-mode-imputation"><i class="fa fa-check"></i><b>9.1</b> Mean, median or mode imputation</a></li>
+<li class="chapter" data-level="9.2" data-path="imputation.html"><a href="imputation.html#hot-deck-imputation"><i class="fa fa-check"></i><b>9.2</b> Hot deck imputation</a></li>
+<li class="chapter" data-level="9.3" data-path="imputation.html"><a href="imputation.html#cell-methods"><i class="fa fa-check"></i><b>9.3</b> Cell methods</a></li>
+<li class="chapter" data-level="9.4" data-path="imputation.html"><a href="imputation.html#regression-methods"><i class="fa fa-check"></i><b>9.4</b> Regression methods</a></li>
+<li class="chapter" data-level="9.5" data-path="imputation.html"><a href="imputation.html#multiple-imputation"><i class="fa fa-check"></i><b>9.5</b> Multiple imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>10</b> Designing Surveys</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="designing-surveys.html"><a href="designing-surveys.html#another-interpretation-of-the-deff"><i class="fa fa-check"></i><b>10.1</b> Another interpretation of the Deff</a></li>
+<li class="chapter" data-level="10.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>10.2</b> Computing the Required Sample Size</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="appendix"><span><b> </b></span></li>
-<li class="chapter" data-level="A" data-path="placeholder-appendix.html"><a href="placeholder-appendix.html"><i class="fa fa-check"></i><b>A</b> Placeholder Appendix</a></li>
 <li class="divider"></li>
 <li>Lecture notes</li>
 
@@ -745,17 +746,17 @@ and so the weight of each sampled individual is
    w = \frac{N}{n} = {1.972719\times 10^{6}}{200} = 9863.6
 \]</span>
 Let’s specify this simple random sampling design to R:</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="weight-adjustments.html#cb278-1" tabindex="-1"></a>surf.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>surf)</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="weight-adjustments.html#cb277-1" tabindex="-1"></a>surf.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>surf)</span></code></pre></div>
 <p>and then estimate the mean income:</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="weight-adjustments.html#cb279-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.des)</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="weight-adjustments.html#cb278-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.des)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 575.36 24.508</code></pre>
 <p>We should note that the mean income differs considerably between males and females.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="weight-adjustments.html#cb281-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>Income, <span class="at">by=</span><span class="sc">~</span>Gender, <span class="at">design=</span>surf.des, svymean)</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="weight-adjustments.html#cb280-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>Income, <span class="at">by=</span><span class="sc">~</span>Gender, <span class="at">design=</span>surf.des, svymean)</span></code></pre></div>
 <pre><code>##        Gender   Income       se
 ## male     male 732.8172 37.02642
 ## female female 438.5047 26.16272</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-201-1.png" alt="" width="672" /></p>
 Let’s also note the distribution of the population by age and sex, as measured
 by the most recent census:
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -913,12 +914,12 @@ Total
 </table>
 <p>The proportions of males and females in the population are roughly equal in the population,
 but in the sample they’re not quite equal:</p>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="weight-adjustments.html#cb283-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des)</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="weight-adjustments.html#cb282-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des)</span></code></pre></div>
 <pre><code>##               mean     SE
 ## Gendermale   0.465 0.0354
 ## Genderfemale 0.535 0.0354</code></pre>
 <p>This has been caused by our having, by chance, sampled slightly more females than males.</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="weight-adjustments.html#cb285-1" tabindex="-1"></a><span class="fu">table</span>(surf<span class="sc">$</span>Gender)</span></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="weight-adjustments.html#cb284-1" tabindex="-1"></a><span class="fu">table</span>(surf<span class="sc">$</span>Gender)</span></code></pre></div>
 <pre><code>## 
 ##   male female 
 ##     93    107</code></pre>
@@ -1042,25 +1043,25 @@ female
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="weight-adjustments.html#cb287-1" tabindex="-1"></a>surf.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.des, <span class="at">strata=</span><span class="sc">~</span>Gender, <span class="at">population=</span>Gender.benchmarks)</span></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="weight-adjustments.html#cb286-1" tabindex="-1"></a>surf.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.des, <span class="at">strata=</span><span class="sc">~</span>Gender, <span class="at">population=</span>Gender.benchmarks)</span></code></pre></div>
 <p>The orignal estimate of the proportions of males and females</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="weight-adjustments.html#cb288-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des)</span></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="weight-adjustments.html#cb287-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des)</span></code></pre></div>
 <pre><code>##               mean     SE
 ## Gendermale   0.465 0.0354
 ## Genderfemale 0.535 0.0354</code></pre>
 <p>has been modified to</p>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="weight-adjustments.html#cb290-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="weight-adjustments.html#cb289-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Gender, <span class="at">design=</span>surf.des.ps)</span></code></pre></div>
 <pre><code>##                 mean SE
 ## Gendermale   0.49885  0
 ## Genderfemale 0.50115  0</code></pre>
 <p>Notice that the Standard Errors here are zero: these proportions are no longer
 estimates, they have been <strong>imposed</strong> by our benchmarks.</p>
 <p>Then we can compare the orginal estimate of mean income</p>
-<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="weight-adjustments.html#cb292-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, surf.des)</span></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="weight-adjustments.html#cb291-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, surf.des)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 575.36 24.508</code></pre>
 <p>with the post-stratified estimate</p>
-<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="weight-adjustments.html#cb294-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, surf.des.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="weight-adjustments.html#cb293-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, surf.des.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 585.32 22.651</code></pre>
 <p>The estimate has been increased slightly as expected. Also note that
@@ -1074,28 +1075,28 @@ reduces our overall uncertainty.</p>
 <p>In population surveys males and young people tend to have the lowest response rates.
 So let’s see what happens to our mean income estimate if we take our sample of 200 individuals
 and filter out 20% of the male respondents:</p>
-<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="weight-adjustments.html#cb296-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">234</span>)</span>
-<span id="cb296-2"><a href="weight-adjustments.html#cb296-2" tabindex="-1"></a>surf.nonresp <span class="ot">&lt;-</span> surf</span>
-<span id="cb296-3"><a href="weight-adjustments.html#cb296-3" tabindex="-1"></a>surf.nonresp<span class="sc">$</span>Responds <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(surf),<span class="dv">1</span>,<span class="at">prob=</span><span class="fu">ifelse</span>(surf<span class="sc">$</span>Gender<span class="sc">==</span><span class="st">&quot;male&quot;</span>,<span class="fl">0.8</span>,<span class="fl">1.0</span>))</span>
-<span id="cb296-4"><a href="weight-adjustments.html#cb296-4" tabindex="-1"></a>surf.nonresp <span class="ot">&lt;-</span> surf.nonresp[surf.nonresp<span class="sc">$</span>Responds<span class="sc">==</span><span class="dv">1</span>,]</span>
-<span id="cb296-5"><a href="weight-adjustments.html#cb296-5" tabindex="-1"></a>surf.nonresp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span><span class="fu">nrow</span>(surf.nonresp)</span>
-<span id="cb296-6"><a href="weight-adjustments.html#cb296-6" tabindex="-1"></a><span class="fu">table</span>(surf.nonresp<span class="sc">$</span>Gender)</span></code></pre></div>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="weight-adjustments.html#cb295-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">234</span>)</span>
+<span id="cb295-2"><a href="weight-adjustments.html#cb295-2" tabindex="-1"></a>surf.nonresp <span class="ot">&lt;-</span> surf</span>
+<span id="cb295-3"><a href="weight-adjustments.html#cb295-3" tabindex="-1"></a>surf.nonresp<span class="sc">$</span>Responds <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fu">nrow</span>(surf),<span class="dv">1</span>,<span class="at">prob=</span><span class="fu">ifelse</span>(surf<span class="sc">$</span>Gender<span class="sc">==</span><span class="st">&quot;male&quot;</span>,<span class="fl">0.8</span>,<span class="fl">1.0</span>))</span>
+<span id="cb295-4"><a href="weight-adjustments.html#cb295-4" tabindex="-1"></a>surf.nonresp <span class="ot">&lt;-</span> surf.nonresp[surf.nonresp<span class="sc">$</span>Responds<span class="sc">==</span><span class="dv">1</span>,]</span>
+<span id="cb295-5"><a href="weight-adjustments.html#cb295-5" tabindex="-1"></a>surf.nonresp<span class="sc">$</span>weight <span class="ot">&lt;-</span> bigN<span class="sc">/</span><span class="fu">nrow</span>(surf.nonresp)</span>
+<span id="cb295-6"><a href="weight-adjustments.html#cb295-6" tabindex="-1"></a><span class="fu">table</span>(surf.nonresp<span class="sc">$</span>Gender)</span></code></pre></div>
 <pre><code>## 
 ##   male female 
 ##     75    107</code></pre>
 <p>We’ve now got a lot fewer males than females. Let’s see what this does to the
 simple estimate of the population mean income:</p>
-<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="weight-adjustments.html#cb298-1" tabindex="-1"></a>surf.nonresp.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>surf.nonresp)</span>
-<span id="cb298-2"><a href="weight-adjustments.html#cb298-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des)</span></code></pre></div>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="weight-adjustments.html#cb297-1" tabindex="-1"></a>surf.nonresp.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span><span class="dv">1</span>, <span class="at">fpc=</span><span class="sc">~</span>bigN, <span class="at">data=</span>surf.nonresp)</span>
+<span id="cb297-2"><a href="weight-adjustments.html#cb297-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 555.99 24.501</code></pre>
 <p>The introduction of the non-response has led to a reduction in our original estimate
 from 575.36 to 555.99.</p>
 <p>Post-stratifying however</p>
-<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="weight-adjustments.html#cb300-1" tabindex="-1"></a>surf.nonresp.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.nonresp.des, <span class="at">strata=</span><span class="sc">~</span>Gender, </span>
-<span id="cb300-2"><a href="weight-adjustments.html#cb300-2" tabindex="-1"></a>                                    <span class="at">population=</span>Gender.benchmarks)</span></code></pre></div>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="weight-adjustments.html#cb299-1" tabindex="-1"></a>surf.nonresp.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.nonresp.des, <span class="at">strata=</span><span class="sc">~</span>Gender, </span>
+<span id="cb299-2"><a href="weight-adjustments.html#cb299-2" tabindex="-1"></a>                                    <span class="at">population=</span>Gender.benchmarks)</span></code></pre></div>
 <p>leads to a dramatically improved estimate</p>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="weight-adjustments.html#cb301-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="weight-adjustments.html#cb300-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 580.73 23.354</code></pre>
 <p>We know more than just the distribution of the population over Gender, we also know it over the
@@ -1185,9 +1186,9 @@ male
 </tbody>
 </table>
 <p>and then post-stratify</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="weight-adjustments.html#cb303-1" tabindex="-1"></a>surf.nonresp.des.ps2 <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.nonresp.des, <span class="at">strata=</span><span class="sc">~</span>AgeGrp<span class="sc">*</span>Gender, </span>
-<span id="cb303-2"><a href="weight-adjustments.html#cb303-2" tabindex="-1"></a>                                     <span class="at">population=</span>AgeGrp.Gender.benchmarks)</span>
-<span id="cb303-3"><a href="weight-adjustments.html#cb303-3" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.ps2)</span></code></pre></div>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="weight-adjustments.html#cb302-1" tabindex="-1"></a>surf.nonresp.des.ps2 <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(surf.nonresp.des, <span class="at">strata=</span><span class="sc">~</span>AgeGrp<span class="sc">*</span>Gender, </span>
+<span id="cb302-2"><a href="weight-adjustments.html#cb302-2" tabindex="-1"></a>                                     <span class="at">population=</span>AgeGrp.Gender.benchmarks)</span>
+<span id="cb302-3"><a href="weight-adjustments.html#cb302-3" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.ps2)</span></code></pre></div>
 <pre><code>##          mean    SE
 ## Income 580.26 22.66</code></pre>
 <p>And this is estimate is going to be even better than before.</p>
@@ -1200,8 +1201,8 @@ since we’ll be discarding the population weight associated
 with people of that type in the population who happen not to have turned up in the sample.</p>
 <p>In population surveys run by Statistics NZ we’ll often see post-stratification by age
 (in 5 year bands), sex, ethnicity (in large amalgamated groups), and large regions.</p>
-<div id="a-warning" class="section level4 unnumbered hasAnchor">
-<h4>A warning<a href="weight-adjustments.html#a-warning" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="the-origin-and-nature-of-nonresponse" class="section level4 unnumbered hasAnchor">
+<h4>The origin and nature of nonresponse<a href="weight-adjustments.html#the-origin-and-nature-of-nonresponse" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Post-stratification is often used to modify weights in the presence of non-response.
 The idea is that in each post-stratum the people who respond represent well the people
 who don’t respond.</p>
@@ -1218,6 +1219,46 @@ the respondents in each age-sex category are a simple random sample from all of 
 sample members selected into the survey. We can cope with, and adjust for, differing response rates
 <strong>between</strong> the post-strata, but we can never adjust for different likelihoods of response
 <strong>within</strong> the post-strata.</p>
+<p>A helpful approach to missing data has a typology with three types of missingness.<br />
+If we have auxliary data <span class="math inline">\({\bf X}_i\)</span> for each unit, and are interested in an outcome
+variable <span class="math inline">\(Y_i\)</span> for each unit, then we are interested in the <strong>probability that unit <span class="math inline">\(i\)</span>
+will respond if selected</strong>
+<span class="math display">\[
+   \phi_i = \Pr(\text{Unit $i$ responds} | \text{Unit $i$ is selected})
+\]</span></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Missing Completely at Random (MCAR)</strong>. This is when the probability of
+response <span class="math inline">\(\phi_i\)</span> is the same for all units, no matter what their value of
+<span class="math inline">\(Y_i\)</span> and <span class="math inline">\({\bf X}_i\)</span>.</p>
+<p>This is the best situation: the respondents and nonrespondents do not
+differ in any important way, and it is as if the nonrespondents had been
+selected at random from the sample. To analyse data where we have MCAR,
+we can simply ignore the non-responding units.</p></li>
+<li><p><strong>Missing at Random (MAR)</strong>. This is also known as ‘missing at random given
+covariates’ or alternatively ‘ignorable nonresponse.’ This occurs when
+the probability of response <span class="math inline">\(\phi_i\)</span> depends <strong>only on known quantities</strong>:
+the auxiliary covariates <span class="math inline">\({\bf X}_i\)</span>, but not on the unknown <span class="math inline">\(Y_i\)</span>.
+We therefore assume that if two units have the same values of <span class="math inline">\({\bf X}\)</span>, then their
+likelihood of response is the same.</p>
+<p>This is a slightly more complex situation than MCAR, but we can still
+fully account for nonresponse. This is the approach that post-stratification
+implements: we treat all respondents as equally likely to respond within
+the post-strata.</p></li>
+<li><p><strong>Nonignorable Nonresponse.</strong> This is the unfortunate situation where the
+probability of response <span class="math inline">\(\phi_i\)</span> depends on the outcome of interest <span class="math inline">\(Y_i\)</span>
+(as well, possibly, as <span class="math inline">\({\bf X}_i\)</span>).</p></li>
+</ol>
+<p>MAR and MCAR are <strong>strong assumptions</strong>. If the data are MAR we can test whether
+they are MCAR by comparing nonresponse rates in subgroups defined by <span class="math inline">\({\bf X}\)</span> (or by
+logistic regression if any of the X variables are continuous) and test for
+any dependence on <span class="math inline">\({\bf X}\)</span>.</p>
+<p>However it is in general impossible to distinguish whether the data are MAR or
+whether there is nonignorable response.</p>
+<p>We of course exclude from consideration any data which is <strong>missing by design.</strong>
+There are individuals who if selected turn out to be out of scope (ineligible to
+participate). These may also be data items which are missing because the respondent
+is not asked that particular question (e.g. we do not ask for the voting
+record of children who are not entitled to vote.)</p>
 </div>
 </div>
 <div id="raking" class="section level3 unnumbered hasAnchor">
@@ -1281,7 +1322,7 @@ Nh
 </tbody>
 </table>
 <p>and for Gender</p>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="weight-adjustments.html#cb305-1" tabindex="-1"></a>Gender.benchmarks <span class="sc">|&gt;</span> <span class="fu">kbl</span>() <span class="sc">|&gt;</span> <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="weight-adjustments.html#cb304-1" tabindex="-1"></a>Gender.benchmarks <span class="sc">|&gt;</span> <span class="fu">kbl</span>() <span class="sc">|&gt;</span> <span class="fu">kable_styling</span>(<span class="at">full_width=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -1313,11 +1354,11 @@ female
 </tbody>
 </table>
 <p>With these we can rake the design:</p>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="weight-adjustments.html#cb306-1" tabindex="-1"></a>surf.nonresp.des.rake <span class="ot">&lt;-</span> <span class="fu">rake</span>(surf.nonresp.des, </span>
-<span id="cb306-2"><a href="weight-adjustments.html#cb306-2" tabindex="-1"></a>                              <span class="at">sample=</span><span class="fu">list</span>(<span class="sc">~</span>AgeGrp, <span class="sc">~</span>Gender), </span>
-<span id="cb306-3"><a href="weight-adjustments.html#cb306-3" tabindex="-1"></a>                              <span class="at">population=</span><span class="fu">list</span>(AgeGrp.benchmarks, Gender.benchmarks))</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="weight-adjustments.html#cb305-1" tabindex="-1"></a>surf.nonresp.des.rake <span class="ot">&lt;-</span> <span class="fu">rake</span>(surf.nonresp.des, </span>
+<span id="cb305-2"><a href="weight-adjustments.html#cb305-2" tabindex="-1"></a>                              <span class="at">sample=</span><span class="fu">list</span>(<span class="sc">~</span>AgeGrp, <span class="sc">~</span>Gender), </span>
+<span id="cb305-3"><a href="weight-adjustments.html#cb305-3" tabindex="-1"></a>                              <span class="at">population=</span><span class="fu">list</span>(AgeGrp.benchmarks, Gender.benchmarks))</span></code></pre></div>
 <p>and then calculate our estimates</p>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="weight-adjustments.html#cb307-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.rake)</span></code></pre></div>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="weight-adjustments.html#cb306-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>Income, <span class="at">design=</span>surf.nonresp.des.rake)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## Income 579.58 22.798</code></pre>
 We can compare estimated population totals with the Population benchmarks:
@@ -1988,47 +2029,47 @@ Yes
 </table>
 <p>Select a two stage cluster sample - and then make estimates of the mean school
 size (<code>enroll</code>)</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="weight-adjustments.html#cb309-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb309-2"><a href="weight-adjustments.html#cb309-2" tabindex="-1"></a>api2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span> </span>
-<span id="cb309-3"><a href="weight-adjustments.html#cb309-3" tabindex="-1"></a>  <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">cfraction=</span><span class="fl">0.30</span>, <span class="at">mmin=</span><span class="dv">2</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>) </span>
-<span id="cb309-4"><a href="weight-adjustments.html#cb309-4" tabindex="-1"></a>api2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, <span class="at">data=</span>api2sc) </span>
-<span id="cb309-5"><a href="weight-adjustments.html#cb309-5" tabindex="-1"></a><span class="fu">table</span>(api2sc<span class="sc">$</span>stype)<span class="sc">/</span><span class="fu">nrow</span>(api2sc)</span></code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="weight-adjustments.html#cb308-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb308-2"><a href="weight-adjustments.html#cb308-2" tabindex="-1"></a>api2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span> </span>
+<span id="cb308-3"><a href="weight-adjustments.html#cb308-3" tabindex="-1"></a>  <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">cfraction=</span><span class="fl">0.30</span>, <span class="at">mmin=</span><span class="dv">2</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>) </span>
+<span id="cb308-4"><a href="weight-adjustments.html#cb308-4" tabindex="-1"></a>api2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, <span class="at">data=</span>api2sc) </span>
+<span id="cb308-5"><a href="weight-adjustments.html#cb308-5" tabindex="-1"></a><span class="fu">table</span>(api2sc<span class="sc">$</span>stype)<span class="sc">/</span><span class="fu">nrow</span>(api2sc)</span></code></pre></div>
 <pre><code>## 
 ## Elementary     Middle       High 
 ##  0.6224490  0.1428571  0.2346939</code></pre>
-<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="weight-adjustments.html#cb311-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="weight-adjustments.html#cb310-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
 <pre><code>## stype
 ## Elementary     Middle       High 
 ##  2972.2159   589.3841   946.0500</code></pre>
-<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="weight-adjustments.html#cb313-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)<span class="sc">/</span><span class="fu">sum</span>(api2sc<span class="sc">$</span>weight)</span></code></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="weight-adjustments.html#cb312-1" tabindex="-1"></a><span class="fu">svytable</span>(<span class="sc">~</span>stype, <span class="at">design=</span>api2sc.des)<span class="sc">/</span><span class="fu">sum</span>(api2sc<span class="sc">$</span>weight)</span></code></pre></div>
 <pre><code>## stype
 ## Elementary     Middle       High 
 ##  0.6593715  0.1307520  0.2098765</code></pre>
-<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="weight-adjustments.html#cb315-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="weight-adjustments.html#cb314-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 711.45 81.057</code></pre>
-<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="weight-adjustments.html#cb317-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>enroll, <span class="at">by=</span><span class="sc">~</span>stype, api2sc.des, svymean)</span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="weight-adjustments.html#cb316-1" tabindex="-1"></a><span class="fu">svyby</span>(<span class="sc">~</span>enroll, <span class="at">by=</span><span class="sc">~</span>stype, api2sc.des, svymean)</span></code></pre></div>
 <pre><code>##                 stype    enroll        se
 ## Elementary Elementary  415.6678  46.44827
 ## Middle         Middle  834.1254 113.51448
 ## High             High 1564.3007 190.86274</code></pre>
 <p>Poststratify by stype and reestimate</p>
-<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="weight-adjustments.html#cb319-1" tabindex="-1"></a>api2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
-<span id="cb319-2"><a href="weight-adjustments.html#cb319-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="weight-adjustments.html#cb318-1" tabindex="-1"></a>api2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb318-2"><a href="weight-adjustments.html#cb318-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 624.35 53.142</code></pre>
 <p>Postratify by stype by yr.rnd and reestimate</p>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="weight-adjustments.html#cb321-1" tabindex="-1"></a>api2sc.des.ps2 <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype<span class="sc">+</span>yr.rnd, </span>
-<span id="cb321-2"><a href="weight-adjustments.html#cb321-2" tabindex="-1"></a>                               <span class="at">population=</span>stype.yr.rnd.benchmarks)</span>
-<span id="cb321-3"><a href="weight-adjustments.html#cb321-3" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)</span></code></pre></div>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="weight-adjustments.html#cb320-1" tabindex="-1"></a>api2sc.des.ps2 <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype<span class="sc">+</span>yr.rnd, </span>
+<span id="cb320-2"><a href="weight-adjustments.html#cb320-2" tabindex="-1"></a>                               <span class="at">population=</span>stype.yr.rnd.benchmarks)</span>
+<span id="cb320-3"><a href="weight-adjustments.html#cb320-3" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 629.45 40.239</code></pre>
 <p>Poststratify by stype + yr.rnd (i.e. we only have the marginals so we need to rake)
 and reestimate</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="weight-adjustments.html#cb323-1" tabindex="-1"></a>api2sc.des.rake <span class="ot">&lt;-</span> <span class="fu">rake</span>(api2sc.des, </span>
-<span id="cb323-2"><a href="weight-adjustments.html#cb323-2" tabindex="-1"></a>                        <span class="at">sample=</span><span class="fu">list</span>(<span class="sc">~</span>stype, <span class="sc">~</span>yr.rnd), </span>
-<span id="cb323-3"><a href="weight-adjustments.html#cb323-3" tabindex="-1"></a>                        <span class="at">population=</span><span class="fu">list</span>(stype.benchmarks, yr.rnd.benchmarks))</span>
-<span id="cb323-4"><a href="weight-adjustments.html#cb323-4" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)</span></code></pre></div>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="weight-adjustments.html#cb322-1" tabindex="-1"></a>api2sc.des.rake <span class="ot">&lt;-</span> <span class="fu">rake</span>(api2sc.des, </span>
+<span id="cb322-2"><a href="weight-adjustments.html#cb322-2" tabindex="-1"></a>                        <span class="at">sample=</span><span class="fu">list</span>(<span class="sc">~</span>stype, <span class="sc">~</span>yr.rnd), </span>
+<span id="cb322-3"><a href="weight-adjustments.html#cb322-3" tabindex="-1"></a>                        <span class="at">population=</span><span class="fu">list</span>(stype.benchmarks, yr.rnd.benchmarks))</span>
+<span id="cb322-4"><a href="weight-adjustments.html#cb322-4" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 632.04 46.705</code></pre>
 Compare
@@ -2110,42 +2151,418 @@ Cenus
 <p>For some weight adjustments we no longer have a reliable method of computing
 the standard errors of our estimates. This can occur when we have very
 complex designs. It can also be necessary when we don’t have access to the frame,
-and therefore don’t have all the information we need to calculate standard errors.</p>
+and therefore don’t have all the information we need (such as population sizes in clusters)
+to calculate standard errors.</p>
 <p>In such circumstances we often create multiple sets of weights in addition to the
 adjusted weights. These <strong>replicate weights</strong> are what are used to estimate the
 standard errors, and they have the advantage that they can create standard errors
 for a wider range of estimators than the usual means and totals.</p>
-<p><strong>Jacknife</strong> weights are calculated by systematically deleting PSUs at the first
-stage of selection, and then scaling the weights on the remaining rows so that they
-still add up to the same total.</p>
-<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="weight-adjustments.html#cb325-1" tabindex="-1"></a>api2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(api2sc.des, <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span></code></pre></div>
+<p>The basic idea comes from recalling what standard errors are: they are the
+variability we’d see in an estimate across all possible samples from the population
+using the chosen sample design and sample size (Figure <a href="weight-adjustments.html#fig:sampling-from-population">8.2</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sampling-from-population"></span>
+<img src="include-files/fig/SamplingFromPopulation.png" alt="Sampling error is the variation among the estimates that would be calculated from all possible samples from the population." width="640" />
+<p class="caption">
+Figure 8.2: Sampling error is the variation among the estimates that would be calculated from all possible samples from the population.
+</p>
+</div>
+<p>Once we’ve completed a survey we obviously can’t take any more samples from the
+population. Instead we use the variability we see within the <strong>sample</strong> to capture
+and estimate the variability we’d see in different samples from the <strong>population</strong>
+(Figrue <a href="weight-adjustments.html#fig:pseudo-sampling">8.3</a>).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pseudo-sampling"></span>
+<img src="include-files/fig/PseudoSampling.png" alt="In Jacknife estimation sampling error can be estimated by calculating the variability among estimates from subsets taken from the sample.  This variability needs to be scaled up to get the true population variability, because the pseudo-samples resemble one another strongly, though not exactly." width="640" />
+<p class="caption">
+Figure 8.3: In Jacknife estimation sampling error can be estimated by calculating the variability among estimates from subsets taken from the sample. This variability needs to be scaled up to get the true population variability, because the pseudo-samples resemble one another strongly, though not exactly.
+</p>
+</div>
+<p>Instead of actually resampling from our sample, we instead just vary the weights
+on some or all of the unit, and create new sets of weights according to a well defined
+method. We do this multiple times, which is equivalent to taking multiple re-samples
+of our actual sample. Each re-sample is called a <strong>replicate</strong> and has its own set of
+weights for all of the units in the sample. e.g. we might have 100 additional sets of
+replicate weights attached to our survey data set, as well as the actual weights.</p>
+<p>We then use these replicate weights to calculate a set of alternative
+values for our estimate of interest. The variability among these replicate
+estimates is then used to determine the standard error.</p>
+<p>There are a number of different ways to create replicate weights: we’ll consider just one
+known as the <strong>Jackknife</strong>.</p>
+<p>Each Jacknife replicate set of weights is calculated by deleting one or more PSUs at
+the first stage of selection by setting their weights to zero. We then rescale the
+weights of the remaining units so that they still add up to the same total weight (i.e so
+they weights still add up to the population size). Table <a href="weight-adjustments.html#tab:examplejk">8.1</a> shows an example.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:examplejk">Table 8.1: </span>Example of Jacknife replicate weights: a sample of 4 clusters (PSUs) with sets of replicate weights, each one deleting the weight of a single PSU, and rescaling to maintain the total of the weights.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+psu
+</th>
+<th style="text-align:right;">
+weight
+</th>
+<th style="text-align:right;">
+rep01
+</th>
+<th style="text-align:right;">
+rep02
+</th>
+<th style="text-align:right;">
+rep03
+</th>
+<th style="text-align:right;">
+rep04
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+80
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+100.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+80
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+100.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+80
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+100.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+80
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+100.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+107.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+120
+</td>
+<td style="text-align:right;background-color:  !important;">
+161.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+165.7
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+161.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+120
+</td>
+<td style="text-align:right;background-color:  !important;">
+161.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+165.7
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+161.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+100
+</td>
+<td style="text-align:right;background-color:  !important;">
+134.9
+</td>
+<td style="text-align:right;background-color:  !important;">
+138.1
+</td>
+<td style="text-align:right;background-color:  !important;">
+126.1
+</td>
+<td style="text-align:right;background-color: rgba(255, 221, 221, 255) !important;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;background-color: rgba(221, 221, 255, 255) !important;">
+1160
+</td>
+<td style="text-align:right;background-color:  !important;">
+1160.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+1160.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+1160.0
+</td>
+<td style="text-align:right;background-color:  !important;">
+1160.0
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can create a set of replicate weights for the two stage cluster sample from the API
+data set as follows:</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="weight-adjustments.html#cb324-1" tabindex="-1"></a>api2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(api2sc.des, <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in as.svrepdesign.default(api2sc.des, type = &quot;JK1&quot;): Finite population
 ## corrections after first stage have been dropped</code></pre>
 <p>There is an informative warning here: no fpc can apply at second stage of selection
 (nor any subsequent stages).</p>
-<p>Here are the first 3 rows and 8 columns: each row refers to a district <code>dnum</code>
-and each column is a replicate.</p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="weight-adjustments.html#cb327-1" tabindex="-1"></a>api2sc.jkdes<span class="sc">$</span>repweights<span class="sc">$</span>weights[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
+<p>The specification <strong>JK1</strong> here indicates that the design is not stratified.</p>
+<p>Here are the first 5 rows and 8 columns of replicate weights: each row refers to a PSU
+(i.e. a district <code>dnum</code>) and each column is a replicate.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="weight-adjustments.html#cb326-1" tabindex="-1"></a>api2sc.jkdes<span class="sc">$</span>repweights<span class="sc">$</span>weights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
 <pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]     [,6]     [,7]     [,8]
 ## [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
 ## [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641 1.025641
-## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641</code></pre>
-<p>Replicate Weights are <span class="math inline">\(n/(n-1)=40/39=1.025641\)</span> - drops one of the 40 districts <code>dnum</code> out for
-each replicate, setting all units in that district to zero.
-These are scaling weights, and theyneed to be multiplied by the original sampling weight
-to get the actual weights.</p>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="weight-adjustments.html#cb329-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes)</span></code></pre></div>
+## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
+## [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
+## [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641</code></pre>
+<p>Replicate Weights are <span class="math inline">\(n/(n-1)=40/39=1.025641\)</span> - drops one of the 40 selected districts
+<code>dnum</code> out for each replicate, setting the weight for all units selected in that district to zero.</p>
+<p>These are called <strong>scaling weights</strong>, and they need to be multiplied by the
+original sampling weight to get the actual replicate weights.</p>
+<p>We can use this design just as in earlier examples to get estimates and standard errors:</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="weight-adjustments.html#cb328-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 711.45 82.848</code></pre>
-<p>This gives us a better estimate of the SE.</p>
+<p>This gives us a good estimate of the SE, similar to what we get from the original
+sample design specification:</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="weight-adjustments.html#cb330-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.des)</span></code></pre></div>
+<pre><code>##          mean     SE
+## enroll 711.45 81.057</code></pre>
+<p>Note that the estimate itself is identical: in both cases they come from the same single set
+of sample weights.</p>
 <p>If we are needing to post-stratify our weights to account for non-response, then
 we need also to poststratify each set of replicate weights.</p>
-<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="weight-adjustments.html#cb331-1" tabindex="-1"></a>api2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
-<span id="cb331-2"><a href="weight-adjustments.html#cb331-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="weight-adjustments.html#cb332-1" tabindex="-1"></a>api2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(api2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb332-2"><a href="weight-adjustments.html#cb332-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>api2sc.jkdes.ps)</span></code></pre></div>
 <pre><code>##          mean    SE
 ## enroll 624.35 60.61</code></pre>
-<p>Here post-stratification gives us a strong reduction of the standard errors</p>
-Comparison
+<p>Here post-stratification gives us a strong reduction of the standard errors, as we saw
+earlier.</p>
+Here’s a comparison of the various estimates and standard errors from the
+various methods we’ve seen so far:
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2239,109 +2656,557 @@ JK1+PS(stype)
 </tr>
 </tbody>
 </table>
+<p>Important points to note:</p>
+<ul>
+<li>the SE is reduced by post-stratification, and</li>
+<li>we get similar SEs when we use the jacknife estimation method.</li>
+</ul>
 <p>Let’s take a look at the replicate weights after post-stratification</p>
-<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="weight-adjustments.html#cb333-1" tabindex="-1"></a>api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>weights[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
-<pre><code>##      [,1]    [,2]     [,3]     [,4]    [,5] [,6]    [,7]     [,8]
-## 1 0.00000 1.00628 1.047964 1.019081 1.00000    1 1.00628 1.012640
-## 3 0.00000 1.00000 1.000000 1.000000 1.04955    1 1.00000 1.067176
-## 1 1.00945 0.00000 1.047964 1.019081 1.00000    1 1.00628 1.012640</code></pre>
-<p>We might have been <strong>supplied</strong> replicate weights, i.e. someone else might have
-created them. This is commonly the case when we have been granted access
-to a data set collected by a government department.</p>
-<p>In which case our dataset would look like this</p>
-<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="weight-adjustments.html#cb335-1" tabindex="-1"></a>fwmat <span class="ot">&lt;-</span> api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>weights[api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>index,]</span>
-<span id="cb335-2"><a href="weight-adjustments.html#cb335-2" tabindex="-1"></a><span class="fu">colnames</span>(fwmat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;repweight&quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%0.3d&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(fwmat)))</span>
-<span id="cb335-3"><a href="weight-adjustments.html#cb335-3" tabindex="-1"></a>pweight <span class="ot">&lt;-</span> api2sc.jkdes.ps<span class="sc">$</span>pweights</span>
-<span id="cb335-4"><a href="weight-adjustments.html#cb335-4" tabindex="-1"></a>fwmat <span class="ot">&lt;-</span> <span class="fu">diag</span>(pweight)<span class="sc">%*%</span>fwmat</span>
-<span id="cb335-5"><a href="weight-adjustments.html#cb335-5" tabindex="-1"></a><span class="fu">sum</span>(pweight)</span></code></pre></div>
-<pre><code>## [1] 6157</code></pre>
-<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="weight-adjustments.html#cb337-1" tabindex="-1"></a><span class="fu">apply</span>(fwmat,<span class="dv">2</span>,sum)</span></code></pre></div>
-<pre><code>## repweight001 repweight002 repweight003 repweight004 repweight005 repweight006 
-##         6157         6157         6157         6157         6157         6157 
-## repweight007 repweight008 repweight009 repweight010 repweight011 repweight012 
-##         6157         6157         6157         6157         6157         6157 
-## repweight013 repweight014 repweight015 repweight016 repweight017 repweight018 
-##         6157         6157         6157         6157         6157         6157 
-## repweight019 repweight020 repweight021 repweight022 repweight023 repweight024 
-##         6157         6157         6157         6157         6157         6157 
-## repweight025 repweight026 repweight027 repweight028 repweight029 repweight030 
-##         6157         6157         6157         6157         6157         6157 
-## repweight031 repweight032 repweight033 repweight034 repweight035 repweight036 
-##         6157         6157         6157         6157         6157         6157 
-## repweight037 repweight038 repweight039 repweight040 
-##         6157         6157         6157         6157</code></pre>
-<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="weight-adjustments.html#cb339-1" tabindex="-1"></a>api2sc.withrep.ps <span class="ot">&lt;-</span> <span class="fu">cbind</span>(api2sc, pweight, fwmat)</span></code></pre></div>
-<p>We create the design using the probability weights <code>pweight</code>
-and the set of replicate weights <code>repweight001-repweight040</code>.</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="weight-adjustments.html#cb340-1" tabindex="-1"></a>pweightcol <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="st">&quot;pweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which column name is exactly equal to pweight</span></span>
-<span id="cb340-2"><a href="weight-adjustments.html#cb340-2" tabindex="-1"></a>repweightcols <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;^repweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which columnnames start with repweight?</span></span>
-<span id="cb340-3"><a href="weight-adjustments.html#cb340-3" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(api2sc.withrep.ps))</span>
-<span id="cb340-4"><a href="weight-adjustments.html#cb340-4" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> varcols[<span class="sc">!</span>(varcols<span class="sc">%in%</span><span class="fu">c</span>(pweightcol,repweightcols))]</span>
-<span id="cb340-5"><a href="weight-adjustments.html#cb340-5" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(api2sc<span class="sc">$</span>dnum))</span>
-<span id="cb340-6"><a href="weight-adjustments.html#cb340-6" tabindex="-1"></a>api2sc.repdes.ps <span class="ot">&lt;-</span> <span class="fu">svrepdesign</span>(<span class="at">variables=</span>api2sc.withrep.ps[,varcols],</span>
-<span id="cb340-7"><a href="weight-adjustments.html#cb340-7" tabindex="-1"></a>                                <span class="at">weights=</span>api2sc.withrep.ps[,pweightcol],</span>
-<span id="cb340-8"><a href="weight-adjustments.html#cb340-8" tabindex="-1"></a>                                <span class="at">repweights=</span>api2sc.withrep.ps[,repweightcols],</span>
-<span id="cb340-9"><a href="weight-adjustments.html#cb340-9" tabindex="-1"></a>                                <span class="at">combined.weights=</span><span class="cn">TRUE</span>,</span>
-<span id="cb340-10"><a href="weight-adjustments.html#cb340-10" tabindex="-1"></a>                                <span class="at">scale=</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,</span>
-<span id="cb340-11"><a href="weight-adjustments.html#cb340-11" tabindex="-1"></a>                                <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span>
-<span id="cb340-12"><a href="weight-adjustments.html#cb340-12" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.repdes.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="weight-adjustments.html#cb334-1" tabindex="-1"></a>api2sc.jkdes.ps<span class="sc">$</span>repweights<span class="sc">$</span>weights[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>]</span></code></pre></div>
+<pre><code>##      [,1]    [,2]     [,3]     [,4]     [,5] [,6]    [,7]     [,8]
+## 1 0.00000 1.00628 1.047964 1.019081 1.000000 1.00 1.00628 1.012640
+## 3 0.00000 1.00000 1.000000 1.000000 1.049550 1.00 1.00000 1.067176
+## 1 1.00945 0.00000 1.047964 1.019081 1.000000 1.00 1.00628 1.012640
+## 1 1.00945 1.00628 0.000000 1.019081 1.000000 1.00 1.00628 1.012640
+## 2 1.00000 1.00000 0.000000 1.000000 1.030303 1.02 1.00000 1.000000</code></pre>
+<p>They’re no longer the same in the different PSUs.</p>
+<p><strong>This seems to be a lot of additional work:</strong> we get the same SEs and estimates
+using the standard formula-based estimation methods for SEs. Why bother
+with replicate weights in that case?</p>
+<p>There are three reasons:</p>
+<ul>
+<li>For some very <strong>complex designs</strong> there are no formula based estimation methods
+that can be used;</li>
+<li>For some <strong>estimates</strong>, such as medians and quartiles, replicate methods are
+more reliable than formula based methods;</li>
+<li>Replicate based methods are robust in the presence of small samples and outliers,
+and can also be used to estimate bias (as well as standard errors).</li>
+</ul>
+<p>It’s commonly the case that rather than calculating them for ourselves we might
+inestead have been <strong>supplied</strong> replicate weights, i.e. someone else might have
+created them. This often happens when we have been granted access
+to a data set collected by a government department or agency concerned about
+confidentiality, and in those instances we are not given access to the frame.</p>
+In which case the weights in the first 10 rows of our API two stage cluster dataset would look like this
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+dnum
+</th>
+<th style="text-align:right;">
+pweight
+</th>
+<th style="text-align:right;">
+repweight001
+</th>
+<th style="text-align:right;">
+repweight002
+</th>
+<th style="text-align:right;">
+repweight003
+</th>
+<th style="text-align:right;">
+repweight004
+</th>
+<th style="text-align:right;">
+repweight005
+</th>
+<th style="text-align:right;">
+repweight006
+</th>
+<th style="text-align:right;">
+repweight007
+</th>
+<th style="text-align:right;">
+repweight008
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+43.13775
+</td>
+<td style="text-align:right;">
+41.94883
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+41.68371
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+49.99550
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+50.83511
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+27.44227
+</td>
+<td style="text-align:right;">
+27.70160
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+28.75850
+</td>
+<td style="text-align:right;">
+27.96589
+</td>
+<td style="text-align:right;">
+27.44227
+</td>
+<td style="text-align:right;">
+27.44227
+</td>
+<td style="text-align:right;">
+27.61462
+</td>
+<td style="text-align:right;">
+27.78914
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+101.57255
+</td>
+<td style="text-align:right;">
+101.25359
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+102.54158
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+101.25359
+</td>
+<td style="text-align:right;">
+101.89352
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+<td style="text-align:right;">
+55.62963
+</td>
+<td style="text-align:right;">
+55.07333
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+<td style="text-align:right;">
+53.99346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+101.57255
+</td>
+<td style="text-align:right;">
+101.25359
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+102.54158
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+100.62165
+</td>
+<td style="text-align:right;">
+101.25359
+</td>
+<td style="text-align:right;">
+101.89352
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.55241
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+43.13775
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+41.68371
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.55241
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+43.13775
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.16340
+</td>
+<td style="text-align:right;">
+41.42192
+</td>
+<td style="text-align:right;">
+41.68371
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+49.99550
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+47.63519
+</td>
+<td style="text-align:right;">
+50.83511
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+<td style="text-align:right;">
+23.79930
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+<td style="text-align:right;">
+22.53000
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+<td style="text-align:right;">
+22.08824
+</td>
+</tr>
+</tbody>
+</table>
+<p>Unlike the example earlier, these replicate weights are <strong>combined weights</strong> -
+i.e. they do not need to be multiplied by the original weight, and they
+each separately add up to the same value: the population size.</p>
+<p>We use a data set like this to specify the sample design to R using just
+the probability weights <code>pweight</code>and the set of replicate weights <code>repweight001-repweight040</code>.
+We don’t specify the cluster variables when specifying the design.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="weight-adjustments.html#cb336-1" tabindex="-1"></a>pweightcol <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="st">&quot;pweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which column name is exactly equal to pweight</span></span>
+<span id="cb336-2"><a href="weight-adjustments.html#cb336-2" tabindex="-1"></a>repweightcols <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;^repweight&quot;</span>,<span class="fu">names</span>(api2sc.withrep.ps)) <span class="co"># which columnnames start with repweight?</span></span>
+<span id="cb336-3"><a href="weight-adjustments.html#cb336-3" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(api2sc.withrep.ps))</span>
+<span id="cb336-4"><a href="weight-adjustments.html#cb336-4" tabindex="-1"></a>varcols <span class="ot">&lt;-</span> varcols[<span class="sc">!</span>(varcols<span class="sc">%in%</span><span class="fu">c</span>(pweightcol,repweightcols))]</span>
+<span id="cb336-5"><a href="weight-adjustments.html#cb336-5" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(api2sc<span class="sc">$</span>dnum))</span>
+<span id="cb336-6"><a href="weight-adjustments.html#cb336-6" tabindex="-1"></a>api2sc.repdes.ps <span class="ot">&lt;-</span> <span class="fu">svrepdesign</span>(<span class="at">variables=</span>api2sc.withrep.ps[,varcols],</span>
+<span id="cb336-7"><a href="weight-adjustments.html#cb336-7" tabindex="-1"></a>                                <span class="at">weights=</span>api2sc.withrep.ps[,pweightcol],</span>
+<span id="cb336-8"><a href="weight-adjustments.html#cb336-8" tabindex="-1"></a>                                <span class="at">repweights=</span>api2sc.withrep.ps[,repweightcols],</span>
+<span id="cb336-9"><a href="weight-adjustments.html#cb336-9" tabindex="-1"></a>                                <span class="at">combined.weights=</span><span class="cn">TRUE</span>,</span>
+<span id="cb336-10"><a href="weight-adjustments.html#cb336-10" tabindex="-1"></a>                                <span class="at">scale=</span>(n<span class="dv">-1</span>)<span class="sc">/</span>n,</span>
+<span id="cb336-11"><a href="weight-adjustments.html#cb336-11" tabindex="-1"></a>                                <span class="at">type=</span><span class="st">&quot;JK1&quot;</span>)</span>
+<span id="cb336-12"><a href="weight-adjustments.html#cb336-12" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.repdes.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 624.35 62.313</code></pre>
-<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="weight-adjustments.html#cb342-1" tabindex="-1"></a>ss <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb342-2"><a href="weight-adjustments.html#cb342-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">mean</span>(apipopc<span class="sc">$</span>enroll), <span class="dv">0</span>),</span>
-<span id="cb342-3"><a href="weight-adjustments.html#cb342-3" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des)), </span>
-<span id="cb342-4"><a href="weight-adjustments.html#cb342-4" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps)), </span>
-<span id="cb342-5"><a href="weight-adjustments.html#cb342-5" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.ps2)), </span>
-<span id="cb342-6"><a href="weight-adjustments.html#cb342-6" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.des.rake)),</span>
-<span id="cb342-7"><a href="weight-adjustments.html#cb342-7" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes)),</span>
-<span id="cb342-8"><a href="weight-adjustments.html#cb342-8" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.jkdes.ps)),</span>
-<span id="cb342-9"><a href="weight-adjustments.html#cb342-9" tabindex="-1"></a>  <span class="fu">ff</span>(<span class="fu">svymean</span>(<span class="sc">~</span>enroll, api2sc.repdes.ps))</span>
-<span id="cb342-10"><a href="weight-adjustments.html#cb342-10" tabindex="-1"></a>  ) </span>
-<span id="cb342-11"><a href="weight-adjustments.html#cb342-11" tabindex="-1"></a><span class="fu">dimnames</span>(ss) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;Cenus&quot;</span>,<span class="st">&quot;2SC&quot;</span>,<span class="st">&quot;2SC+PS(stype)&quot;</span>,<span class="st">&quot;2SC+PS(stype x yr.rnd)&quot;</span>,<span class="st">&quot;2SC+Rake(stype+yr.rnd)&quot;</span>,</span>
-<span id="cb342-12"><a href="weight-adjustments.html#cb342-12" tabindex="-1"></a>                       <span class="st">&quot;JK1&quot;</span>,<span class="st">&quot;JK1+PS(stype)&quot;</span>,<span class="st">&quot;JK1+PS(stype)&quot;</span>),</span>
-<span id="cb342-13"><a href="weight-adjustments.html#cb342-13" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">&quot;Estimate&quot;</span>,<span class="st">&quot;SE&quot;</span>))</span>
-<span id="cb342-14"><a href="weight-adjustments.html#cb342-14" tabindex="-1"></a>ss</span></code></pre></div>
-<pre><code>##                        Estimate       SE
-## Cenus                  619.0469  0.00000
-## 2SC                    711.4530 81.05714
-## 2SC+PS(stype)          624.3485 53.14154
-## 2SC+PS(stype x yr.rnd) 629.4503 40.23927
-## 2SC+Rake(stype+yr.rnd) 632.0372 46.70502
-## JK1                    711.4530 82.84780
-## JK1+PS(stype)          624.3485 60.60973
-## JK1+PS(stype)          624.3485 62.31259</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Estimate
+</th>
+<th style="text-align:right;">
+SE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Cenus
+</td>
+<td style="text-align:right;">
+619.0469
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2SC
+</td>
+<td style="text-align:right;">
+711.4530
+</td>
+<td style="text-align:right;">
+81.05714
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2SC+PS(stype)
+</td>
+<td style="text-align:right;">
+624.3485
+</td>
+<td style="text-align:right;">
+53.14154
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2SC+PS(stype x yr.rnd)
+</td>
+<td style="text-align:right;">
+629.4503
+</td>
+<td style="text-align:right;">
+40.23927
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2SC+Rake(stype+yr.rnd)
+</td>
+<td style="text-align:right;">
+632.0372
+</td>
+<td style="text-align:right;">
+46.70502
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JK1
+</td>
+<td style="text-align:right;">
+711.4530
+</td>
+<td style="text-align:right;">
+82.84780
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JK1+PS(stype)
+</td>
+<td style="text-align:right;">
+624.3485
+</td>
+<td style="text-align:right;">
+60.60973
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JK1+PS(stype); weights only
+</td>
+<td style="text-align:right;">
+624.3485
+</td>
+<td style="text-align:right;">
+62.31259
+</td>
+</tr>
+</tbody>
+</table>
+<p>The consequence of only being given the weights (rather than the full clustering
+information) means that the first stage design is treated as PPSWR rather than SRSWOR,
+and there is no adjustment for the fpc. That means the SEs are slightly larger.</p>
 <p>The method “JK1” is used for unstratified designs. For stratified
 designs the jackknife is specified by “JKn”: we don’t just drop out one PSU over
-the whole sample in each replicate, instead we drop out a PSU from every stratum.</p>
+the whole sample in each replicate, instead we drop out a PSU from every stratum
+simultaneously.</p>
 <p>E.g. draw a two stage cluster sample within two strata: schools which are or are
 not eligible for an awards programme:</p>
-<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="weight-adjustments.html#cb344-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
-<span id="cb344-2"><a href="weight-adjustments.html#cb344-2" tabindex="-1"></a>apist2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span></span>
-<span id="cb344-3"><a href="weight-adjustments.html#cb344-3" tabindex="-1"></a>  <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">stratumvar=</span><span class="st">&quot;awards&quot;</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>)</span>
-<span id="cb344-4"><a href="weight-adjustments.html#cb344-4" tabindex="-1"></a>apist2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">strata=</span><span class="sc">~</span>awards, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, </span>
-<span id="cb344-5"><a href="weight-adjustments.html#cb344-5" tabindex="-1"></a>                          <span class="at">data=</span>apist2sc, <span class="at">nest=</span><span class="cn">TRUE</span>)</span>
-<span id="cb344-6"><a href="weight-adjustments.html#cb344-6" tabindex="-1"></a>apist2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="weight-adjustments.html#cb338-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
+<span id="cb338-2"><a href="weight-adjustments.html#cb338-2" tabindex="-1"></a>apist2sc <span class="ot">&lt;-</span> apipopc <span class="sc">|&gt;</span></span>
+<span id="cb338-3"><a href="weight-adjustments.html#cb338-3" tabindex="-1"></a>  <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">40</span>, <span class="at">stratumvar=</span><span class="st">&quot;awards&quot;</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;dnum&quot;</span>)</span>
+<span id="cb338-4"><a href="weight-adjustments.html#cb338-4" tabindex="-1"></a>apist2sc.des <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">id=</span><span class="sc">~</span>dnum<span class="sc">+</span>snum, <span class="at">strata=</span><span class="sc">~</span>awards, <span class="at">fpc=</span><span class="sc">~</span>bigN1<span class="sc">+</span>bigN2, </span>
+<span id="cb338-5"><a href="weight-adjustments.html#cb338-5" tabindex="-1"></a>                          <span class="at">data=</span>apist2sc, <span class="at">nest=</span><span class="cn">TRUE</span>)</span>
+<span id="cb338-6"><a href="weight-adjustments.html#cb338-6" tabindex="-1"></a>apist2sc.des.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.des, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span></code></pre></div>
 <p>Note: we need <code>nest=TRUE</code> here because districts <code>dnum</code> do not nest within strata.
 I.e. it is the <strong>combination</strong> of <code>awards</code> and <code>dnum</code> that actually defines the clusters here.</p>
-<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="weight-adjustments.html#cb345-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des)</span></code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="weight-adjustments.html#cb339-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 497.75 64.645</code></pre>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="weight-adjustments.html#cb347-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="weight-adjustments.html#cb341-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.des.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 523.97 63.001</code></pre>
-<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="weight-adjustments.html#cb349-1" tabindex="-1"></a>apist2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(apist2sc.des, <span class="at">type=</span><span class="st">&quot;JKn&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="weight-adjustments.html#cb343-1" tabindex="-1"></a>apist2sc.jkdes <span class="ot">&lt;-</span> <span class="fu">as.svrepdesign</span>(apist2sc.des, <span class="at">type=</span><span class="st">&quot;JKn&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in as.svrepdesign.default(apist2sc.des, type = &quot;JKn&quot;): Finite
 ## population corrections after first stage have been dropped</code></pre>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="weight-adjustments.html#cb351-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes)</span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="weight-adjustments.html#cb345-1" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 497.75 84.997</code></pre>
-<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="weight-adjustments.html#cb353-1" tabindex="-1"></a>apist2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
-<span id="cb353-2"><a href="weight-adjustments.html#cb353-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes.ps)</span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="weight-adjustments.html#cb347-1" tabindex="-1"></a>apist2sc.jkdes.ps <span class="ot">&lt;-</span> <span class="fu">postStratify</span>(apist2sc.jkdes, <span class="at">strata=</span><span class="sc">~</span>stype, <span class="at">population=</span>stype.benchmarks)</span>
+<span id="cb347-2"><a href="weight-adjustments.html#cb347-2" tabindex="-1"></a><span class="fu">svymean</span>(<span class="sc">~</span>enroll, <span class="at">design=</span>apist2sc.jkdes.ps)</span></code></pre></div>
 <pre><code>##          mean     SE
 ## enroll 523.97 82.125</code></pre>
 <p>There are alternative methods to Jacknife generation of replicate weights.
 You may hear of Bootstrap weights, and Balanced Repeated Replication. Some
-of these have multiple variants. We don’t need to worry about these.</p>
+of these have multiple variants, and there are settings in which one outperforms
+the others. Jackknife variance estimation is the most common however.</p>
 
 </div>
 </div>
@@ -2365,42 +3230,42 @@ of these have multiple variants. We don’t need to worry about these.</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

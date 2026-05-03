@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10 Package mice | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10 Package mice | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-04-28" />
+<meta name="date" content="2026-05-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,7 +131,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -291,7 +290,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="weight-adjustments.html"><a href="weight-adjustments.html#replicate-weights"><i class="fa fa-check"></i><b>8.2</b> Replicate weights</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a></li>
+<li class="chapter" data-level="9" data-path="imputation.html"><a href="imputation.html"><i class="fa fa-check"></i><b>9</b> Imputation</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="imputation.html"><a href="imputation.html#mean-median-or-mode-imputation"><i class="fa fa-check"></i><b>9.1</b> Mean, median or mode imputation</a></li>
+<li class="chapter" data-level="9.2" data-path="imputation.html"><a href="imputation.html#hot-deck-imputation"><i class="fa fa-check"></i><b>9.2</b> Hot deck imputation</a></li>
+<li class="chapter" data-level="9.3" data-path="imputation.html"><a href="imputation.html#cell-methods"><i class="fa fa-check"></i><b>9.3</b> Cell methods</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="package-mice.html"><a href="package-mice.html"><i class="fa fa-check"></i><b>10</b> Package mice</a></li>
 <li class="chapter" data-level="11" data-path="designing-surveys.html"><a href="designing-surveys.html"><i class="fa fa-check"></i><b>11</b> Designing Surveys</a>
 <ul>
@@ -299,8 +303,6 @@ div.csl-indent {
 <li class="chapter" data-level="11.2" data-path="designing-surveys.html"><a href="designing-surveys.html#computing-the-required-sample-size"><i class="fa fa-check"></i><b>11.2</b> Computing the Required Sample Size</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="appendix"><span><b> </b></span></li>
-<li class="chapter" data-level="A" data-path="placeholder-appendix.html"><a href="placeholder-appendix.html"><i class="fa fa-check"></i><b>A</b> Placeholder Appendix</a></li>
 <li class="divider"></li>
 <li>Lecture notes</li>
 
@@ -325,9 +327,9 @@ div.csl-indent {
 <h1><span class="header-section-number">10</span> Package mice<a href="package-mice.html#package-mice" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Don’t impute a column by setting the method=“” for that column</p>
 <p>‘blocks’ are sets of variables, treated similarly</p>
-<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="package-mice.html#cb515-1" tabindex="-1"></a><span class="fu">mice</span>(msurf, <span class="at">m=</span><span class="dv">5</span>, </span>
-<span id="cb515-2"><a href="package-mice.html#cb515-2" tabindex="-1"></a>     <span class="at">method=</span>,</span>
-<span id="cb515-3"><a href="package-mice.html#cb515-3" tabindex="-1"></a>     <span class="at">blocks=</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb516-1"><a href="package-mice.html#cb516-1" tabindex="-1"></a><span class="fu">mice</span>(msurf, <span class="at">m=</span><span class="dv">5</span>, </span>
+<span id="cb516-2"><a href="package-mice.html#cb516-2" tabindex="-1"></a>     <span class="at">method=</span>,</span>
+<span id="cb516-3"><a href="package-mice.html#cb516-3" tabindex="-1"></a>     <span class="at">blocks=</span>)</span></code></pre></div>
 <pre><code>## 
 ##  iter imp variable
 ##   1   1  Income
@@ -403,42 +405,42 @@ Regression imputation</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf", "_main.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

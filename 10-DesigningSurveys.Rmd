@@ -78,6 +78,10 @@ the sample size an SRSWOR would need in order to achieve the same standard error
      \[
         n_2 = \frac{n_1}{1+\frac{n_1}{N}}
      \]
+     This adjusts for the fact that in a finite population we don't need
+     quite as large a sample to achieve the same standard error.  However
+     if the sampling fraction ($n/N$: the proportion of the population that
+     is selected) is small, then the fpc adjustment has very little effect.
 
   1. If you have $H$ subgroups and are using equal allocation then multiply by $H$
      \[

@@ -1,3 +1,47 @@
+### Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11] {-}
+
+*	Survey process, populations and frames
+*	Describe a real survey, comment on design
+*	Propose a sample design, frame, comment on scope and coverage
+*	Draw and analyse a sample under various designs
+*	Compute sample sizes and allocate samples in stratified sampling
+*	Compute and interpret the design effect
+* Analyse data and present results from a survey
+
+### Test 2 (25%) [assessment period] [1.5 hours, closed book] {-}
+
+*	Survey process, populations and frames
+* Describe sample designs
+* Compute and interpret sample weights
+* Use sample weights for point estimates
+* Interpret output from survey inference in R
+* Compare results, interpret design effect
+* Describe methods for non-response adjustment (imputation and post-stratification); comment on bias reduction and assumptions being made
+* Describe the jackknife method of variance estimation
+
+
+  bookdown::pdf_book: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+  bookdown::pdf_document2: 
+    documentclass: krantz
+    latex_engine: xelatex
+    keep_tex: true
+    includes:
+      in_header: preamble.tex
+
+
+****
+
+Add this line to 90-BackMatter to reinstate the appendix switch:
+
+# (APPENDIX) &nbsp; {-}
+
+****
+
 ```{r}
 pop <- read.csv("data/population.csv")
 pop <- pop |> filter(Year==2023) |> 
@@ -74,5 +118,248 @@ abline(v=sd(sim[,3]),col="red",lwd=2)
 
 ```
 
+***********
+
+
+```{r}
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~1)
+dd[dd$Income.imp,]
+mean(msurf$Income, na.rm=TRUE)
+mean(dd$Income)
+sd(msurf$Income, na.rm=TRUE)
+sd(dd$Income)
+
+dd <- impute(msurf, varname="Income", method="lm.mean", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+
+dd <- impute(msurf, varname="Income", method="lm.sim", formula=~Gender)
+dd[dd$Income.imp,]
+tapply(msurf$Income, msurf$Gender, mean, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, mean)
+tapply(msurf$Income, msurf$Gender, sd, na.rm=TRUE)
+tapply(dd$Income, dd$Gender, sd)
+```
+
+
+
+
+
+Overall mean imputation
+```{r}
+mnhanes.mfit1 <- mnhanes |> mice(method="mean", m=1, maxit=1)
+mnhanes.m1 <- complete(mnhanes.mfit1)
+md.pattern(mnhanes.m1) # no missing data left
+```
+
+Overall mean imputation
+```{r}
+mnhanes.grandmean <- mnhanes |>
+  mice(method="mean", m=1) |>
+  complete() 
+```
+
+Cell mean imputation
+```{r}
+mnhanes.cellmean <- do.call(rbind, 
+                            by(mnhanes, mnhanes$age,
+                               function(dsub) complete(mice(dsub, method="mean", m=1)))) 
+mnhanes.cellmean <- arrange(mnhanes.cellmean, id)
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+```
+
+Repeat cell mean imputation using the regression formulation
+
+```{r}
+allvarnames <- names(mnhanes)
+
+blocks <- as.list(allvarnames) # each variable in its own block
+names(blocks) <- allvarnames
+method <- rep("",length(allvarnames)) # method for each block: start with no imputation
+names(method) <- allvarnames
+formulas <- as.list(rep("~1", length(allvarnames)))
+names(formulas) <- allvarnames
+formulas <- lapply(formulas, formula)
+
+method["bmi"] <- "norm.predict" # we're only going to impute bmi, by regression imputation
+formulas[["bmi"]] <- formula(~age)
+
+mnhanes.cellmeanregf <- mnhanes |> 
+  mice(m=1, method=method, blocks=blocks, formulas=formulas) |>
+  complete()
+
+mnhanes.cellmeanregf
+```
+
+Compare
+```{r}
+mnhanes.grandmean[is.na(mnhanes$bmi),]
+mnhanes.cellmean[is.na(mnhanes$bmi),]
+mnhanes.cellmeanregf[is.na(mnhanes$bmi),]
+```
+
+
+Means of numeric and modes of categorical variables
+```{r}
+getmeanmode <- function(df) {
+  as.data.frame(lapply(df, 
+       function(x) {
+         if(is.factor(x) || is.character(x)) {
+           xt <- table(x)
+           mval <- names(xt)[which.max(xt)]
+         } else if(is.numeric(x)) {
+           mval <- mean(x, na.rm=TRUE)
+         } else {
+           mval <- NA
+         }
+         return(mval)
+       }))
+}
+```
+
+
+```{r}
+getmeanmode(mnhanes)
+```
+
+```{r}
+sapply(names(mnhanes.m1), function(varname) mnhanes.m1[is.na(mnhanes[,varname]),varname])
+```
+
+Just do the numerical variables (gives a warning because Marital is categorical)
+```{r}
+msurf.mfit1 <- msurf |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # still has missing Marital data
+```
+
+Avoid the error
+```{r}
+msurf.mfit1 <- msurf[,sapply(msurf,is.numeric)] |> mice(method="mean", m=1, maxit=1)
+msurf.m1 <- complete(msurf.mfit1)
+md.pattern(msurf.m1) # this deletes the Marital column of course
+```
+
+
+
+Hot deck imputation
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+Hot deck within cells [*** not yet done ***]
+```{r}
+mnhanes.hdfit1 <- mice(mnhanes, method="sample", m=1, blocks=, seed=123)
+mnhanes.hd1 <- complete(mnhanes.hdfit1)
+mnhanes.hd1[is.na(mnhanes$bmi),]
+table(mnhanes$bmi,exclude=NULL)
+table(mnhanes.hd1$bmi)
+```
+
+
+Regression imputation
+
+Use regressions on all available observations?
+```{r}
+mnhanes.mfit2 <- mice(mnhanes, method="norm.predict", m=1, maxit=1)
+mnhanes.m2 <- complete(mnhanes.mfit2)
+mnhanes.m1[is.na(mnhanes$bmi),]
+mnhanes.m2[is.na(mnhanes$bmi),]
+```
+
+
+
+
+
+Hot deck multiple imputation
+```{r}
+mnhanes.multfit1 <- mice(mnhanes, method="sample", m=5, seed=123)
+mnhanes.mult1 <- complete(mnhanes.multfit1)
+mnhanes.mult1[is.na(mnhanes$bmi),]
+```
+
+Regression mean imputation
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+
+Stochastic regression imputation: we sample from the fitted distribution
+```{r}
+mice(mnhanes, method="norm.nob", m=1, maxit=1, seed=123)
+```
+
+
+# Package mice
+
+Don't impute a column by setting the method="" for that column
+
+'blocks' are sets of variables, treated similarly
+```{r}
+mice(msurf, m=5, 
+     method=,
+     blocks=)
+```
+
+Mean imputation/cell mean imputation: method = 'mean'
+Median imputation/cell median imputation: 
+Hot deck cell imputation: method = 'sample' within cells
+Regression imputation
+
+
+
+Get R chunks
+```{r}
+fnames <- list.files("../")
+fnames <- fnames[grep(".Rmd$",fnames)]
+for(fname in fnames) {
+  stem <- gsub(".Rmd$","",fname)
+  filename <- paste0("../",fname)
+  outfile <- paste0(stem,"-code.R")
+  print(outfile)
+  x <- readLines(filename)
+  x <- x[!substring(x,1,2)=="#|"]
+  istart <- substring(x,1,5)=="```{r"
+  iend <- substring(x,1,3)=="```" & !istart
+  
+  n <- length(x)
+  sum(istart)==sum(iend)
+  istart <- (1:n)[istart]+1
+  iend <- (1:n)[iend]-1
+  m <- length(istart)
+  
+  if(m>0) {
+    sink(outfile)
+    for(j in 1:m) {
+      cat("\n")
+      for(i in (istart[j]):(iend[j])) {
+        cat(x[i]); 
+        cat("\n")
+      }
+      cat("\n")
+      cat("\n")
+    }
+    sink()
+  }
+}
+```
 
 

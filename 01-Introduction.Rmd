@@ -23,62 +23,41 @@ Lecture plan (3 lectures + 1 tutorial per week)
 
 Bring a laptop to the Friday (tutorial) lecture.
 
-### Week 1 – The Survey Process {-}
+### Week 1 – Sampling and The Survey Process {-}
 
+Chapters 1-4
+
+* Sampling
 * The survey process, sources of survey error
 * Populations and Frames
 * Sampling in finite and infinite populations;
   Basics of SRSWOR inference; sample weights;
 * **Tutorial:** Sampling basics; Population and Frames
 
-### Week 2 – Sampling {-}
-
-Use of `sample()` and other simulation methods in R for a variety of designs 
-[`sampler` package (does power calculations, allocation, SRS and STSRS, but not cluster)] 
-[`sampling` package – can do cluster samples]
+### Week 2 – Sample Designs {-}
 
 *	Simple random sampling, with and without replacement
+* Introduction to sample weights
+* Probabiiity proportional to size sampling
+* Linear Systematic Random Sampling
 * Stratified sampling
-* Cluster sampling
+* One and Two stage cluster sampling
 * Sampling in complex designs
-* Sample size calculation and allocation
-* Survey weights – create estimates from weights without standard errors
 * **Tutorial:** using R to draw samples and compute survey weights
 
 ### Week 3 - Inference with the R survey package {-}
 
+* Using R to specify sample designs
 * Inference in simple and complex designs, including regression
-* Variance estimation 
 * Definition and interpretation of the design effect
 * **Tutorial:** using R to specify designs and draw inferences
 
 ### Week 4 – Non-response and complex designs {-}
 
 *	Post-stratification for non-response adjustment
-* Imputation (`simputation` package)
-*	Jackknife and bootstrap inference
-* **Tutorial:** raking adjustments to weights; imputation; jackknife inference
-
-### Assignment 4 (10%) [due end of Week 12: covers material from Weeks 9-11] {-}
-
-*	Survey process, populations and frames
-*	Describe a real survey, comment on design
-*	Propose a sample design, frame, comment on scope and coverage
-*	Draw and analyse a sample under various designs
-*	Compute sample sizes and allocate samples in stratified sampling
-*	Compute and interpret the design effect
-* Analyse data and present results from a survey
-
-### Test 2 (25%) [assessment period] [1.5 hours, closed book] {-}
-
-*	Survey process, populations and frames
-* Describe sample designs
-* Compute and interpret sample weights
-* Use sample weights for point estimates
-* Interpret output from survey inference in R
-* Compare results, interpret design effect
-* Describe methods for non-response adjustment (imputation and post-stratification); comment on bias reduction and assumptions being made
-* Describe the jackknife method of variance estimation
+*	Jackknife inference
+* Imputation for item non-response
+* **Tutorial:** psot-stratification and raking adjustments to weights; imputation; jackknife inference
 
 ## Recommended reading
 
@@ -131,16 +110,12 @@ Data
 * `survey` package (@survey2004) with this handy summary of command uses
    https://stats.oarc.ucla.edu/r/seminars/survey-data-analysis-with-r/
 * `srvyr` a dplyr wrapper for the `survey` package and `jtools` which also provides some extensions
-* `gtsummary` creates outputs ready for publication (difficult to build/load)
-* `sampling` package for drawing samples according to various designs
 * `mice` package for imputation
-* `simputation` package for imputation (difficult to build/load)
-* `haven` package to import `SAS`, `Stata` and `SPSS` data files
  
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'survey'
+  .packages(), 'survey', 'srvyr', 'mice'
 ), 'packages.bib')
 ```
 
