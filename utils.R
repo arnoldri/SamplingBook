@@ -245,7 +245,9 @@ select.st2sc <- function(df,
 impute <- function(df, varname, 
                    method=NULL,
                    formula=NULL, 
-                   impute.suffix=".imp") {
+                   impute.suffix=".imp",
+                   seed=NULL) {
+  if(is.null(seed)) set.seed(seed)
   missing <- is.na(df[,varname])
   df[,paste0(varname,impute.suffix)] <- missing
   
