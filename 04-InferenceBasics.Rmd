@@ -190,7 +190,18 @@ from a collection of $N$ without regard to the order they are selected.
 > \]
 > So $5!=5\times 4\times 3\times 2\times 1=120$.  
 
-In our example of selecting $n=20$ from $N=87$ there are an astronomical
+To calculate a factorial in R use the `factorial()` function
+```{r}
+factorial(5)
+```
+
+And to evaluate $\binom{N}{n}$ use the `choose()` function: e.g. the 
+number of ways to choose 4 objects from a collection of 10:
+```{r}
+choose(10,4)
+```
+
+In our example of selecting $n=20$ from $N=87$ there is a truly astronomical
 number of possible samples:
 \[
    \binom{87}{20} = \frac{87!}{20!67!} = 2.38\times 10^{19}
@@ -429,13 +440,17 @@ We might have a small street of five houses.  Our frame is
 just the list of addresses.  We might know the household rateable value
 from the City Council list of dwellings.
 
-```{r echo=FALSE}
+```{r}
 hframe <- data.frame(
   ID=c(6451,6452,8773,7164,6125),
   Address=c("1 Chestnut Place","2 Chestnut Place","2A Chestnut Place",
             "3 Chestnut Place","4 Chestnut Place"),
   Value=c(1.201, 0.780, 0.520, 2.530, 0.900)
 )
+```
+
+
+```{r echo=FALSE}
 hframe |>
   kbl(col.names=c("ID","Address","Value ($M)"), 
       align='clc') |>
