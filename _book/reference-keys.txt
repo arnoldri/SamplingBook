@@ -73,6 +73,7 @@ what-is-a-good-sampling-frame
 approaches-to-sampling
 example-datasets
 api
+nz-schools
 from-the-dplyr-package
 statistical-inference
 inference-in-infinite-populations

@@ -244,6 +244,15 @@ them used they all have significant defects.
   in with their views.  Only profiles motivated population members - the silent
   majority are never measured.
 
+*Note*: a **screening sample** is used when we are wanting to sample a population
+for which there is no suitable frame, but where all members of the target population
+are to be found on a larger frame, however they cannot be identified on the frame.
+For example there is no frame which can identify people who go fishing regularly.  
+The only solution is to sample from a whole-of-population frame, and then ask eligibility
+questions to determine whether the person selected is a member of the target population.
+Data is only collected from actual members of the target population.  Screening may be 
+done as part of a probability sample from the larger frame.  
+
 ## Example datasets
 
 We'll use and re-use a number of standard datasets.
@@ -265,6 +274,22 @@ This is a dataset on Student performance in California schools.  The dataset is 
   * `enroll` - Number of students enrolled
   * `api.stu` - Number of students tested in the API
 
+### NZ Schools
+
+A list of NZ schools from the Education Counts website (https://www.educationcounts.govt.nz/directories/list-of-nz-schools)
+
+The dataset includes
+
+  * `School_Id` - an identification number
+  * `Org_Name` - the name of the school
+  * Contact details (`Telephone`, `Fax`, `Email`, `Contact` email address, postal address)
+  * `Org_type` - type of school (primary/secondary etc)
+  * `Total` - number of enrolled students
+  * `Europenan`, Māori`, `Pacific`, `Asian`, `MLAA`, `Other` - counts of students by ethnicity
+  * `International` - numbers of international students
+  * `Urban_Rural_indicator` - categorised population density of the area around the school
+  * `Territorial_Aithority`, `Regional_Council`, `Education_Region` - administrative regions
+  * `Latitude`, `Longitude` - location
 
 ### From the dplyr package
 

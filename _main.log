@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  9 MAY 2026 13:53
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 23.4) (preloaded format=xelatex 2023.8.9)  9 MAY 2026 19:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1123,24 +1123,24 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: include-files/fig/Weights.png Graphic file (type bmp)
 <include-files/fig/Weights.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 2466--2467
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2505--2506
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 135.56422pt on input line 2471.
+LaTeX Warning: Float too large for page by 135.56422pt on input line 2510.
 
 [52] [53] [54]
 Chapter 5.
 File: include-files/fig/Census.png Graphic file (type bmp)
 <include-files/fig/Census.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 2607--2608
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2646--2647
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 111.56422pt on input line 2612.
+LaTeX Warning: Float too large for page by 111.56422pt on input line 2651.
 
 [55
 
@@ -1148,25 +1148,25 @@ LaTeX Warning: Float too large for page by 111.56422pt on input line 2612.
 File: include-files/fig/SRS.png Graphic file (type bmp)
 <include-files/fig/SRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 2703--2704
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 2742--2743
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 2708.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 2747.
 
 
-Overfull \hbox (103.16446pt too wide) in paragraph at lines 2729--2754
+Overfull \hbox (103.16446pt too wide) in paragraph at lines 2768--2793
  [][] 
  []
 
 [57] [58]
-Overfull \hbox (272.08447pt too wide) in paragraph at lines 2768--2783
+Overfull \hbox (272.08447pt too wide) in paragraph at lines 2807--2822
  [][] 
  []
 
 [59]
-Overfull \hbox (97.25446pt too wide) in paragraph at lines 2864--2879
+Overfull \hbox (97.25446pt too wide) in paragraph at lines 2903--2918
  [][] 
  []
 
@@ -1174,15 +1174,15 @@ Overfull \hbox (97.25446pt too wide) in paragraph at lines 2864--2879
 File: include-files/fig/LSRS.png Graphic file (type bmp)
 <include-files/fig/LSRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3057--3058
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3096--3097
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 123.56422pt on input line 3062.
+LaTeX Warning: Float too large for page by 123.56422pt on input line 3101.
 
 [62] [63] [64]
-Overfull \hbox (141.49449pt too wide) in paragraph at lines 3186--3201
+Overfull \hbox (141.49449pt too wide) in paragraph at lines 3225--3240
  [][] 
  []
 
@@ -1190,25 +1190,25 @@ Overfull \hbox (141.49449pt too wide) in paragraph at lines 3186--3201
 File: include-files/fig/STSRS.png Graphic file (type bmp)
 <include-files/fig/STSRS.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3283--3284
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3322--3323
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3288.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3327.
 
 [66] [67] [68]
-Overfull \hbox (110.51048pt too wide) in paragraph at lines 3430--3459
+Overfull \hbox (110.51048pt too wide) in paragraph at lines 3469--3498
  [][] 
  []
 
 
-Overfull \hbox (186.6305pt too wide) in paragraph at lines 3473--3502
+Overfull \hbox (186.6305pt too wide) in paragraph at lines 3512--3541
  [][] 
  []
 
 [69]
-Overfull \hbox (38.81749pt too wide) in paragraph at lines 3518--3547
+Overfull \hbox (38.81749pt too wide) in paragraph at lines 3557--3586
  [][] 
  []
 
@@ -1216,37 +1216,37 @@ Overfull \hbox (38.81749pt too wide) in paragraph at lines 3518--3547
 File: include-files/fig/SRS1SC.png Graphic file (type bmp)
 <include-files/fig/SRS1SC.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3595--3596
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3634--3635
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3600.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3639.
 
 [71] [72] [73]
 File: include-files/fig/SRS2SC.png Graphic file (type bmp)
 <include-files/fig/SRS2SC.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 3753--3754
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 3792--3793
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 112.00423pt on input line 3758.
+LaTeX Warning: Float too large for page by 112.00423pt on input line 3797.
 
 [74] [75] [76]
-Overfull \hbox (69.68945pt too wide) in paragraph at lines 3918--3943
+Overfull \hbox (69.68945pt too wide) in paragraph at lines 3957--3982
  [][] 
  []
 
 [77] [78]
-Overfull \hbox (7.5945pt too wide) in paragraph at lines 4054--4054
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4093--4093
 []\TU/lmtt/m/n/10 ## i Use `summarise(.by = c(Region, Territorial_Authority))` 
 for per-operation[] 
  []
 
 
-Overfull \hbox (238.56145pt too wide) in paragraph at lines 4058--4083
+Overfull \hbox (238.56145pt too wide) in paragraph at lines 4097--4122
  [][] 
  []
 
@@ -1255,24 +1255,24 @@ Overfull \hbox (238.56145pt too wide) in paragraph at lines 4058--4083
 ]
 Chapter 6.
 [81]
-Overfull \hbox (7.5945pt too wide) in paragraph at lines 4204--4204
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4243--4243
 []\TU/lmtt/m/n/10 ## Warning in svydesign.default(id = ~1, data = schools.censu
 s): No weights or[] 
  []
 
 [82]
-Overfull \hbox (148.53445pt too wide) in paragraph at lines 4254--4269
+Overfull \hbox (148.53445pt too wide) in paragraph at lines 4293--4308
  [][] 
  []
 
 
-Overfull \hbox (7.5945pt too wide) in paragraph at lines 4337--4337
+Overfull \hbox (7.5945pt too wide) in paragraph at lines 4376--4376
 []\TU/lmtt/m/n/10 ## Warning in svydesign.default(id = ~1, data = schools.srswo
 r): No weights or[] 
  []
 
 [83]
-Overfull \hbox (125.45447pt too wide) in paragraph at lines 4358--4383
+Overfull \hbox (125.45447pt too wide) in paragraph at lines 4397--4422
  [][] 
  []
 
@@ -1316,7 +1316,7 @@ File: _main_files/figure-latex/unnamed-chunk-184-1.pdf Graphic file (type pdf)
 File: _main_files/figure-latex/unnamed-chunk-193-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-193-1.pdf>
 [111]
-Overfull \hbox (54.8445pt too wide) in paragraph at lines 5847--5847
+Overfull \hbox (54.8445pt too wide) in paragraph at lines 5886--5886
 []\TU/lmtt/m/n/10 ## Ratio estimator: svyratio.survey.design2(~GDP, ~Population
 , design = gdp.sample.des)[] 
  []
@@ -1324,7 +1324,7 @@ Overfull \hbox (54.8445pt too wide) in paragraph at lines 5847--5847
 [112]
 Chapter 8.
 
-Overfull \hbox (127.68446pt too wide) in paragraph at lines 5922--5947
+Overfull \hbox (127.68446pt too wide) in paragraph at lines 5961--5986
  [][] 
  []
 
@@ -1341,67 +1341,67 @@ File: _main_files/figure-latex/unnamed-chunk-235-1.pdf Graphic file (type pdf)
 File: include-files/fig/SamplingFromPopulation.png Graphic file (type bmp)
 <include-files/fig/SamplingFromPopulation.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 6806--6807
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 6845--6846
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 123.44423pt on input line 6811.
+LaTeX Warning: Float too large for page by 123.44423pt on input line 6850.
 
 File: include-files/fig/PseudoSampling.png Graphic file (type bmp)
 <include-files/fig/PseudoSampling.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 6820--6821
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 6859--6860
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 147.56422pt on input line 6825.
+LaTeX Warning: Float too large for page by 147.56422pt on input line 6864.
 
 [123] [124] [125]
-Overfull \hbox (23.3445pt too wide) in paragraph at lines 6895--6895
+Overfull \hbox (23.3445pt too wide) in paragraph at lines 6934--6934
 []\TU/lmtt/m/n/10 ## Warning in as.svrepdesign.default(api2sc.des, type = "JK1"
 ): Finite population[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ##          [,1]     [,2]     [,3]     [,4]     [,5]     [,6]
      [,7]     [,8][] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6918--6918
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
  1.025641 1.025641[] 
  []
 
 [126] [127]
-Overfull \hbox (244.96445pt too wide) in paragraph at lines 7058--7083
+Overfull \hbox (244.96445pt too wide) in paragraph at lines 7097--7122
  [][] 
  []
 
@@ -1430,12 +1430,12 @@ File: _main_files/figure-latex/bmidistribution-mean-1.pdf Graphic file (type pd
 f)
 <use _main_files/figure-latex/bmidistribution-mean-1.pdf>
 
-Overfull \hbox (176.25305pt too wide) in paragraph at lines 7561--7562
+Overfull \hbox (176.25305pt too wide) in paragraph at lines 7600--7601
  [][] 
  []
 
 
-Overfull \vbox (0.18431pt too high) detected at line 7589
+Overfull \vbox (0.18431pt too high) detected at line 7628
  []
 
 [136] [137]
@@ -1445,7 +1445,7 @@ File: _main_files/figure-latex/bmidistribution-sample-1.pdf Graphic file (type
 pdf)
 <use _main_files/figure-latex/bmidistribution-sample-1.pdf>
 
-Overfull \hbox (176.25305pt too wide) in paragraph at lines 7606--7607
+Overfull \hbox (176.25305pt too wide) in paragraph at lines 7645--7646
  [][] 
  []
 
@@ -1453,7 +1453,7 @@ Overfull \hbox (176.25305pt too wide) in paragraph at lines 7606--7607
 File: _main_files/figure-latex/bmi-comparison-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/bmi-comparison-1.pdf>
 
-Overfull \hbox (176.25305pt too wide) in paragraph at lines 7659--7660
+Overfull \hbox (176.25305pt too wide) in paragraph at lines 7698--7699
  [][] 
  []
 
@@ -1464,7 +1464,7 @@ Underfull \vbox (badness 7814) has occurred while \output is active []
 File: _main_files/figure-latex/income-hours-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/income-hours-1.pdf>
 
-Overfull \hbox (140.1182pt too wide) in paragraph at lines 7681--7682
+Overfull \hbox (140.1182pt too wide) in paragraph at lines 7720--7721
  [][] 
  []
 
@@ -1472,7 +1472,7 @@ File: _main_files/figure-latex/income-hours-impute-1.pdf Graphic file (type pdf
 )
 <use _main_files/figure-latex/income-hours-impute-1.pdf>
 
-Overfull \hbox (140.1182pt too wide) in paragraph at lines 7712--7713
+Overfull \hbox (140.1182pt too wide) in paragraph at lines 7751--7752
  [][] 
  []
 
@@ -1486,10 +1486,10 @@ Chapter 10.
 
 ]) [149] (_main.aux) ) 
 Here is how much of TeX's memory you used:
- 25085 strings out of 411463
- 457380 string characters out of 5818008
+ 25086 strings out of 411463
+ 457392 string characters out of 5818008
  1873290 words of memory out of 5000000
- 44937 multiletter control sequences out of 15000+600000
+ 44938 multiletter control sequences out of 15000+600000
  518916 words of font info for 95 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,13n,121p,1004b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s

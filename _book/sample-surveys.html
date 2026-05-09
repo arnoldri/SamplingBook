@@ -201,7 +201,8 @@ div.csl-indent {
 <li class="chapter" data-level="3.4" data-path="sample-surveys.html"><a href="sample-surveys.html#example-datasets"><i class="fa fa-check"></i><b>3.4</b> Example datasets</a>
 <ul>
 <li class="chapter" data-level="3.4.1" data-path="sample-surveys.html"><a href="sample-surveys.html#api"><i class="fa fa-check"></i><b>3.4.1</b> API</a></li>
-<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.2</b> From the dplyr package</a></li>
+<li class="chapter" data-level="3.4.2" data-path="sample-surveys.html"><a href="sample-surveys.html#nz-schools"><i class="fa fa-check"></i><b>3.4.2</b> NZ Schools</a></li>
+<li class="chapter" data-level="3.4.3" data-path="sample-surveys.html"><a href="sample-surveys.html#from-the-dplyr-package"><i class="fa fa-check"></i><b>3.4.3</b> From the dplyr package</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="statistical-inference.html"><a href="statistical-inference.html"><i class="fa fa-check"></i><b>4</b> Statistical Inference</a>
@@ -560,6 +561,14 @@ decide whether to be selected: they see an advertisement on a webpage or phone
 in with their views. Only profiles motivated population members - the silent
 majority are never measured.</li>
 </ul>
+<p><em>Note</em>: a <strong>screening sample</strong> is used when we are wanting to sample a population
+for which there is no suitable frame, but where all members of the target population
+are to be found on a larger frame, however they cannot be identified on the frame.
+For example there is no frame which can identify people who go fishing regularly.<br />
+The only solution is to sample from a whole-of-population frame, and then ask eligibility
+questions to determine whether the person selected is a member of the target population.
+Data is only collected from actual members of the target population. Screening may be
+done as part of a probability sample from the larger frame.</p>
 </div>
 <div id="example-datasets" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Example datasets<a href="sample-surveys.html#example-datasets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -582,8 +591,25 @@ majority are never measured.</li>
 <li><code>api.stu</code> - Number of students tested in the API</li>
 </ul>
 </div>
-<div id="from-the-dplyr-package" class="section level3 hasAnchor" number="3.4.2">
-<h3><span class="header-section-number">3.4.2</span> From the dplyr package<a href="sample-surveys.html#from-the-dplyr-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="nz-schools" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> NZ Schools<a href="sample-surveys.html#nz-schools" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A list of NZ schools from the Education Counts website (<a href="https://www.educationcounts.govt.nz/directories/list-of-nz-schools" class="uri">https://www.educationcounts.govt.nz/directories/list-of-nz-schools</a>)</p>
+<p>The dataset includes</p>
+<ul>
+<li><code>School_Id</code> - an identification number</li>
+<li><code>Org_Name</code> - the name of the school</li>
+<li>Contact details (<code>Telephone</code>, <code>Fax</code>, <code>Email</code>, <code>Contact</code> email address, postal address)</li>
+<li><code>Org_type</code> - type of school (primary/secondary etc)</li>
+<li><code>Total</code> - number of enrolled students</li>
+<li><code>Europenan</code>, Māori<code>,</code>Pacific<code>,</code>Asian<code>,</code>MLAA<code>,</code>Other` - counts of students by ethnicity</li>
+<li><code>International</code> - numbers of international students</li>
+<li><code>Urban_Rural_indicator</code> - categorised population density of the area around the school</li>
+<li><code>Territorial_Aithority</code>, <code>Regional_Council</code>, <code>Education_Region</code> - administrative regions</li>
+<li><code>Latitude</code>, <code>Longitude</code> - location</li>
+</ul>
+</div>
+<div id="from-the-dplyr-package" class="section level3 hasAnchor" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> From the dplyr package<a href="sample-surveys.html#from-the-dplyr-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li><code>starwars</code> - a list of characteristics of 87 characters from the Star Wars
 movie series;</li>

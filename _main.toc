@@ -22,7 +22,8 @@
 \contentsline {section}{\numberline {3.3}Approaches to sampling}{40}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Example datasets}{40}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}API}{40}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}From the dplyr package}{41}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.2}NZ Schools}{41}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}From the dplyr package}{41}{subsection.3.4.3}%
 \contentsline {chapter}{\numberline {4}Statistical Inference}{43}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Inference in infinite populations}{43}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Inference in finite populations}{47}{section.4.2}%

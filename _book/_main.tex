@@ -1824,6 +1824,15 @@ them used they all have significant defects.
   majority are never measured.
 \end{itemize}
 
+\emph{Note}: a \textbf{screening sample} is used when we are wanting to sample a population
+for which there is no suitable frame, but where all members of the target population
+are to be found on a larger frame, however they cannot be identified on the frame.
+For example there is no frame which can identify people who go fishing regularly.\\
+The only solution is to sample from a whole-of-population frame, and then ask eligibility
+questions to determine whether the person selected is a member of the target population.
+Data is only collected from actual members of the target population. Screening may be
+done as part of a probability sample from the larger frame.
+
 \section{Example datasets}\label{example-datasets}
 
 We'll use and re-use a number of standard datasets.
@@ -1858,6 +1867,36 @@ This is a dataset on Student performance in California schools. The dataset is d
   \texttt{enroll} - Number of students enrolled
 \item
   \texttt{api.stu} - Number of students tested in the API
+\end{itemize}
+
+\subsection{NZ Schools}\label{nz-schools}
+
+A list of NZ schools from the Education Counts website (\url{https://www.educationcounts.govt.nz/directories/list-of-nz-schools})
+
+The dataset includes
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{School\_Id} - an identification number
+\item
+  \texttt{Org\_Name} - the name of the school
+\item
+  Contact details (\texttt{Telephone}, \texttt{Fax}, \texttt{Email}, \texttt{Contact} email address, postal address)
+\item
+  \texttt{Org\_type} - type of school (primary/secondary etc)
+\item
+  \texttt{Total} - number of enrolled students
+\item
+  \texttt{Europenan}, Māori\texttt{,}Pacific\texttt{,}Asian\texttt{,}MLAA\texttt{,}Other` - counts of students by ethnicity
+\item
+  \texttt{International} - numbers of international students
+\item
+  \texttt{Urban\_Rural\_indicator} - categorised population density of the area around the school
+\item
+  \texttt{Territorial\_Aithority}, \texttt{Regional\_Council}, \texttt{Education\_Region} - administrative regions
+\item
+  \texttt{Latitude}, \texttt{Longitude} - location
 \end{itemize}
 
 \subsection{From the dplyr package}\label{from-the-dplyr-package}
