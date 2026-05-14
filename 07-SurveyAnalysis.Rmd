@@ -364,6 +364,7 @@ bp <- barplot(ss, xlab="School Type", ylab="Estimated Size",
               ylim=c(0,max(ci)))
 arrows(bp, ci[,1], bp, ci[,2], angle=90, length=0.2, code=3)
 ```
+
 ```{r tabci.asymmetric}
 names(ss) <- levels(apiclus2$stype)
 cbind(as.numeric(ss),ci) |>
@@ -379,7 +380,7 @@ more correctly represents our uncertainty.  The estimates for "Elementary"
 and "Middle" are essentially unchanged.
 
 For **crosstabulations** we can use `svytable()`, which gives weighted
-counts in categories - e.g. of whether School Wide growth targest had been met
+counts in categories - e.g. of whether School Wide growth targets had been met
 ```{r}
 svytable(~stype+sch.wide, design=apiclus2.des)
 ```

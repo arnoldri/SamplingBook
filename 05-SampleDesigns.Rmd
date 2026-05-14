@@ -166,7 +166,7 @@ If $n$ is tiny compared to $N$, $p_i$ is approximately $n/N$ which is the SRSWOR
 probability.  In practice we assign a weight of $N/n$ to each unit as it is selected, so if unit
 $i$ is selected $m_i$ times then it ends up with a weight of 
 \[
-   w_i = m\frac{N}{n}
+   w_i = m_i\frac{N}{n}
 \]   
 If we use the approximate weights calculated in this way we have what is known as the 
 Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator.  However we think of 
@@ -237,8 +237,10 @@ of the $n$ draws from the population is
 Approximating the probability of selection $\pi$ after $n$ draws as $np_i$
 leads to the sample weights
 \[
-   w_i = \frac{1}{np_i}
+   w_i = \frac{m_i}{np_i}
 \]
+where again $m_i$ is the number of times unit $i$ is selected. 
+
 In a PPSWR sample these weights are not guaranteed to add up to the population size.
 
 ### Design considerations {-}

@@ -77,7 +77,6 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -161,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-05-09}
+\date{2026-05-14}
 
 \begin{document}
 \maketitle
@@ -258,6 +257,13 @@
 ## The following objects are masked from 'package:survival':
 ## 
 ##     cluster, strata
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 methods overwritten by 'broom':
+##   method            from  
+##   tidy.glht         jtools
+##   tidy.summary.glht jtools
 \end{verbatim}
 
 \begin{verbatim}
@@ -2838,7 +2844,7 @@ If \(n\) is tiny compared to \(N\), \(p_i\) is approximately \(n/N\) which is th
 probability. In practice we assign a weight of \(N/n\) to each unit as it is selected, so if unit
 \(i\) is selected \(m_i\) times then it ends up with a weight of
 \[
-   w_i = m\frac{N}{n}
+   w_i = m_i\frac{N}{n}
 \]\\
 If we use the approximate weights calculated in this way we have what is known as the
 Hansen-Hurwitz estimator, rather than the Horwitz-Thompson estimator. However we think of
@@ -2934,8 +2940,10 @@ of the \(n\) draws from the population is
 Approximating the probability of selection \(\pi\) after \(n\) draws as \(np_i\)
 leads to the sample weights
 \[
-   w_i = \frac{1}{np_i}
+   w_i = \frac{m_i}{np_i}
 \]
+where again \(m_i\) is the number of times unit \(i\) is selected.
+
 In a PPSWR sample these weights are not guaranteed to add up to the population size.
 
 \subsection*{Design considerations}\label{design-considerations-3}
@@ -5546,7 +5554,7 @@ more correctly represents our uncertainty. The estimates for ``Elementary''
 and ``Middle'' are essentially unchanged.
 
 For \textbf{crosstabulations} we can use \texttt{svytable()}, which gives weighted
-counts in categories - e.g.~of whether School Wide growth targest had been met
+counts in categories - e.g.~of whether School Wide growth targets had been met
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5947,7 +5955,9 @@ At the end of a survey we may find ourselves in the undesirable situation that
   We may have had \textbf{unit nonresponse} - i.e.~there may be selected units from
   which we have collected no data. In the case of human subjects this may have
   been from a failure to contact the selected person, or the refusal of the
-  person to answer our questions.
+  person to answer our questions. (We may have also had \textbf{item nonresponse},
+  where some items on a questionnaire weren't answered: we'll deal with that
+  in the next Chapter.)
 \end{itemize}
 
 In both cases we are in the situation that our sample, even when weighted, is
@@ -5993,7 +6003,7 @@ the New Zealand population between the ages of 15 and 45.
 The total population in this age range is \(N=\ensuremath{1.972719\times 10^{6}}\), the sample size is \(n=200\),
 and so the weight of each sampled individual is
 \[
-   w = \frac{N}{n} = {\ensuremath{1.972719\times 10^{6}}}{200} = 9863.6
+   w = \frac{N}{n} = \frac{\ensuremath{1.972719\times 10^{6}}}{200} = 9863.6
 \]
 Let's specify this simple random sampling design to R:
 
@@ -6030,7 +6040,7 @@ We should note that the mean income differs considerably between males and femal
 ## female female 438.5047 26.16272
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-204-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-204-1.pdf}}
 
 Let's also note the distribution of the population by age and sex, as measured
 by the most recent census:
@@ -6167,7 +6177,8 @@ female & 988628\\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{surf.des.ps }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(surf.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }\AttributeTok{population=}\NormalTok{Gender.benchmarks)}
+\NormalTok{surf.des.ps }\OtherTok{\textless{}{-}} \FunctionTok{postStratify}\NormalTok{(surf.des, }\AttributeTok{strata=}\SpecialCharTok{\textasciitilde{}}\NormalTok{Gender, }
+                            \AttributeTok{population=}\NormalTok{Gender.benchmarks)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7383,7 +7394,7 @@ SURF data, which is a mixture of numeric and categorical variables
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-264-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-264-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -7456,7 +7467,7 @@ Here's the missingness pattern in the NHANES dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/_main_files/figure-latex/unnamed-chunk-267-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-267-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9 Imputation | STAT395: Sampling</title>
   <meta name="description" content="Sampling notes." />
-  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 Imputation | STAT395: Sampling" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-05-09" />
+<meta name="date" content="2026-05-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -131,6 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -354,10 +355,10 @@ on which variables, and most importantly <strong>how</strong> the imputation was
 <p>Let’s take as an example the SURF income survey synthetic dataset of 200 individuals
 aged 15-45 from the NZ population. The top 10 rows are:</p>
 <p>Let’s remove some data: delete 10 entries at random from each of marital status and income.</p>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="imputation.html#cb354-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
-<span id="cb354-2"><a href="imputation.html#cb354-2" tabindex="-1"></a>msurf <span class="ot">&lt;-</span> surf</span>
-<span id="cb354-3"><a href="imputation.html#cb354-3" tabindex="-1"></a>msurf<span class="sc">$</span>Marital[<span class="fu">sample</span>(<span class="fu">nrow</span>(surf),<span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb354-4"><a href="imputation.html#cb354-4" tabindex="-1"></a>msurf<span class="sc">$</span>Income[<span class="fu">sample</span>(<span class="fu">nrow</span>(surf),<span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="imputation.html#cb355-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb355-2"><a href="imputation.html#cb355-2" tabindex="-1"></a>msurf <span class="ot">&lt;-</span> surf</span>
+<span id="cb355-3"><a href="imputation.html#cb355-3" tabindex="-1"></a>msurf<span class="sc">$</span>Marital[<span class="fu">sample</span>(<span class="fu">nrow</span>(surf),<span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb355-4"><a href="imputation.html#cb355-4" tabindex="-1"></a>msurf<span class="sc">$</span>Income[<span class="fu">sample</span>(<span class="fu">nrow</span>(surf),<span class="dv">10</span>)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
 Here are the counts of the various responses to the <code>Marital</code> variable after
 removing 10 values.
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -414,14 +415,14 @@ NA
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="imputation.html#cb355-1" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
-<span id="cb355-2"><a href="imputation.html#cb355-2" tabindex="-1"></a><span class="fu">library</span>(lattice)</span></code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="imputation.html#cb356-1" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb356-2"><a href="imputation.html#cb356-2" tabindex="-1"></a><span class="fu">library</span>(lattice)</span></code></pre></div>
 <p>The R package <code>mice</code> provides for multiple imputation methods, and provides some
 demonstration datasets and some visualisation tools. However it’s a bit tricky to use,
 so we’ll use a simpler function <code>impute()</code>.</p>
 <p>The <code>mice</code> package can draw a nice picture of the pattern of missingness in the
 SURF data, which is a mixture of numeric and categorical variables</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="imputation.html#cb356-1" tabindex="-1"></a><span class="fu">summary</span>(msurf)</span></code></pre></div>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="imputation.html#cb357-1" tabindex="-1"></a><span class="fu">summary</span>(msurf)</span></code></pre></div>
 <pre><code>##     Personid         Gender          Qualification           Age       
 ##  Min.   :  1.00   Length:200         Length:200         Min.   :15.00  
 ##  1st Qu.: 50.75   Class :character   Class :character   1st Qu.:22.75  
@@ -438,8 +439,8 @@ SURF data, which is a mixture of numeric and categorical variables</p>
 ##  3rd Qu.:45.00   3rd Qu.: 819.8                                        
 ##  Max.   :70.00   Max.   :1789.0                                        
 ##                  NA&#39;s   :10</code></pre>
-<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="imputation.html#cb358-1" tabindex="-1"></a><span class="fu">md.pattern</span>(msurf)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-264-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="imputation.html#cb359-1" tabindex="-1"></a><span class="fu">md.pattern</span>(msurf)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-264-1.png" width="672" /></p>
 <pre><code>##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
 ## 181        1      1             1   1     1         1      1       1  0
 ## 9          1      1             1   1     1         1      1       0  1
@@ -451,12 +452,12 @@ extract of 25 rows from the US National Health and Nutrition Examination Survey
 (NHANES). Note all variables are stored numeric, though the <code>age</code> and <code>hyp</code> column
 are actually categorical.</p>
 <p>We’ll create a copy of the dataset, call it <code>mnhanes</code> and recode the factor levels.</p>
-<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="imputation.html#cb360-1" tabindex="-1"></a>mnhanes <span class="ot">&lt;-</span> mice<span class="sc">::</span>nhanes</span>
-<span id="cb360-2"><a href="imputation.html#cb360-2" tabindex="-1"></a>mnhanes<span class="sc">$</span>age <span class="ot">&lt;-</span> <span class="fu">factor</span>(mnhanes<span class="sc">$</span>age)</span>
-<span id="cb360-3"><a href="imputation.html#cb360-3" tabindex="-1"></a>mnhanes<span class="sc">$</span>hyp <span class="ot">&lt;-</span> <span class="fu">factor</span>(mnhanes<span class="sc">$</span>hyp)</span>
-<span id="cb360-4"><a href="imputation.html#cb360-4" tabindex="-1"></a><span class="fu">levels</span>(mnhanes<span class="sc">$</span>age) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;20-39&quot;</span>,<span class="st">&quot;40-59&quot;</span>,<span class="st">&quot;60+&quot;</span>)</span>
-<span id="cb360-5"><a href="imputation.html#cb360-5" tabindex="-1"></a><span class="fu">levels</span>(mnhanes<span class="sc">$</span>hyp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;No&quot;</span>,<span class="st">&quot;Yes&quot;</span>)</span>
-<span id="cb360-6"><a href="imputation.html#cb360-6" tabindex="-1"></a>mnhanes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id=</span><span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(mnhanes)),mnhanes)</span></code></pre></div>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="imputation.html#cb361-1" tabindex="-1"></a>mnhanes <span class="ot">&lt;-</span> mice<span class="sc">::</span>nhanes</span>
+<span id="cb361-2"><a href="imputation.html#cb361-2" tabindex="-1"></a>mnhanes<span class="sc">$</span>age <span class="ot">&lt;-</span> <span class="fu">factor</span>(mnhanes<span class="sc">$</span>age)</span>
+<span id="cb361-3"><a href="imputation.html#cb361-3" tabindex="-1"></a>mnhanes<span class="sc">$</span>hyp <span class="ot">&lt;-</span> <span class="fu">factor</span>(mnhanes<span class="sc">$</span>hyp)</span>
+<span id="cb361-4"><a href="imputation.html#cb361-4" tabindex="-1"></a><span class="fu">levels</span>(mnhanes<span class="sc">$</span>age) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;20-39&quot;</span>,<span class="st">&quot;40-59&quot;</span>,<span class="st">&quot;60+&quot;</span>)</span>
+<span id="cb361-5"><a href="imputation.html#cb361-5" tabindex="-1"></a><span class="fu">levels</span>(mnhanes<span class="sc">$</span>hyp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;No&quot;</span>,<span class="st">&quot;Yes&quot;</span>)</span>
+<span id="cb361-6"><a href="imputation.html#cb361-6" tabindex="-1"></a>mnhanes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id=</span><span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(mnhanes)),mnhanes)</span></code></pre></div>
 Here are the first 10 rows of the data, which include a lot of missing
 data for the variables <code>bmi</code> (body mass index, kg/m<span class="math inline">\(^2\)</span>), <code>hyp</code> (presence of hypertension, 1=no, 2=yes)
 and <code>chl</code> (total serum cholesterol level, mg/dL).
@@ -656,8 +657,8 @@ NA
 <p>Item non-response is indicated by an <code>NA</code> value. Notice that units 1, 4 and 10
 provided no data at all apart from their ages.</p>
 <p>Here’s the missingness pattern in the NHANES dataset.</p>
-<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="imputation.html#cb361-1" tabindex="-1"></a><span class="fu">md.pattern</span>(mnhanes)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-267-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="imputation.html#cb362-1" tabindex="-1"></a><span class="fu">md.pattern</span>(mnhanes)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
 <pre><code>##    id age hyp bmi chl   
 ## 13  1   1   1   1   1  0
 ## 3   1   1   1   1   0  1
@@ -674,9 +675,9 @@ mean or the median. (We prefer the median of course if there are outliers.)
 For categorical variables the mode is the only <code>typical</code> value we have.</p>
 <p>Let’s replace the missing values of <code>bmi</code> in the <code>NHANES</code>mnhanes` dataset with the
 mean of the responding values:</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="imputation.html#cb363-1" tabindex="-1"></a>mnhanes1 <span class="ot">&lt;-</span> mnhanes</span>
-<span id="cb363-2"><a href="imputation.html#cb363-2" tabindex="-1"></a>mnhanes1<span class="sc">$</span>bmi.imp <span class="ot">&lt;-</span> <span class="fu">is.na</span>(mnhanes1<span class="sc">$</span>bmi)</span>
-<span id="cb363-3"><a href="imputation.html#cb363-3" tabindex="-1"></a>mnhanes1<span class="sc">$</span>bmi[<span class="fu">is.na</span>(mnhanes1<span class="sc">$</span>bmi)] <span class="ot">&lt;-</span> <span class="fu">mean</span>(mnhanes1<span class="sc">$</span>bmi, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="imputation.html#cb364-1" tabindex="-1"></a>mnhanes1 <span class="ot">&lt;-</span> mnhanes</span>
+<span id="cb364-2"><a href="imputation.html#cb364-2" tabindex="-1"></a>mnhanes1<span class="sc">$</span>bmi.imp <span class="ot">&lt;-</span> <span class="fu">is.na</span>(mnhanes1<span class="sc">$</span>bmi)</span>
+<span id="cb364-3"><a href="imputation.html#cb364-3" tabindex="-1"></a>mnhanes1<span class="sc">$</span>bmi[<span class="fu">is.na</span>(mnhanes1<span class="sc">$</span>bmi)] <span class="ot">&lt;-</span> <span class="fu">mean</span>(mnhanes1<span class="sc">$</span>bmi, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The code above does two things: in a new copy of the data set <code>mnhanes1</code>
 it creates a new column <code>bmi.imp</code> which is <code>TRUE</code> if the <code>bmi</code> value is missing.<br />
 It then replaces <code>NA</code> values in the <code>bmi</code> column with the mean value
@@ -910,12 +911,12 @@ TRUE
 </table>
 <p>The function <code>impute()</code> does the same thing: we just specify the variable name
 and the method (mean, median or mode).</p>
-<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="imputation.html#cb364-1" tabindex="-1"></a>mhnanes1 <span class="ot">&lt;-</span> <span class="fu">impute</span>(mnhanes, <span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="imputation.html#cb365-1" tabindex="-1"></a>mhnanes1 <span class="ot">&lt;-</span> <span class="fu">impute</span>(mnhanes, <span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>)</span></code></pre></div>
 <p>We can impute the categorical <code>hyp</code> variable using mode imputation
 and the numerical <code>chl</code> variable using median imputation</p>
-<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="imputation.html#cb365-1" tabindex="-1"></a>mnhanes1 <span class="ot">&lt;-</span> mnhanes1 <span class="sc">|&gt;</span></span>
-<span id="cb365-2"><a href="imputation.html#cb365-2" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;mode&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb365-3"><a href="imputation.html#cb365-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;median&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="imputation.html#cb366-1" tabindex="-1"></a>mnhanes1 <span class="ot">&lt;-</span> mnhanes1 <span class="sc">|&gt;</span></span>
+<span id="cb366-2"><a href="imputation.html#cb366-2" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;mode&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb366-3"><a href="imputation.html#cb366-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;median&quot;</span>) </span></code></pre></div>
 This leads to the fully imputed dataset (first 10 rows only):
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -1240,11 +1241,11 @@ or mode is the choose another respondent at random, and copy over their
 data. These respondents are referred to as ‘donors’, who ‘donate’ a copy of their
 data to the respondent with missing data.</p>
 <p>The <code>impute()</code> function does this, by specifying the method “sample”:</p>
-<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="imputation.html#cb366-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
-<span id="cb366-2"><a href="imputation.html#cb366-2" tabindex="-1"></a>mnhanes2 <span class="ot">&lt;-</span> mnhanes <span class="sc">|&gt;</span> </span>
-<span id="cb366-3"><a href="imputation.html#cb366-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb366-4"><a href="imputation.html#cb366-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb366-5"><a href="imputation.html#cb366-5" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="imputation.html#cb367-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb367-2"><a href="imputation.html#cb367-2" tabindex="-1"></a>mnhanes2 <span class="ot">&lt;-</span> mnhanes <span class="sc">|&gt;</span> </span>
+<span id="cb367-3"><a href="imputation.html#cb367-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb367-4"><a href="imputation.html#cb367-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb367-5"><a href="imputation.html#cb367-5" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>)</span></code></pre></div>
 <p>The improved effect of doing so can be seen in Figures <a href="imputation.html#fig:hypbarplot-sample">9.3</a>
 (where tbe before and after proportions of people with hypertension are 4/17=24% and 5/20=20%)
 and <a href="imputation.html#fig:bmidistribution-sample">9.4</a>.</p>
@@ -1286,11 +1287,11 @@ then it is unlikely that there will be anyone in the same cell as the respondent
 So with a variable like age we use age groups to define the cells, rather than year of age.</p>
 <p>Let’s do cell mean imputation for BMI, cell hot deck for hypertension, and cell median for cholesterol,
 all with cells defined by age group.</p>
-<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="imputation.html#cb367-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
-<span id="cb367-2"><a href="imputation.html#cb367-2" tabindex="-1"></a>mnhanes3 <span class="ot">&lt;-</span> mnhanes <span class="sc">|&gt;</span></span>
-<span id="cb367-3"><a href="imputation.html#cb367-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) <span class="sc">|&gt;</span></span>
-<span id="cb367-4"><a href="imputation.html#cb367-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) <span class="sc">|&gt;</span></span>
-<span id="cb367-5"><a href="imputation.html#cb367-5" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;median&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) </span></code></pre></div>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="imputation.html#cb368-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb368-2"><a href="imputation.html#cb368-2" tabindex="-1"></a>mnhanes3 <span class="ot">&lt;-</span> mnhanes <span class="sc">|&gt;</span></span>
+<span id="cb368-3"><a href="imputation.html#cb368-3" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;bmi&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) <span class="sc">|&gt;</span></span>
+<span id="cb368-4"><a href="imputation.html#cb368-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;hyp&quot;</span>, <span class="at">method=</span><span class="st">&quot;sample&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) <span class="sc">|&gt;</span></span>
+<span id="cb368-5"><a href="imputation.html#cb368-5" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;chl&quot;</span>, <span class="at">method=</span><span class="st">&quot;median&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>age) </span></code></pre></div>
 We can compare BMI values by age group in our original and three imputed datasets
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:bmi-comparison"></span>
 <img src="_main_files/figure-html/bmi-comparison-1.png" alt="BMI distribution by age group after various imputation methods" width="768" />
@@ -1323,12 +1324,12 @@ and regression imputation. Our regression model will be
                      + \varepsilon_i
                      \qquad \text{where $\varepsilon_i\overset{\text{iid}}{\sim} N(0,\sigma^2)$}
 \]</span></p>
-<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="imputation.html#cb368-1" tabindex="-1"></a>msurf1 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
-<span id="cb368-2"><a href="imputation.html#cb368-2" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>) </span>
-<span id="cb368-3"><a href="imputation.html#cb368-3" tabindex="-1"></a>msurf2 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
-<span id="cb368-4"><a href="imputation.html#cb368-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;lm.mean&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>Hours<span class="sc">+</span>Gender) </span>
-<span id="cb368-5"><a href="imputation.html#cb368-5" tabindex="-1"></a>msurf3 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
-<span id="cb368-6"><a href="imputation.html#cb368-6" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;lm.sim&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>Hours<span class="sc">+</span>Gender) </span></code></pre></div>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="imputation.html#cb369-1" tabindex="-1"></a>msurf1 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
+<span id="cb369-2"><a href="imputation.html#cb369-2" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;mean&quot;</span>) </span>
+<span id="cb369-3"><a href="imputation.html#cb369-3" tabindex="-1"></a>msurf2 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
+<span id="cb369-4"><a href="imputation.html#cb369-4" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;lm.mean&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>Hours<span class="sc">+</span>Gender) </span>
+<span id="cb369-5"><a href="imputation.html#cb369-5" tabindex="-1"></a>msurf3 <span class="ot">&lt;-</span> msurf <span class="sc">|&gt;</span></span>
+<span id="cb369-6"><a href="imputation.html#cb369-6" tabindex="-1"></a>  <span class="fu">impute</span>(<span class="at">varname=</span><span class="st">&quot;Income&quot;</span>, <span class="at">method=</span><span class="st">&quot;lm.sim&quot;</span>, <span class="at">formula=</span><span class="sc">~</span>Hours<span class="sc">+</span>Gender) </span></code></pre></div>
 <p>The results of the three imputation methods are shown in Figure <a href="imputation.html#fig:income-hours-impute">9.7</a>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:income-hours-impute"></span>
 <img src="_main_files/figure-html/income-hours-impute-1.png" alt="Weekly Income and Weekly Hours worked by Gender.  The solid line shows the relationship for Males and the dashed line for Females.  The green points are cell mean imputations, the blue points are regression mean imputations and the red points are regression simulation imputations." width="720" />
@@ -1402,42 +1403,42 @@ you’ll see multiple imputation methods from time to time.</p>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-  "sharing": {
-    "github": false,
-    "facebook": true,
-    "twitter": true,
-    "linkedin": false,
-    "weibo": false,
-    "instapaper": false,
-    "vk": false,
-    "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-  },
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": null,
-    "text": null
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": null,
-    "text": null
-  },
-  "download": ["_main.pdf", "_main.epub"],
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "subsection"
-  }
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
 });
 });
 </script>

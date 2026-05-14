@@ -17,7 +17,9 @@ At the end of a survey we may find ourselves in the undesirable situation that
  * We may have had **unit nonresponse** - i.e. there may be selected units from
    which we have collected no data.  In the case of human subjects this may have
    been from a failure to contact the selected person, or the refusal of the 
-   person to answer our questions.
+   person to answer our questions.  (We may have also had **item nonresponse**, 
+   where some items on a questionnaire weren't answered: we'll deal with that
+   in the next Chapter.)
    
 In both cases we are in the situation that our sample, even when weighted, is
 not a good representation of the population from which it is drawn.  
@@ -79,7 +81,7 @@ the New Zealand population between the ages of 15 and 45.
 The total population in this age range is $N=`r total`$, the sample size is $n=`r n`$, 
 and so the weight of each sampled individual is 
 \[
-   w = \frac{N}{n} = {`r bigN`}{`r n`} = `r sprintf("%.1f",bigN/n)`
+   w = \frac{N}{n} = \frac{`r bigN`}{`r n`} = `r sprintf("%.1f",bigN/n)`
 \]
 Let's specify this simple random sampling design to R:
 ```{r}
@@ -194,7 +196,8 @@ Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
 ```{r}
-surf.des.ps <- postStratify(surf.des, strata=~Gender, population=Gender.benchmarks)
+surf.des.ps <- postStratify(surf.des, strata=~Gender, 
+                            population=Gender.benchmarks)
 ```
 
 The orignal estimate of the proportions of males and females
