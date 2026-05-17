@@ -1,4 +1,20 @@
 ##############################################################
+# R packages
+
+library(haven)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(kableExtra)
+library(survey)
+library(srvyr)
+library(sampling)
+library(jtools)
+library(mice)
+library(lattice)
+library(scales)
+
+##############################################################
 # Useful functions
 
 is.unique <- function(x) {
@@ -33,7 +49,7 @@ select.srswor <- function(df, n) {
     stop("Cannot have a SRSWOR with n>N")
   }
   return(samp)
-} 
+}
 
 select.srswr <- function(df, n) {
   # SRSWR
@@ -49,7 +65,7 @@ select.srswr <- function(df, n) {
     ungroup() |>
     select(-rownames)
   return(samp)
-} 
+}
 
 select.ppswr <- function(df, n, sizevar) {
   # PPSWR
@@ -79,9 +95,9 @@ select.lsrs <- function(df, n) {
   return(samp)
 }
 
-select.stsrs <- function(df, n, stratumvar, 
+select.stsrs <- function(df, n, stratumvar,
                          allocation="equal",
-                         nmin=2, # minimum number of units to select per stratum 
+                         nmin=2, # minimum number of units to select per stratum
                          method="SRSWOR", sizevar=NULL) {
   # Stratified SRS
   bigN <- nrow(df)
@@ -99,12 +115,12 @@ select.stsrs <- function(df, n, stratumvar,
     stop("Invalid allocation")
   }
   df <- merge(df,stratumproperties,by=stratumvar)
-  
+
   if(method=="SRSWOR") {
-    samp <- do.call(rbind, by(df, df[,stratumvar], 
+    samp <- do.call(rbind, by(df, df[,stratumvar],
                               function(dfx) select.srswor(dfx,first(dfx$nh))))
   } else if(method=="PPSWR") {
-    samp <- do.call(rbind, by(df, df[,stratumvar], 
+    samp <- do.call(rbind, by(df, df[,stratumvar],
                               function(dfx) select.ppswr(dfx,first(dfx$nh),sizevar=sizevar)))
   } else {
     stop("Sampling method invalid")
@@ -112,7 +128,7 @@ select.stsrs <- function(df, n, stratumvar,
   return(samp)
 }
 
-select.1sc <- function(df, n, clustervar, 
+select.1sc <- function(df, n, clustervar,
                        method="SRSWOR", sizevar=NULL) {
   # One stage cluster design with SRSWOR or PPSWR
   bigM <- nrow(df)
@@ -122,7 +138,7 @@ select.1sc <- function(df, n, clustervar,
   clusterproperties <- as.data.frame(table(df[,clustervar]))
   names(clusterproperties) <- c(clustervar,"Mi")
   if(method=="SRSWOR") {
-    sampcluster <- clusterproperties |> 
+    sampcluster <- clusterproperties |>
       select.srswor(n=n)
   } else if(method=="PPSWR") {
     sampcluster <- clusterproperties |>
@@ -131,12 +147,12 @@ select.1sc <- function(df, n, clustervar,
     stop("Sampling method invalid")
   }
   samp <- merge(df,sampcluster,by=clustervar)
-  
+
   return(samp)
 }
 
 select.2sc <- function(df, n, # number of first stage clusters to select
-                       cfraction, clustervar, 
+                       cfraction=NULL, mselect=NULL, clustervar,
                        mmin=2, # minimum number of 2nd stage clusters to select
                        method1="SRSWOR", sizevar1=NULL,
                        method2="SRSWOR", sizevar2=NULL) {
@@ -145,11 +161,17 @@ select.2sc <- function(df, n, # number of first stage clusters to select
   if(!clustervar%in%names(df)) {
     stop("Cluster ID variable is not present in the data frame")
   }
+  if(is.null(cfraction) && is.null(mselect)) {
+    stop("Must specify one of cfraction or mselect")
+  }
+  if(!is.null(cfraction) && !is.null(mselect)) {
+    stop("Must specify only one of cfraction or mselect")
+  }
   clusterproperties <- as.data.frame(table(df[,clustervar]))
   bigN <- nrow(clusterproperties)
   names(clusterproperties) <- c(clustervar,"Mi")
   if(method1=="SRSWOR") {
-    sampcluster <- clusterproperties |> 
+    sampcluster <- clusterproperties |>
       select.srswor(n=n)
   } else if(method1=="PPSWR") {
     sampcluster <- clusterproperties |>
@@ -157,19 +179,25 @@ select.2sc <- function(df, n, # number of first stage clusters to select
   } else {
     stop("First stage sampling method invalid")
   }
-  sampcluster$mi <- pmin(sampcluster$Mi,pmax(mmin,round(cfraction*sampcluster$Mi)))
+  if(!is.null(cfraction)) {
+    sampcluster$mi <- pmin(sampcluster$Mi,pmax(mmin,round(cfraction*sampcluster$Mi)))
+  }
+  if(!is.null(mselect)) {
+    select <- max(mselect,mmin)
+    sampcluster$mi <- pmin(sampcluster$Mi,mselect)
+  }
   samp1 <- merge(df,sampcluster,by=clustervar)
   samp1 <- samp1 |> rename(bigN1=bigN,weight1=weight)
   samp1$n1 <- n
-  
+
   # Second stage selection
   if(method2=="SRSWOR") {
-    samp2 <- do.call(rbind, 
+    samp2 <- do.call(rbind,
                      by(samp1, samp1[,clustervar],
                         function(ds) select.srswor(ds,n=first(ds$mi))
                      ))
   } else if(method2=="PPSWR") {
-    samp2 <- do.call(rbind, 
+    samp2 <- do.call(rbind,
                      by(samp2, samp2[,clustervar],
                         function(ds) select.ppswr(ds,n=first(ds$mi),sizevar=sizevar2)
                      ))
@@ -179,27 +207,30 @@ select.2sc <- function(df, n, # number of first stage clusters to select
   samp2 <- samp2 |> rename(bigN2=bigN,weight2=weight)
   samp2$n2 <- samp2$mi
   samp2$weight <- samp2$weight1*samp2$weight2
-  
+
   return(samp2)
 }
 
-select.st2sc <- function(df, 
+select.st2sc <- function(df,
                          n,      # total number of 1st stage clusters to select over all strata
                          stratumvar, allocation="equal",
                          nmin=2, # minimum number of 1st stage clusters to select per stratum
-                         cfraction, clustervar, 
+                         cfraction=NULL, mselect=NULL, clustervar,
                          mmin=2, # minimum number of 2nd stage clusters to select
                          method1="SRSWOR", sizevar1=NULL,
                          method2="SRSWOR", sizevar2=NULL) {
   # Stratified two stage cluster design with SRSWOR or PPSWR at each stage
+
+  # Proportional allocation across the strata is proportionality with respect to 
+  # the number of PSUs (not SSUs)
   
-  # stratum selection  
+  # stratum selection
   bigN <- nrow(df)
   if(!stratumvar%in%names(df)) {
     stop("Stratum variable is not present in the data frame")
   }
   if(!clustervar%in%names(df)) {
-    stop("Clustring variable is not present in the data frame")
+    stop("Clustering variable is not present in the data frame")
   }
   xx <- tapply(df[,clustervar], df[,stratumvar], function(x) length(unique(x)))
   stratumproperties <- data.frame(Var1=names(xx),Freq=xx)
@@ -215,13 +246,13 @@ select.st2sc <- function(df,
     stop("Invalid allocation")
   }
   df <- merge(df,stratumproperties,by=stratumvar)
-  
-  samp <- do.call(rbind, by(df, df[,stratumvar], 
+
+  samp <- do.call(rbind, by(df, df[,stratumvar],
                             function(dfx) {
-                              select.2sc(dfx, n=first(dfx$nh), 
-                                         cfraction=cfraction, 
-                                         clustervar=clustervar, 
-                                         mmin=mmin, 
+                              select.2sc(dfx, n=first(dfx$nh),
+                                         cfraction=cfraction, mselect=mselect,
+                                         clustervar=clustervar,
+                                         mmin=mmin,
                                          method1=method1, sizevar1=sizevar1,
                                          method2=method2, sizevar2=sizevar2)
                             }))
@@ -232,9 +263,9 @@ select.st2sc <- function(df,
 # Impute variable varname in data frame df
 # Methods are
 # sample: hot deck imputation
-#   if a formula is supplied then this creates cells 
+#   if a formula is supplied then this creates cells
 # mean, median, mode: mean, median or mode imputation
-#   if a formula is supplied then this creates cells 
+#   if a formula is supplied then this creates cells
 # lm.mean: linear regression imputation
 #   a formula *must* be supplied: should be the RHS of the regression model
 #   formula.  Imputes the mean value predicted by the model
@@ -242,21 +273,21 @@ select.st2sc <- function(df,
 #   a formula *must* be supplied: should be the RHS of the regression model
 #   formula.  Imputes the mean value predicted by the model with added error
 
-impute <- function(df, varname, 
+impute <- function(df, varname,
                    method=NULL,
-                   formula=NULL, 
+                   formula=NULL,
                    impute.suffix=".imp",
                    seed=NULL) {
   if(is.null(seed)) set.seed(seed)
   missing <- is.na(df[,varname])
   df[,paste0(varname,impute.suffix)] <- missing
-  
+
   if(method=="sample") {
     # Hot Deck imputation - method is the same for any type of variable
     if(is.null(formula)) {
       # overall
       df[missing,varname] <- sample(df[!missing,varname],sum(missing),replace=TRUE)
-      
+
     } else if(!is.null(formula)) {
       # in cells defined by the formula
       mmat <- model.matrix(formula, data=df)
@@ -280,25 +311,25 @@ impute <- function(df, varname,
       # not recognised
       stop("Method not recognised")
     }
-    
+
   } else if(is.numeric(df[,varname])) {
     # Methods for numeric variables
-    
+
     if(method=="median") {
       # overall median imputation
       df[missing,varname] <- median(df[!missing,varname])
-      
+
     } else if(method=="mean") {
       # overall mean imputation
       df[missing,varname] <- mean(df[!missing,varname])
-      
+
     } else if(method=="lm.mean" && !is.null(formula)) {
       # linear model mean imputation with cells defined by the formula
       formula <- as.formula(paste0(varname,
                                    paste0(as.character(formula),collapse=" ")))
       lm1 <- lm(formula, data=df[!missing,])
       df[missing,varname] <- predict(lm1,newdata=df[missing,])
-      
+
     } else if(method=="lm.sim" && !is.null(formula)) {
       # linear model imputation with cells defined by the formula with added error
       formula <- as.formula(paste0(varname,
@@ -306,19 +337,19 @@ impute <- function(df, varname,
       lm1 <- lm(formula, data=df[!missing,])
       err <- rnorm(sum(missing),0,sigma(lm1))
       df[missing,varname] <- predict(lm1,newdata=df[missing,]) + err
-      
+
     } else {
       # not recognised
       stop("Method not recognised")
     }
   } else if(is.character(df[,varname]) || is.factor(df[,varname])) {
     # Methods for categorical variables
-    
+
     if(method=="mode") {
       if(is.null(formula)) {
         # overall mode imputation
         df[missing,varname] <- modevalue(df[!missing,varname])
-        
+
       } else {
         # mode imputation in cells defined by the formula
         mmat <- model.matrix(formula, data=df)
@@ -339,7 +370,7 @@ impute <- function(df, varname,
         df$.tmp.rownames <- NULL
         df$.tmp.cellnames <- NULL
       }
-      
+
     } else {
       # not recognised
       stop("Method not recognised")

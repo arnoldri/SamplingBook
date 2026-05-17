@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-05-14}
+\date{2026-05-18}
 
 \begin{document}
 \maketitle
@@ -3904,43 +3904,56 @@ A function to do this selection in R is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{select}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n,  }\CommentTok{\# number of first stage clusters to select }
-\NormalTok{                       cfraction, clustervar, }
+\NormalTok{select}\FloatTok{.2}\NormalTok{sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, n, }\CommentTok{\# number of first stage clusters to select}
+                       \AttributeTok{cfraction=}\ConstantTok{NULL}\NormalTok{, }\AttributeTok{mselect=}\ConstantTok{NULL}\NormalTok{, clustervar,}
                        \AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 2nd stage clusters to select}
                        \AttributeTok{method1=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar1=}\ConstantTok{NULL}\NormalTok{,}
                        \AttributeTok{method2=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar2=}\ConstantTok{NULL}\NormalTok{) \{}
+  \CommentTok{\# Two stage cluster design with SRSWOR or PPSWR at each stage}
 \NormalTok{  bigM }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
   \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"Cluster ID variable is not present in the data frame"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.null}\NormalTok{(cfraction) }\SpecialCharTok{\&\&} \FunctionTok{is.null}\NormalTok{(mselect)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Must specify one of cfraction or mselect"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(cfraction) }\SpecialCharTok{\&\&} \SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(mselect)) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Must specify only one of cfraction or mselect"}\NormalTok{)}
 \NormalTok{  \}}
 \NormalTok{  clusterproperties }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(df[,clustervar]))}
 \NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(clusterproperties)}
   \FunctionTok{names}\NormalTok{(clusterproperties) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(clustervar,}\StringTok{"Mi"}\NormalTok{)}
   \ControlFlowTok{if}\NormalTok{(method1}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
-\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}} 
-                       \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\NormalTok{n)}
+\NormalTok{    sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{select.srswor}\NormalTok{(}\AttributeTok{n=}\NormalTok{n)}
 \NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method1}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
-\NormalTok{     sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}}
-                       \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, }\AttributeTok{sizevar=}\StringTok{"Mi"}\NormalTok{)}
+\NormalTok{    sampcluster }\OtherTok{\textless{}{-}}\NormalTok{ clusterproperties }\SpecialCharTok{|\textgreater{}}
+      \FunctionTok{select.ppswr}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, }\AttributeTok{sizevar=}\StringTok{"Mi"}\NormalTok{)}
 \NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"First stage sampling method invalid"}\NormalTok{)}
 \NormalTok{  \}}
-\NormalTok{  sampcluster}\SpecialCharTok{$}\NormalTok{mi }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(sampcluster}\SpecialCharTok{$}\NormalTok{Mi,}\FunctionTok{pmax}\NormalTok{(mmin,}\FunctionTok{round}\NormalTok{(cfraction}\SpecialCharTok{*}\NormalTok{sampcluster}\SpecialCharTok{$}\NormalTok{Mi)))}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(cfraction)) \{}
+\NormalTok{    sampcluster}\SpecialCharTok{$}\NormalTok{mi }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(sampcluster}\SpecialCharTok{$}\NormalTok{Mi,}\FunctionTok{pmax}\NormalTok{(mmin,}\FunctionTok{round}\NormalTok{(cfraction}\SpecialCharTok{*}\NormalTok{sampcluster}\SpecialCharTok{$}\NormalTok{Mi)))}
+\NormalTok{  \}}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(mselect)) \{}
+\NormalTok{    select }\OtherTok{\textless{}{-}} \FunctionTok{max}\NormalTok{(mselect,mmin)}
+\NormalTok{    sampcluster}\SpecialCharTok{$}\NormalTok{mi }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(sampcluster}\SpecialCharTok{$}\NormalTok{Mi,mselect)}
+\NormalTok{  \}}
 \NormalTok{  samp1 }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,sampcluster,}\AttributeTok{by=}\NormalTok{clustervar)}
 \NormalTok{  samp1 }\OtherTok{\textless{}{-}}\NormalTok{ samp1 }\SpecialCharTok{|\textgreater{}} \FunctionTok{rename}\NormalTok{(}\AttributeTok{bigN1=}\NormalTok{bigN,}\AttributeTok{weight1=}\NormalTok{weight)}
 \NormalTok{  samp1}\SpecialCharTok{$}\NormalTok{n1 }\OtherTok{\textless{}{-}}\NormalTok{ n}
 
   \CommentTok{\# Second stage selection}
   \ControlFlowTok{if}\NormalTok{(method2}\SpecialCharTok{==}\StringTok{"SRSWOR"}\NormalTok{) \{}
-\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }
+\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind,}
                      \FunctionTok{by}\NormalTok{(samp1, samp1[,clustervar],}
                         \ControlFlowTok{function}\NormalTok{(ds) }\FunctionTok{select.srswor}\NormalTok{(ds,}\AttributeTok{n=}\FunctionTok{first}\NormalTok{(ds}\SpecialCharTok{$}\NormalTok{mi))}
-\NormalTok{                               ))}
+\NormalTok{                     ))}
 \NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(method2}\SpecialCharTok{==}\StringTok{"PPSWR"}\NormalTok{) \{}
-\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }
+\NormalTok{    samp2 }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind,}
                      \FunctionTok{by}\NormalTok{(samp2, samp2[,clustervar],}
                         \ControlFlowTok{function}\NormalTok{(ds) }\FunctionTok{select.ppswr}\NormalTok{(ds,}\AttributeTok{n=}\FunctionTok{first}\NormalTok{(ds}\SpecialCharTok{$}\NormalTok{mi),}\AttributeTok{sizevar=}\NormalTok{sizevar2)}
-\NormalTok{                               ))}
+\NormalTok{                     ))}
 \NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"Second stage sampling method invalid"}\NormalTok{)}
 \NormalTok{  \}}
@@ -4036,22 +4049,26 @@ Function to draw a stratified two stage cluster sample
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{select.st2sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, }
+\NormalTok{select.st2sc }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df,}
 \NormalTok{                         n,      }\CommentTok{\# total number of 1st stage clusters to select over all strata}
 \NormalTok{                         stratumvar, }\AttributeTok{allocation=}\StringTok{"equal"}\NormalTok{,}
                          \AttributeTok{nmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 1st stage clusters to select per stratum}
-\NormalTok{                         cfraction, clustervar, }
+                         \AttributeTok{cfraction=}\ConstantTok{NULL}\NormalTok{, }\AttributeTok{mselect=}\ConstantTok{NULL}\NormalTok{, clustervar,}
                          \AttributeTok{mmin=}\DecValTok{2}\NormalTok{, }\CommentTok{\# minimum number of 2nd stage clusters to select}
                          \AttributeTok{method1=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar1=}\ConstantTok{NULL}\NormalTok{,}
                          \AttributeTok{method2=}\StringTok{"SRSWOR"}\NormalTok{, }\AttributeTok{sizevar2=}\ConstantTok{NULL}\NormalTok{) \{}
+  \CommentTok{\# Stratified two stage cluster design with SRSWOR or PPSWR at each stage}
 
-  \CommentTok{\# stratum selection  }
+  \CommentTok{\# Proportional allocation across the strata is proportionality with respect to }
+  \CommentTok{\# the number of PSUs (not SSUs)}
+  
+  \CommentTok{\# stratum selection}
 \NormalTok{  bigN }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(df)}
   \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{stratumvar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"Stratum variable is not present in the data frame"}\NormalTok{)}
 \NormalTok{  \}}
   \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{clustervar}\SpecialCharTok{\%in\%}\FunctionTok{names}\NormalTok{(df)) \{}
-    \FunctionTok{stop}\NormalTok{(}\StringTok{"Clustring variable is not present in the data frame"}\NormalTok{)}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Clustering variable is not present in the data frame"}\NormalTok{)}
 \NormalTok{  \}}
 \NormalTok{  xx }\OtherTok{\textless{}{-}} \FunctionTok{tapply}\NormalTok{(df[,clustervar], df[,stratumvar], }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{length}\NormalTok{(}\FunctionTok{unique}\NormalTok{(x)))}
 \NormalTok{  stratumproperties }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Var1=}\FunctionTok{names}\NormalTok{(xx),}\AttributeTok{Freq=}\NormalTok{xx)}
@@ -4059,23 +4076,23 @@ Function to draw a stratified two stage cluster sample
   \FunctionTok{rownames}\NormalTok{(stratumproperties) }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
   \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"equal"}\NormalTok{) \{}
 \NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,}
-                                 \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))))}
+                                                           \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(stratumproperties))))}
 \NormalTok{  \} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(allocation}\SpecialCharTok{==}\StringTok{"proportional"}\NormalTok{) \{}
 \NormalTok{    stratumproperties}\SpecialCharTok{$}\NormalTok{nh }\OtherTok{\textless{}{-}} \FunctionTok{pmin}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh,}\FunctionTok{pmax}\NormalTok{(nmin,}
-                                 \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))))}
+                                                           \FunctionTok{round}\NormalTok{(n}\SpecialCharTok{*}\NormalTok{stratumproperties}\SpecialCharTok{$}\NormalTok{Nh}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(stratumproperties}\SpecialCharTok{$}\NormalTok{Nh))))}
 \NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
     \FunctionTok{stop}\NormalTok{(}\StringTok{"Invalid allocation"}\NormalTok{)}
 \NormalTok{  \}}
 \NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(df,stratumproperties,}\AttributeTok{by=}\NormalTok{stratumvar)}
-  
-\NormalTok{  samp }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }\FunctionTok{by}\NormalTok{(df, df[,stratumvar], }
+
+\NormalTok{  samp }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rbind, }\FunctionTok{by}\NormalTok{(df, df[,stratumvar],}
                             \ControlFlowTok{function}\NormalTok{(dfx) \{}
-                               \FunctionTok{select.2sc}\NormalTok{(dfx, }\AttributeTok{n=}\FunctionTok{first}\NormalTok{(dfx}\SpecialCharTok{$}\NormalTok{nh), }
-                                          \AttributeTok{cfraction=}\NormalTok{cfraction, }
-                                          \AttributeTok{clustervar=}\NormalTok{clustervar, }
-                                          \AttributeTok{mmin=}\NormalTok{mmin, }
-                                          \AttributeTok{method1=}\NormalTok{method1, }\AttributeTok{sizevar1=}\NormalTok{sizevar1,}
-                                          \AttributeTok{method2=}\NormalTok{method2, }\AttributeTok{sizevar2=}\NormalTok{sizevar2)}
+                              \FunctionTok{select.2sc}\NormalTok{(dfx, }\AttributeTok{n=}\FunctionTok{first}\NormalTok{(dfx}\SpecialCharTok{$}\NormalTok{nh),}
+                                         \AttributeTok{cfraction=}\NormalTok{cfraction, }\AttributeTok{mselect=}\NormalTok{mselect,}
+                                         \AttributeTok{clustervar=}\NormalTok{clustervar,}
+                                         \AttributeTok{mmin=}\NormalTok{mmin,}
+                                         \AttributeTok{method1=}\NormalTok{method1, }\AttributeTok{sizevar1=}\NormalTok{sizevar1,}
+                                         \AttributeTok{method2=}\NormalTok{method2, }\AttributeTok{sizevar2=}\NormalTok{sizevar2)}
 \NormalTok{                            \}))}
   \FunctionTok{return}\NormalTok{(samp)}
 \NormalTok{\}}

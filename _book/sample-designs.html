@@ -23,7 +23,7 @@
 <meta name="author" content="Richard Arnold et al." />
 
 
-<meta name="date" content="2026-05-14" />
+<meta name="date" content="2026-05-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -3219,52 +3219,65 @@ e.g. we might select 1 in 10 of the SSUs.</li>
 select 20% of the schools in each selected TA - although we’ll also ensure
 we have at least 2 schools in each selected cluster.</p>
 <p>A function to do this selection in R is:</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="sample-designs.html#cb153-1" tabindex="-1"></a>select<span class="fl">.2</span>sc <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n,  <span class="co"># number of first stage clusters to select </span></span>
-<span id="cb153-2"><a href="sample-designs.html#cb153-2" tabindex="-1"></a>                       cfraction, clustervar, </span>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="sample-designs.html#cb153-1" tabindex="-1"></a>select<span class="fl">.2</span>sc <span class="ot">&lt;-</span> <span class="cf">function</span>(df, n, <span class="co"># number of first stage clusters to select</span></span>
+<span id="cb153-2"><a href="sample-designs.html#cb153-2" tabindex="-1"></a>                       <span class="at">cfraction=</span><span class="cn">NULL</span>, <span class="at">mselect=</span><span class="cn">NULL</span>, clustervar,</span>
 <span id="cb153-3"><a href="sample-designs.html#cb153-3" tabindex="-1"></a>                       <span class="at">mmin=</span><span class="dv">2</span>, <span class="co"># minimum number of 2nd stage clusters to select</span></span>
 <span id="cb153-4"><a href="sample-designs.html#cb153-4" tabindex="-1"></a>                       <span class="at">method1=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar1=</span><span class="cn">NULL</span>,</span>
 <span id="cb153-5"><a href="sample-designs.html#cb153-5" tabindex="-1"></a>                       <span class="at">method2=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar2=</span><span class="cn">NULL</span>) {</span>
-<span id="cb153-6"><a href="sample-designs.html#cb153-6" tabindex="-1"></a>  bigM <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
-<span id="cb153-7"><a href="sample-designs.html#cb153-7" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
-<span id="cb153-8"><a href="sample-designs.html#cb153-8" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Cluster ID variable is not present in the data frame&quot;</span>)</span>
-<span id="cb153-9"><a href="sample-designs.html#cb153-9" tabindex="-1"></a>  }</span>
-<span id="cb153-10"><a href="sample-designs.html#cb153-10" tabindex="-1"></a>  clusterproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,clustervar]))</span>
-<span id="cb153-11"><a href="sample-designs.html#cb153-11" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(clusterproperties)</span>
-<span id="cb153-12"><a href="sample-designs.html#cb153-12" tabindex="-1"></a>  <span class="fu">names</span>(clusterproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(clustervar,<span class="st">&quot;Mi&quot;</span>)</span>
-<span id="cb153-13"><a href="sample-designs.html#cb153-13" tabindex="-1"></a>  <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
-<span id="cb153-14"><a href="sample-designs.html#cb153-14" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span> </span>
-<span id="cb153-15"><a href="sample-designs.html#cb153-15" tabindex="-1"></a>                       <span class="fu">select.srswor</span>(<span class="at">n=</span>n)</span>
-<span id="cb153-16"><a href="sample-designs.html#cb153-16" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
-<span id="cb153-17"><a href="sample-designs.html#cb153-17" tabindex="-1"></a>     sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span></span>
-<span id="cb153-18"><a href="sample-designs.html#cb153-18" tabindex="-1"></a>                       <span class="fu">select.ppswr</span>(<span class="at">n=</span>n, <span class="at">sizevar=</span><span class="st">&quot;Mi&quot;</span>)</span>
-<span id="cb153-19"><a href="sample-designs.html#cb153-19" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb153-20"><a href="sample-designs.html#cb153-20" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;First stage sampling method invalid&quot;</span>)</span>
-<span id="cb153-21"><a href="sample-designs.html#cb153-21" tabindex="-1"></a>  }</span>
-<span id="cb153-22"><a href="sample-designs.html#cb153-22" tabindex="-1"></a>  sampcluster<span class="sc">$</span>mi <span class="ot">&lt;-</span> <span class="fu">pmin</span>(sampcluster<span class="sc">$</span>Mi,<span class="fu">pmax</span>(mmin,<span class="fu">round</span>(cfraction<span class="sc">*</span>sampcluster<span class="sc">$</span>Mi)))</span>
-<span id="cb153-23"><a href="sample-designs.html#cb153-23" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,sampcluster,<span class="at">by=</span>clustervar)</span>
-<span id="cb153-24"><a href="sample-designs.html#cb153-24" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> samp1 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN1=</span>bigN,<span class="at">weight1=</span>weight)</span>
-<span id="cb153-25"><a href="sample-designs.html#cb153-25" tabindex="-1"></a>  samp1<span class="sc">$</span>n1 <span class="ot">&lt;-</span> n</span>
-<span id="cb153-26"><a href="sample-designs.html#cb153-26" tabindex="-1"></a></span>
-<span id="cb153-27"><a href="sample-designs.html#cb153-27" tabindex="-1"></a>  <span class="co"># Second stage selection</span></span>
-<span id="cb153-28"><a href="sample-designs.html#cb153-28" tabindex="-1"></a>  <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
-<span id="cb153-29"><a href="sample-designs.html#cb153-29" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
-<span id="cb153-30"><a href="sample-designs.html#cb153-30" tabindex="-1"></a>                     <span class="fu">by</span>(samp1, samp1[,clustervar],</span>
-<span id="cb153-31"><a href="sample-designs.html#cb153-31" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.srswor</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi))</span>
-<span id="cb153-32"><a href="sample-designs.html#cb153-32" tabindex="-1"></a>                               ))</span>
-<span id="cb153-33"><a href="sample-designs.html#cb153-33" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
-<span id="cb153-34"><a href="sample-designs.html#cb153-34" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
-<span id="cb153-35"><a href="sample-designs.html#cb153-35" tabindex="-1"></a>                     <span class="fu">by</span>(samp2, samp2[,clustervar],</span>
-<span id="cb153-36"><a href="sample-designs.html#cb153-36" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.ppswr</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi),<span class="at">sizevar=</span>sizevar2)</span>
-<span id="cb153-37"><a href="sample-designs.html#cb153-37" tabindex="-1"></a>                               ))</span>
-<span id="cb153-38"><a href="sample-designs.html#cb153-38" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb153-39"><a href="sample-designs.html#cb153-39" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Second stage sampling method invalid&quot;</span>)</span>
-<span id="cb153-40"><a href="sample-designs.html#cb153-40" tabindex="-1"></a>  }</span>
-<span id="cb153-41"><a href="sample-designs.html#cb153-41" tabindex="-1"></a>  samp2 <span class="ot">&lt;-</span> samp2 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN2=</span>bigN,<span class="at">weight2=</span>weight)</span>
-<span id="cb153-42"><a href="sample-designs.html#cb153-42" tabindex="-1"></a>  samp2<span class="sc">$</span>n2 <span class="ot">&lt;-</span> samp2<span class="sc">$</span>mi</span>
-<span id="cb153-43"><a href="sample-designs.html#cb153-43" tabindex="-1"></a>  samp2<span class="sc">$</span>weight <span class="ot">&lt;-</span> samp2<span class="sc">$</span>weight1<span class="sc">*</span>samp2<span class="sc">$</span>weight2</span>
-<span id="cb153-44"><a href="sample-designs.html#cb153-44" tabindex="-1"></a></span>
-<span id="cb153-45"><a href="sample-designs.html#cb153-45" tabindex="-1"></a>  <span class="fu">return</span>(samp2)</span>
-<span id="cb153-46"><a href="sample-designs.html#cb153-46" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb153-6"><a href="sample-designs.html#cb153-6" tabindex="-1"></a>  <span class="co"># Two stage cluster design with SRSWOR or PPSWR at each stage</span></span>
+<span id="cb153-7"><a href="sample-designs.html#cb153-7" tabindex="-1"></a>  bigM <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb153-8"><a href="sample-designs.html#cb153-8" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb153-9"><a href="sample-designs.html#cb153-9" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Cluster ID variable is not present in the data frame&quot;</span>)</span>
+<span id="cb153-10"><a href="sample-designs.html#cb153-10" tabindex="-1"></a>  }</span>
+<span id="cb153-11"><a href="sample-designs.html#cb153-11" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(cfraction) <span class="sc">&amp;&amp;</span> <span class="fu">is.null</span>(mselect)) {</span>
+<span id="cb153-12"><a href="sample-designs.html#cb153-12" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Must specify one of cfraction or mselect&quot;</span>)</span>
+<span id="cb153-13"><a href="sample-designs.html#cb153-13" tabindex="-1"></a>  }</span>
+<span id="cb153-14"><a href="sample-designs.html#cb153-14" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(cfraction) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(mselect)) {</span>
+<span id="cb153-15"><a href="sample-designs.html#cb153-15" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Must specify only one of cfraction or mselect&quot;</span>)</span>
+<span id="cb153-16"><a href="sample-designs.html#cb153-16" tabindex="-1"></a>  }</span>
+<span id="cb153-17"><a href="sample-designs.html#cb153-17" tabindex="-1"></a>  clusterproperties <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(df[,clustervar]))</span>
+<span id="cb153-18"><a href="sample-designs.html#cb153-18" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(clusterproperties)</span>
+<span id="cb153-19"><a href="sample-designs.html#cb153-19" tabindex="-1"></a>  <span class="fu">names</span>(clusterproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(clustervar,<span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb153-20"><a href="sample-designs.html#cb153-20" tabindex="-1"></a>  <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb153-21"><a href="sample-designs.html#cb153-21" tabindex="-1"></a>    sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span></span>
+<span id="cb153-22"><a href="sample-designs.html#cb153-22" tabindex="-1"></a>      <span class="fu">select.srswor</span>(<span class="at">n=</span>n)</span>
+<span id="cb153-23"><a href="sample-designs.html#cb153-23" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method1<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb153-24"><a href="sample-designs.html#cb153-24" tabindex="-1"></a>    sampcluster <span class="ot">&lt;-</span> clusterproperties <span class="sc">|&gt;</span></span>
+<span id="cb153-25"><a href="sample-designs.html#cb153-25" tabindex="-1"></a>      <span class="fu">select.ppswr</span>(<span class="at">n=</span>n, <span class="at">sizevar=</span><span class="st">&quot;Mi&quot;</span>)</span>
+<span id="cb153-26"><a href="sample-designs.html#cb153-26" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb153-27"><a href="sample-designs.html#cb153-27" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;First stage sampling method invalid&quot;</span>)</span>
+<span id="cb153-28"><a href="sample-designs.html#cb153-28" tabindex="-1"></a>  }</span>
+<span id="cb153-29"><a href="sample-designs.html#cb153-29" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(cfraction)) {</span>
+<span id="cb153-30"><a href="sample-designs.html#cb153-30" tabindex="-1"></a>    sampcluster<span class="sc">$</span>mi <span class="ot">&lt;-</span> <span class="fu">pmin</span>(sampcluster<span class="sc">$</span>Mi,<span class="fu">pmax</span>(mmin,<span class="fu">round</span>(cfraction<span class="sc">*</span>sampcluster<span class="sc">$</span>Mi)))</span>
+<span id="cb153-31"><a href="sample-designs.html#cb153-31" tabindex="-1"></a>  }</span>
+<span id="cb153-32"><a href="sample-designs.html#cb153-32" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(mselect)) {</span>
+<span id="cb153-33"><a href="sample-designs.html#cb153-33" tabindex="-1"></a>    select <span class="ot">&lt;-</span> <span class="fu">max</span>(mselect,mmin)</span>
+<span id="cb153-34"><a href="sample-designs.html#cb153-34" tabindex="-1"></a>    sampcluster<span class="sc">$</span>mi <span class="ot">&lt;-</span> <span class="fu">pmin</span>(sampcluster<span class="sc">$</span>Mi,mselect)</span>
+<span id="cb153-35"><a href="sample-designs.html#cb153-35" tabindex="-1"></a>  }</span>
+<span id="cb153-36"><a href="sample-designs.html#cb153-36" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,sampcluster,<span class="at">by=</span>clustervar)</span>
+<span id="cb153-37"><a href="sample-designs.html#cb153-37" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> samp1 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN1=</span>bigN,<span class="at">weight1=</span>weight)</span>
+<span id="cb153-38"><a href="sample-designs.html#cb153-38" tabindex="-1"></a>  samp1<span class="sc">$</span>n1 <span class="ot">&lt;-</span> n</span>
+<span id="cb153-39"><a href="sample-designs.html#cb153-39" tabindex="-1"></a></span>
+<span id="cb153-40"><a href="sample-designs.html#cb153-40" tabindex="-1"></a>  <span class="co"># Second stage selection</span></span>
+<span id="cb153-41"><a href="sample-designs.html#cb153-41" tabindex="-1"></a>  <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;SRSWOR&quot;</span>) {</span>
+<span id="cb153-42"><a href="sample-designs.html#cb153-42" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind,</span>
+<span id="cb153-43"><a href="sample-designs.html#cb153-43" tabindex="-1"></a>                     <span class="fu">by</span>(samp1, samp1[,clustervar],</span>
+<span id="cb153-44"><a href="sample-designs.html#cb153-44" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.srswor</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi))</span>
+<span id="cb153-45"><a href="sample-designs.html#cb153-45" tabindex="-1"></a>                     ))</span>
+<span id="cb153-46"><a href="sample-designs.html#cb153-46" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(method2<span class="sc">==</span><span class="st">&quot;PPSWR&quot;</span>) {</span>
+<span id="cb153-47"><a href="sample-designs.html#cb153-47" tabindex="-1"></a>    samp2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind,</span>
+<span id="cb153-48"><a href="sample-designs.html#cb153-48" tabindex="-1"></a>                     <span class="fu">by</span>(samp2, samp2[,clustervar],</span>
+<span id="cb153-49"><a href="sample-designs.html#cb153-49" tabindex="-1"></a>                        <span class="cf">function</span>(ds) <span class="fu">select.ppswr</span>(ds,<span class="at">n=</span><span class="fu">first</span>(ds<span class="sc">$</span>mi),<span class="at">sizevar=</span>sizevar2)</span>
+<span id="cb153-50"><a href="sample-designs.html#cb153-50" tabindex="-1"></a>                     ))</span>
+<span id="cb153-51"><a href="sample-designs.html#cb153-51" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb153-52"><a href="sample-designs.html#cb153-52" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Second stage sampling method invalid&quot;</span>)</span>
+<span id="cb153-53"><a href="sample-designs.html#cb153-53" tabindex="-1"></a>  }</span>
+<span id="cb153-54"><a href="sample-designs.html#cb153-54" tabindex="-1"></a>  samp2 <span class="ot">&lt;-</span> samp2 <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">bigN2=</span>bigN,<span class="at">weight2=</span>weight)</span>
+<span id="cb153-55"><a href="sample-designs.html#cb153-55" tabindex="-1"></a>  samp2<span class="sc">$</span>n2 <span class="ot">&lt;-</span> samp2<span class="sc">$</span>mi</span>
+<span id="cb153-56"><a href="sample-designs.html#cb153-56" tabindex="-1"></a>  samp2<span class="sc">$</span>weight <span class="ot">&lt;-</span> samp2<span class="sc">$</span>weight1<span class="sc">*</span>samp2<span class="sc">$</span>weight2</span>
+<span id="cb153-57"><a href="sample-designs.html#cb153-57" tabindex="-1"></a></span>
+<span id="cb153-58"><a href="sample-designs.html#cb153-58" tabindex="-1"></a>  <span class="fu">return</span>(samp2)</span>
+<span id="cb153-59"><a href="sample-designs.html#cb153-59" tabindex="-1"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sample-designs.html#cb154-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.2sc</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">mmin=</span><span class="dv">2</span>, </span>
 <span id="cb154-2"><a href="sample-designs.html#cb154-2" tabindex="-1"></a>                              <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -3628,49 +3641,53 @@ stratum <span class="math inline">\(h\)</span> are
 \]</span>
 i.e. these are just the product of the weights at each stage of selection.</p>
 <p>Function to draw a stratified two stage cluster sample</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sample-designs.html#cb155-1" tabindex="-1"></a>select.st2sc <span class="ot">&lt;-</span> <span class="cf">function</span>(df, </span>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sample-designs.html#cb155-1" tabindex="-1"></a>select.st2sc <span class="ot">&lt;-</span> <span class="cf">function</span>(df,</span>
 <span id="cb155-2"><a href="sample-designs.html#cb155-2" tabindex="-1"></a>                         n,      <span class="co"># total number of 1st stage clusters to select over all strata</span></span>
 <span id="cb155-3"><a href="sample-designs.html#cb155-3" tabindex="-1"></a>                         stratumvar, <span class="at">allocation=</span><span class="st">&quot;equal&quot;</span>,</span>
 <span id="cb155-4"><a href="sample-designs.html#cb155-4" tabindex="-1"></a>                         <span class="at">nmin=</span><span class="dv">2</span>, <span class="co"># minimum number of 1st stage clusters to select per stratum</span></span>
-<span id="cb155-5"><a href="sample-designs.html#cb155-5" tabindex="-1"></a>                         cfraction, clustervar, </span>
+<span id="cb155-5"><a href="sample-designs.html#cb155-5" tabindex="-1"></a>                         <span class="at">cfraction=</span><span class="cn">NULL</span>, <span class="at">mselect=</span><span class="cn">NULL</span>, clustervar,</span>
 <span id="cb155-6"><a href="sample-designs.html#cb155-6" tabindex="-1"></a>                         <span class="at">mmin=</span><span class="dv">2</span>, <span class="co"># minimum number of 2nd stage clusters to select</span></span>
 <span id="cb155-7"><a href="sample-designs.html#cb155-7" tabindex="-1"></a>                         <span class="at">method1=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar1=</span><span class="cn">NULL</span>,</span>
 <span id="cb155-8"><a href="sample-designs.html#cb155-8" tabindex="-1"></a>                         <span class="at">method2=</span><span class="st">&quot;SRSWOR&quot;</span>, <span class="at">sizevar2=</span><span class="cn">NULL</span>) {</span>
-<span id="cb155-9"><a href="sample-designs.html#cb155-9" tabindex="-1"></a></span>
-<span id="cb155-10"><a href="sample-designs.html#cb155-10" tabindex="-1"></a>  <span class="co"># stratum selection  </span></span>
-<span id="cb155-11"><a href="sample-designs.html#cb155-11" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
-<span id="cb155-12"><a href="sample-designs.html#cb155-12" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>stratumvar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
-<span id="cb155-13"><a href="sample-designs.html#cb155-13" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Stratum variable is not present in the data frame&quot;</span>)</span>
-<span id="cb155-14"><a href="sample-designs.html#cb155-14" tabindex="-1"></a>  }</span>
-<span id="cb155-15"><a href="sample-designs.html#cb155-15" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
-<span id="cb155-16"><a href="sample-designs.html#cb155-16" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Clustring variable is not present in the data frame&quot;</span>)</span>
-<span id="cb155-17"><a href="sample-designs.html#cb155-17" tabindex="-1"></a>  }</span>
-<span id="cb155-18"><a href="sample-designs.html#cb155-18" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> <span class="fu">tapply</span>(df[,clustervar], df[,stratumvar], <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)))</span>
-<span id="cb155-19"><a href="sample-designs.html#cb155-19" tabindex="-1"></a>  stratumproperties <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Var1=</span><span class="fu">names</span>(xx),<span class="at">Freq=</span>xx)</span>
-<span id="cb155-20"><a href="sample-designs.html#cb155-20" tabindex="-1"></a>  <span class="fu">names</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(stratumvar,<span class="st">&quot;Nh&quot;</span>)</span>
-<span id="cb155-21"><a href="sample-designs.html#cb155-21" tabindex="-1"></a>  <span class="fu">rownames</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb155-22"><a href="sample-designs.html#cb155-22" tabindex="-1"></a>  <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;equal&quot;</span>) {</span>
-<span id="cb155-23"><a href="sample-designs.html#cb155-23" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stratumproperties<span class="sc">$</span>Nh,<span class="fu">pmax</span>(nmin,</span>
-<span id="cb155-24"><a href="sample-designs.html#cb155-24" tabindex="-1"></a>                                 <span class="fu">round</span>(n<span class="sc">/</span><span class="fu">nrow</span>(stratumproperties))))</span>
-<span id="cb155-25"><a href="sample-designs.html#cb155-25" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;proportional&quot;</span>) {</span>
-<span id="cb155-26"><a href="sample-designs.html#cb155-26" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stratumproperties<span class="sc">$</span>Nh,<span class="fu">pmax</span>(nmin,</span>
-<span id="cb155-27"><a href="sample-designs.html#cb155-27" tabindex="-1"></a>                                 <span class="fu">round</span>(n<span class="sc">*</span>stratumproperties<span class="sc">$</span>Nh<span class="sc">/</span><span class="fu">sum</span>(stratumproperties<span class="sc">$</span>Nh))))</span>
-<span id="cb155-28"><a href="sample-designs.html#cb155-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb155-29"><a href="sample-designs.html#cb155-29" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Invalid allocation&quot;</span>)</span>
-<span id="cb155-30"><a href="sample-designs.html#cb155-30" tabindex="-1"></a>  }</span>
-<span id="cb155-31"><a href="sample-designs.html#cb155-31" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,stratumproperties,<span class="at">by=</span>stratumvar)</span>
-<span id="cb155-32"><a href="sample-designs.html#cb155-32" tabindex="-1"></a>  </span>
-<span id="cb155-33"><a href="sample-designs.html#cb155-33" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar], </span>
-<span id="cb155-34"><a href="sample-designs.html#cb155-34" tabindex="-1"></a>                            <span class="cf">function</span>(dfx) {</span>
-<span id="cb155-35"><a href="sample-designs.html#cb155-35" tabindex="-1"></a>                               <span class="fu">select.2sc</span>(dfx, <span class="at">n=</span><span class="fu">first</span>(dfx<span class="sc">$</span>nh), </span>
-<span id="cb155-36"><a href="sample-designs.html#cb155-36" tabindex="-1"></a>                                          <span class="at">cfraction=</span>cfraction, </span>
-<span id="cb155-37"><a href="sample-designs.html#cb155-37" tabindex="-1"></a>                                          <span class="at">clustervar=</span>clustervar, </span>
-<span id="cb155-38"><a href="sample-designs.html#cb155-38" tabindex="-1"></a>                                          <span class="at">mmin=</span>mmin, </span>
-<span id="cb155-39"><a href="sample-designs.html#cb155-39" tabindex="-1"></a>                                          <span class="at">method1=</span>method1, <span class="at">sizevar1=</span>sizevar1,</span>
-<span id="cb155-40"><a href="sample-designs.html#cb155-40" tabindex="-1"></a>                                          <span class="at">method2=</span>method2, <span class="at">sizevar2=</span>sizevar2)</span>
-<span id="cb155-41"><a href="sample-designs.html#cb155-41" tabindex="-1"></a>                            }))</span>
-<span id="cb155-42"><a href="sample-designs.html#cb155-42" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
-<span id="cb155-43"><a href="sample-designs.html#cb155-43" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb155-9"><a href="sample-designs.html#cb155-9" tabindex="-1"></a>  <span class="co"># Stratified two stage cluster design with SRSWOR or PPSWR at each stage</span></span>
+<span id="cb155-10"><a href="sample-designs.html#cb155-10" tabindex="-1"></a></span>
+<span id="cb155-11"><a href="sample-designs.html#cb155-11" tabindex="-1"></a>  <span class="co"># Proportional allocation across the strata is proportionality with respect to </span></span>
+<span id="cb155-12"><a href="sample-designs.html#cb155-12" tabindex="-1"></a>  <span class="co"># the number of PSUs (not SSUs)</span></span>
+<span id="cb155-13"><a href="sample-designs.html#cb155-13" tabindex="-1"></a>  </span>
+<span id="cb155-14"><a href="sample-designs.html#cb155-14" tabindex="-1"></a>  <span class="co"># stratum selection</span></span>
+<span id="cb155-15"><a href="sample-designs.html#cb155-15" tabindex="-1"></a>  bigN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb155-16"><a href="sample-designs.html#cb155-16" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>stratumvar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb155-17"><a href="sample-designs.html#cb155-17" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Stratum variable is not present in the data frame&quot;</span>)</span>
+<span id="cb155-18"><a href="sample-designs.html#cb155-18" tabindex="-1"></a>  }</span>
+<span id="cb155-19"><a href="sample-designs.html#cb155-19" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>clustervar<span class="sc">%in%</span><span class="fu">names</span>(df)) {</span>
+<span id="cb155-20"><a href="sample-designs.html#cb155-20" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Clustering variable is not present in the data frame&quot;</span>)</span>
+<span id="cb155-21"><a href="sample-designs.html#cb155-21" tabindex="-1"></a>  }</span>
+<span id="cb155-22"><a href="sample-designs.html#cb155-22" tabindex="-1"></a>  xx <span class="ot">&lt;-</span> <span class="fu">tapply</span>(df[,clustervar], df[,stratumvar], <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)))</span>
+<span id="cb155-23"><a href="sample-designs.html#cb155-23" tabindex="-1"></a>  stratumproperties <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Var1=</span><span class="fu">names</span>(xx),<span class="at">Freq=</span>xx)</span>
+<span id="cb155-24"><a href="sample-designs.html#cb155-24" tabindex="-1"></a>  <span class="fu">names</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="fu">c</span>(stratumvar,<span class="st">&quot;Nh&quot;</span>)</span>
+<span id="cb155-25"><a href="sample-designs.html#cb155-25" tabindex="-1"></a>  <span class="fu">rownames</span>(stratumproperties) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb155-26"><a href="sample-designs.html#cb155-26" tabindex="-1"></a>  <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;equal&quot;</span>) {</span>
+<span id="cb155-27"><a href="sample-designs.html#cb155-27" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stratumproperties<span class="sc">$</span>Nh,<span class="fu">pmax</span>(nmin,</span>
+<span id="cb155-28"><a href="sample-designs.html#cb155-28" tabindex="-1"></a>                                                           <span class="fu">round</span>(n<span class="sc">/</span><span class="fu">nrow</span>(stratumproperties))))</span>
+<span id="cb155-29"><a href="sample-designs.html#cb155-29" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(allocation<span class="sc">==</span><span class="st">&quot;proportional&quot;</span>) {</span>
+<span id="cb155-30"><a href="sample-designs.html#cb155-30" tabindex="-1"></a>    stratumproperties<span class="sc">$</span>nh <span class="ot">&lt;-</span> <span class="fu">pmin</span>(stratumproperties<span class="sc">$</span>Nh,<span class="fu">pmax</span>(nmin,</span>
+<span id="cb155-31"><a href="sample-designs.html#cb155-31" tabindex="-1"></a>                                                           <span class="fu">round</span>(n<span class="sc">*</span>stratumproperties<span class="sc">$</span>Nh<span class="sc">/</span><span class="fu">sum</span>(stratumproperties<span class="sc">$</span>Nh))))</span>
+<span id="cb155-32"><a href="sample-designs.html#cb155-32" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb155-33"><a href="sample-designs.html#cb155-33" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Invalid allocation&quot;</span>)</span>
+<span id="cb155-34"><a href="sample-designs.html#cb155-34" tabindex="-1"></a>  }</span>
+<span id="cb155-35"><a href="sample-designs.html#cb155-35" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df,stratumproperties,<span class="at">by=</span>stratumvar)</span>
+<span id="cb155-36"><a href="sample-designs.html#cb155-36" tabindex="-1"></a></span>
+<span id="cb155-37"><a href="sample-designs.html#cb155-37" tabindex="-1"></a>  samp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">by</span>(df, df[,stratumvar],</span>
+<span id="cb155-38"><a href="sample-designs.html#cb155-38" tabindex="-1"></a>                            <span class="cf">function</span>(dfx) {</span>
+<span id="cb155-39"><a href="sample-designs.html#cb155-39" tabindex="-1"></a>                              <span class="fu">select.2sc</span>(dfx, <span class="at">n=</span><span class="fu">first</span>(dfx<span class="sc">$</span>nh),</span>
+<span id="cb155-40"><a href="sample-designs.html#cb155-40" tabindex="-1"></a>                                         <span class="at">cfraction=</span>cfraction, <span class="at">mselect=</span>mselect,</span>
+<span id="cb155-41"><a href="sample-designs.html#cb155-41" tabindex="-1"></a>                                         <span class="at">clustervar=</span>clustervar,</span>
+<span id="cb155-42"><a href="sample-designs.html#cb155-42" tabindex="-1"></a>                                         <span class="at">mmin=</span>mmin,</span>
+<span id="cb155-43"><a href="sample-designs.html#cb155-43" tabindex="-1"></a>                                         <span class="at">method1=</span>method1, <span class="at">sizevar1=</span>sizevar1,</span>
+<span id="cb155-44"><a href="sample-designs.html#cb155-44" tabindex="-1"></a>                                         <span class="at">method2=</span>method2, <span class="at">sizevar2=</span>sizevar2)</span>
+<span id="cb155-45"><a href="sample-designs.html#cb155-45" tabindex="-1"></a>                            }))</span>
+<span id="cb155-46"><a href="sample-designs.html#cb155-46" tabindex="-1"></a>  <span class="fu">return</span>(samp)</span>
+<span id="cb155-47"><a href="sample-designs.html#cb155-47" tabindex="-1"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sample-designs.html#cb156-1" tabindex="-1"></a>samp <span class="ot">&lt;-</span> schools <span class="sc">|&gt;</span> <span class="fu">select.st2sc</span>(<span class="at">n=</span><span class="dv">30</span>, <span class="at">stratumvar=</span><span class="st">&quot;Region&quot;</span>, <span class="at">allocation=</span><span class="st">&quot;proportional&quot;</span>,</span>
 <span id="cb156-2"><a href="sample-designs.html#cb156-2" tabindex="-1"></a>                                <span class="at">cfraction=</span><span class="fl">0.20</span>, <span class="at">clustervar=</span><span class="st">&quot;Territorial_Authority&quot;</span>)</span></code></pre></div>
 <p>First 10 of the selected first stage clusters:</p>
