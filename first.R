@@ -24,7 +24,7 @@ is.unique <- function(x) {
 
 is.nested <- function(df, x, y) {
   # do all the levels of x nest within levels of y?
-  all(tapply(df[,y], df[,x], function(yvals) length(unique(yvals)))==1)
+  all(tapply(df[,y,drop=TRUE], df[,x], function(yvals) length(unique(yvals)))==1)
 }
 
 modevalue <- function(x) {
@@ -232,7 +232,7 @@ select.st2sc <- function(df,
   if(!clustervar%in%names(df)) {
     stop("Clustering variable is not present in the data frame")
   }
-  xx <- tapply(df[,clustervar], df[,stratumvar], function(x) length(unique(x)))
+  xx <- tapply(df[,clustervar,drop=TRUE], df[,stratumvar], function(x) length(unique(x)))
   stratumproperties <- data.frame(Var1=names(xx),Freq=xx)
   names(stratumproperties) <- c(stratumvar,"Nh")
   rownames(stratumproperties) <- NULL
