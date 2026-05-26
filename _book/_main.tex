@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-05-18}
+\date{2026-05-26}
 
 \begin{document}
 \maketitle
@@ -5972,12 +5972,12 @@ At the end of a survey we may find ourselves in the undesirable situation that
   We may have had \textbf{unit nonresponse} - i.e.~there may be selected units from
   which we have collected no data. In the case of human subjects this may have
   been from a failure to contact the selected person, or the refusal of the
-  person to answer our questions. (We may have also had \textbf{item nonresponse},
+  person to answer any of our questions. (We may have also had \textbf{item nonresponse},
   where some items on a questionnaire weren't answered: we'll deal with that
   in the next Chapter.)
 \end{itemize}
 
-In both cases we are in the situation that our sample, even when weighted, is
+In both cases we are in the situation that our sample, even using its sampling weights, is
 not a good representation of the population from which it is drawn.
 
 For example consider the SURF dataset, which is a synthetic sample of 200 individuals
@@ -6145,14 +6145,15 @@ sampling. But that is only possible if we know the group membership of sample me
 we sample them - i.e.~if the group membership information is available on the frame.
 
 We have \(n=200\) individuals in a SRSWOR drawn from a population
-of size \(N=\ensuremath{1.972719\times 10^{6}}\), with weights \(w=\ensuremath{1.972719\times 10^{6}}/200=9863.6\). These
+of size \(N=1972719\), with weights
+\(w=1972719/200=9863.6\). These
 correctly add up to the population total
 \[
-   n \times w = n \times \frac{N}{n} = 200\times 9863.6 = \ensuremath{1.972719\times 10^{6}}
+   n \times w = n \times \frac{N}{n} = 200\times 9863.6 = 1972719
 \]
 What we want is different weights for the males and females, so that they separately
-add up to the total numbers of males \(N_1=\ensuremath{9.84091\times 10^{5}}\) and the total
-numbers of females \(N_2=\ensuremath{9.88628\times 10^{5}}\) in the population. We can achieve this
+add up to the total numbers of males \(N_1=984091\) and the total
+numbers of females \(N_2=988628\) in the population. We can achieve this
 by computing new post-stratified weights using the known benchmarks \(N_h\) and sample
 sizes \(n_h\) in each of the post-strata, and computing new weights
 \[
@@ -6262,10 +6263,10 @@ post-stratified estimates: post-stratification makes the properties
 of different samples differ less than they otherwise would, and thereby
 reduces our overall uncertainty.
 
-\subsection*{Poststratfication as a treatment for non-response}\label{poststratfication-as-a-treatment-for-non-response}
-\addcontentsline{toc}{subsection}{Poststratfication as a treatment for non-response}
+\subsection*{Poststratification as a treatment for non-response}\label{poststratification-as-a-treatment-for-non-response}
+\addcontentsline{toc}{subsection}{Poststratification as a treatment for non-response}
 
-Non-response can make the small chance differences in the previous section even worse.
+Non-response can make the small chance differences described in the previous section even worse.
 
 In population surveys males and young people tend to have the lowest response rates.
 So let's see what happens to our mean income estimate if we take our sample of 200 individuals
@@ -6387,7 +6388,7 @@ In population surveys run by Statistics NZ we'll often see post-stratification b
 \addcontentsline{toc}{subsubsection}{The origin and nature of nonresponse}
 
 Post-stratification is often used to modify weights in the presence of non-response.
-The idea is that in each post-stratum the people who respond represent well the people
+The idea is that in each post-stratum the people who do respond represent well the people
 who don't respond.
 
 This is a very big and untestable assumption.
@@ -6408,7 +6409,7 @@ sample members selected into the survey. We can cope with, and adjust for, diffe
 \textbf{within} the post-strata.
 
 A helpful approach to missing data has a typology with three types of missingness.\\
-If we have auxliary data \({\bf X}_i\) for each unit, and are interested in an outcome
+If we have auxiliary data \({\bf X}_i\), known for each unit, and are interested in an outcome
 variable \(Y_i\) for each unit, then we are interested in the \textbf{probability that unit \(i\)
 will respond if selected}
 \[
@@ -6488,12 +6489,6 @@ for AgeGrp
 \end{table}
 
 and for Gender
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Gender.benchmarks }\SpecialCharTok{|\textgreater{}} \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}} \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{table}
 \centering
@@ -6646,11 +6641,11 @@ effect of non-response that is most striking.
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-235-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-236-1} 
 
 }
 
-\caption{Estimates of mean income by adjustment method}\label{fig:unnamed-chunk-235}
+\caption{Estimates of mean income by adjustment method}\label{fig:unnamed-chunk-236}
 \end{figure}
 
 \subsection*{Another example}\label{another-example}
@@ -6784,7 +6779,7 @@ size (\texttt{enroll})
 ## High             High 1564.3007 190.86274
 \end{verbatim}
 
-Poststratify by stype and reestimate
+Poststratify by stype and re-estimate
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6891,8 +6886,8 @@ and estimate the variability we'd see in different samples from the \textbf{popu
 \caption{In Jacknife estimation sampling error can be estimated by calculating the variability among estimates from subsets taken from the sample.  This variability needs to be scaled up to get the true population variability, because the pseudo-samples resemble one another strongly, though not exactly.}\label{fig:pseudo-sampling}
 \end{figure}
 
-Instead of actually resampling from our sample, we instead just vary the weights
-on some or all of the unit, and create new sets of weights according to a well defined
+Instead of actually resampling from our sample, we instead vary the weights
+on some or all of the units, and create new sets of weights according to a well defined
 method. We do this multiple times, which is equivalent to taking multiple re-samples
 of our actual sample. Each re-sample is called a \textbf{replicate} and has its own set of
 weights for all of the units in the sample. e.g.~we might have 100 additional sets of
@@ -7296,20 +7291,20 @@ the others. Jackknife variance estimation is the most common however.
 In the previous chapter we saw methods of dealing with \textbf{unit non-response}: i.e.
 we have units that are selected, but we collect no data at all from them.
 
-Another common type of non-response is where a unit does not provide all the
+Another common type of non-response is where a unit provides some but not all of the
 information requested: certain data items are therefore missing. This is called
 \textbf{item non-response}.
 
 We could just do a complete case analysis - in other words throw all of the data away for
-such units, and treat them as unit non-responders with zero weight. This wastes data and effort,
+the partially responding units, and treat them as unit non-responders with zero weight. This wastes data and effort,
 and misses the opportunity to use the data we have collected. It also leads to
 a loss of precision due to reduced sample size.
 
 An alternative option is \textbf{imputation}: this means that we \textbf{fill in (i.e.~invent)
 the missing data} using some kind of model.
 
-All such models involve untestable assumptions, and we run the same risks as when
-we make weight adjustments for non-response. There is a substantial risk of bias
+All such models involve untestable assumptions, and we run the similar risks we
+saw when making weight adjustments for unit non-response. There is a substantial risk of bias
 in our estimates whatever we do: leaving these units fully out of our analysis
 risks missing an important part of the population. Incorrectly guessing their responses
 is of course also a risk if we do so incorrectly. We may be \textbf{introducing} bias
@@ -7411,7 +7406,7 @@ SURF data, which is a mixture of numeric and categorical variables
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-264-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-265-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -7422,9 +7417,9 @@ SURF data, which is a mixture of numeric and categorical variables
 ##            0      0             0   0     0         0     10      10 20
 \end{verbatim}
 
-An example dataset supplied with \texttt{mice} is \texttt{nhanes}, and is a tiny
+An example dataset supplied with the \texttt{mice} package is \texttt{nhanes}, and is a tiny
 extract of 25 rows from the US National Health and Nutrition Examination Survey
-(NHANES). Note all variables are stored numeric, though the \texttt{age} and \texttt{hyp} column
+(NHANES). Note all variables are stored as numeric, though the \texttt{age} and \texttt{hyp} column
 are actually categorical.
 
 We'll create a copy of the dataset, call it \texttt{mnhanes} and recode the factor levels.
@@ -7474,7 +7469,7 @@ id & age & bmi & hyp & chl\\
 \end{table}
 
 Item non-response is indicated by an \texttt{NA} value. Notice that units 1, 4 and 10
-provided no data at all apart from their ages.
+provided no data at all, apart from their ages.
 
 Here's the missingness pattern in the NHANES dataset.
 
@@ -7484,7 +7479,7 @@ Here's the missingness pattern in the NHANES dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-267-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-268-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   
@@ -7503,9 +7498,9 @@ value with a \textbf{typical} value from the units that did provide a response.
 
 For numerical variables that can mean replacing missing values with the
 mean or the median. (We prefer the median of course if there are outliers.)
-For categorical variables the mode is the only \texttt{typical} value we have.
+For categorical variables the mode is the only \textbf{typical} value we have.
 
-Let's replace the missing values of \texttt{bmi} in the \texttt{NHANES}mnhanes` dataset with the
+Let's replace the missing values of \texttt{bmi} in the NHANES \texttt{mnhanes} dataset with the
 mean of the responding values:
 
 \begin{Shaded}
@@ -7572,7 +7567,7 @@ and the numerical \texttt{chl} variable using median imputation
 \end{Highlighting}
 \end{Shaded}
 
-This leads to the fully imputed dataset (first 10 rows only):
+This leads to the fully imputed dataset (showing the first 10 rows only):
 
 \begin{table}
 \centering
@@ -7639,7 +7634,7 @@ artefacts into the data.
 \section{Hot deck imputation}\label{hot-deck-imputation}
 
 An attractive alternative to replacing an observation with the mean, median
-or mode is the choose another respondent at random, and copy over their
+or mode is to choose another respondent at random, and copy over their
 data. These respondents are referred to as `donors', who `donate' a copy of their
 data to the respondent with missing data.
 
@@ -7656,7 +7651,7 @@ The \texttt{impute()} function does this, by specifying the method ``sample'':
 \end{Shaded}
 
 The improved effect of doing so can be seen in Figures \ref{fig:hypbarplot-sample}
-(where tbe before and after proportions of people with hypertension are 4/17=24\% and 5/20=20\%)
+(where the before and after proportions of people with hypertension are 4/17=24\% and 5/20=20\%)
 and \ref{fig:bmidistribution-sample}.
 
 \begin{figure}
@@ -7702,7 +7697,7 @@ Once we have imputation cells defined we can do mean, median, mode or hot deck i
 within the cells.
 
 In the \texttt{impute()} function we define the cells with the right hand side of a model formula
-which should only include categorical variables. If it includes numerical variables
+which should only include categorical variables. If the formula includes numerical variables
 then it is unlikely that there will be anyone in the same cell as the respondent who needs a donor.
 So with a variable like age we use age groups to define the cells, rather than year of age.
 

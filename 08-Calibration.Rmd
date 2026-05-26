@@ -17,11 +17,11 @@ At the end of a survey we may find ourselves in the undesirable situation that
  * We may have had **unit nonresponse** - i.e. there may be selected units from
    which we have collected no data.  In the case of human subjects this may have
    been from a failure to contact the selected person, or the refusal of the 
-   person to answer our questions.  (We may have also had **item nonresponse**, 
+   person to answer any of our questions.  (We may have also had **item nonresponse**, 
    where some items on a questionnaire weren't answered: we'll deal with that
    in the next Chapter.)
    
-In both cases we are in the situation that our sample, even when weighted, is
+In both cases we are in the situation that our sample, even using its sampling weights, is
 not a good representation of the population from which it is drawn.  
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -154,14 +154,15 @@ sampling.  But that is only possible if we know the group membership of sample m
 we sample them - i.e. if the group membership information is available on the frame.  
 
 We have $n=`r n`$ individuals in a SRSWOR drawn from a population
-of size $N=`r bigN`$, with weights $w=`r bigN`/`r n`=`r sprintf("%.1f",bigN/n)`$.  These
+of size $N=`r as.character(bigN)`$, with weights 
+$w=`r as.character(bigN)`/`r n`=`r sprintf("%.1f",bigN/n)`$.  These
 correctly add up to the population total
 \[
-   n \times w = n \times \frac{N}{n} = `r n`\times `r sprintf("%.1f",bigN/n)` = `r bigN`
+   n \times w = n \times \frac{N}{n} = `r n`\times `r sprintf("%.1f",bigN/n)` = `r as.character(bigN)`
 \]
 What we want is different weights for the males and females, so that they separately 
-add up to the total numbers of males $N_1=`r total.Gender[1]`$ and the total
-numbers of females $N_2=`r total.Gender[2]`$ in the population.  We can achieve this
+add up to the total numbers of males $N_1=`r as.character(total.Gender[1])`$ and the total
+numbers of females $N_2=`r as.character(total.Gender[2])`$ in the population.  We can achieve this
 by computing new post-stratified weights using the known benchmarks $N_h$ and sample
 sizes $n_h$ in each of the post-strata, and computing new weights
 \[
@@ -225,9 +226,9 @@ post-stratified estimates: post-stratification makes the properties
 of different samples differ less than they otherwise would, and thereby 
 reduces our overall uncertainty.  
 
-### Poststratfication as a treatment for non-response {-}
+### Poststratification as a treatment for non-response {-}
 
-Non-response can make the small chance differences in the previous section even worse.
+Non-response can make the small chance differences described in the previous section even worse.
 
 In population surveys males and young people tend to have the lowest response rates.
 So let's see what happens to our mean income estimate if we take our sample of 200 individuals
@@ -295,7 +296,7 @@ In population surveys run by Statistics NZ we'll often see post-stratification b
 #### The origin and nature of nonresponse {-}
 
 Post-stratification is often used to modify weights in the presence of non-response.
-The idea is that in each post-stratum the people who respond represent well the people
+The idea is that in each post-stratum the people who do respond represent well the people
 who don't respond.  
 
 This is a very big and untestable assumption.
@@ -316,7 +317,7 @@ sample members selected into the survey.  We can cope with, and adjust for, diff
 **within** the post-strata.  
 
 A helpful approach to missing data has a typology with three types of missingness.  
-If we have auxliary data ${\bf X}_i$ for each unit, and are interested in an outcome
+If we have auxiliary data ${\bf X}_i$, known for each unit, and are interested in an outcome
 variable $Y_i$ for each unit, then we are interested in the **probability that unit $i$ 
 will respond if selected**
 \[
@@ -382,7 +383,7 @@ for AgeGrp
 AgeGrp.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
 ```
 and for Gender
-```{r echo-FALSE}
+```{r echo=FALSE}
 Gender.benchmarks |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
@@ -460,7 +461,7 @@ sc <- cbind(dd$X1-1.96*dd$X2, dd$X1+1.96*dd$X2)
 ns <- nrow(sc)
 dotchart(dd$X1, xlim=range(sc), xlab="Mean Income")
 arrows(sc[,1], 1:ns, sc[,2], 1:ns, angle=90, code=3, length=0.1)
-axis(2, at=1:ns, lab=dd$Method, las=2, cex=0.45)
+axis(2, at=1:ns, lab=dd$Method, las=2, cex=0.40)
 ```
 
 ### Another example {-}
@@ -515,7 +516,7 @@ svymean(~enroll, design=api2sc.des)
 svyby(~enroll, by=~stype, api2sc.des, svymean)
 ```
 
-Poststratify by stype and reestimate
+Poststratify by stype and re-estimate
 ```{r}
 api2sc.des.ps <- postStratify(api2sc.des, strata=~stype, population=stype.benchmarks)
 svymean(~enroll, api2sc.des.ps)
@@ -590,8 +591,8 @@ and estimate the variability we'd see in different samples from the **population
 knitr::include_graphics('include-files/fig/PseudoSampling.png')
 ```
 
-Instead of actually resampling from our sample, we instead just vary the weights
-on some or all of the unit, and create new sets of weights according to a well defined
+Instead of actually resampling from our sample, we instead vary the weights
+on some or all of the units, and create new sets of weights according to a well defined
 method.  We do this multiple times, which is equivalent to taking multiple re-samples
 of our actual sample.  Each re-sample is called a **replicate** and has its own set of 
 weights for all of the units in the sample. e.g. we might have 100 additional sets of 

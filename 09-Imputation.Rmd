@@ -3,20 +3,20 @@
 In the previous chapter we saw methods of dealing with **unit non-response**: i.e.
 we have units that are selected, but we collect no data at all from them.  
 
-Another common type of non-response is where a unit does not provide all the
+Another common type of non-response is where a unit provides some but not all of the
 information requested: certain data items are therefore missing.  This is called
 **item non-response**.
 
 We could just do a complete case analysis - in other words throw all of the data away for 
-such units, and treat them as unit non-responders with zero weight.  This wastes data and effort, 
+the partially responding units, and treat them as unit non-responders with zero weight.  This wastes data and effort, 
 and misses the opportunity to use the data we have collected.  It also leads to
 a loss of precision due to reduced sample size.
 
 An alternative option is **imputation**: this means that we **fill in (i.e. invent) 
 the missing data** using some kind of model.
 
-All such models involve untestable assumptions, and we run the same risks as when
-we make weight adjustments for non-response.  There is a substantial risk of bias
+All such models involve untestable assumptions, and we run the similar risks we
+saw when making weight adjustments for unit non-response.  There is a substantial risk of bias
 in our estimates whatever we do: leaving these units fully out of our analysis
 risks missing an important part of the population.  Incorrectly guessing their responses
 is of course also a risk if we do so incorrectly.  We may be **introducing** bias 
@@ -73,9 +73,9 @@ summary(msurf)
 md.pattern(msurf)
 ```
 
-An example dataset supplied with `mice` is `nhanes`, and is a tiny 
+An example dataset supplied with the `mice` package is `nhanes`, and is a tiny 
 extract of 25 rows from the US National Health and Nutrition Examination Survey
-(NHANES). Note all variables are stored numeric, though the `age` and `hyp` column 
+(NHANES). Note all variables are stored as numeric, though the `age` and `hyp` column 
 are actually categorical.
 
 We'll create a copy of the dataset, call it `mnhanes` and recode the factor levels.
@@ -96,7 +96,7 @@ mnhanes[1:10,] |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
 Item non-response is indicated by an `NA` value.  Notice that units 1, 4 and 10
-provided no data at all apart from their ages.  
+provided no data at all, apart from their ages.  
 
 Here's the missingness pattern in the NHANES dataset.
 ```{r}
@@ -110,9 +110,9 @@ value with a **typical** value from the units that did provide a response.
 
 For numerical variables that can mean replacing missing values with the 
 mean or the median.  (We prefer the median of course if there are outliers.)
-For categorical variables the mode is the only `typical` value we have.
+For categorical variables the mode is the only **typical** value we have.
 
-Let's replace the missing values of `bmi` in the `NHANES`mnhanes` dataset with the
+Let's replace the missing values of `bmi` in the NHANES `mnhanes` dataset with the
 mean of the responding values:
 ```{r}
 mnhanes1 <- mnhanes
@@ -145,7 +145,7 @@ mnhanes1 <- mnhanes1 |>
   impute(varname="chl", method="median") 
 ```
 
-This leads to the fully imputed dataset (first 10 rows only): 
+This leads to the fully imputed dataset (showing the first 10 rows only): 
 ```{r echo=FALSE}
 mnhanes1[1:10,] |> kbl() |> kable_styling(full_width=FALSE)
 ```
@@ -189,7 +189,7 @@ artefacts into the data.
 ## Hot deck imputation
 
 An attractive alternative to replacing an observation with the mean, median
-or mode is the choose another respondent at random, and copy over their
+or mode is to choose another respondent at random, and copy over their
 data.  These respondents are referred to as 'donors', who 'donate' a copy of their
 data to the respondent with missing data. 
 
@@ -203,7 +203,7 @@ mnhanes2 <- mnhanes |>
 ```
 
 The improved effect of doing so can be seen in Figures \@ref(fig:hypbarplot-sample)
-(where tbe before and after proportions of people with hypertension are 4/17=24% and 5/20=20%) 
+(where the before and after proportions of people with hypertension are 4/17=24% and 5/20=20%) 
 and \@ref(fig:bmidistribution-sample).
 
 ```{r hypbarplot-sample, echo=FALSE}
@@ -252,7 +252,7 @@ Once we have imputation cells defined we can do mean, median, mode or hot deck i
 within the cells.
 
 In the `impute()` function we define the cells with the right hand side of a model formula
-which should only include categorical variables.  If it includes numerical variables
+which should only include categorical variables.  If the formula includes numerical variables
 then it is unlikely that there will be anyone in the same cell as the respondent who needs a donor.
 So with a variable like age we use age groups to define the cells, rather than year of age. 
 

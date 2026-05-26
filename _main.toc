@@ -72,7 +72,7 @@
 \contentsline {section}{\numberline {7.3}Ratio estimation}{98}{section.7.3}%
 \contentsline {chapter}{\numberline {8}Weight adjustments}{103}{chapter.8}%
 \contentsline {section}{\numberline {8.1}Weight Calibration}{103}{section.8.1}%
-\contentsline {subsection}{Poststratfication as a treatment for non-response}{106}{section*.23}%
+\contentsline {subsection}{Poststratification as a treatment for non-response}{106}{section*.23}%
 \contentsline {subsubsection}{The origin and nature of nonresponse}{108}{section*.24}%
 \contentsline {subsection}{Raking}{109}{section*.25}%
 \contentsline {subsection}{Another example}{110}{section*.26}%

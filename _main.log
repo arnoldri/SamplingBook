@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (Web2C 2026) (preloaded format=xelatex 2026.4.23)  18 MAY 2026 10:03
+This is XeTeX, Version 3.141592653-2.6-0.999998 (Web2C 2026) (preloaded format=xelatex 2026.4.23)  26 MAY 2026 15:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1546,73 +1546,73 @@ Overfull \hbox (127.68446pt too wide) in paragraph at lines 5988--6013
 File: _main_files/figure-latex/unnamed-chunk-204-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-204-1.pdf>
 [104] [105] [106] [107] [108] [109]
-File: _main_files/figure-latex/unnamed-chunk-235-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-235-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-236-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-236-1.pdf>
 [110] [111] [112]
 File: include-files/fig/SamplingFromPopulation.png Graphic file (type bmp)
 <include-files/fig/SamplingFromPopulation.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 6873--6874
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 6868--6869
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 123.44423pt on input line 6878.
+LaTeX Warning: Float too large for page by 123.44423pt on input line 6873.
 
 File: include-files/fig/PseudoSampling.png Graphic file (type bmp)
 <include-files/fig/PseudoSampling.png>
 
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 6887--6888
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 6882--6883
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 147.56422pt on input line 6892.
+LaTeX Warning: Float too large for page by 147.56422pt on input line 6887.
 
 
-Overfull \hbox (23.3445pt too wide) in paragraph at lines 6962--6962
+Overfull \hbox (23.3445pt too wide) in paragraph at lines 6957--6957
 []\TU/lmtt/m/n/10 ## Warning in as.svrepdesign.default(api2sc.des, type = "JK1"
 ): Finite population[] 
  []
 
 [113] [114] [115]
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ##          [,1]     [,2]     [,3]     [,4]     [,5]     [,6]
      [,7]     [,8][] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ## [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ## [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ## [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6985--6985
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
 []\TU/lmtt/m/n/10 ## [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
  1.025641 1.025641[] 
  []
 
 [116] [117]
-Overfull \hbox (244.96445pt too wide) in paragraph at lines 7125--7150
+Overfull \hbox (244.96445pt too wide) in paragraph at lines 7120--7145
  [][] 
  []
 
@@ -1621,14 +1621,14 @@ Overfull \hbox (244.96445pt too wide) in paragraph at lines 7125--7150
 ]
 Chapter 9.
 [121]
-File: _main_files/figure-latex/unnamed-chunk-264-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-264-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-265-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-265-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [122] [123]
-File: _main_files/figure-latex/unnamed-chunk-267-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-267-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-268-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-268-1.pdf>
 [124]
 File: _main_files/figure-latex/hypbarplot-mean-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/hypbarplot-mean-1.pdf>
@@ -1636,7 +1636,7 @@ File: _main_files/figure-latex/bmidistribution-mean-1.pdf Graphic file (type pd
 f)
 <use _main_files/figure-latex/bmidistribution-mean-1.pdf>
 
-Overfull \hbox (141.1219pt too wide) in paragraph at lines 7628--7629
+Overfull \hbox (141.1219pt too wide) in paragraph at lines 7623--7624
  [][] 
  []
 
@@ -1647,7 +1647,7 @@ File: _main_files/figure-latex/bmidistribution-sample-1.pdf Graphic file (type
 pdf)
 <use _main_files/figure-latex/bmidistribution-sample-1.pdf>
 
-Overfull \hbox (141.1219pt too wide) in paragraph at lines 7673--7674
+Overfull \hbox (141.1219pt too wide) in paragraph at lines 7668--7669
  [][] 
  []
 
@@ -1655,18 +1655,18 @@ Overfull \hbox (141.1219pt too wide) in paragraph at lines 7673--7674
 File: _main_files/figure-latex/bmi-comparison-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/bmi-comparison-1.pdf>
 
-Overfull \hbox (149.15192pt too wide) in paragraph at lines 7726--7727
+Overfull \hbox (149.15192pt too wide) in paragraph at lines 7721--7722
  [][] 
  []
 
 
-Underfull \vbox (badness 5878) has occurred while \output is active []
+Underfull \vbox (badness 1946) has occurred while \output is active []
 
 [129]
 File: _main_files/figure-latex/income-hours-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/income-hours-1.pdf>
 
-Overfull \hbox (106.9945pt too wide) in paragraph at lines 7748--7749
+Overfull \hbox (106.9945pt too wide) in paragraph at lines 7743--7744
  [][] 
  []
 
@@ -1674,7 +1674,7 @@ File: _main_files/figure-latex/income-hours-impute-1.pdf Graphic file (type pdf
 )
 <use _main_files/figure-latex/income-hours-impute-1.pdf>
 
-Overfull \hbox (106.9945pt too wide) in paragraph at lines 7779--7780
+Overfull \hbox (106.9945pt too wide) in paragraph at lines 7774--7775
  [][] 
  []
 
@@ -1694,8 +1694,8 @@ L3 programming layer <2026-03-20>
  ) 
 Here is how much of TeX's memory you used:
  25533 strings out of 468568
- 469434 string characters out of 5451445
- 1026144 words of memory out of 5000000
+ 469435 string characters out of 5451445
+ 1026145 words of memory out of 5000000
  53958 multiletter control sequences out of 15000+600000
  634350 words of font info for 103 fonts, out of 8000000 for 9000
  1099 hyphenation exceptions out of 8191

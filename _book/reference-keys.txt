@@ -41,7 +41,7 @@ fig:unnamed-chunk-177
 fig:unnamed-chunk-182
 fig:unnamed-chunk-184
 fig:unnamed-chunk-193
-fig:unnamed-chunk-235
+fig:unnamed-chunk-236
 fig:sampling-from-population
 fig:pseudo-sampling
 tab:examplejk
