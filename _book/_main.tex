@@ -160,7 +160,7 @@
 
 \title{STAT395: Sampling}
 \author{Richard Arnold et al.}
-\date{2026-05-26}
+\date{2026-05-28}
 
 \begin{document}
 \maketitle
@@ -4749,12 +4749,6 @@ The top 10 rows of the data set and some of the key variables are shown below.
 \begin{Highlighting}[]
 \NormalTok{apiclus2}\SpecialCharTok{$}\NormalTok{stype }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype, }\AttributeTok{levels=}\FunctionTok{c}\NormalTok{(}\StringTok{"E"}\NormalTok{,}\StringTok{"M"}\NormalTok{,}\StringTok{"H"}\NormalTok{))}
 \FunctionTok{levels}\NormalTok{(apiclus2}\SpecialCharTok{$}\NormalTok{stype) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Elementary"}\NormalTok{,}\StringTok{"Middle"}\NormalTok{,}\StringTok{"High"}\NormalTok{)}
-
-\NormalTok{apiclus2 }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{select}\NormalTok{(cds, stype, name, dnum, cnum, api99, api00) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kable\_styling}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4915,19 +4909,6 @@ We can see that from the summary that \(n=40\) districts were sampled (out of \(
 Let's count the number of schools sampled per district. We'll just display the top 15 largest
 districts:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{apiclus2 }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{group\_by}\NormalTok{(dnum,dname) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{Mi=}\FunctionTok{first}\NormalTok{(fpc2),}\AttributeTok{mi=}\FunctionTok{n}\NormalTok{()) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Mi)) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n=}\DecValTok{15}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kbl}\NormalTok{(}\AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"dnum"}\NormalTok{,}\StringTok{"District Name"}\NormalTok{,}\StringTok{"$M\_i$"}\NormalTok{,}\StringTok{"$m\_i$"}\NormalTok{),}\AttributeTok{escape=}\ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
-  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width=}\ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{table}
 \centering
 \begin{tabular}[t]{r|l|r|r}
@@ -4990,11 +4971,11 @@ The basic workhorse for the display of numerical variables is the histogram
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-150-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-151-1} 
 
 }
 
-\caption{Weighted histogram of API (2000) scores}\label{fig:unnamed-chunk-150}
+\caption{Weighted histogram of API (2000) scores}\label{fig:unnamed-chunk-151}
 \end{figure}
 
 Note that this histogram differs strongly from the simple histogram
@@ -5010,11 +4991,11 @@ of the sample values:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-151-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-152-1} 
 
 }
 
-\caption{Unweighted histogram of API (2000) sample data}\label{fig:unnamed-chunk-151}
+\caption{Unweighted histogram of API (2000) sample data}\label{fig:unnamed-chunk-152}
 \end{figure}
 
 a warning to us that with survey data we can go badly astray if we ignore
@@ -5031,11 +5012,11 @@ Boxplots are an alternative to histograms:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-152-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
 
 }
 
-\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-152}
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-153}
 \end{figure}
 
 \ldots{} especially if we want to display variables divided by a category:
@@ -5050,11 +5031,11 @@ Boxplots are an alternative to histograms:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-153-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-154-1} 
 
 }
 
-\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-153}
+\caption{Distribution of API (2000) sample data}\label{fig:unnamed-chunk-154}
 \end{figure}
 
 If we have two continuous variables we can plot them as a scatterplot, showing
@@ -5069,11 +5050,11 @@ the weights of each observation:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-154-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-155-1} 
 
 }
 
-\caption{Distribution of API scores in 1999 and 2000}\label{fig:unnamed-chunk-154}
+\caption{Distribution of API scores in 1999 and 2000}\label{fig:unnamed-chunk-155}
 \end{figure}
 
 \subsection*{Estimation}\label{estimation}
@@ -5152,11 +5133,11 @@ A \textbf{dotchart} is a nice way of showing the estimated means and their confi
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-159-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-160-1} 
 
 }
 
-\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-159}
+\caption{Mean API (2000) scores by School Type}\label{fig:unnamed-chunk-160}
 \end{figure}
 
 If we want to test statistical hypotheses about differences between groups
@@ -5363,11 +5344,11 @@ using the \texttt{svymean()} function:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-169-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-170-1} 
 
 }
 
-\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-169}
+\caption{Estimates of the proportions of Schools of each type}\label{fig:unnamed-chunk-170}
 \end{figure}
 
 \begin{Shaded}
@@ -5453,11 +5434,11 @@ These confidence intervals are symmetric about the point estimates:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-173-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-174-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-173}
+\caption{Estimated proportions of schools by school type - with symmetric confidence intervals}\label{fig:unnamed-chunk-174}
 \end{figure}
 
 \begin{Shaded}
@@ -5530,11 +5511,11 @@ it's somewhat fiddly with the raw \texttt{survey} package:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-175-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-176-1} 
 
 }
 
-\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-175}
+\caption{Estimated proportions of schools by school type - with asymmetric confidence intervals}\label{fig:unnamed-chunk-176}
 \end{figure}
 
 \begin{Shaded}
@@ -5600,11 +5581,11 @@ Which can be displayed with a side-by-side barplot
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-177-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-178-1} 
 
 }
 
-\caption{Counts of schools meeting targets, by school type}\label{fig:unnamed-chunk-177}
+\caption{Counts of schools meeting targets, by school type}\label{fig:unnamed-chunk-178}
 \end{figure}
 
 A test of association is given by the weighted Chi-Square test
@@ -5683,11 +5664,11 @@ to be proportional to another: for example population and GDP are likely to move
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-182-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-183-1} 
 
 }
 
-\caption{Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-182}
+\caption{Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-183}
 \end{figure}
 
 The are three clear outliers here are the US, China and India.
@@ -5730,11 +5711,11 @@ Japan & 124.370947 & 4601.203386 & 150 & 3.75\\
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-184-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-185-1} 
 
 }
 
-\caption{Sample of 40 countries: Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-184}
+\caption{Sample of 40 countries: Population and GDP (2023) (Source: Our World in Data)}\label{fig:unnamed-chunk-185}
 \end{figure}
 
 Our sample happens to miss out on all three of the big countries here.
@@ -5873,11 +5854,11 @@ the situation. Take a look at the residual plot:
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-193-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-194-1} 
 
 }
 
-\caption{Residual plot}\label{fig:unnamed-chunk-193}
+\caption{Residual plot}\label{fig:unnamed-chunk-194}
 \end{figure}
 
 This is a terrible looking residual plot, not least because the variance
@@ -5956,6 +5937,39 @@ Ratio & 164829 & 0.18 & (107733,221924)\\
 \hline
 \end{tabular}
 \end{table}
+
+\section{Base R Functions and survey package equivalents}\label{base-r-functions-and-survey-package-equivalents}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\centering\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Base R
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Survey Package
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Notes
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{mean()} & \texttt{svymean()} & Mean values (and proportions) \\
+& \texttt{svysciprop()} & Confidence intervals for proportions \\
+\texttt{sd()} & \texttt{svysd()} & Standard deviation (needs the \texttt{jtools} package) \\
+\texttt{sum()} & \texttt{svytotal()} & Sums \\
+\texttt{sum()/sum()} & \texttt{svyratio()} & Ratios \\
+\texttt{lm()}, \texttt{glm()} & \texttt{svyglm()} & Regression \\
+\texttt{by()} & \texttt{svyby()} & Analysis in groups \\
+\texttt{table()} & \texttt{svytable()} & Counts of observations in categories \\
+\texttt{chisq.test()} & \texttt{svychisq()} & Chi-square test of association \\
+\texttt{hist()} & \texttt{svyhist()} & Histogram \\
+\texttt{boxplot()} & \texttt{svyboxplot()} & Boxplot \\
+\texttt{plot()} & \texttt{svyplot()} & Scatter plot \\
+\texttt{barplot()} & \texttt{barplot()} & Bar plot \\
+\end{longtable}
 
 \chapter{Weight adjustments}\label{weight-adjustments}
 
@@ -6057,7 +6071,7 @@ We should note that the mean income differs considerably between males and femal
 ## female female 438.5047 26.16272
 \end{verbatim}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-204-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-205-1.pdf}}
 
 Let's also note the distribution of the population by age and sex, as measured
 by the most recent census:
@@ -6641,11 +6655,11 @@ effect of non-response that is most striking.
 
 \begin{figure}
 
-{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-236-1} 
+{\centering \includegraphics{_main_files/figure-latex/unnamed-chunk-237-1} 
 
 }
 
-\caption{Estimates of mean income by adjustment method}\label{fig:unnamed-chunk-236}
+\caption{Estimates of mean income by adjustment method}\label{fig:unnamed-chunk-237}
 \end{figure}
 
 \subsection*{Another example}\label{another-example}
@@ -7406,7 +7420,7 @@ SURF data, which is a mixture of numeric and categorical variables
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-265-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-266-1.pdf}}
 
 \begin{verbatim}
 ##     Personid Gender Qualification Age Hours Ethnicity Income Marital   
@@ -7479,7 +7493,7 @@ Here's the missingness pattern in the NHANES dataset.
 \end{Highlighting}
 \end{Shaded}
 
-\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-268-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/unnamed-chunk-269-1.pdf}}
 
 \begin{verbatim}
 ##    id age hyp bmi chl   

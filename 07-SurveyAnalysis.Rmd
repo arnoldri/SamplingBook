@@ -28,7 +28,9 @@ The top 10 rows of the data set and some of the key variables are shown below.
 ```{r}
 apiclus2$stype <- factor(apiclus2$stype, levels=c("E","M","H"))
 levels(apiclus2$stype) <- c("Elementary","Middle","High")
+```
 
+```{r echo=FALSE}
 apiclus2 |>
   slice_head(n=10) |>
   select(cds, stype, name, dnum, cnum, api99, api00) |>
@@ -61,7 +63,7 @@ summary(apiclus2.des)
 We can see that from the summary that $n=40$ districts were sampled (out of $N=757$).
 Let's count the number of schools sampled per district.  We'll just display the top 15 largest 
 districts:
-```{r message=FALSE}
+```{r message=FALSE, echo=FALSE}
 apiclus2 |>
   group_by(dnum,dname) |>
   summarise(Mi=first(fpc2),mi=n()) |>
@@ -143,7 +145,6 @@ The `jtools` package allows us to estimate the population standard deviation too
 ```{r}
 library(jtools)
 svysd(~api00, design=apiclus2.des)
-
 ```
 (**Pause a minute** and remind yourself of the difference between a standard deviation and
 a standard error.)
@@ -575,4 +576,21 @@ rownames(sdat) <- NULL
 sdat |> kbl() |> kable_styling(full_width=FALSE)
 ```
 
+## Base R Functions and survey package equivalents
+
+| Base R | Survey Package | Notes | 
+| :---: | :---: | :---: | 
+| `mean()` | `svymean()` | Mean values (and proportions) |
+|          | `svysciprop()` | Confidence intervals for proportions | 
+| `sd()`   | `svysd()`   | Standard deviation (needs the `jtools` package) | 
+| `sum()`  | `svytotal()` | Sums |
+| `sum()/sum()` | `svyratio()` | Ratios |
+| `lm()`, `glm()` | `svyglm()` | Regression | 
+| `by()` | `svyby()` | Analysis in groups |
+| `table()` | `svytable()` | Counts of observations in categories |
+| `chisq.test()` | `svychisq()` | Chi-square test of association | 
+| `hist()` | `svyhist()` | Histogram |
+| `boxplot()` | `svyboxplot()` | Boxplot |
+| `plot()` | `svyplot()` | Scatter plot |
+| `barplot()` | `barplot()` | Bar plot |
 

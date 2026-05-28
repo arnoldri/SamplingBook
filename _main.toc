@@ -66,10 +66,11 @@
 \contentsline {chapter}{\numberline {7}Survey Analysis}{83}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Continous variables}{85}{section.7.1}%
 \contentsline {subsection}{Display}{85}{section*.21}%
-\contentsline {subsection}{Estimation}{87}{section*.22}%
-\contentsline {subsection}{\numberline {7.1.1}Relative Sampling Errors (RSEs)}{92}{subsection.7.1.1}%
+\contentsline {subsection}{Estimation}{89}{section*.22}%
+\contentsline {subsection}{\numberline {7.1.1}Relative Sampling Errors (RSEs)}{91}{subsection.7.1.1}%
 \contentsline {section}{\numberline {7.2}Categorical Variables}{92}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Ratio estimation}{98}{section.7.3}%
+\contentsline {section}{\numberline {7.3}Ratio estimation}{97}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Base R Functions and survey package equivalents}{102}{section.7.4}%
 \contentsline {chapter}{\numberline {8}Weight adjustments}{103}{chapter.8}%
 \contentsline {section}{\numberline {8.1}Weight Calibration}{103}{section.8.1}%
 \contentsline {subsection}{Poststratification as a treatment for non-response}{106}{section*.23}%

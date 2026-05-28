@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (Web2C 2026) (preloaded format=xelatex 2026.4.23)  26 MAY 2026 15:05
+This is XeTeX, Version 3.141592653-2.6-0.999998 (Web2C 2026) (preloaded format=xelatex 2026.4.23)  28 MAY 2026 15:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1492,10 +1492,7 @@ Overfull \hbox (125.45447pt too wide) in paragraph at lines 4422--4447
 
 ]
 Chapter 7.
-[83] [84]
-File: _main_files/figure-latex/unnamed-chunk-150-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-150-1.pdf>
-[85] [86]
+[83] [84] [85]
 File: _main_files/figure-latex/unnamed-chunk-151-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-151-1.pdf>
 File: _main_files/figure-latex/unnamed-chunk-152-1.pdf Graphic file (type pdf)
@@ -1504,31 +1501,33 @@ File: _main_files/figure-latex/unnamed-chunk-153-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-153-1.pdf>
 File: _main_files/figure-latex/unnamed-chunk-154-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/unnamed-chunk-154-1.pdf>
-[87] [88] [89]
-File: _main_files/figure-latex/unnamed-chunk-159-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-159-1.pdf>
-[90] [91] [92]
-File: _main_files/figure-latex/unnamed-chunk-169-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-169-1.pdf>
-[93]
-File: _main_files/figure-latex/unnamed-chunk-173-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-173-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-155-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-155-1.pdf>
+[86] [87] [88]
+File: _main_files/figure-latex/unnamed-chunk-160-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-160-1.pdf>
+[89] [90] [91]
+File: _main_files/figure-latex/unnamed-chunk-170-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-170-1.pdf>
+[92] [93]
+File: _main_files/figure-latex/unnamed-chunk-174-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-174-1.pdf>
 [94]
-File: _main_files/figure-latex/unnamed-chunk-175-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-175-1.pdf>
-[95] [96]
-File: _main_files/figure-latex/unnamed-chunk-177-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-177-1.pdf>
-[97]
-File: _main_files/figure-latex/unnamed-chunk-182-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-182-1.pdf>
-File: _main_files/figure-latex/unnamed-chunk-184-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-184-1.pdf>
-[98] [99] [100]
-File: _main_files/figure-latex/unnamed-chunk-193-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-193-1.pdf>
-
-Overfull \hbox (54.8445pt too wide) in paragraph at lines 5911--5911
+File: _main_files/figure-latex/unnamed-chunk-176-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-176-1.pdf>
+[95]
+File: _main_files/figure-latex/unnamed-chunk-178-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-178-1.pdf>
+[96]
+File: _main_files/figure-latex/unnamed-chunk-183-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-183-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-185-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-185-1.pdf>
+[97] [98] [99]
+File: _main_files/figure-latex/unnamed-chunk-194-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-194-1.pdf>
+[100]
+Overfull \hbox (54.8445pt too wide) in paragraph at lines 5892--5892
 []\TU/lmtt/m/n/10 ## Ratio estimator: svyratio.survey.design2(~GDP, ~Population
 , design = gdp.sample.des)[] 
  []
@@ -1536,83 +1535,83 @@ Overfull \hbox (54.8445pt too wide) in paragraph at lines 5911--5911
 [101] [102]
 Chapter 8.
 
-Overfull \hbox (127.68446pt too wide) in paragraph at lines 5988--6013
+Overfull \hbox (127.68446pt too wide) in paragraph at lines 6002--6027
  [][] 
  []
 
 [103
 
 ]
-File: _main_files/figure-latex/unnamed-chunk-204-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-204-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-205-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-205-1.pdf>
 [104] [105] [106] [107] [108] [109]
-File: _main_files/figure-latex/unnamed-chunk-236-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-236-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-237-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-237-1.pdf>
 [110] [111] [112]
 File: include-files/fig/SamplingFromPopulation.png Graphic file (type bmp)
 <include-files/fig/SamplingFromPopulation.png>
-
-Overfull \hbox (883.05501pt too wide) in paragraph at lines 6868--6869
- [][] 
- []
-
-
-LaTeX Warning: Float too large for page by 123.44423pt on input line 6873.
-
-File: include-files/fig/PseudoSampling.png Graphic file (type bmp)
-<include-files/fig/PseudoSampling.png>
 
 Overfull \hbox (883.05501pt too wide) in paragraph at lines 6882--6883
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 147.56422pt on input line 6887.
+LaTeX Warning: Float too large for page by 123.44423pt on input line 6887.
+
+File: include-files/fig/PseudoSampling.png Graphic file (type bmp)
+<include-files/fig/PseudoSampling.png>
+
+Overfull \hbox (883.05501pt too wide) in paragraph at lines 6896--6897
+ [][] 
+ []
 
 
-Overfull \hbox (23.3445pt too wide) in paragraph at lines 6957--6957
+LaTeX Warning: Float too large for page by 147.56422pt on input line 6901.
+
+
+Overfull \hbox (23.3445pt too wide) in paragraph at lines 6971--6971
 []\TU/lmtt/m/n/10 ## Warning in as.svrepdesign.default(api2sc.des, type = "JK1"
 ): Finite population[] 
  []
 
 [113] [114] [115]
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ##          [,1]     [,2]     [,3]     [,4]     [,5]     [,6]
      [,7]     [,8][] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ## [1,] 0.000000 1.025641 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ## [2,] 1.025641 0.000000 1.025641 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ## [3,] 1.025641 1.025641 0.000000 1.025641 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ## [4,] 1.025641 1.025641 1.025641 0.000000 1.025641 1.025641
  1.025641 1.025641[] 
  []
 
 
-Overfull \hbox (12.8445pt too wide) in paragraph at lines 6980--6980
+Overfull \hbox (12.8445pt too wide) in paragraph at lines 6994--6994
 []\TU/lmtt/m/n/10 ## [5,] 1.025641 1.025641 1.025641 1.025641 0.000000 1.025641
  1.025641 1.025641[] 
  []
 
 [116] [117]
-Overfull \hbox (244.96445pt too wide) in paragraph at lines 7120--7145
+Overfull \hbox (244.96445pt too wide) in paragraph at lines 7134--7159
  [][] 
  []
 
@@ -1621,14 +1620,14 @@ Overfull \hbox (244.96445pt too wide) in paragraph at lines 7120--7145
 ]
 Chapter 9.
 [121]
-File: _main_files/figure-latex/unnamed-chunk-265-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-265-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-266-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-266-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [122] [123]
-File: _main_files/figure-latex/unnamed-chunk-268-1.pdf Graphic file (type pdf)
-<use _main_files/figure-latex/unnamed-chunk-268-1.pdf>
+File: _main_files/figure-latex/unnamed-chunk-269-1.pdf Graphic file (type pdf)
+<use _main_files/figure-latex/unnamed-chunk-269-1.pdf>
 [124]
 File: _main_files/figure-latex/hypbarplot-mean-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/hypbarplot-mean-1.pdf>
@@ -1636,7 +1635,7 @@ File: _main_files/figure-latex/bmidistribution-mean-1.pdf Graphic file (type pd
 f)
 <use _main_files/figure-latex/bmidistribution-mean-1.pdf>
 
-Overfull \hbox (141.1219pt too wide) in paragraph at lines 7623--7624
+Overfull \hbox (141.1219pt too wide) in paragraph at lines 7637--7638
  [][] 
  []
 
@@ -1647,7 +1646,7 @@ File: _main_files/figure-latex/bmidistribution-sample-1.pdf Graphic file (type
 pdf)
 <use _main_files/figure-latex/bmidistribution-sample-1.pdf>
 
-Overfull \hbox (141.1219pt too wide) in paragraph at lines 7668--7669
+Overfull \hbox (141.1219pt too wide) in paragraph at lines 7682--7683
  [][] 
  []
 
@@ -1655,7 +1654,7 @@ Overfull \hbox (141.1219pt too wide) in paragraph at lines 7668--7669
 File: _main_files/figure-latex/bmi-comparison-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/bmi-comparison-1.pdf>
 
-Overfull \hbox (149.15192pt too wide) in paragraph at lines 7721--7722
+Overfull \hbox (149.15192pt too wide) in paragraph at lines 7735--7736
  [][] 
  []
 
@@ -1666,7 +1665,7 @@ Underfull \vbox (badness 1946) has occurred while \output is active []
 File: _main_files/figure-latex/income-hours-1.pdf Graphic file (type pdf)
 <use _main_files/figure-latex/income-hours-1.pdf>
 
-Overfull \hbox (106.9945pt too wide) in paragraph at lines 7743--7744
+Overfull \hbox (106.9945pt too wide) in paragraph at lines 7757--7758
  [][] 
  []
 
@@ -1674,7 +1673,7 @@ File: _main_files/figure-latex/income-hours-impute-1.pdf Graphic file (type pdf
 )
 <use _main_files/figure-latex/income-hours-impute-1.pdf>
 
-Overfull \hbox (106.9945pt too wide) in paragraph at lines 7774--7775
+Overfull \hbox (106.9945pt too wide) in paragraph at lines 7788--7789
  [][] 
  []
 
@@ -1693,12 +1692,12 @@ L3 programming layer <2026-03-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25533 strings out of 468568
- 469435 string characters out of 5451445
- 1026145 words of memory out of 5000000
- 53958 multiletter control sequences out of 15000+600000
+ 25540 strings out of 468568
+ 469616 string characters out of 5451445
+ 1027273 words of memory out of 5000000
+ 53965 multiletter control sequences out of 15000+600000
  634350 words of font info for 103 fonts, out of 8000000 for 9000
  1099 hyphenation exceptions out of 8191
- 90i,13n,114p,1002b,594s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,13n,114p,1002b,580s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on _main.pdf (137 pages).
