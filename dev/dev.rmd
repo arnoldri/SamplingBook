@@ -1,0 +1,23 @@
+---
+title: "Dev"
+author: "Specific Analyses"
+date: '2026-05-28'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("../first.R")
+```
+
+```{r}
+data(nhanes)
+nhanes$age <- factor(nhanes$age)
+nn <- nhanes |> impute("bmi", method="mean")
+nc <- nhanes |> impute("bmi", method="mean", formula=~age)
+View(nhanes)
+```
+

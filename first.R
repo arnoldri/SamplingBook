@@ -316,12 +316,54 @@ impute <- function(df, varname,
     # Methods for numeric variables
 
     if(method=="median") {
-      # overall median imputation
-      df[missing,varname] <- median(df[!missing,varname])
+      if(is.null(formula)) {
+        # overall median imputation
+        df[missing,varname] <- median(df[!missing,varname])
+      } else {
+        # cell median imputation
+        mmat <- model.matrix(formula, data=df)
+        df$.tmp.rownames <- 1:nrow(df)
+        df$.tmp.cellnames <- apply(mmat,1,paste,collapse=";")
+        df <- do.call(rbind, by(df, df$.tmp.cellnames,
+                                function(dfx) {
+                                  midx <- dfx[,paste0(varname,impute.suffix)]
+                                  if(sum(!midx)==0) {
+                                    dfx[midx,paste0(varname,impute.suffix)] <- FALSE
+                                    warning("Cell with missing data but no donors: data not imputed")
+                                  } else {
+                                    dfx[midx,varname] <- median(dfx[!midx,varname],na.rm=TRUE)
+                                  }
+                                  return(dfx)
+                                }))
+        df <- df[order(df$.tmp.rownames),]
+        df$.tmp.rownames <- NULL
+        df$.tmp.cellnames <- NULL
+      }
 
     } else if(method=="mean") {
-      # overall mean imputation
-      df[missing,varname] <- mean(df[!missing,varname])
+      if(is.null(formula)) {
+        # overall mean imputation
+        df[missing,varname] <- mean(df[!missing,varname])
+      } else {
+        # cell mean imputation
+        mmat <- model.matrix(formula, data=df)
+        df$.tmp.rownames <- 1:nrow(df)
+        df$.tmp.cellnames <- apply(mmat,1,paste,collapse=";")
+        df <- do.call(rbind, by(df, df$.tmp.cellnames,
+                                function(dfx) {
+                                  midx <- dfx[,paste0(varname,impute.suffix)]
+                                  if(sum(!midx)==0) {
+                                    dfx[midx,paste0(varname,impute.suffix)] <- FALSE
+                                    warning("Cell with missing data but no donors: data not imputed")
+                                  } else {
+                                    dfx[midx,varname] <- mean(dfx[!midx,varname],na.rm=TRUE)
+                                  }
+                                  return(dfx)
+                                }))
+        df <- df[order(df$.tmp.rownames),]
+        df$.tmp.rownames <- NULL
+        df$.tmp.cellnames <- NULL
+      }
 
     } else if(method=="lm.mean" && !is.null(formula)) {
       # linear model mean imputation with cells defined by the formula
