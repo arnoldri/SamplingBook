@@ -478,7 +478,7 @@ levels(apipopc$stype) <- c("Elementary","Middle","High")
 apipopc$yr.rnd[is.na(apipopc$yr.rnd)] <- "Yes"
 ```
 
-The numbers of schools by type are in `stype.benchmnarks`
+The numbers of schools by type are in `stype.benchmarks`
 ```{r echo=FALSE}
 stype.benchmarks <- as.data.frame(table(apipopc$stype))
 names(stype.benchmarks) <- c("stype","Freq")
