@@ -24,7 +24,7 @@ is.unique <- function(x) {
 
 is.nested <- function(df, x, y) {
   # do all the levels of x nest within levels of y?
-  all(tapply(df[,y,drop=TRUE], df[,x], function(yvals) length(unique(yvals)))==1)
+  all(tapply(df[,y,drop=TRUE], df[,x,drop=TRUE], function(yvals) length(unique(yvals)))==1)
 }
 
 modevalue <- function(x) {
@@ -71,7 +71,7 @@ select.ppswr <- function(df, n, sizevar) {
   # PPSWR
   bigN <- nrow(df)
   df$rownames <- 1:bigN
-  samp <- df[sample(bigN,n,prob=df[,sizevar],replace=TRUE),]
+  samp <- df[sample(bigN,n,prob=df[,sizevar,drop=TRUE],replace=TRUE),]
   samp$bigN <- bigN
   samp$weight <- bigN/n
   samp <- samp |>
@@ -279,7 +279,7 @@ impute <- function(df, varname,
                    impute.suffix=".imp",
                    seed=NULL) {
   if(is.null(seed)) set.seed(seed)
-  missing <- is.na(df[,varname])
+  missing <- is.na(df[,varname,drop=TRUE])
   df[,paste0(varname,impute.suffix)] <- missing
 
   if(method=="sample") {
@@ -312,7 +312,7 @@ impute <- function(df, varname,
       stop("Method not recognised")
     }
 
-  } else if(is.numeric(df[,varname])) {
+  } else if(is.numeric(df[,varname,drop=TRUE])) {
     # Methods for numeric variables
 
     if(method=="median") {
@@ -384,7 +384,7 @@ impute <- function(df, varname,
       # not recognised
       stop("Method not recognised")
     }
-  } else if(is.character(df[,varname]) || is.factor(df[,varname])) {
+  } else if(is.character(df[,varname,drop=TRUE]) || is.factor(df[,varname,drop=TRUE])) {
     # Methods for categorical variables
 
     if(method=="mode") {
