@@ -307,6 +307,7 @@ impute <- function(df, varname,
       df <- df[order(df$.tmp.rownames),]
       df$.tmp.rownames <- NULL
       df$.tmp.cellnames <- NULL
+      rownames(df) <- NULL
     } else {
       # not recognised
       stop("Method not recognised")
@@ -338,6 +339,7 @@ impute <- function(df, varname,
         df <- df[order(df$.tmp.rownames),]
         df$.tmp.rownames <- NULL
         df$.tmp.cellnames <- NULL
+        rownames(df) <- NULL
       }
 
     } else if(method=="mean") {
@@ -363,6 +365,7 @@ impute <- function(df, varname,
         df <- df[order(df$.tmp.rownames),]
         df$.tmp.rownames <- NULL
         df$.tmp.cellnames <- NULL
+        rownames(df) <- NULL
       }
 
     } else if(method=="lm.mean" && !is.null(formula)) {
@@ -411,6 +414,7 @@ impute <- function(df, varname,
         df <- df[order(df$.tmp.rownames),]
         df$.tmp.rownames <- NULL
         df$.tmp.cellnames <- NULL
+        rownames(df) <- NULL
       }
 
     } else {
