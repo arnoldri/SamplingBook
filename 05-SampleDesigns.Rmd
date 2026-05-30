@@ -484,6 +484,17 @@ $n_h$ units, and the total sample size is then the sum of these:
 \]
 We then carry out independent sampling in each of the strata.  
 
+The probability of selection of a unit depends only on the stratum it is in.
+In stratum $h$ we select $n_h$ units by SRSWOR from the $N_h$ available, so 
+the probability of selection is
+\[
+   \pi_ = \frac{n_h}{N_h}
+\]
+and the sample weight is then
+\[
+   w_i = \frac{N_h}{n_h}
+\]
+
 The way we choose to define the strata and the way we then choose to allocate the 
 sample across the strata depend on our goals.  
 
@@ -1057,7 +1068,20 @@ stratum $h$ are
    w_{hk\ell j} = \frac{N_h}{n_h}\frac{M_{hk}}{m_{hk}}
                   \frac{A_{hk\ell}}{a_{hk\ell}}
 \]
-i.e. these are just the product of the weights at each stage of selection.  
+i.e. these are just the product of the weights at each stage of selection. 
+
+### Stratified two stage cluster sample
+
+For a stratified two stage cluster sample, e.g. selecting $n_h$ PSUs from $N_h$
+in stratum $h$, and then $m_i$ SSUs from the $M_i$ available in PSU $i$ the
+probability of selection of SSU $j$ in PSU $i$ of stratum $h$ is
+\[
+   \pi_{hij} = \frac{n_h}{N_h}\times\frac{m_i}{M_i}
+\]
+with corresponding weight
+\[
+   w_{hij} = \frac{N_h}{n_h}\times\frac{M_i}{m_i}
+\]
 
 Function to draw a stratified two stage cluster sample
 ```{r}
@@ -1136,3 +1160,19 @@ samp |>
 ```
 
 
+## Summary of selection probabilities and weights in key designs
+
+ * In stratified designs there are $H$ strata.  Stratum $h$ contains $N_h$ PSUs, of which we select $n_h$ by SRSWOR.
+ * In cluster designs there are $M_i$ SSUs in PSU $i$, of which we select $m_i$ by SRSWOR.  
+ * In cluster designs the SSUs are indexed $ij$ by both the cluster label $i$ and their SSU label $j$
+ * In 1SC designs $m_i=M_i$: we take a census of SSUs in selected PSUs.
+ * In stratified cluster designs the PSUs are indexed $hi$ by both the stratum $h$ and their PSU label $i$, 
+   and the SSUs are indexed $hij$: i.e. the $j^{\rm th}$ SSU in the $i^{\rm th}$ PSU in stratum $h$.
+
+| Design | Stage 1 | Stage 2 | Probability | Sampling Weight | 
+| :--- | :---: | :---: | :---: | :---: | 
+| SRSWOR | $\pi^{(1)}_{i}=\frac{n}{N}$ |    | $\pi_i=\frac{n}{N}$ | $w_i = \frac{N}{n}$ |
+| STSRS  | $\pi^{(1)}_{hi}=\frac{n_h}{N_h}$ |    | $\pi_{hi}=\frac{n_h}{N_h}$ | $w_{hi} = \frac{N_h}{n_h}$ |
+| 1SC    | $\pi^{(1)}_{hi}=\frac{n}{N}$  |    | $\pi_{ij}=\frac{n}{N}$ | $w_{ij} = \frac{N}{n}$ |
+| 2SC    |  $\pi^{(1)}_i=\frac{n}{N}$ | $\pi^{(2)}_{ij}=\frac{m_i}{M_i}$   | $\pi_{ij}=\frac{n}{N}\times\frac{m_i}{M_i}$ | $w_{ij} = \frac{N}{n}\times\frac{M_i}{m_i}$ |
+| ST2SC  |  $\pi^{(1)}_{hi}=\frac{n_h}{N_h}$ | $\pi^{(2)}_{hij}=\frac{m_{hi}}{M_{hi}}$   | $\pi_{hij}=\frac{n_h}{N_h}\times\frac{m_{hi}}{M_{hi}}$ | $w_{hij} = \frac{N_h}{n_h}\times\frac{M_{hi}}{m_{hi}}$ |

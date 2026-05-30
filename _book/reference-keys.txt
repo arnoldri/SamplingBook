@@ -90,6 +90,8 @@ stratified-simple-random-sample-stsrs
 one-stage-cluster-sampling-1sc
 two-stage-cluster-sampling-2sc
 complex-multistage-designs
+stratified-two-stage-cluster-sample
+summary-of-selection-probabilities-and-weights-in-key-designs
 sample-designs-in-r
 census-1
 simple-random-sample-without-replacement-srswor

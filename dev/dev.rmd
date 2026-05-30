@@ -21,3 +21,10 @@ nc <- nhanes |> impute("bmi", method="mean", formula=~age)
 View(nhanes)
 ```
 
+# summary
+
+| Design | Stage 1 probability | Stage 2 probability | Selection probability | Sampling Weight | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+|      | $\pi^{(1)}_i$ | $\pi^{(2)}_{ij}$ | $\pi_{ij}$ | $w_{ij}$ | |
+| SRSWOR |   |    | $\pi_i=\frac{n}{N}$ | $\w_i = \frac{N}{n} |
+
